@@ -50,4 +50,6 @@ set(FILES
     Source/URDF/UrdfParser.h
     Source/Imu/ROS2ImuSensorComponent.cpp
     Source/Imu/ROS2ImuSensorComponent.h
+    Source/URDF/Fbx.cpp
+    Source/URDF/Fbx.h
 )
