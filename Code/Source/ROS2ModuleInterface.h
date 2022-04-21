@@ -7,6 +7,7 @@
  */
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
+#include <Frame/ROS2FrameComponent.h>
 #include <ROS2SystemComponent.h>
 
 namespace ROS2
@@ -25,7 +26,8 @@ namespace ROS2
             // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
             // This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(m_descriptors.end(), {
-                ROS2SystemComponent::CreateDescriptor()
+                ROS2SystemComponent::CreateDescriptor(),
+                ROS2FrameComponent::CreateDescriptor()
                 });
         }
 
