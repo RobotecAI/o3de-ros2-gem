@@ -14,6 +14,8 @@
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "builtin_interfaces/msg/time.hpp"
+#include <tf2_ros/static_transform_broadcaster.h>
+
 #include "Clock/SimulationClock.h"
 
 namespace ROS2
@@ -39,6 +41,9 @@ namespace ROS2
         std::shared_ptr<rclcpp::Node> GetNode() const override;
         builtin_interfaces::msg::Time GetROSTimestamp() const override;
 
+        // TODO - rethink ownership of this one. It needs to be a singleton-like behavior, but not necessarily here
+        void BroadcastStaticTransform(const geometry_msgs::msg::TransformStamped& t) const override;
+
     protected:
         ////////////////////////////////////////////////////////////////////////
         // ROS2RequestBus interface implementation
@@ -60,6 +65,7 @@ namespace ROS2
     private:
         std::shared_ptr<rclcpp::Node> m_ros2Node;
         AZStd::shared_ptr<rclcpp::executors::SingleThreadedExecutor> m_executor;
+        AZStd::unique_ptr<tf2_ros::StaticTransformBroadcaster> m_staticTFBroadcaster;
         SimulationClock m_simulationClock;
     };
 
