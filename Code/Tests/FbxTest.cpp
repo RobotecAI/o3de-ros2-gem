@@ -6,7 +6,7 @@
  *
  */
 
-#include <Urdf/Fbx.h>
+#include <URDF/Fbx.h>
 
 #include <AzTest/AzTest.h>
 

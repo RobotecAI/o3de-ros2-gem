@@ -42,7 +42,8 @@ namespace ROS2
             return std::string("\"") + std::any_cast<std::string>(a) + std::string("\"");
         }
 
-        throw std::runtime_error("Unsupported type!");
+        return "";
+        // throw std::runtime_error("Unsupported type!");
     }
 
     Fbx::Node::Node(const std::string & name, const Properties & properties)

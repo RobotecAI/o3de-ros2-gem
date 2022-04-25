@@ -6,7 +6,7 @@
  *
  */
 
-#include <Urdf/UrdfToFbxConverter.h>
+#include <URDF/UrdfToFbxConverter.h>
 
 #include <AzTest/AzTest.h>
 
