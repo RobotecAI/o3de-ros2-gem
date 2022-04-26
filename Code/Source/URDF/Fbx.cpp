@@ -187,7 +187,7 @@ namespace ROS2
         basicNodes.clear();
 
         basicNodes.push_back(GetFbxHeaderExtension());
-        basicNodes.push_back(Node("GlobalSettings"));
+        basicNodes.push_back(GetGlobalSettings());
         basicNodes.push_back(Node("Documents"));
         basicNodes.push_back(Node("References"));
         basicNodes.push_back(Node("Definitions"));
@@ -206,6 +206,58 @@ namespace ROS2
         fbxHeader.AddChildNode(GetSceneInfo());
 
         return fbxHeader;
+    }
+
+    Node Fbx::GetGlobalSettings() const
+    {
+        Node globalSettings("GlobalSettings");
+        globalSettings.AddChildNode("Version", 1000);
+
+        Node properties("Properties70");
+        properties.AddChildNode(
+            Node("P", {"UpAxis", "int", "Integer", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"UpAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"FrontAxis", "int", "Integer", "", 2}));
+        properties.AddChildNode(
+            Node("P", {"FrontAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"CoordAxis", "int", "Integer", "", 0}));
+        properties.AddChildNode(
+            Node("P", {"CoordAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"OriginalUpAxis", "int", "Integer", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"OriginalUpAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"UnitScaleFactor", "double", "Number", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"OriginalUnitScaleFactor", "double", "Number", "", 1}));
+        properties.AddChildNode(
+            Node("P", {"AmbientColor", "ColorRGB", "Color", "", 0, 0, 0}));
+        properties.AddChildNode(
+            Node("P", {"DefaultCamera", "KString", "", "", "Producer Perspective"}));
+        properties.AddChildNode(
+            Node("P", {"TimeMode", "enum", "", "", 11}));
+        properties.AddChildNode(
+            Node("P", {"TimeProtocol", "enum", "", "", 2}));
+        properties.AddChildNode(
+            Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
+        properties.AddChildNode(
+            Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
+        properties.AddChildNode(
+            Node("P", {"TimeSpanStop", "KTime", "Time", "", 384884650000}));
+        properties.AddChildNode(
+            Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
+        properties.AddChildNode(
+            Node("P", {"TimeMarker", "Compound", "", ""}));
+        properties.AddChildNode(
+            Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
+
+        globalSettings.AddChildNode(std::move(properties));
+
+        return globalSettings;
     }
 
     Node Fbx::GetTimeStamp() const

@@ -57,6 +57,7 @@ namespace ROS2
 
     private:
         Node GetFbxHeaderExtension() const;
+        Node GetGlobalSettings() const;
         Node GetTimeStamp() const;
         Node GetSceneInfo() const;
         Node GetMetaData() const;
