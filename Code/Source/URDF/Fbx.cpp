@@ -202,7 +202,7 @@ namespace ROS2
         fbxHeader.AddChildNode("FBXHeaderVersion", 1003);
         fbxHeader.AddChildNode("FBXVersion", 7500);
         fbxHeader.AddChildNode(GetTimeStamp());
-        fbxHeader.AddChildNode("Creator", "O3DE URDF->FBX Converter");
+        fbxHeader.AddChildNode("Creator", "O3DE ROS2 Gem");
         fbxHeader.AddChildNode(GetSceneInfo());
 
         return fbxHeader;
