@@ -29,7 +29,6 @@ protected:
 
 TEST_F(FbxTest, BasicStructureGeneration)
 {
-    fbx.CreateFileStructure();
     const auto fbxStr = fbx.GetFbxString();
     PrintFbxContent(fbxStr);
 

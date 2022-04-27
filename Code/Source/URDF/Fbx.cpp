@@ -170,8 +170,13 @@ namespace ROS2
         AZ_Printf("Fbx", "Data structure saved to file: %s", filePath.c_str());
     }
 
-    std::string Fbx::GetFbxString() const
+    std::string Fbx::GetFbxString()
     {
+        if (!nodesUpdated)
+        {
+            GenerateFbxStructure();
+        }
+
         std::string data;
         // Traverse tree in depth-first order and generate string
         for (const auto & n : basicNodes)
@@ -182,7 +187,7 @@ namespace ROS2
         return data;
     }
 
-    void Fbx::CreateFileStructure()
+    void Fbx::GenerateFbxStructure()
     {
         basicNodes.clear();
 
@@ -194,6 +199,8 @@ namespace ROS2
         basicNodes.push_back(Node("Objects"));
         basicNodes.push_back(Node("Connections"));
         basicNodes.push_back(Node("Takes"));
+
+        nodesUpdated = true;
     }
 
     Node Fbx::GetFbxHeaderExtension() const

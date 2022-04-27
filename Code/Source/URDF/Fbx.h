@@ -72,12 +72,11 @@ namespace ROS2
         void SaveToFile(const std::string & filePath, FileType type = FileType::Text);
 
         //! Return the string with ASCII version of current FBX structure.
-        std::string GetFbxString() const;
-
-        //! Create the fbx file structure.
-        void CreateFileStructure();
+        std::string GetFbxString();
 
     private:
+        //! Generate the fbx file structure.
+        void GenerateFbxStructure();
         // Default FBX file header
         Node GetFbxHeaderExtension() const;
         // Default global settings
@@ -87,6 +86,7 @@ namespace ROS2
         Node GetMetaData() const;
 
         std::vector<Node> basicNodes;
+        bool nodesUpdated = false;
     };
 
 } // namespace ROS2
