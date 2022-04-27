@@ -20,10 +20,10 @@ namespace ROS2
     //! Class for conversion from URDF to Filmbox (.fbx) files
     class UrdfToFbxConverter
     {
-        public:
-            std::string ConvertUrdfToFbx(const std::string & urdfString);
+    public:
+        std::string ConvertUrdfToFbx(const std::string & urdfString);
 
-        private:
+    private:
 
     };
 

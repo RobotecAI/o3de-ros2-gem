@@ -18,12 +18,12 @@ namespace ROS2
     //! Class for parsing URDF data
     class UrdfParser
     {
-        public:
-            //! Parse string with URDF data and generate model
-            static urdf::ModelInterfaceSharedPtr Parse(const std::string & xmlString);
+    public:
+        //! Parse string with URDF data and generate model
+        static urdf::ModelInterfaceSharedPtr Parse(const std::string & xmlString);
 
-            //! Parse file with URDF data and generate model
-            static urdf::ModelInterfaceSharedPtr ParseFromFile(const std::string & filePath);
+        //! Parse file with URDF data and generate model
+        static urdf::ModelInterfaceSharedPtr ParseFromFile(const std::string & filePath);
     };
 
 } // namespace ROS2
