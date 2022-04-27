@@ -193,11 +193,11 @@ namespace ROS2
 
         basicNodes.push_back(GetFbxHeaderExtension());
         basicNodes.push_back(GetGlobalSettings());
-        basicNodes.push_back(Node("Documents"));
+        basicNodes.push_back(GetDocuments());
         basicNodes.push_back(Node("References"));
-        basicNodes.push_back(Node("Definitions"));
-        basicNodes.push_back(Node("Objects"));
-        basicNodes.push_back(Node("Connections"));
+        basicNodes.push_back(GetDefinitions());
+        basicNodes.push_back(GetObjects());
+        basicNodes.push_back(GetConnections());
         basicNodes.push_back(Node("Takes"));
 
         nodesUpdated = true;
@@ -221,50 +221,139 @@ namespace ROS2
         globalSettings.AddChildNode("Version", 1000);
 
         Node properties("Properties70");
-        properties.AddChildNode(
-            Node("P", {"UpAxis", "int", "Integer", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"UpAxisSign", "int", "Integer", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"FrontAxis", "int", "Integer", "", 2}));
-        properties.AddChildNode(
-            Node("P", {"FrontAxisSign", "int", "Integer", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"CoordAxis", "int", "Integer", "", 0}));
-        properties.AddChildNode(
-            Node("P", {"CoordAxisSign", "int", "Integer", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"OriginalUpAxis", "int", "Integer", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"OriginalUpAxisSign", "int", "Integer", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"UnitScaleFactor", "double", "Number", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"OriginalUnitScaleFactor", "double", "Number", "", 1}));
-        properties.AddChildNode(
-            Node("P", {"AmbientColor", "ColorRGB", "Color", "", 0, 0, 0}));
-        properties.AddChildNode(
-            Node("P", {"DefaultCamera", "KString", "", "", "Producer Perspective"}));
-        properties.AddChildNode(
-            Node("P", {"TimeMode", "enum", "", "", 11}));
-        properties.AddChildNode(
-            Node("P", {"TimeProtocol", "enum", "", "", 2}));
-        properties.AddChildNode(
-            Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
-        properties.AddChildNode(
-            Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
-        properties.AddChildNode(
-            Node("P", {"TimeSpanStop", "KTime", "Time", "", 384884650000}));
-        properties.AddChildNode(
-            Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
-        properties.AddChildNode(
-            Node("P", {"TimeMarker", "Compound", "", ""}));
-        properties.AddChildNode(
-            Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
+        properties.AddChildNode(Node("P", {"UpAxis", "int", "Integer", "", 1}));
+        properties.AddChildNode(Node("P", {"UpAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(Node("P", {"FrontAxis", "int", "Integer", "", 2}));
+        properties.AddChildNode(Node("P", {"FrontAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(Node("P", {"CoordAxis", "int", "Integer", "", 0}));
+        properties.AddChildNode(Node("P", {"CoordAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(Node("P", {"OriginalUpAxis", "int", "Integer", "", 1}));
+        properties.AddChildNode(Node("P", {"OriginalUpAxisSign", "int", "Integer", "", 1}));
+        properties.AddChildNode(Node("P", {"UnitScaleFactor", "double", "Number", "", 1}));
+        properties.AddChildNode(Node("P", {"OriginalUnitScaleFactor", "double", "Number", "", 1}));
+        properties.AddChildNode(Node("P", {"AmbientColor", "ColorRGB", "Color", "", 0, 0, 0}));
+        properties.AddChildNode(Node("P", {"DefaultCamera", "KString", "", "", "Producer Perspective"}));
+        properties.AddChildNode(Node("P", {"TimeMode", "enum", "", "", 11}));
+        properties.AddChildNode(Node("P", {"TimeProtocol", "enum", "", "", 2}));
+        properties.AddChildNode(Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
+        properties.AddChildNode(Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
+        properties.AddChildNode(Node("P", {"TimeSpanStop", "KTime", "Time", "", 384884650000}));
+        properties.AddChildNode(Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
+        properties.AddChildNode(Node("P", {"TimeMarker", "Compound", "", ""}));
+        properties.AddChildNode(Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
 
         globalSettings.AddChildNode(std::move(properties));
 
         return globalSettings;
+    }
+
+    Node Fbx::GetDocuments() const
+    {
+        Node documents("Documents");
+        documents.AddChildNode("Count", 1);
+
+        Node document("Document", {"", "Scene"});
+
+        Node properties("Properties70");
+        properties.AddChildNode(Node("P", {"SourceObject", "object", "", ""}));
+        properties.AddChildNode(Node("P", {"ActiveAnimStackName", "KString", "", "Take 001"}));
+
+        document.AddChildNode(std::move(properties));
+        document.AddChildNode("RootNode", 0);
+        return documents;
+    }
+
+    Node Fbx::GetDefinitions() const
+    {
+        Node definitions("Definitions");
+        definitions.AddChildNode("Version", 100);
+        definitions.AddChildNode("Count", 3);
+
+        Node globalSettings("ObjectType", {"GlobalSettings"});
+        globalSettings.AddChildNode("Count", 1);
+        definitions.AddChildNode(std::move(globalSettings));
+
+        Node model("ObjectType", {"Model"});
+        model.AddChildNode("Count", 1);
+        definitions.AddChildNode(std::move(model));
+
+        Node geometry("ObjectType", {"Geometry"});
+        geometry.AddChildNode("Count", 1);
+        definitions.AddChildNode(std::move(geometry));
+
+        Node material("ObjectType", {"Material"});
+        material.AddChildNode("Count", 1);
+        definitions.AddChildNode(std::move(material));
+
+        return definitions;
+    }
+
+    Node Fbx::GetObjects() const
+    {
+        Node objects("Objects");
+
+        { // Example cube model
+            Node model("Model", {"Model::cube", "Mesh"});
+            model.AddChildNode("Version", 232);
+            model.AddChildNode("Culling", "CullingOff");
+
+            Node properties("Properties70");
+            properties.AddChildNode(Node("P", {"RotationActive", "bool", "", "", 1}));
+            properties.AddChildNode(Node("P", {"InheritType", "enum", "", "", 1}));
+            properties.AddChildNode(Node("P", {"ScalingMax", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"DefaultAttributeIndex", "int", "Integer", "", 0}));
+            properties.AddChildNode(Node("P", {"Lcl Scaling", "Lcl Scaling", "", "A", 100, 100, 100}));
+            properties.AddChildNode(Node("P", {"currentUVSet", "KString", "", "U", "map1"}));
+            model.AddChildNode(std::move(properties));
+
+            objects.AddChildNode(std::move(model));
+        }
+
+        { // Example cube material
+            Node material("Material", {"Material::cube", ""});
+            material.AddChildNode("Version", 102);
+            material.AddChildNode("ShadingModel", "phong");
+            material.AddChildNode("Multilayer", 0);
+
+            Node properties("Properties70");
+            properties.AddChildNode(Node("P", {"AmbientColor", "Color", "", "A", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"DiffuseColor", "Color", "", "A", 1, 1, 1}));
+            properties.AddChildNode(Node("P", {"DiffuseFactor", "Number", "", "A", 0.9}));
+            properties.AddChildNode(Node("P", {"TransparencyFactor", "Number", "", "A", 1}));
+            properties.AddChildNode(Node("P", {"SpecularColor", "Color", "", "A", 0.5, 0.5, 0.5}));
+            properties.AddChildNode(Node("P", {"ReflectionFactor", "Number", "", "A", 0.5}));
+            properties.AddChildNode(Node("P", {"Emissive", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"Ambient", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"Diffuse", "Vector3D", "Vector", "", 0.9, 0.9, 0.9}));
+            properties.AddChildNode(Node("P", {"Specular", "Vector3D", "Vector", "", 0.5, 0.5, 0.5}));
+            properties.AddChildNode(Node("P", {"Shininess", "double", "Number", "", 20}));
+            properties.AddChildNode(Node("P", {"Opacity", "double", "Number", "", 1}));
+            properties.AddChildNode(Node("P", {"Reflectivity", "double", "Number", "", 0}));
+            material.AddChildNode(std::move(properties));
+
+            objects.AddChildNode(std::move(material));
+        }
+
+        { // Example cube geometry
+            Node geometry("Geometry", {"Geometry::cube", "Mesh"});
+            geometry.AddChildNode("GeometryVersion", 102);
+            geometry.AddChildNode(
+                Node("Vertices", {-0.5,-0.5,0.5,0.5,-0.5,0.5,-0.5,0.5,0.5,0.5,0.5,0.5,-0.5,0.5,-0.5,0.5,0.5,-0.5,-0.5,-0.5,-0.5,0.5,-0.5,-0.5}));
+
+            objects.AddChildNode(std::move(geometry));
+        }
+
+        return objects;
+    }
+
+    Node Fbx::GetConnections() const
+    {
+        Node connections("Connections");
+
+        connections.AddChildNode(Node("C", {"Model::cube", 0}));
+        connections.AddChildNode(Node("C", {"Geometry::cube", "Model::cube"}));
+        connections.AddChildNode(Node("C", {"Material::cube", "Model::cube"}));
+        return connections;
     }
 
     Node Fbx::GetTimeStamp() const

@@ -85,6 +85,11 @@ namespace ROS2
         Node GetSceneInfo() const;
         Node GetMetaData() const;
 
+        Node GetDocuments() const;
+        Node GetDefinitions() const;
+        Node GetObjects() const;
+        Node GetConnections() const;
+
         std::vector<Node> basicNodes;
         bool nodesUpdated = false;
     };
