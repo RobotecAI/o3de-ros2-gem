@@ -338,16 +338,81 @@ namespace ROS2
             objects.AddChildNode(std::move(material));
         }
 
-        { // Example cube geometry
-            Node geometry("Geometry", {"Geometry::cube", "Mesh"});
-            geometry.AddChildNode("GeometryVersion", 102);
-            geometry.AddChildNode(
-                Node("Vertices", {-0.5,-0.5,0.5,0.5,-0.5,0.5,-0.5,0.5,0.5,0.5,0.5,0.5,-0.5,0.5,-0.5,0.5,0.5,-0.5,-0.5,-0.5,-0.5,0.5,-0.5,-0.5}));
-
-            objects.AddChildNode(std::move(geometry));
-        }
+        // Add model, syntax is as below
+        // Model: "name", "Mesh" {
+        //      Vertices: [...]
+        //      PolygonVertexIndex: [...]
+        //      LayerElementNormal: { }
+        //      LayerElementUV: { }
+        // }
+        double cubeSize = 0.5;
+        const auto geometry = CreateGeometryCube(cubeSize);
+        objects.AddChildNode(std::move(geometry));
 
         return objects;
+    }
+
+    Node Fbx::CreateGeometryCube(double size) const
+    {
+        // Example cube geometry
+        Node geometry("Geometry", {"Geometry::cube", "Mesh"});
+        geometry.AddChildNode("GeometryVersion", 102);
+        geometry.AddChildNode(
+            // How vertices are defined
+            // Vertex v1: v1_x, v1_y, v1_z
+            // For more vertices the definitions looks as follows:
+            // Vertices: v1_x, v1_y, v1_z, v2_x, v2_y, v2_z, ..., vn_x, vn_y, vn_z
+            // More details: https://banexdevblog.wordpress.com/2014/06/23/a-quick-tutorial-about-the-fbx-ascii-format/
+            Node("Vertices", {-size,-size,size,
+                               size,-size,size,
+                               -size,size,size,
+                               size,size,size,
+                               -size,size,-size,
+                               size,size,-size,
+                               -size,-size,-size,
+                               size,-size,-size}));
+
+        // Indices of four-sided polygons (quads)
+        geometry.AddChildNode(
+            Node("PolygonVertexIndex", {0,1,3,-3,
+                                        2,3,5,-5,
+                                        4,5,7,-7,
+                                        6,7,1,-1,
+                                        1,7,5,-4,
+                                        6,0,2,-5}));
+
+        // Edges
+        geometry.AddChildNode(
+            Node("Edges", {0,2,6,10,3,1,7,5,11,9,15,13}));
+
+        // Normals
+        auto layerElementNormal = Node("LayerElementNormal", 0);
+        layerElementNormal.AddChildNode("Version", 102);
+        layerElementNormal.AddChildNode("Name", "");
+        layerElementNormal.AddChildNode("MappingInformationType", "ByPolygonVertex");
+        layerElementNormal.AddChildNode("ReferenceInformationType", "Direct");
+        layerElementNormal.AddChildNode(
+            Node("Normals", {0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,
+                             -1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0}));
+        layerElementNormal.AddChildNode(
+            Node("NormalsW", {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+        geometry.AddChildNode(layerElementNormal);
+
+        // UV
+        auto layerElementUV = Node("LayerElementUV", 0);
+        layerElementUV.AddChildNode("Version", 101);
+        layerElementUV.AddChildNode("Name", "map1");
+        layerElementUV.AddChildNode("MappingInformationType", "ByPolygonVertex");
+        layerElementUV.AddChildNode("ReferenceInformationType", "IndexToDirect");
+        layerElementUV.AddChildNode(
+            Node("UV", {0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,
+                        0.625,0.75,0.375,1,0.625,1,0.875,0,0.875,0.25,0.125,0,0.125,0.25}));
+        layerElementUV.AddChildNode(
+            Node("UVIndex", {0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13}));
+
+        geometry.AddChildNode(layerElementUV);
+
+        return geometry;
     }
 
     Node Fbx::GetConnections() const

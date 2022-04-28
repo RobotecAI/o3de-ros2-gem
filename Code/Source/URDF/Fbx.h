@@ -77,17 +77,22 @@ namespace ROS2
     private:
         //! Generate the fbx file structure.
         void GenerateFbxStructure();
+
         // Default FBX file header
         Node GetFbxHeaderExtension() const;
-        // Default global settings
-        Node GetGlobalSettings() const;
         Node GetTimeStamp() const;
         Node GetSceneInfo() const;
         Node GetMetaData() const;
 
+        // Default global settings
+        Node GetGlobalSettings() const;
+
         Node GetDocuments() const;
         Node GetDefinitions() const;
+        // Objects creation
         Node GetObjects() const;
+        Node CreateGeometryCube(double size = 1.0) const;
+
         Node GetConnections() const;
 
         std::vector<Node> basicNodes;
