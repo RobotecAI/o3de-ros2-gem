@@ -7,7 +7,9 @@
  */
 #pragma once
 
-#include "RobotControl.h"
+#include "RobotControl/RobotControl.h"
+#include "RobotControl/TwistControl/TwistBus.h"
+
 #include "geometry_msgs/msg/twist.hpp"
 
 namespace ROS2
@@ -15,9 +17,7 @@ namespace ROS2
     class TwistControl : public RobotControl<geometry_msgs::msg::Twist>
     {
     private:
+        void BroadcastBus(const geometry_msgs::msg::Twist& message) override;
         void ApplyControl(const geometry_msgs::msg::Twist& message) override;
-        void SetTargetComponent(const AZ::Entity* entity) override;
-
-        AZ::EntityId m_entityID;
     };
 }  // namespace ROS2
