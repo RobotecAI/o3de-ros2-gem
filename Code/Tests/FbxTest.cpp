@@ -24,7 +24,7 @@ public:
     }
 
 protected:
-    ROS2::Fbx fbx;
+    ROS2::Fbx::Fbx fbx;
 };
 
 TEST_F(FbxTest, BasicStructureGeneration)
