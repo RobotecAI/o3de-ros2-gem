@@ -24,16 +24,16 @@ public:
     }
 
 protected:
-    ROS2::Fbx::FbxGenerator fbx;
+    ROS2::Fbx::FbxGenerator generator;
 };
 
 TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 {
-    const auto fbxStr = fbx.GetFbxString();
+    const auto fbxStr = generator.GetFbxString();
     PrintFbxContent(fbxStr);
 
-    std::string filePath = "/home/mdrwiega/o3de/o3de-demo-project/TestData/test.fbx";
-    fbx.SaveToFile(filePath);
+    std::string filePath = "~/o3de/o3de-demo-project/TestData/test.fbx";
+    generator.SaveToFile(filePath);
 
     std::istringstream iss(fbxStr);
     std::string line;

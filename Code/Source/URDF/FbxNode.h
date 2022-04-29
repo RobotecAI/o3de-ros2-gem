@@ -11,6 +11,8 @@
 #include <string>
 #include <any>
 
+#include "UniqueIdGenerator.h"
+
 namespace ROS2
 {
     namespace Fbx
@@ -46,9 +48,9 @@ namespace ROS2
             void AddProperty(const Property & property);
 
             //! Add new child node to existing node
-            void AddChildNode(const Node & child);
-            void AddChildNode(const std::string & name, const Property & property);
-            void AddChildNode(const Node && child);
+            void AddChild(const Node & child);
+            void AddChild(const std::string & name, const Property & property);
+            void AddChild(const Node && child);
 
             //! Convert the node to string (ASCII Fbx).
             std::string ToString(int nodeDepth = 0)  const;
@@ -57,6 +59,19 @@ namespace ROS2
             std::string m_name;
             std::vector<Node> m_children;
             Properties m_properties;
+        };
+
+        //! A node with unique id
+        struct NodeWithId
+        {
+            NodeWithId(Id id, const Node & node)
+                : id(id), node(node) {}
+
+            NodeWithId(Id id, const Node && node)
+                : id(id), node(std::move(node)) {}
+
+            Id id;
+            Node node;
         };
 
     } // namespace Fbx

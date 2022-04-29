@@ -86,17 +86,17 @@ namespace ROS2
             m_properties.push_back(property);
         }
 
-        void Node::AddChildNode(const Node & child)
+        void Node::AddChild(const Node & child)
         {
             m_children.push_back(child);
         }
 
-        void Node::AddChildNode(const std::string & name, const Property & property)
+        void Node::AddChild(const std::string & name, const Property & property)
         {
             m_children.push_back(Node(name, { property }));
         }
 
-        void Node::AddChildNode(const Node && child)
+        void Node::AddChild(const Node && child)
         {
             m_children.push_back(child);
         }

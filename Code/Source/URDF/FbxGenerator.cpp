@@ -57,6 +57,43 @@ namespace ROS2
             m_basicNodes.clear();
             m_nodesUpdated = false;
             m_connections.clear();
+            m_objects.reset(new Node("Objects"));
+        }
+
+        Id FbxGenerator::AddCubeObject(
+            const std::string & objectName, double size, Id materialId)
+        {
+            const auto model = CreateModel(objectName);
+            m_objects->AddChild(model.node);
+
+            const auto geometry = CreateGeometryCube(size);
+            m_objects->AddChild(std::move(geometry.node));
+
+            // Attach first object to the root node
+            if (m_first_object)
+            {
+                m_connections.push_back(Connection(rootId, model.id, "OO"));
+                m_first_object = false;
+            }
+
+            m_connections.push_back(Connection(model.id, geometry.id, "OO"));
+
+            // TODO: Would be great to add validation if materialId exists.
+            m_connections.push_back(Connection(model.id, materialId, "OO"));
+
+            return model.id;
+        }
+
+        Id FbxGenerator::AddMaterial(const std::string & materialName, const Color & color)
+        {
+            const auto material = CreateMaterial(materialName, color);
+            m_objects->AddChild(material.node);
+            return material.id;
+        }
+
+        void FbxGenerator::SetRelationBetweenObjects(Id parentId, Id childId)
+        {
+            m_connections.push_back(Connection(parentId, childId, "OO"));
         }
 
         void FbxGenerator::GenerateFbxStructure()
@@ -68,8 +105,8 @@ namespace ROS2
             m_basicNodes.push_back(GetDocuments());
             m_basicNodes.push_back(Node("References"));
             m_basicNodes.push_back(GetDefinitions());
-            m_basicNodes.push_back(GetObjects());
-            m_basicNodes.push_back(GetConnections());
+            m_basicNodes.push_back(*m_objects);
+            m_basicNodes.push_back(GenerateConnections());
             m_basicNodes.push_back(Node("Takes"));
 
             m_nodesUpdated = true;
@@ -78,11 +115,11 @@ namespace ROS2
         Node FbxGenerator::GetFbxHeaderExtension() const
         {
             Node fbxHeader("FBXHeaderExtension");
-            fbxHeader.AddChildNode("FBXHeaderVersion", 1003);
-            fbxHeader.AddChildNode("FBXVersion", 7500);
-            fbxHeader.AddChildNode(GetTimeStamp());
-            fbxHeader.AddChildNode("Creator", "O3DE ROS2 Gem");
-            fbxHeader.AddChildNode(GetSceneInfo());
+            fbxHeader.AddChild("FBXHeaderVersion", 1003);
+            fbxHeader.AddChild("FBXVersion", 7500);
+            fbxHeader.AddChild(GetTimeStamp());
+            fbxHeader.AddChild("Creator", "O3DE ROS2 Gem");
+            fbxHeader.AddChild(GetSceneInfo());
 
             return fbxHeader;
         }
@@ -90,31 +127,31 @@ namespace ROS2
         Node FbxGenerator::GetGlobalSettings() const
         {
             Node globalSettings("GlobalSettings");
-            globalSettings.AddChildNode("Version", 1000);
+            globalSettings.AddChild("Version", 1000);
 
             Node properties("Properties70");
-            properties.AddChildNode(Node("P", {"UpAxis", "int", "Integer", "", 1}));
-            properties.AddChildNode(Node("P", {"UpAxisSign", "int", "Integer", "", 1}));
-            properties.AddChildNode(Node("P", {"FrontAxis", "int", "Integer", "", 2}));
-            properties.AddChildNode(Node("P", {"FrontAxisSign", "int", "Integer", "", 1}));
-            properties.AddChildNode(Node("P", {"CoordAxis", "int", "Integer", "", 0}));
-            properties.AddChildNode(Node("P", {"CoordAxisSign", "int", "Integer", "", 1}));
-            properties.AddChildNode(Node("P", {"OriginalUpAxis", "int", "Integer", "", 1}));
-            properties.AddChildNode(Node("P", {"OriginalUpAxisSign", "int", "Integer", "", 1}));
-            properties.AddChildNode(Node("P", {"UnitScaleFactor", "double", "Number", "", 1}));
-            properties.AddChildNode(Node("P", {"OriginalUnitScaleFactor", "double", "Number", "", 1}));
-            properties.AddChildNode(Node("P", {"AmbientColor", "ColorRGB", "Color", "", 0, 0, 0}));
-            properties.AddChildNode(Node("P", {"DefaultCamera", "KString", "", "", "Producer Perspective"}));
-            properties.AddChildNode(Node("P", {"TimeMode", "enum", "", "", 11}));
-            properties.AddChildNode(Node("P", {"TimeProtocol", "enum", "", "", 2}));
-            properties.AddChildNode(Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
-            properties.AddChildNode(Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
-            properties.AddChildNode(Node("P", {"TimeSpanStop", "KTime", "Time", "", 1924423250}));
-            properties.AddChildNode(Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
-            properties.AddChildNode(Node("P", {"TimeMarker", "Compound", "", ""}));
-            properties.AddChildNode(Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
+            properties.AddChild(Node("P", {"UpAxis", "int", "Integer", "", 1}));
+            properties.AddChild(Node("P", {"UpAxisSign", "int", "Integer", "", 1}));
+            properties.AddChild(Node("P", {"FrontAxis", "int", "Integer", "", 2}));
+            properties.AddChild(Node("P", {"FrontAxisSign", "int", "Integer", "", 1}));
+            properties.AddChild(Node("P", {"CoordAxis", "int", "Integer", "", 0}));
+            properties.AddChild(Node("P", {"CoordAxisSign", "int", "Integer", "", 1}));
+            properties.AddChild(Node("P", {"OriginalUpAxis", "int", "Integer", "", 1}));
+            properties.AddChild(Node("P", {"OriginalUpAxisSign", "int", "Integer", "", 1}));
+            properties.AddChild(Node("P", {"UnitScaleFactor", "double", "Number", "", 1}));
+            properties.AddChild(Node("P", {"OriginalUnitScaleFactor", "double", "Number", "", 1}));
+            properties.AddChild(Node("P", {"AmbientColor", "ColorRGB", "Color", "", 0, 0, 0}));
+            properties.AddChild(Node("P", {"DefaultCamera", "KString", "", "", "Producer Perspective"}));
+            properties.AddChild(Node("P", {"TimeMode", "enum", "", "", 11}));
+            properties.AddChild(Node("P", {"TimeProtocol", "enum", "", "", 2}));
+            properties.AddChild(Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
+            properties.AddChild(Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
+            properties.AddChild(Node("P", {"TimeSpanStop", "KTime", "Time", "", 1924423250}));
+            properties.AddChild(Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
+            properties.AddChild(Node("P", {"TimeMarker", "Compound", "", ""}));
+            properties.AddChild(Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
 
-            globalSettings.AddChildNode(std::move(properties));
+            globalSettings.AddChild(std::move(properties));
 
             return globalSettings;
         }
@@ -122,135 +159,113 @@ namespace ROS2
         Node FbxGenerator::GetDocuments() const
         {
             Node documents("Documents");
-            documents.AddChildNode("Count", 1);
+            documents.AddChild("Count", 1);
 
             Node document("Document", {"", "Scene"});
 
             Node properties("Properties70");
-            properties.AddChildNode(Node("P", {"SourceObject", "object", "", ""}));
-            properties.AddChildNode(Node("P", {"ActiveAnimStackName", "KString", "", "Take 001"}));
+            properties.AddChild(Node("P", {"SourceObject", "object", "", ""}));
+            properties.AddChild(Node("P", {"ActiveAnimStackName", "KString", "", "Take 001"}));
 
-            document.AddChildNode(std::move(properties));
-            document.AddChildNode("RootNode", 0);
+            document.AddChild(std::move(properties));
+            document.AddChild("RootNode", 0);
             return documents;
         }
 
         Node FbxGenerator::GetDefinitions() const
         {
             Node definitions("Definitions");
-            definitions.AddChildNode("Version", 100);
-            definitions.AddChildNode("Count", 3);
+            definitions.AddChild("Version", 100);
+            definitions.AddChild("Count", 3);
 
             Node globalSettings("ObjectType", {"GlobalSettings"});
-            globalSettings.AddChildNode("Count", 1);
-            definitions.AddChildNode(std::move(globalSettings));
+            globalSettings.AddChild("Count", 1);
+            definitions.AddChild(std::move(globalSettings));
 
             Node model("ObjectType", {"Model"});
-            model.AddChildNode("Count", 1);
-            definitions.AddChildNode(std::move(model));
+            model.AddChild("Count", 1);
+            definitions.AddChild(std::move(model));
 
             Node geometry("ObjectType", {"Geometry"});
-            geometry.AddChildNode("Count", 1);
-            definitions.AddChildNode(std::move(geometry));
+            geometry.AddChild("Count", 1);
+            definitions.AddChild(std::move(geometry));
 
             Node material("ObjectType", {"Material"});
-            material.AddChildNode("Count", 1);
-            definitions.AddChildNode(std::move(material));
+            material.AddChild("Count", 1);
+            definitions.AddChild(std::move(material));
 
             return definitions;
         }
 
-        Node FbxGenerator::GetObjects()
+        NodeWithId FbxGenerator::CreateModel(const std::string & modelName) const
         {
-            Node objects("Objects");
+            const int modelId = UniqueIdGenerator::GetUniqueId();
 
-            // TODO: generate proper IDs
-            int modelId = UniqueIdGenerator::GetUniqueId();
-            int geometryId = UniqueIdGenerator::GetUniqueId();
-            int materialId = UniqueIdGenerator::GetUniqueId();
+            Node model("Model", {modelId, modelName, "Mesh"});
+            model.AddChild("Version", 232);
+            model.AddChild("Culling", "CullingOff");
 
-            // Add example cube model
-            objects.AddChildNode(CreateModel(modelId, "cube::example"));
+            Node properties("Properties70");
+            properties.AddChild(Node("P", {"RotationActive", "bool", "", "", 1}));
+            properties.AddChild(Node("P", {"InheritType", "enum", "", "", 1}));
+            properties.AddChild(Node("P", {"ScalingMax", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChild(Node("P", {"DefaultAttributeIndex", "int", "Integer", "", 0}));
+            properties.AddChild(Node("P", {"Lcl Scaling", "Lcl Scaling", "", "A", 100, 100, 100}));
+            properties.AddChild(Node("P", {"currentUVSet", "KString", "", "U", "map1"}));
+            model.AddChild(std::move(properties));
 
-            // Add example cube material
-            objects.AddChildNode(CreateExampleMaterial(materialId));
+            return NodeWithId(modelId, model);
+        }
 
-            // Add model, syntax is as below
-            // Model: "name", "Mesh" {
+        NodeWithId FbxGenerator::CreateMaterial(const std::string & name, const Color & color) const
+        {
+            const int materialId = UniqueIdGenerator::GetUniqueId();
+
+            Node material("Material", {materialId, "Material::default", ""});
+            material.AddChild("Version", 102);
+            material.AddChild("ShadingModel", "phong");
+            material.AddChild("Multilayer", 0);
+
+            Node properties("Properties70");
+            properties.AddChild(Node("P", {"AmbientColor", "Color", "", "A", 0, 0, 0}));
+            properties.AddChild(Node("P", {"DiffuseColor", "Color", "", "A", 1, 1, 1}));
+            properties.AddChild(Node("P", {"DiffuseFactor", "Number", "", "A", 0.9}));
+            properties.AddChild(Node("P", {"TransparencyFactor", "Number", "", "A", 1}));
+            properties.AddChild(Node("P", {"SpecularColor", "Color", "", "A", color.r, color.g, color.b}));
+            properties.AddChild(Node("P", {"ReflectionFactor", "Number", "", "A", 0.5}));
+            properties.AddChild(Node("P", {"Emissive", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChild(Node("P", {"Ambient", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChild(Node("P", {"Diffuse", "Vector3D", "Vector", "", 0.9, 0.9, 0.9}));
+            properties.AddChild(Node("P", {"Specular", "Vector3D", "Vector", "", 0.5, 0.5, 0.5}));
+            properties.AddChild(Node("P", {"Shininess", "double", "Number", "", 20}));
+            properties.AddChild(Node("P", {"Opacity", "double", "Number", "", 1}));
+            properties.AddChild(Node("P", {"Reflectivity", "double", "Number", "", 0}));
+            material.AddChild(std::move(properties));
+
+            return NodeWithId(materialId, material);
+        }
+
+        NodeWithId FbxGenerator::CreateGeometryCube(double size) const
+        {
+            // Syntax of geometry
+            // Geometry: "name", "Mesh" {
             //      Vertices: [...]
             //      PolygonVertexIndex: [...]
             //      LayerElementNormal: { }
             //      LayerElementUV: { }
             // }
-            double cubeSize = 0.5;
-            const auto geometry = CreateGeometryCube(geometryId, cubeSize);
-            objects.AddChildNode(std::move(geometry));
+            int geometryId = UniqueIdGenerator::GetUniqueId();
 
-            // TODO: change to auto generation
-            auto c = Connection(0, modelId, "OO");
-            m_connections.push_back(c);
-            m_connections.push_back(Connection(modelId, geometryId, "OO"));
-            m_connections.push_back(Connection(modelId, materialId, "OO"));
-
-            return objects;
-        }
-
-        Node FbxGenerator::CreateModel(Id modelId, const std::string & modelName) const
-        {
-            Node model("Model", {modelId, modelName, "Mesh"});
-            model.AddChildNode("Version", 232);
-            model.AddChildNode("Culling", "CullingOff");
-
-            Node properties("Properties70");
-            properties.AddChildNode(Node("P", {"RotationActive", "bool", "", "", 1}));
-            properties.AddChildNode(Node("P", {"InheritType", "enum", "", "", 1}));
-            properties.AddChildNode(Node("P", {"ScalingMax", "Vector3D", "Vector", "", 0, 0, 0}));
-            properties.AddChildNode(Node("P", {"DefaultAttributeIndex", "int", "Integer", "", 0}));
-            properties.AddChildNode(Node("P", {"Lcl Scaling", "Lcl Scaling", "", "A", 100, 100, 100}));
-            properties.AddChildNode(Node("P", {"currentUVSet", "KString", "", "U", "map1"}));
-            model.AddChildNode(std::move(properties));
-
-            return model;
-        }
-
-        Node FbxGenerator::CreateExampleMaterial(Id materialId) const
-        {
-            Node material("Material", {materialId, "Material::example", ""});
-            material.AddChildNode("Version", 102);
-            material.AddChildNode("ShadingModel", "phong");
-            material.AddChildNode("Multilayer", 0);
-
-            Node properties("Properties70");
-            properties.AddChildNode(Node("P", {"AmbientColor", "Color", "", "A", 0, 0, 0}));
-            properties.AddChildNode(Node("P", {"DiffuseColor", "Color", "", "A", 1, 1, 1}));
-            properties.AddChildNode(Node("P", {"DiffuseFactor", "Number", "", "A", 0.9}));
-            properties.AddChildNode(Node("P", {"TransparencyFactor", "Number", "", "A", 1}));
-            properties.AddChildNode(Node("P", {"SpecularColor", "Color", "", "A", 0.5, 0.5, 0.5}));
-            properties.AddChildNode(Node("P", {"ReflectionFactor", "Number", "", "A", 0.5}));
-            properties.AddChildNode(Node("P", {"Emissive", "Vector3D", "Vector", "", 0, 0, 0}));
-            properties.AddChildNode(Node("P", {"Ambient", "Vector3D", "Vector", "", 0, 0, 0}));
-            properties.AddChildNode(Node("P", {"Diffuse", "Vector3D", "Vector", "", 0.9, 0.9, 0.9}));
-            properties.AddChildNode(Node("P", {"Specular", "Vector3D", "Vector", "", 0.5, 0.5, 0.5}));
-            properties.AddChildNode(Node("P", {"Shininess", "double", "Number", "", 20}));
-            properties.AddChildNode(Node("P", {"Opacity", "double", "Number", "", 1}));
-            properties.AddChildNode(Node("P", {"Reflectivity", "double", "Number", "", 0}));
-            material.AddChildNode(std::move(properties));
-
-            return material;
-        }
-
-        Node FbxGenerator::CreateGeometryCube(Id id, double size) const
-        {
             // Example cube geometry
-            Node geometry("Geometry", {id, "Geometry::cube", "Mesh"});
-            geometry.AddChildNode("GeometryVersion", 102);
+            Node geometry("Geometry", {geometryId, "Geometry::cube", "Mesh"});
+            geometry.AddChild("GeometryVersion", 102);
 
             // Vertices
             // Single vertex v1: v1_x, v1_y, v1_z
             // Multiple vertices: v1_x, v1_y, v1_z, v2_x, v2_y, v2_z, ..., vn_x, vn_y, vn_z
             // More details: https://banexdevblog.wordpress.com/2014/06/23/a-quick-tutorial-about-the-fbx-ascii-format/
             Node vertices("Vertices", {RawString("*24")});
-            vertices.AddChildNode(Node("a", {-size,-size,size,
+            vertices.AddChild(Node("a", {-size,-size,size,
                                              size,-size,size,
                                              -size,size,size,
                                              size,size,size,
@@ -258,68 +273,68 @@ namespace ROS2
                                              size,size,-size,
                                              -size,-size,-size,
                                              size,-size,-size}));
-            geometry.AddChildNode(vertices);
+            geometry.AddChild(vertices);
 
             // Indices of four-sided polygons (quads)
             Node polygonVertexIndex("PolygonVertexIndex", {RawString("*24")});
-            polygonVertexIndex.AddChildNode(Node("a", {0,1,3,-3,
-                                                       2,3,5,-5,
-                                                       4,5,7,-7,
-                                                       6,7,1,-1,
-                                                       1,7,5,-4,
-                                                       6,0,2,-5}));
-            geometry.AddChildNode(polygonVertexIndex);
+            polygonVertexIndex.AddChild(Node("a", {0,1,3,-3,
+                                                   2,3,5,-5,
+                                                   4,5,7,-7,
+                                                   6,7,1,-1,
+                                                   1,7,5,-4,
+                                                   6,0,2,-5}));
+            geometry.AddChild(polygonVertexIndex);
 
             // Edges
             Node edges("Edges", {RawString("*12")});
-            edges.AddChildNode(Node("a", {0,2,6,10,3,1,7,5,11,9,15,13}));
-            geometry.AddChildNode(edges);
+            edges.AddChild(Node("a", {0,2,6,10,3,1,7,5,11,9,15,13}));
+            geometry.AddChild(edges);
 
             // Normals
             auto layerElementNormal = Node("LayerElementNormal", {0});
-            layerElementNormal.AddChildNode("Version", 102);
-            layerElementNormal.AddChildNode("Name", "");
-            layerElementNormal.AddChildNode("MappingInformationType", "ByPolygonVertex");
-            layerElementNormal.AddChildNode("ReferenceInformationType", "Direct");
+            layerElementNormal.AddChild("Version", 102);
+            layerElementNormal.AddChild("Name", "");
+            layerElementNormal.AddChild("MappingInformationType", "ByPolygonVertex");
+            layerElementNormal.AddChild("ReferenceInformationType", "Direct");
 
             Node normals("Normals", {RawString("*72")});
-            normals.AddChildNode(Node("a", {0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,
+            normals.AddChild(Node("a", {0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,
                                        -1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0}));
-            layerElementNormal.AddChildNode(normals);
+            layerElementNormal.AddChild(normals);
 
             Node normalsSw("NormalsW", {RawString("*24")});
-            normalsSw.AddChildNode(Node("a", {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
-            layerElementNormal.AddChildNode(normalsSw);
+            normalsSw.AddChild(Node("a", {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+            layerElementNormal.AddChild(normalsSw);
 
-            geometry.AddChildNode(layerElementNormal);
+            geometry.AddChild(layerElementNormal);
 
             // UV
             auto layerElementUV = Node("LayerElementUV", {0});
-            layerElementUV.AddChildNode("Version", 101);
-            layerElementUV.AddChildNode("Name", "map1");
-            layerElementUV.AddChildNode("MappingInformationType", "ByPolygonVertex");
-            layerElementUV.AddChildNode("ReferenceInformationType", "IndexToDirect");
+            layerElementUV.AddChild("Version", 101);
+            layerElementUV.AddChild("Name", "map1");
+            layerElementUV.AddChild("MappingInformationType", "ByPolygonVertex");
+            layerElementUV.AddChild("ReferenceInformationType", "IndexToDirect");
 
             Node uv("UV", {RawString("*28")});
-            uv.AddChildNode(Node("a", {0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,
+            uv.AddChild(Node("a", {0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,
                                        0.625,0.75,0.375,1,0.625,1,0.875,0,0.875,0.25,0.125,0,0.125,0.25}));
-            layerElementUV.AddChildNode(uv);
+            layerElementUV.AddChild(uv);
 
             Node uvIndex("UVIndex", {RawString("*28")});
-            uvIndex.AddChildNode(Node("a", {0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13}));
-            layerElementUV.AddChildNode(uvIndex);
+            uvIndex.AddChild(Node("a", {0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13}));
+            layerElementUV.AddChild(uvIndex);
 
-            geometry.AddChildNode(layerElementUV);
+            geometry.AddChild(layerElementUV);
 
-            return geometry;
+            return NodeWithId(geometryId, geometry);
         }
 
-        Node FbxGenerator::GetConnections() const
+        Node FbxGenerator::GenerateConnections() const
         {
             Node connections("Connections");
             for (const auto & c : m_connections)
             {
-                connections.AddChildNode(Node("C", {c.type, c.childId, c.parentId}));
+                connections.AddChild(Node("C", {c.type, c.childId, c.parentId}));
             }
 
             return connections;
@@ -329,14 +344,14 @@ namespace ROS2
         {
             // TODO: get proper time stamp
             Node timeStamp("CreationTimeStamp");
-            timeStamp.AddChildNode("Version", 1000);
-            timeStamp.AddChildNode("Year", 2022);
-            timeStamp.AddChildNode("Month", 01);
-            timeStamp.AddChildNode("Day", 01);
-            timeStamp.AddChildNode("Hour", 0);
-            timeStamp.AddChildNode("Minute", 0);
-            timeStamp.AddChildNode("Second", 0);
-            timeStamp.AddChildNode("Millisecond", 0);
+            timeStamp.AddChild("Version", 1000);
+            timeStamp.AddChild("Year", 2022);
+            timeStamp.AddChild("Month", 01);
+            timeStamp.AddChild("Day", 01);
+            timeStamp.AddChild("Hour", 0);
+            timeStamp.AddChild("Minute", 0);
+            timeStamp.AddChild("Second", 0);
+            timeStamp.AddChild("Millisecond", 0);
 
             return timeStamp;
         }
@@ -346,43 +361,43 @@ namespace ROS2
             Node sceneInfo("SceneInfo");
             sceneInfo.AddProperty("SceneInfo::GlobalInfo");
             sceneInfo.AddProperty("UserData");
-            sceneInfo.AddChildNode("Type", "UserData");
-            sceneInfo.AddChildNode("Version", 100);
-            sceneInfo.AddChildNode(GetMetaData());
+            sceneInfo.AddChild("Type", "UserData");
+            sceneInfo.AddChild("Version", 100);
+            sceneInfo.AddChild(GetMetaData());
 
             Node properties("Properties70");
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"DocumentUrl", "KString", "Url", "", "/dummy_path.fbx"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"SrcDocumentUrl", "KString", "Url", "", "/dummy_path.fbx"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original", "Compound", "", ""}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|ApplicationVendor", "KString", "", "", "O3DE"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|ApplicationName", "KString", "", "", "O3DE"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|ApplicationVersion", "KString", "", "", "2022"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|DateTime_GMT", "DateTime", "", "", "01/01/2022 00:00:00.000"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|FileName", "KString", "", "", "/dummy_path.fbx"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"LastSaved", "Compound", "", ""}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"LastSaved|ApplicationVendor", "KString", "", "", "O3DE"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"LastSaved|ApplicationName", "KString", "", "", "O3DE"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"LastSaved|ApplicationVersion", "KString", "", "", "2022"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"LastSaved|DateTime_GMT", "DateTime", "", "", "01/01/2022 00:00:00.000"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|ApplicationActiveProject", "KString", "", "", "/dummy_path.fbx"}));
-            properties.AddChildNode(
+            properties.AddChild(
                 Node("P", {"Original|ApplicationNativeFile", "KString", "", "", "/dummy_path.fbx"}));
 
-            sceneInfo.AddChildNode(std::move(properties));
+            sceneInfo.AddChild(std::move(properties));
 
             return sceneInfo;
         }
@@ -390,13 +405,13 @@ namespace ROS2
         Node FbxGenerator::GetMetaData() const
         {
             Node metaData("MetaData");
-            metaData.AddChildNode("Version", 100);
-            metaData.AddChildNode("Title", "");
-            metaData.AddChildNode("Subject", "");
-            metaData.AddChildNode("Author", "");
-            metaData.AddChildNode("Keywords", "");
-            metaData.AddChildNode("Revision", "");
-            metaData.AddChildNode("Comment", "");
+            metaData.AddChild("Version", 100);
+            metaData.AddChild("Title", "");
+            metaData.AddChild("Subject", "");
+            metaData.AddChild("Author", "");
+            metaData.AddChild("Keywords", "");
+            metaData.AddChild("Revision", "");
+            metaData.AddChild("Comment", "");
 
             return metaData;
         }

@@ -21,6 +21,14 @@ namespace ROS2
         //! Define type of the FBX file.
         enum class FileType { Text, Binary };
 
+        //! RGB color
+        struct Color
+        {
+            float r = 0;
+            float g = 0;
+            float b = 0;
+        };
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         //! The class represents the FBX file structure generator and operations on that files.
         //!
@@ -52,8 +60,22 @@ namespace ROS2
             //! Return the string with ASCII version of current FBX structure.
             std::string GetFbxString();
 
-            ///! Reset the internal data used for FBX file structure creation.
+            //! Reset the internal data used for FBX file structure creation.
             void Reset();
+
+            //! Add cube object
+            //! Returns id of created object
+            //! Notice: First added object is attached to the root node.
+            //! TODO: generalization for other types of objects e.g. cuboid, cylinder
+            //! TODO: handle textures
+            Id AddCubeObject(const std::string & objectName, double size, Id materialId);
+
+            //! Add default material and returns its id
+            //! TODO: add more material parameters
+            Id AddMaterial(const std::string & materialName, const Color & color);
+
+            ///! Create relation between objects
+            void SetRelationBetweenObjects(Id parentId, Id childId);
 
         private:
             struct Connection
@@ -82,17 +104,21 @@ namespace ROS2
             Node GetDefinitions() const;
 
             // Objects creation
-            Node GetObjects();
-            Node CreateModel(Id modelId, const std::string & modelName) const;
-            Node CreateExampleMaterial(Id materialId) const;
-            Node CreateGeometryCube(Id id, double size = 1.0) const;
+            NodeWithId CreateModel(const std::string & modelName) const;
+            NodeWithId CreateMaterial(const std::string & name, const Color & color) const;
+            NodeWithId CreateGeometryCube(double size = 1.0) const;
 
             // Generate connections based on the m_connections.
-            Node GetConnections() const;
+            Node GenerateConnections() const;
+
+            static constexpr Id rootId = 0;
 
             std::vector<Node> m_basicNodes;
             bool m_nodesUpdated = false;
             std::vector<Connection> m_connections;
+
+            std::shared_ptr<Node> m_objects = std::make_shared<Node>("Objects");
+            bool m_first_object = true;
         };
     } // namespace Fbx
 } // namespace ROS2
