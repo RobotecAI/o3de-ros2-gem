@@ -48,6 +48,8 @@ TEST_F(UrdfToFbxConverterTest, ConvertUrdfWithOneLink)
 {
     const auto xmlStr = GetUrdfWithOneLink();
     const auto fbxStr = converter.ConvertUrdfToFbx(xmlStr);
+
+    // Add validation (implementation of converter is also not ready)
 }
 
 } // namespace

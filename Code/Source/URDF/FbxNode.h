@@ -17,6 +17,8 @@ namespace ROS2
     {
         using Property = std::any;
         using Properties = std::vector<Property>;
+        //! In very rare cases it's necessary to add field with unquoted string.
+        using RawString = std::string;
 
         //! A node in FBX file tree structure.
         //! Each named node could contain children nodes (subnodes) and properties.
@@ -31,11 +33,15 @@ namespace ROS2
             bool HasChildren() const;
             bool HasProperties() const;
 
+            //! Add new property to existing node
             void AddProperty(const Property & property);
+
+            //! Add new child node to existing node
             void AddChildNode(const Node & child);
             void AddChildNode(const std::string & name, const Property & property);
             void AddChildNode(const Node && child);
 
+            //! Convert the node to string (ASCII Fbx).
             std::string ToString(int nodeDepth = 0)  const;
 
         private:

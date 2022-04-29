@@ -6,7 +6,7 @@
  *
  */
 
-#include "Fbx.h"
+#include "FbxGenerator.h"
 
 #include <fstream>
 #include <string>
@@ -17,9 +17,7 @@ namespace ROS2
 {
     namespace Fbx
     {
-        using FileType = Fbx::FileType;
-
-        void Fbx::SaveToFile(const std::string & filePath, FileType type)
+        void FbxGenerator::SaveToFile(const std::string & filePath, FileType type)
         {
             // TODO: add support for binary files
             if (type != FileType::Text)
@@ -37,7 +35,7 @@ namespace ROS2
             AZ_Printf("Fbx", "Data structure saved to file: %s", filePath.c_str());
         }
 
-        std::string Fbx::GetFbxString()
+        std::string FbxGenerator::GetFbxString()
         {
             if (!m_nodesUpdated)
             {
@@ -54,14 +52,14 @@ namespace ROS2
             return data;
         }
 
-        void Fbx::Reset()
+        void FbxGenerator::Reset()
         {
             m_basicNodes.clear();
             m_nodesUpdated = false;
             m_connections.clear();
         }
 
-        void Fbx::GenerateFbxStructure()
+        void FbxGenerator::GenerateFbxStructure()
         {
             m_basicNodes.clear();
 
@@ -77,7 +75,7 @@ namespace ROS2
             m_nodesUpdated = true;
         }
 
-        Node Fbx::GetFbxHeaderExtension() const
+        Node FbxGenerator::GetFbxHeaderExtension() const
         {
             Node fbxHeader("FBXHeaderExtension");
             fbxHeader.AddChildNode("FBXHeaderVersion", 1003);
@@ -89,7 +87,7 @@ namespace ROS2
             return fbxHeader;
         }
 
-        Node Fbx::GetGlobalSettings() const
+        Node FbxGenerator::GetGlobalSettings() const
         {
             Node globalSettings("GlobalSettings");
             globalSettings.AddChildNode("Version", 1000);
@@ -121,7 +119,7 @@ namespace ROS2
             return globalSettings;
         }
 
-        Node Fbx::GetDocuments() const
+        Node FbxGenerator::GetDocuments() const
         {
             Node documents("Documents");
             documents.AddChildNode("Count", 1);
@@ -137,7 +135,7 @@ namespace ROS2
             return documents;
         }
 
-        Node Fbx::GetDefinitions() const
+        Node FbxGenerator::GetDefinitions() const
         {
             Node definitions("Definitions");
             definitions.AddChildNode("Version", 100);
@@ -162,7 +160,7 @@ namespace ROS2
             return definitions;
         }
 
-        Node Fbx::GetObjects()
+        Node FbxGenerator::GetObjects()
         {
             Node objects("Objects");
 
@@ -175,7 +173,7 @@ namespace ROS2
             objects.AddChildNode(CreateModel(modelId, "cube::example"));
 
             // Add example cube material
-            objects.AddChildNode(GetExampleMaterial(materialId));
+            objects.AddChildNode(CreateExampleMaterial(materialId));
 
             // Add model, syntax is as below
             // Model: "name", "Mesh" {
@@ -197,7 +195,7 @@ namespace ROS2
             return objects;
         }
 
-        Node Fbx::CreateModel(Id modelId, const std::string & modelName) const
+        Node FbxGenerator::CreateModel(Id modelId, const std::string & modelName) const
         {
             Node model("Model", {modelId, modelName, "Mesh"});
             model.AddChildNode("Version", 232);
@@ -215,7 +213,7 @@ namespace ROS2
             return model;
         }
 
-        Node Fbx::CreateExampleMaterial(Id materialId) const
+        Node FbxGenerator::CreateExampleMaterial(Id materialId) const
         {
             Node material("Material", {materialId, "Material::example", ""});
             material.AddChildNode("Version", 102);
@@ -241,7 +239,7 @@ namespace ROS2
             return material;
         }
 
-        Node Fbx::CreateGeometryCube(Id id, double size) const
+        Node FbxGenerator::CreateGeometryCube(Id id, double size) const
         {
             // Example cube geometry
             Node geometry("Geometry", {id, "Geometry::cube", "Mesh"});
@@ -316,7 +314,7 @@ namespace ROS2
             return geometry;
         }
 
-        Node Fbx::GetConnections() const
+        Node FbxGenerator::GetConnections() const
         {
             Node connections("Connections");
             for (const auto & c : m_connections)
@@ -327,7 +325,7 @@ namespace ROS2
             return connections;
         }
 
-        Node Fbx::GetTimeStamp() const
+        Node FbxGenerator::GetTimeStamp() const
         {
             // TODO: get proper time stamp
             Node timeStamp("CreationTimeStamp");
@@ -343,7 +341,7 @@ namespace ROS2
             return timeStamp;
         }
 
-        Node Fbx::GetSceneInfo() const
+        Node FbxGenerator::GetSceneInfo() const
         {
             Node sceneInfo("SceneInfo");
             sceneInfo.AddProperty("SceneInfo::GlobalInfo");
@@ -389,7 +387,7 @@ namespace ROS2
             return sceneInfo;
         }
 
-        Node Fbx::GetMetaData() const
+        Node FbxGenerator::GetMetaData() const
         {
             Node metaData("MetaData");
             metaData.AddChildNode("Version", 100);

@@ -6,13 +6,13 @@
  *
  */
 
-#include <URDF/Fbx.h>
+#include <URDF/FbxGenerator.h>
 
 #include <AzTest/AzTest.h>
 
 namespace {
 
-class FbxTest : public ::testing::Test
+class FbxGeneratorTest : public ::testing::Test
 {
 public:
     void PrintFbxContent(const std::string & str)
@@ -24,10 +24,10 @@ public:
     }
 
 protected:
-    ROS2::Fbx::Fbx fbx;
+    ROS2::Fbx::FbxGenerator fbx;
 };
 
-TEST_F(FbxTest, BasicStructureGeneration)
+TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 {
     const auto fbxStr = fbx.GetFbxString();
     PrintFbxContent(fbxStr);

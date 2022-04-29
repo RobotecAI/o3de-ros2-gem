@@ -8,15 +8,21 @@
 
 #include "UrdfToFbxConverter.h"
 
-#include <fstream>
 #include <string>
 
-#include <urdf_model/model.h>
+#include "UrdfParser.h"
+#include "FbxGenerator.h"
 
 namespace ROS2
 {
     std::string UrdfToFbxConverter::ConvertUrdfToFbx(const std::string & urdfString)
     {
+        // TODO: Add implementation
+
+        // Workflow
+        // 1. Parse URDF with UrdfParser
+        // 2. Create FBX file with FbxGenerator
+        // 3. Add each object from URDF based structure to FBX generator.
 
         return "";
     }

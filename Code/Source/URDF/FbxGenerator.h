@@ -18,8 +18,11 @@ namespace ROS2
 {
     namespace Fbx
     {
+        //! Define type of the FBX file.
+        enum class FileType { Text, Binary };
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        //! The class represents the FBX file structure and operations on that files.
+        //! The class represents the FBX file structure generator and operations on that files.
         //!
         //! FBX file has a tree based structure.
         //! Top structure of the FBX file consists of the following sections:
@@ -39,11 +42,9 @@ namespace ROS2
         //!
         //! Example FBX file
         //! https://www.ics.uci.edu/~djp3/classes/2014_03_ICS163/tasks/arMarker/Unity/arMarker/Assets/CactusPack/Meshes/Sprites/Rock_Medium_SPR.fbx
-        class Fbx
+        class FbxGenerator
         {
         public:
-            enum class FileType { Text, Binary };
-
             //! Save the current FBX structure to file.
             //! Note: only ASCII version is supported
             void SaveToFile(const std::string & filePath, FileType type = FileType::Text);
@@ -65,7 +66,7 @@ namespace ROS2
                 std::string type = "OO";
             };
 
-            //! Generate the fbx file structure.
+            //! Generate the FBX file structure.
             void GenerateFbxStructure();
 
             // Default FBX file header
@@ -86,11 +87,11 @@ namespace ROS2
             Node CreateExampleMaterial(Id materialId) const;
             Node CreateGeometryCube(Id id, double size = 1.0) const;
 
+            // Generate connections based on the m_connections.
             Node GetConnections() const;
 
             std::vector<Node> m_basicNodes;
             bool m_nodesUpdated = false;
-
             std::vector<Connection> m_connections;
         };
     } // namespace Fbx

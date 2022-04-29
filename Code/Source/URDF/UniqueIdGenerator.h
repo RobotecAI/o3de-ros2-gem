@@ -12,6 +12,7 @@ namespace ROS2
 {
     using Id = int;
 
+    //! Generate unique, positive id
     class UniqueIdGenerator
     {
     public:

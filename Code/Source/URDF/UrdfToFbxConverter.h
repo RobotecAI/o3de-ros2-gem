@@ -8,11 +8,7 @@
 
 #pragma once
 
-#include <any>
 #include <string>
-
-#include "UrdfParser.h"
-#include "Fbx.h"
 
 namespace ROS2
 {
@@ -21,10 +17,7 @@ namespace ROS2
     class UrdfToFbxConverter
     {
     public:
-        std::string ConvertUrdfToFbx(const std::string & urdfString);
-
-    private:
-
+        static std::string ConvertUrdfToFbx(const std::string & urdfString);
     };
 
 } // namespace ROS2
