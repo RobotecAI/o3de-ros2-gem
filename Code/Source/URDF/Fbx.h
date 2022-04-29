@@ -82,7 +82,9 @@ namespace ROS2
 
             // Objects creation
             Node GetObjects();
-            Node CreateGeometryCube(int id, double size = 1.0) const;
+            Node CreateModel(Id modelId, const std::string & modelName) const;
+            Node CreateExampleMaterial(Id materialId) const;
+            Node CreateGeometryCube(Id id, double size = 1.0) const;
 
             Node GetConnections() const;
 

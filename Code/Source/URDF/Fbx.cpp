@@ -171,47 +171,11 @@ namespace ROS2
             int geometryId = UniqueIdGenerator::GetUniqueId();
             int materialId = UniqueIdGenerator::GetUniqueId();
 
-            { // Example cube model
-                Node model("Model", {modelId, "Model::cube", "Mesh"});
-                model.AddChildNode("Version", 232);
-                model.AddChildNode("Culling", "CullingOff");
+            // Add example cube model
+            objects.AddChildNode(CreateModel(modelId, "cube::example"));
 
-                Node properties("Properties70");
-                properties.AddChildNode(Node("P", {"RotationActive", "bool", "", "", 1}));
-                properties.AddChildNode(Node("P", {"InheritType", "enum", "", "", 1}));
-                properties.AddChildNode(Node("P", {"ScalingMax", "Vector3D", "Vector", "", 0, 0, 0}));
-                properties.AddChildNode(Node("P", {"DefaultAttributeIndex", "int", "Integer", "", 0}));
-                properties.AddChildNode(Node("P", {"Lcl Scaling", "Lcl Scaling", "", "A", 100, 100, 100}));
-                properties.AddChildNode(Node("P", {"currentUVSet", "KString", "", "U", "map1"}));
-                model.AddChildNode(std::move(properties));
-
-                objects.AddChildNode(std::move(model));
-            }
-
-            { // Example cube material
-                Node material("Material", {materialId, "Material::cube", ""});
-                material.AddChildNode("Version", 102);
-                material.AddChildNode("ShadingModel", "phong");
-                material.AddChildNode("Multilayer", 0);
-
-                Node properties("Properties70");
-                properties.AddChildNode(Node("P", {"AmbientColor", "Color", "", "A", 0, 0, 0}));
-                properties.AddChildNode(Node("P", {"DiffuseColor", "Color", "", "A", 1, 1, 1}));
-                properties.AddChildNode(Node("P", {"DiffuseFactor", "Number", "", "A", 0.9}));
-                properties.AddChildNode(Node("P", {"TransparencyFactor", "Number", "", "A", 1}));
-                properties.AddChildNode(Node("P", {"SpecularColor", "Color", "", "A", 0.5, 0.5, 0.5}));
-                properties.AddChildNode(Node("P", {"ReflectionFactor", "Number", "", "A", 0.5}));
-                properties.AddChildNode(Node("P", {"Emissive", "Vector3D", "Vector", "", 0, 0, 0}));
-                properties.AddChildNode(Node("P", {"Ambient", "Vector3D", "Vector", "", 0, 0, 0}));
-                properties.AddChildNode(Node("P", {"Diffuse", "Vector3D", "Vector", "", 0.9, 0.9, 0.9}));
-                properties.AddChildNode(Node("P", {"Specular", "Vector3D", "Vector", "", 0.5, 0.5, 0.5}));
-                properties.AddChildNode(Node("P", {"Shininess", "double", "Number", "", 20}));
-                properties.AddChildNode(Node("P", {"Opacity", "double", "Number", "", 1}));
-                properties.AddChildNode(Node("P", {"Reflectivity", "double", "Number", "", 0}));
-                material.AddChildNode(std::move(properties));
-
-                objects.AddChildNode(std::move(material));
-            }
+            // Add example cube material
+            objects.AddChildNode(GetExampleMaterial(materialId));
 
             // Add model, syntax is as below
             // Model: "name", "Mesh" {
@@ -233,38 +197,85 @@ namespace ROS2
             return objects;
         }
 
-        Node Fbx::CreateGeometryCube(int id, double size) const
+        Node Fbx::CreateModel(Id modelId, const std::string & modelName) const
+        {
+            Node model("Model", {modelId, modelName, "Mesh"});
+            model.AddChildNode("Version", 232);
+            model.AddChildNode("Culling", "CullingOff");
+
+            Node properties("Properties70");
+            properties.AddChildNode(Node("P", {"RotationActive", "bool", "", "", 1}));
+            properties.AddChildNode(Node("P", {"InheritType", "enum", "", "", 1}));
+            properties.AddChildNode(Node("P", {"ScalingMax", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"DefaultAttributeIndex", "int", "Integer", "", 0}));
+            properties.AddChildNode(Node("P", {"Lcl Scaling", "Lcl Scaling", "", "A", 100, 100, 100}));
+            properties.AddChildNode(Node("P", {"currentUVSet", "KString", "", "U", "map1"}));
+            model.AddChildNode(std::move(properties));
+
+            return model;
+        }
+
+        Node Fbx::CreateExampleMaterial(Id materialId) const
+        {
+            Node material("Material", {materialId, "Material::example", ""});
+            material.AddChildNode("Version", 102);
+            material.AddChildNode("ShadingModel", "phong");
+            material.AddChildNode("Multilayer", 0);
+
+            Node properties("Properties70");
+            properties.AddChildNode(Node("P", {"AmbientColor", "Color", "", "A", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"DiffuseColor", "Color", "", "A", 1, 1, 1}));
+            properties.AddChildNode(Node("P", {"DiffuseFactor", "Number", "", "A", 0.9}));
+            properties.AddChildNode(Node("P", {"TransparencyFactor", "Number", "", "A", 1}));
+            properties.AddChildNode(Node("P", {"SpecularColor", "Color", "", "A", 0.5, 0.5, 0.5}));
+            properties.AddChildNode(Node("P", {"ReflectionFactor", "Number", "", "A", 0.5}));
+            properties.AddChildNode(Node("P", {"Emissive", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"Ambient", "Vector3D", "Vector", "", 0, 0, 0}));
+            properties.AddChildNode(Node("P", {"Diffuse", "Vector3D", "Vector", "", 0.9, 0.9, 0.9}));
+            properties.AddChildNode(Node("P", {"Specular", "Vector3D", "Vector", "", 0.5, 0.5, 0.5}));
+            properties.AddChildNode(Node("P", {"Shininess", "double", "Number", "", 20}));
+            properties.AddChildNode(Node("P", {"Opacity", "double", "Number", "", 1}));
+            properties.AddChildNode(Node("P", {"Reflectivity", "double", "Number", "", 0}));
+            material.AddChildNode(std::move(properties));
+
+            return material;
+        }
+
+        Node Fbx::CreateGeometryCube(Id id, double size) const
         {
             // Example cube geometry
             Node geometry("Geometry", {id, "Geometry::cube", "Mesh"});
             geometry.AddChildNode("GeometryVersion", 102);
-            geometry.AddChildNode(
-                // How vertices are defined
-                // Vertex v1: v1_x, v1_y, v1_z
-                // For more vertices the definitions looks as follows:
-                // Vertices: v1_x, v1_y, v1_z, v2_x, v2_y, v2_z, ..., vn_x, vn_y, vn_z
-                // More details: https://banexdevblog.wordpress.com/2014/06/23/a-quick-tutorial-about-the-fbx-ascii-format/
-                Node("Vertices", {-size,-size,size,
-                                size,-size,size,
-                                -size,size,size,
-                                size,size,size,
-                                -size,size,-size,
-                                size,size,-size,
-                                -size,-size,-size,
-                                size,-size,-size}));
+
+            // Vertices
+            // Single vertex v1: v1_x, v1_y, v1_z
+            // Multiple vertices: v1_x, v1_y, v1_z, v2_x, v2_y, v2_z, ..., vn_x, vn_y, vn_z
+            // More details: https://banexdevblog.wordpress.com/2014/06/23/a-quick-tutorial-about-the-fbx-ascii-format/
+            Node vertices("Vertices", {24});
+            vertices.AddChildNode(Node("a", {-size,-size,size,
+                                             size,-size,size,
+                                             -size,size,size,
+                                             size,size,size,
+                                             -size,size,-size,
+                                             size,size,-size,
+                                             -size,-size,-size,
+                                             size,-size,-size}));
+            geometry.AddChildNode(vertices);
 
             // Indices of four-sided polygons (quads)
-            geometry.AddChildNode(
-                Node("PolygonVertexIndex", {0,1,3,-3,
-                                            2,3,5,-5,
-                                            4,5,7,-7,
-                                            6,7,1,-1,
-                                            1,7,5,-4,
-                                            6,0,2,-5}));
+            Node polygonVertexIndex("PolygonVertexIndex", {24});
+            polygonVertexIndex.AddChildNode(Node("a", {0,1,3,-3,
+                                                       2,3,5,-5,
+                                                       4,5,7,-7,
+                                                       6,7,1,-1,
+                                                       1,7,5,-4,
+                                                       6,0,2,-5}));
+            geometry.AddChildNode(polygonVertexIndex);
 
             // Edges
-            geometry.AddChildNode(
-                Node("Edges", {0,2,6,10,3,1,7,5,11,9,15,13}));
+            Node edges("Edges", {12});
+            edges.AddChildNode(Node("a", {0,2,6,10,3,1,7,5,11,9,15,13}));
+            geometry.AddChildNode(edges);
 
             // Normals
             auto layerElementNormal = Node("LayerElementNormal", {0});
@@ -272,11 +283,16 @@ namespace ROS2
             layerElementNormal.AddChildNode("Name", "");
             layerElementNormal.AddChildNode("MappingInformationType", "ByPolygonVertex");
             layerElementNormal.AddChildNode("ReferenceInformationType", "Direct");
-            layerElementNormal.AddChildNode(
-                Node("Normals", {0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,
-                                -1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0}));
-            layerElementNormal.AddChildNode(
-                Node("NormalsW", {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+
+            Node normals("Normals", {72});
+            normals.AddChildNode(Node("a", {0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,
+                                       -1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0}));
+            layerElementNormal.AddChildNode(normals);
+
+            Node normalsSw("NormalsW", {24});
+            normalsSw.AddChildNode(Node("a", {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+            layerElementNormal.AddChildNode(normalsSw);
+
             geometry.AddChildNode(layerElementNormal);
 
             // UV
@@ -285,11 +301,15 @@ namespace ROS2
             layerElementUV.AddChildNode("Name", "map1");
             layerElementUV.AddChildNode("MappingInformationType", "ByPolygonVertex");
             layerElementUV.AddChildNode("ReferenceInformationType", "IndexToDirect");
-            layerElementUV.AddChildNode(
-                Node("UV", {0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,
-                            0.625,0.75,0.375,1,0.625,1,0.875,0,0.875,0.25,0.125,0,0.125,0.25}));
-            layerElementUV.AddChildNode(
-                Node("UVIndex", {0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13}));
+
+            Node uv("UV", {28});
+            uv.AddChildNode(Node("a", {0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,
+                                       0.625,0.75,0.375,1,0.625,1,0.875,0,0.875,0.25,0.125,0,0.125,0.25}));
+            layerElementUV.AddChildNode(uv);
+
+            Node uvIndex("UVIndex", {28});
+            uvIndex.AddChildNode(Node("a", {0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13}));
+            layerElementUV.AddChildNode(uvIndex);
 
             geometry.AddChildNode(layerElementUV);
 
