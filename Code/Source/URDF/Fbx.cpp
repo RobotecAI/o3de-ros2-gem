@@ -54,6 +54,13 @@ namespace ROS2
             return data;
         }
 
+        void Fbx::Reset()
+        {
+            m_basicNodes.clear();
+            m_nodesUpdated = false;
+            m_connections.clear();
+        }
+
         void Fbx::GenerateFbxStructure()
         {
             m_basicNodes.clear();
@@ -155,12 +162,13 @@ namespace ROS2
             return definitions;
         }
 
-        Node Fbx::GetObjects() const
+        Node Fbx::GetObjects()
         {
             Node objects("Objects");
 
             // TODO: generate proper IDs
             int modelId = 1;
+            int geometryId = 2;
             int materialId = 3;
 
             { // Example cube model
@@ -213,17 +221,22 @@ namespace ROS2
             //      LayerElementUV: { }
             // }
             double cubeSize = 0.5;
-            const auto geometry = CreateGeometryCube(cubeSize);
+            const auto geometry = CreateGeometryCube(geometryId, cubeSize);
             objects.AddChildNode(std::move(geometry));
+
+            // TODO: change to auto generation
+            auto c = Connection(0, modelId, "OO");
+            m_connections.push_back(c);
+            m_connections.push_back(Connection(modelId, geometryId, "OO"));
+            m_connections.push_back(Connection(modelId, materialId, "OO"));
 
             return objects;
         }
 
-        Node Fbx::CreateGeometryCube(double size) const
+        Node Fbx::CreateGeometryCube(int id, double size) const
         {
             // Example cube geometry
-            int geometryId = 2;
-            Node geometry("Geometry", {geometryId, "Geometry::cube", "Mesh"});
+            Node geometry("Geometry", {id, "Geometry::cube", "Mesh"});
             geometry.AddChildNode("GeometryVersion", 102);
             geometry.AddChildNode(
                 // How vertices are defined
@@ -286,12 +299,11 @@ namespace ROS2
         Node Fbx::GetConnections() const
         {
             Node connections("Connections");
-            int modelId = 1;
-            int geometryId = 2;
-            int materialId = 3;
-            connections.AddChildNode(Node("C", {"OO", modelId, 0}));
-            connections.AddChildNode(Node("C", {"OO", geometryId, modelId}));
-            connections.AddChildNode(Node("C", {"OO", materialId, modelId}));
+            for (const auto & c : m_connections)
+            {
+                connections.AddChildNode(Node("C", {c.type, c.childId, c.parentId}));
+            }
+
             return connections;
         }
 

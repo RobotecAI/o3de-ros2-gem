@@ -9,6 +9,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "FbxNode.h"
 
@@ -49,7 +50,19 @@ namespace ROS2
             //! Return the string with ASCII version of current FBX structure.
             std::string GetFbxString();
 
+            ///! Reset the internal data used for FBX file structure creation.
+            void Reset();
+
         private:
+            struct Connection {
+                Connection(int parent, int child, std::string connectionType)
+                    : parentId(parent), childId(child), type(connectionType) {}
+
+                int parentId = -1;
+                int childId = -1;
+                std::string type = "OO";
+            };
+
             //! Generate the fbx file structure.
             void GenerateFbxStructure();
 
@@ -66,13 +79,15 @@ namespace ROS2
             Node GetDefinitions() const;
 
             // Objects creation
-            Node GetObjects() const;
-            Node CreateGeometryCube(double size = 1.0) const;
+            Node GetObjects();
+            Node CreateGeometryCube(int id, double size = 1.0) const;
 
             Node GetConnections() const;
 
             std::vector<Node> m_basicNodes;
             bool m_nodesUpdated = false;
+
+            std::vector<Connection> m_connections;
         };
     } // namespace Fbx
 } // namespace ROS2
