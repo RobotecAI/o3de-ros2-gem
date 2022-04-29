@@ -24,6 +24,8 @@ namespace ROS2
         //! RGB color
         struct Color
         {
+            Color(float r, float g, float b)
+                : r(r), g(g), b(b) {};
             float r = 0;
             float g = 0;
             float b = 0;

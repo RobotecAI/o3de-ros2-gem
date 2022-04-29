@@ -50,8 +50,6 @@ set(FILES
     Source/Imu/ROS2ImuSensorComponent.h
     Source/URDF/UrdfParser.cpp
     Source/URDF/UrdfParser.h
-    Source/URDF/Fbx.cpp
-    Source/URDF/Fbx.h
     Source/URDF/FbxGenerator.cpp
     Source/URDF/FbxGenerator.h
     Source/URDF/FbxNode.cpp

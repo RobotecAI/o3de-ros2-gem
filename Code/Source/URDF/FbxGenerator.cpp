@@ -63,6 +63,8 @@ namespace ROS2
         Id FbxGenerator::AddCubeObject(
             const std::string & objectName, double size, Id materialId)
         {
+            m_nodesUpdated = false;
+
             const auto model = CreateModel(objectName);
             m_objects->AddChild(model.node);
 
@@ -86,6 +88,8 @@ namespace ROS2
 
         Id FbxGenerator::AddMaterial(const std::string & materialName, const Color & color)
         {
+            m_nodesUpdated = false;
+
             const auto material = CreateMaterial(materialName, color);
             m_objects->AddChild(material.node);
             return material.id;
@@ -93,6 +97,7 @@ namespace ROS2
 
         void FbxGenerator::SetRelationBetweenObjects(Id parentId, Id childId)
         {
+            m_nodesUpdated = false;
             m_connections.push_back(Connection(parentId, childId, "OO"));
         }
 
@@ -221,7 +226,7 @@ namespace ROS2
         {
             const int materialId = UniqueIdGenerator::GetUniqueId();
 
-            Node material("Material", {materialId, "Material::default", ""});
+            Node material("Material", {materialId, name, ""});
             material.AddChild("Version", 102);
             material.AddChild("ShadingModel", "phong");
             material.AddChild("Multilayer", 0);
@@ -254,7 +259,7 @@ namespace ROS2
             //      LayerElementNormal: { }
             //      LayerElementUV: { }
             // }
-            int geometryId = UniqueIdGenerator::GetUniqueId();
+            const int geometryId = UniqueIdGenerator::GetUniqueId();
 
             // Example cube geometry
             Node geometry("Geometry", {geometryId, "Geometry::cube", "Mesh"});

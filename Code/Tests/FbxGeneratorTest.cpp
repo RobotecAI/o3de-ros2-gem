@@ -12,6 +12,8 @@
 
 namespace {
 
+using namespace ROS2::Fbx;
+
 class FbxGeneratorTest : public ::testing::Test
 {
 public:
@@ -24,16 +26,12 @@ public:
     }
 
 protected:
-    ROS2::Fbx::FbxGenerator generator;
+    FbxGenerator generator;
 };
 
 TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 {
     const auto fbxStr = generator.GetFbxString();
-    PrintFbxContent(fbxStr);
-
-    std::string filePath = "~/o3de/o3de-demo-project/TestData/test.fbx";
-    generator.SaveToFile(filePath);
 
     std::istringstream iss(fbxStr);
     std::string line;
@@ -49,6 +47,26 @@ TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 
     std::getline(iss, line);
     EXPECT_EQ(line, "  CreationTimeStamp:  {");
+}
+
+TEST_F(FbxGeneratorTest, AddModelAndMaterial)
+{
+    // Add material
+    Color color(0.0, 0.0, 0.0);
+    const auto materialId = generator.AddMaterial("black", color);
+
+    // Add cube object with specific material
+    const double cubeSize = 1.0; // m
+    const auto cubeId = generator.AddCubeObject("cube", cubeSize, materialId);
+
+    EXPECT_EQ(static_cast<int>(cubeId), 2);
+
+    const auto fbxStr = generator.GetFbxString();
+    PrintFbxContent(fbxStr);
+
+    // Save generated FBX to file (it's loaded by Asset Processor).
+    // std::string projectPath = "/home/user/o3de/o3de-demo-project/test.fbx";
+    // generator.SaveToFile(projectPath);
 }
 
 } // namespace
