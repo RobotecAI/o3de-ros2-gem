@@ -17,8 +17,17 @@ namespace ROS2
     {
         using Property = std::any;
         using Properties = std::vector<Property>;
-        //! In very rare cases it's necessary to add field with unquoted string.
-        using RawString = std::string;
+
+        //! Represents raw string without quotation marks for Node properties purposes.
+        //!
+        //! String values are quoted by default when added as node properties.
+        //! But in very rare cases it's necessary to add field without quotation marks.
+        struct RawString
+        {
+            RawString(const std::string & str)
+                : data(str) {}
+            std::string data;
+        };
 
         //! A node in FBX file tree structure.
         //! Each named node could contain children nodes (subnodes) and properties.

@@ -249,7 +249,7 @@ namespace ROS2
             // Single vertex v1: v1_x, v1_y, v1_z
             // Multiple vertices: v1_x, v1_y, v1_z, v2_x, v2_y, v2_z, ..., vn_x, vn_y, vn_z
             // More details: https://banexdevblog.wordpress.com/2014/06/23/a-quick-tutorial-about-the-fbx-ascii-format/
-            Node vertices("Vertices", {24});
+            Node vertices("Vertices", {RawString("*24")});
             vertices.AddChildNode(Node("a", {-size,-size,size,
                                              size,-size,size,
                                              -size,size,size,
@@ -261,7 +261,7 @@ namespace ROS2
             geometry.AddChildNode(vertices);
 
             // Indices of four-sided polygons (quads)
-            Node polygonVertexIndex("PolygonVertexIndex", {24});
+            Node polygonVertexIndex("PolygonVertexIndex", {RawString("*24")});
             polygonVertexIndex.AddChildNode(Node("a", {0,1,3,-3,
                                                        2,3,5,-5,
                                                        4,5,7,-7,
@@ -271,7 +271,7 @@ namespace ROS2
             geometry.AddChildNode(polygonVertexIndex);
 
             // Edges
-            Node edges("Edges", {12});
+            Node edges("Edges", {RawString("*12")});
             edges.AddChildNode(Node("a", {0,2,6,10,3,1,7,5,11,9,15,13}));
             geometry.AddChildNode(edges);
 
@@ -282,12 +282,12 @@ namespace ROS2
             layerElementNormal.AddChildNode("MappingInformationType", "ByPolygonVertex");
             layerElementNormal.AddChildNode("ReferenceInformationType", "Direct");
 
-            Node normals("Normals", {72});
+            Node normals("Normals", {RawString("*72")});
             normals.AddChildNode(Node("a", {0,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,
                                        -1,0,0,-1,0,0,-1,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0}));
             layerElementNormal.AddChildNode(normals);
 
-            Node normalsSw("NormalsW", {24});
+            Node normalsSw("NormalsW", {RawString("*24")});
             normalsSw.AddChildNode(Node("a", {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
             layerElementNormal.AddChildNode(normalsSw);
 
@@ -300,12 +300,12 @@ namespace ROS2
             layerElementUV.AddChildNode("MappingInformationType", "ByPolygonVertex");
             layerElementUV.AddChildNode("ReferenceInformationType", "IndexToDirect");
 
-            Node uv("UV", {28});
+            Node uv("UV", {RawString("*28")});
             uv.AddChildNode(Node("a", {0.375,0,0.625,0,0.375,0.25,0.625,0.25,0.375,0.5,0.625,0.5,0.375,0.75,
                                        0.625,0.75,0.375,1,0.625,1,0.875,0,0.875,0.25,0.125,0,0.125,0.25}));
             layerElementUV.AddChildNode(uv);
 
-            Node uvIndex("UVIndex", {28});
+            Node uvIndex("UVIndex", {RawString("*28")});
             uvIndex.AddChildNode(Node("a", {0,1,3,2,2,3,5,4,4,5,7,6,6,7,9,8,1,10,11,3,12,0,2,13}));
             layerElementUV.AddChildNode(uvIndex);
 

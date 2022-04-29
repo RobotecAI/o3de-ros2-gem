@@ -43,9 +43,12 @@ namespace ROS2
             {
                 return std::string("\"") + std::any_cast<std::string>(a) + std::string("\"");
             }
+            else if (a.type() == typeid(RawString))
+            {
+                return std::any_cast<RawString>(a).data;
+            }
 
             return "";
-            // throw std::runtime_error("Unsupported type!");
         }
 
         Node::Node(const std::string & name, const Properties & properties)
