@@ -32,7 +32,7 @@ TEST_F(FbxTest, BasicStructureGeneration)
     const auto fbxStr = fbx.GetFbxString();
     PrintFbxContent(fbxStr);
 
-    std::string filePath = "/home/mdrwiega/o3de/o3de-integration-test/TestData/test.fbx";
+    std::string filePath = "/home/mdrwiega/o3de/o3de-demo-project/TestData/test.fbx";
     fbx.SaveToFile(filePath);
 
     std::istringstream iss(fbxStr);

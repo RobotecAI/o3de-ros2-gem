@@ -104,7 +104,7 @@ namespace ROS2
             properties.AddChildNode(Node("P", {"TimeProtocol", "enum", "", "", 2}));
             properties.AddChildNode(Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
             properties.AddChildNode(Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
-            properties.AddChildNode(Node("P", {"TimeSpanStop", "KTime", "Time", "", 384884650000}));
+            properties.AddChildNode(Node("P", {"TimeSpanStop", "KTime", "Time", "", 38488465000}));
             properties.AddChildNode(Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
             properties.AddChildNode(Node("P", {"TimeMarker", "Compound", "", ""}));
             properties.AddChildNode(Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
@@ -159,8 +159,12 @@ namespace ROS2
         {
             Node objects("Objects");
 
+            // TODO: generate proper IDs
+            int modelId = 1;
+            int materialId = 3;
+
             { // Example cube model
-                Node model("Model", {"Model::cube", "Mesh"});
+                Node model("Model", {modelId, "Model::cube", "Mesh"});
                 model.AddChildNode("Version", 232);
                 model.AddChildNode("Culling", "CullingOff");
 
@@ -177,7 +181,7 @@ namespace ROS2
             }
 
             { // Example cube material
-                Node material("Material", {"Material::cube", ""});
+                Node material("Material", {materialId, "Material::cube", ""});
                 material.AddChildNode("Version", 102);
                 material.AddChildNode("ShadingModel", "phong");
                 material.AddChildNode("Multilayer", 0);
@@ -218,7 +222,8 @@ namespace ROS2
         Node Fbx::CreateGeometryCube(double size) const
         {
             // Example cube geometry
-            Node geometry("Geometry", {"Geometry::cube", "Mesh"});
+            int geometryId = 2;
+            Node geometry("Geometry", {geometryId, "Geometry::cube", "Mesh"});
             geometry.AddChildNode("GeometryVersion", 102);
             geometry.AddChildNode(
                 // How vertices are defined
@@ -281,10 +286,12 @@ namespace ROS2
         Node Fbx::GetConnections() const
         {
             Node connections("Connections");
-
-            connections.AddChildNode(Node("C", {"Model::cube", 0}));
-            connections.AddChildNode(Node("C", {"Geometry::cube", "Model::cube"}));
-            connections.AddChildNode(Node("C", {"Material::cube", "Model::cube"}));
+            int modelId = 1;
+            int geometryId = 2;
+            int materialId = 3;
+            connections.AddChildNode(Node("C", {"OO", modelId, 0}));
+            connections.AddChildNode(Node("C", {"OO", geometryId, modelId}));
+            connections.AddChildNode(Node("C", {"OO", materialId, modelId}));
             return connections;
         }
 
