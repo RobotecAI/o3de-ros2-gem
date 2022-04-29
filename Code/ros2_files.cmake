@@ -54,6 +54,7 @@ set(FILES
     Source/URDF/Fbx.h
     Source/URDF/FbxNode.cpp
     Source/URDF/FbxNode.h
+    Source/URDF/UniqueIdGenerator.h
     Source/URDF/UrdfToFbxConverter.cpp
     Source/URDF/UrdfToFbxConverter.h
 )

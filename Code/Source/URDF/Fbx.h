@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "FbxNode.h"
+#include "UniqueIdGenerator.h"
 
 namespace ROS2
 {
@@ -54,12 +55,13 @@ namespace ROS2
             void Reset();
 
         private:
-            struct Connection {
-                Connection(int parent, int child, std::string connectionType)
+            struct Connection
+            {
+                Connection(Id parent, Id child, std::string connectionType)
                     : parentId(parent), childId(child), type(connectionType) {}
 
-                int parentId = -1;
-                int childId = -1;
+                Id parentId = -1;
+                Id childId = -1;
                 std::string type = "OO";
             };
 

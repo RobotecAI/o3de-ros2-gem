@@ -111,7 +111,7 @@ namespace ROS2
             properties.AddChildNode(Node("P", {"TimeProtocol", "enum", "", "", 2}));
             properties.AddChildNode(Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
             properties.AddChildNode(Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
-            properties.AddChildNode(Node("P", {"TimeSpanStop", "KTime", "Time", "", 38488465000}));
+            properties.AddChildNode(Node("P", {"TimeSpanStop", "KTime", "Time", "", 1924423250}));
             properties.AddChildNode(Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
             properties.AddChildNode(Node("P", {"TimeMarker", "Compound", "", ""}));
             properties.AddChildNode(Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
@@ -167,9 +167,9 @@ namespace ROS2
             Node objects("Objects");
 
             // TODO: generate proper IDs
-            int modelId = 1;
-            int geometryId = 2;
-            int materialId = 3;
+            int modelId = UniqueIdGenerator::GetUniqueId();
+            int geometryId = UniqueIdGenerator::GetUniqueId();
+            int materialId = UniqueIdGenerator::GetUniqueId();
 
             { // Example cube model
                 Node model("Model", {modelId, "Model::cube", "Mesh"});
