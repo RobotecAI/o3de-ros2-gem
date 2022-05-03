@@ -8,6 +8,7 @@
 
 #include "ROS2Names.h"
 #include <AzCore/std/string/regex.h>
+#include <rcl/validate_topic_name.h>
 
 namespace ROS2
 {
@@ -28,5 +29,32 @@ namespace ROS2
         // TODO - add check whether it begins with a number (and if so, prepend underscore)
         const AZStd::regex ros2Disallowedlist("[^0-9|a-z|A-Z|_]");
         return AZStd::regex_replace(input, ros2Disallowedlist, "_");
+    }
+
+    AZ::Outcome<void, AZStd::string> ROS2Names::ValidateTopic(const AZStd::string& topic)
+    {
+        return AZ::Success();
+
+        int validationResult;
+        size_t invalidIndex;
+        if ( rcl_validate_topic_name(topic.c_str(), &validationResult, &invalidIndex) != RCL_RET_OK)
+        {
+            AZ_Error("ValidateTopic", false, "Call to rcl validation for topic failed");
+            return AZ::Failure(AZStd::string("Unable to validate topic due to rcl error"));
+        }
+
+        if (RCL_TOPIC_NAME_VALID == validationResult)
+        {
+            return AZ::Success();
+        }
+
+        return AZ::Failure(AZStd::string(rcl_topic_name_validation_result_string(validationResult)));
+    }
+
+    AZ::Outcome<void, AZStd::string> ROS2Names::ValidateTopicField(void* newValue, [[maybe_unused]] const AZ::Uuid& valueType)
+    {
+        return AZ::Success();
+        //AZStd::string topic(static_cast<const char*>(newValue));
+        //return ValidateTopic(topic);
     }
 }  // namespace ROS2
