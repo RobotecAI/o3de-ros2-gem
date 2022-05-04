@@ -33,8 +33,6 @@ namespace ROS2
 
     AZ::Outcome<void, AZStd::string> ROS2Names::ValidateTopic(const AZStd::string& topic)
     {
-        return AZ::Success();
-
         int validationResult;
         size_t invalidIndex;
         if ( rcl_validate_topic_name(topic.c_str(), &validationResult, &invalidIndex) != RCL_RET_OK)
@@ -53,8 +51,7 @@ namespace ROS2
 
     AZ::Outcome<void, AZStd::string> ROS2Names::ValidateTopicField(void* newValue, [[maybe_unused]] const AZ::Uuid& valueType)
     {
-        return AZ::Success();
-        //AZStd::string topic(static_cast<const char*>(newValue));
-        //return ValidateTopic(topic);
+        AZStd::string topic(static_cast<const char*>(newValue));
+        return ValidateTopic(topic);
     }
 }  // namespace ROS2
