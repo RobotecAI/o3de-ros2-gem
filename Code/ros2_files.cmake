@@ -6,9 +6,17 @@
 set(FILES
     Source/Clock/SimulationClock.cpp
     Source/Clock/SimulationClock.h
+    Source/QoS/QoS.cpp
+    Source/QoS/QoS.h
     Source/ROS2ModuleInterface.h
     Source/ROS2SystemComponent.cpp
     Source/ROS2SystemComponent.h
+    Source/Sensor/PublisherConfiguration.cpp
+    Source/Sensor/PublisherConfiguration.h
+    Source/Sensor/ROS2SensorComponent.cpp
+    Source/Sensor/ROS2SensorComponent.h
+    Source/Sensor/SensorConfiguration.cpp
+    Source/Sensor/SensorConfiguration.h
     Source/Frame/NamespaceConfiguration.cpp
     Source/Frame/NamespaceConfiguration.h
     Source/Frame/ROS2FrameComponent.cpp

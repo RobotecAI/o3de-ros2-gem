@@ -8,6 +8,7 @@
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 #include <Frame/ROS2FrameComponent.h>
+#include <Sensor/ROS2SensorComponent.h>
 #include <ROS2SystemComponent.h>
 
 namespace ROS2
@@ -23,10 +24,11 @@ namespace ROS2
         {
             // Push results of [MyComponent]::CreateDescriptor() into m_descriptors here.
             // Add ALL components descriptors associated with this gem to m_descriptors.
-            // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
+            // This will associate the AzTypeInfo information for the components with the SerializeContext, BehaviorContext and EditContext.
             // This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(m_descriptors.end(), {
                 ROS2SystemComponent::CreateDescriptor(),
+                ROS2SensorComponent::CreateDescriptor(),
                 ROS2FrameComponent::CreateDescriptor()
                 });
         }
