@@ -5,8 +5,9 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+
 #include "SimulationClock.h"
-#include <ROS2/ROS2Bus.h>
+#include "ROS2/ROS2Bus.h"
 #include <rclcpp/qos.hpp>
 
 namespace ROS2
@@ -40,9 +41,7 @@ namespace ROS2
         {   //Lazy construct
             auto ros2Node = ROS2Interface::Get()->GetNode();
 
-            // Standard QoS for /clock topic is best_effort, keep_last 1
-            rclcpp::QoS qos(1);
-            qos.best_effort();
+            rclcpp::ClockQoS qos;
             m_clockPublisher = ros2Node->create_publisher<rosgraph_msgs::msg::Clock>("/clock", qos);
         }
 
