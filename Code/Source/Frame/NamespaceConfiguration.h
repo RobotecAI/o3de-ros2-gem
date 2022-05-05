@@ -18,9 +18,7 @@ namespace ROS2
     struct NamespaceConfiguration
     {
     public:
-        AZ_RTTI(NamespaceConfiguration, "{5E5BC6EA-DD01-480E-A4D1-6857CF70FDC8}");
-        NamespaceConfiguration() = default;
-        virtual ~NamespaceConfiguration() = default;
+        AZ_TYPE_INFO(NamespaceConfiguration, "{5E5BC6EA-DD01-480E-A4D1-6857CF70FDC8}");
         static void Reflect(AZ::ReflectContext* context);
 
         enum NamespaceStrategy
