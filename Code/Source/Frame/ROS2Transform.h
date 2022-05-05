@@ -8,26 +8,13 @@
 #pragma once
 
 #include <AzCore/Math/Transform.h>
-#include <AzCore/std/smart_ptr/unique_ptr.h>
 #include <AzCore/std/string/string.h>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 
 namespace ROS2
 {
-    namespace Internal
-    {
-        class TransformPublisher
-        {
-        public:
-            TransformPublisher() = default;
-            virtual ~TransformPublisher() = default;
-            static AZStd::unique_ptr<TransformPublisher> CreateTransformPublisher(bool isDynamic);
-            virtual void Publish(const geometry_msgs::msg::TransformStamped& transformMessage) = 0;
-        };
-    }
-
-   /// Publishes transforms as standard ros2 tf2 messages.
-   /// Static transform publishing is delegated to singleton (there can only be one static tf broadcaster)
+   /// Publishes transforms as standard ros2 tf2 messages. Static transforms are published once.
+   // TODO - Rework this class (name, function). Separate broadcaster out of ROS2SystemComponent
    class ROS2Transform
    {
    public:
@@ -39,7 +26,6 @@ namespace ROS2
 
        const AZStd::string m_parentFrame;
        const AZStd::string m_childFrame;
-
-       AZStd::unique_ptr<Internal::TransformPublisher> m_transformPublisher;
+       bool m_isDynamic;
    };
 }  // namespace ROS2
