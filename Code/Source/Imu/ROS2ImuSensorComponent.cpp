@@ -10,6 +10,7 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
 #include "Utilities/ROS2Names.h"
+#include "Utilities/ROS2Conversions.h"
 
 #include <AzCore/std/smart_ptr/make_shared.h>
 #include <AzCore/Component/Entity.h>
@@ -55,6 +56,9 @@ namespace ROS2
         const auto publisherConfig = m_sensorConfiguration.m_publishersConfigurations["sensor_msgs::msg::Imu"];
         AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig->m_topic);
         m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig->GetQoS());
+
+        auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
+        m_previousPose = entityTransform->GetWorldTM();
     }
 
     void ROS2ImuSensorComponent::Deactivate()
@@ -65,22 +69,59 @@ namespace ROS2
 
     void ROS2ImuSensorComponent::FrequencyTick()
     {
+        // Get current pose
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        AZ::Vector3 start = entityTransform->GetWorldTM().GetTranslation();
-        start.SetZ(start.GetZ() + 1.0f);
+        const auto & currentPose = entityTransform->GetWorldTM();
+        const auto & frequency = m_sensorConfiguration.m_frequency;
 
+        // Angular velocity calculations
+        const auto & currentRotation = currentPose.GetRotation();
+        const auto & lastRotation = m_previousPose.GetRotation();
+        const auto deltaRotation = currentRotation * lastRotation.GetInverseFull();
+        AZ::Vector3 axis;
+        float angle;
+        deltaRotation.ConvertToAxisAngle(axis, angle);
+        const auto angularVelocity = frequency * angle * axis;
+
+        // Linear acceleration calculations
+        const auto & currentPosition = currentPose.GetTranslation();
+        const auto & previousPosition = m_previousPose.GetTranslation();
+        const auto velocity = (currentPosition - previousPosition) * frequency;
+        const auto acceleration = (velocity - m_previousLinearVelocity) * frequency;
+
+        m_previousPose = currentPose;
+        m_previousLinearVelocity = velocity;
+
+        // Fill message fields
         auto ros2Frame = GetEntity()->FindComponent<ROS2FrameComponent>();
         auto message = sensor_msgs::msg::Imu();
         message.header.frame_id = ros2Frame->GetFrameID().data();
         message.header.stamp = ROS2Interface::Get()->GetROSTimestamp();
 
-        // TODO:: fill message fields
-        // message.orientation = ;
-        // message.orientation_covariance = ;
-        // message.angular_velocity = ;
-        // message.angular_velocity_covariance = ;
-        // message.linear_acceleration = ;
-        // message.linear_acceleration_covariance = ;
+        message.angular_velocity = ROS2Conversions::ToROS2Vector3(angularVelocity);
+        message.linear_acceleration = ROS2Conversions::ToROS2Vector3(acceleration);
+
+        // Set neutral orientation
+        message.orientation.x = 0.0;
+        message.orientation.y = 0.0;
+        message.orientation.z = 0.0;
+        message.orientation.w = 1.0;
+
+        // Set covariances to 0
+        for (auto & e : message.orientation_covariance)
+        {
+            e = 0.0;
+        }
+
+        for (auto & e : message.angular_velocity_covariance)
+        {
+            e = 0.0;
+        }
+
+        for (auto & e : message.linear_acceleration_covariance)
+        {
+            e = 0.0;
+        }
 
         m_imuPublisher->publish(message);
     }

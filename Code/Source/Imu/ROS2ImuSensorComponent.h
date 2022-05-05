@@ -10,6 +10,7 @@
 #include <rclcpp/publisher.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 
+#include <AzCore/Math/Transform.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include "Sensor/ROS2SensorComponent.h"
 
@@ -30,5 +31,8 @@ namespace ROS2
         void FrequencyTick() override;
 
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> m_imuPublisher;
+
+        AZ::Transform m_previousPose;
+        AZ::Vector3 m_previousLinearVelocity; // Used for linear acceleration calculations
     };
 }  // namespace ROS2
