@@ -6,6 +6,7 @@
  *
  */
 #include <ROS2SystemComponent.h>
+
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -79,6 +80,7 @@ namespace ROS2
     void ROS2SystemComponent::Activate()
     {
         m_staticTFBroadcaster = AZStd::make_unique<tf2_ros::StaticTransformBroadcaster>(m_ros2Node);
+        m_dynamicTFBroadcaster = AZStd::make_unique<tf2_ros::TransformBroadcaster>(m_ros2Node);
 
         ROS2RequestBus::Handler::BusConnect();
         AZ::TickBus::Handler::BusConnect();
@@ -89,6 +91,7 @@ namespace ROS2
         AZ::TickBus::Handler::BusDisconnect();
         ROS2RequestBus::Handler::BusDisconnect();
 
+        m_dynamicTFBroadcaster.reset();
         m_staticTFBroadcaster.reset();
     }
 
@@ -102,10 +105,16 @@ namespace ROS2
         return m_ros2Node;
     }
 
-    void ROS2SystemComponent::BroadcastStaticTransform(const geometry_msgs::msg::TransformStamped& t) const
+    void ROS2SystemComponent::BroadcastTransform(const geometry_msgs::msg::TransformStamped& t, bool isDynamic) const
     {
-        AZ_TracePrintf("BroadcastStaticTransform", "Broadcasting static transform for %s->%s", t.child_frame_id.c_str(), t.header.frame_id.c_str());
-        m_staticTFBroadcaster->sendTransform(t);
+        if (isDynamic)
+        {
+            m_dynamicTFBroadcaster->sendTransform(t);
+        }
+        else
+        {
+            m_staticTFBroadcaster->sendTransform(t);
+        }
     }
 
     void ROS2SystemComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
