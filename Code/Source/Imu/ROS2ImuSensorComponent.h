@@ -10,8 +10,7 @@
 #include <rclcpp/publisher.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 
-#include <AzCore/Component/Component.h>
-
+#include <AzCore/Serialization/SerializeContext.h>
 #include "Sensor/ROS2SensorComponent.h"
 
 namespace ROS2
@@ -20,7 +19,7 @@ namespace ROS2
         : public ROS2SensorComponent
     {
     public:
-        AZ_COMPONENT(ROS2ImuSensorComponent, "{502A955F-7742-4E23-AD77-5E4063739DCA}", ROS2SensorComponent);
+        AZ_COMPONENT(ROS2ImuSensorComponent, "{502A955E-7742-4E23-AD77-5E4063739DCA}", ROS2SensorComponent);
         ROS2ImuSensorComponent();
         ~ROS2ImuSensorComponent() = default;
         static void Reflect(AZ::ReflectContext* context);

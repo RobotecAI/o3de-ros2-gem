@@ -11,8 +11,8 @@
 #include "ROS2/ROS2Bus.h"
 #include "Utilities/ROS2Names.h"
 
+#include <AzCore/std/smart_ptr/make_shared.h>
 #include <AzCore/Component/Entity.h>
-#include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 
@@ -22,18 +22,16 @@ namespace ROS2
     {
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            // serialize->Class<ROS2ImuSensorComponent, ROS2SensorComponent>()
-            //     ->Version(1)
-            //     ->Field("imuModel", &ROS2ImuSensorComponent::m_imuModel)
-            //     ;
+            serialize->Class<ROS2ImuSensorComponent, ROS2SensorComponent>()
+                ->Version(1)
+                ;
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
-                // ec->Class<ROS2ImuSensorComponent>("ROS2 Imu Sensor", "Imu sensor component")
-                //     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                //         ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
-                //     ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2ImuSensorComponent::m_imuModel, "Imu Model", "Imu model")
-                //     ;
+                ec->Class<ROS2ImuSensorComponent>("ROS2 Imu Sensor", "Imu sensor component")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                        ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                ;
             }
         }
     }
@@ -43,9 +41,8 @@ namespace ROS2
         auto pc = AZStd::make_shared<PublisherConfiguration>();
         auto type = "sensor_msgs::msg::Imu";
         pc->m_type = type;
-        pc->m_topic = "pc";
+        pc->m_topic = "imu";
         m_sensorConfiguration.m_frequency = 50;
-
         m_sensorConfiguration.m_publishersConfigurations.insert(AZStd::make_pair(type, pc));
     }
 
@@ -57,7 +54,7 @@ namespace ROS2
 
         const auto publisherConfig = m_sensorConfiguration.m_publishersConfigurations["sensor_msgs::msg::Imu"];
         AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig->m_topic);
-        // m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::PointCloud2>(fullTopic.data(), publisherConfig->GetQoS());
+        m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig->GetQoS());
     }
 
     void ROS2ImuSensorComponent::Deactivate()
