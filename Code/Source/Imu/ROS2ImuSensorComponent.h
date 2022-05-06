@@ -32,6 +32,7 @@ namespace ROS2
 
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> m_imuPublisher;
 
+        double m_previousTime;
         AZ::Transform m_previousPose;
         AZ::Vector3 m_previousLinearVelocity; // Used for linear acceleration calculations
     };

@@ -12,6 +12,7 @@
 #include "Utilities/ROS2Names.h"
 #include "Utilities/ROS2Conversions.h"
 
+#include <AzCore/Script/ScriptTimePoint.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -57,8 +58,10 @@ namespace ROS2
         AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig->m_topic);
         m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig->GetQoS());
 
+        AZ::ScriptTimePoint timePoint;
+        m_previousTime = timePoint.GetSeconds();
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        m_previousPose = entityTransform->GetWorldTM();
+        m_previousPose = entityTransform->GetLocalTM();
     }
 
     void ROS2ImuSensorComponent::Deactivate()
@@ -69,9 +72,16 @@ namespace ROS2
 
     void ROS2ImuSensorComponent::FrequencyTick()
     {
+        AZ::ScriptTimePoint timePoint;
+        double currentTime = timePoint.GetSeconds();
+        auto timeDiff = currentTime - m_previousTime;
+        m_previousTime = currentTime;
+
+        AZ_TracePrintf("IMU", "Time diff: %f", timeDiff);
+
         // Get current pose
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        const auto & currentPose = entityTransform->GetWorldTM();
+        const auto & currentPose = entityTransform->GetLocalTM();
         const auto & frequency = m_sensorConfiguration.m_frequency;
 
         // Angular velocity calculations
