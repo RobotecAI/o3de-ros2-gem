@@ -20,13 +20,16 @@
 
 namespace ROS2
 {
+    namespace Internal
+    {
+        const char* kImuMsgType = "sensor_msgs::msg::Imu";
+    }
+
     void ROS2ImuSensorComponent::Reflect(AZ::ReflectContext* context)
     {
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<ROS2ImuSensorComponent, ROS2SensorComponent>()
-                ->Version(1)
-                ;
+            serialize->Class<ROS2ImuSensorComponent, ROS2SensorComponent>()->Version(1);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -40,11 +43,11 @@ namespace ROS2
 
     ROS2ImuSensorComponent::ROS2ImuSensorComponent()
     {
-        auto pc = AZStd::make_shared<PublisherConfiguration>();
-        auto type = "sensor_msgs::msg::Imu";
-        pc->m_type = type;
-        pc->m_topic = "imu";
-        m_sensorConfiguration.m_frequency = 50;
+        PublisherConfiguration pc;
+        AZStd::string type = Internal::kImuMsgType;
+        pc.m_type = type;
+        pc.m_topic = "imu";
+        m_sensorConfiguration.m_frequency = 10;
         m_sensorConfiguration.m_publishersConfigurations.insert(AZStd::make_pair(type, pc));
     }
 
@@ -54,9 +57,9 @@ namespace ROS2
         auto ros2Node = ROS2Interface::Get()->GetNode();
         AZ_Assert(m_sensorConfiguration.m_publishersConfigurations.size() == 1, "Invalid configuration of publishers for IMU sensor");
 
-        const auto publisherConfig = m_sensorConfiguration.m_publishersConfigurations["sensor_msgs::msg::Imu"];
-        AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig->m_topic);
-        m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig->GetQoS());
+        const auto publisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kImuMsgType];
+        AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig.m_topic);
+        m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig.GetQoS());
 
         AZ::ScriptTimePoint timePoint;
         m_previousTime = timePoint.GetSeconds();
@@ -73,16 +76,14 @@ namespace ROS2
     void ROS2ImuSensorComponent::FrequencyTick()
     {
         AZ::ScriptTimePoint timePoint;
-        double currentTime = timePoint.GetSeconds();
-        auto timeDiff = currentTime - m_previousTime;
-        m_previousTime = currentTime;
-
-        AZ_TracePrintf("IMU", "Time diff: %f", timeDiff);
+        const double currentTime = timePoint.GetSeconds();
+        const auto timeDiff = currentTime - m_previousTime;
 
         // Get current pose
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
         const auto & currentPose = entityTransform->GetLocalTM();
-        const auto & frequency = m_sensorConfiguration.m_frequency;
+        const auto & currentLocalPose = entityTransform->GetLocalTM();
+        const auto & frequency = 1.0 / timeDiff;
 
         // Angular velocity calculations
         const auto & currentRotation = currentPose.GetRotation();
@@ -95,10 +96,28 @@ namespace ROS2
 
         // Linear acceleration calculations
         const auto & currentPosition = currentPose.GetTranslation();
+        const auto & currentLocalPosition = currentLocalPose.GetTranslation();
         const auto & previousPosition = m_previousPose.GetTranslation();
+        const auto pDiff = currentPosition - previousPosition;
         const auto velocity = (currentPosition - previousPosition) * frequency;
+        const auto velDiff = velocity - m_previousLinearVelocity;
         const auto acceleration = (velocity - m_previousLinearVelocity) * frequency;
 
+        AZ_TracePrintf("IMU 1", "c_pos: (%.2f %.2f, %.2f) p_pos: (%.2f %.2f, %.2f) p_diff: (%.3f %.3f, %.3f) l_pos: (%.2f %.2f, %.2f)",
+            currentPosition.GetX(), currentPosition.GetY(), currentPosition.GetZ(),
+            previousPosition.GetX(), previousPosition.GetY(), previousPosition.GetZ(),
+            pDiff.GetX(), pDiff.GetY(), pDiff.GetZ(),
+            currentLocalPosition.GetX(), currentLocalPosition.GetY(), currentLocalPosition.GetZ());
+
+        AZ_TracePrintf("IMU 2", "c_vel: (%.2f %.2f, %.2f) p_vel: (%.2f %.2f, %.2f) vel_diff: (%.3f %.3f, %.3f)",
+            velocity.GetX(), velocity.GetY(), velocity.GetZ(),
+            m_previousLinearVelocity.GetX(), m_previousLinearVelocity.GetY(), m_previousLinearVelocity.GetZ(),
+            velDiff.GetX(), velDiff.GetY(), velDiff.GetZ());
+
+        AZ_TracePrintf("IMU 3", "Time diff: %.4f f: %.4f ang_vel_z: %.2f lin_acc_x: %.2f",
+            timeDiff, frequency, angularVelocity.GetZ(), acceleration.GetX());
+
+        m_previousTime = currentTime;
         m_previousPose = currentPose;
         m_previousLinearVelocity = velocity;
 
