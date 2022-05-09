@@ -22,9 +22,6 @@ bool ControlConfiguration::IsBroadcastBusModeDisabled() const
 
 void ControlConfiguration::Reflect(AZ::ReflectContext* context)
 {
-    // Reflected somewhere else
-    // QoS::Reflect(context);
-
     if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
     {
         serializeContext->Class<ControlConfiguration>()
