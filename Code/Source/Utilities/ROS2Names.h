@@ -18,6 +18,11 @@ namespace ROS2
     public:
         static AZStd::string GetNamespacedName(const AZStd::string& ns, const AZStd::string& name);
         static AZStd::string RosifyName(const AZStd::string& input);
+
+        // Validate namespace. One signature is straightforward, the other fits ChangeValidate for Editor fields.
+        static AZ::Outcome<void, AZStd::string> ValidateNamespace(const AZStd::string& ros2Namespace);
+        static AZ::Outcome<void, AZStd::string> ValidateNamespaceField(void* newValue, const AZ::Uuid& valueType);
+
         static AZ::Outcome<void, AZStd::string> ValidateTopic(const AZStd::string& topic);
         static AZ::Outcome<void, AZStd::string> ValidateTopicField(void* newValue, const AZ::Uuid& valueType);
     };
