@@ -22,7 +22,7 @@ namespace ROS2
     class IRobotControl
     {
     public:
-        virtual void Activate(const AZ::Entity* entity, const ControlConfiguration& controlConfiguration) = 0;
+        virtual void Activate(const AZ::Entity* entity) = 0;
         virtual void Deactivate() = 0;
         virtual ~IRobotControl() = default;
     };
@@ -31,15 +31,16 @@ namespace ROS2
     class RobotControl : public IRobotControl
     {
     public:
-        void Activate(const AZ::Entity* entity,
-                      const ControlConfiguration& controlConfiguration) final
+        explicit RobotControl(ControlConfiguration controlConfiguration)
+            : m_controlConfiguration{std::move(controlConfiguration)} {}
+
+        void Activate(const AZ::Entity* entity) final
         {
-            m_controlConfiguration = controlConfiguration;
             m_active = true;
             if (!m_controlSubscription)
             {
                 auto ros2Frame = entity->FindComponent<ROS2FrameComponent>();
-                auto namespacedTopic = ROS2Names::GetNamespacedName(
+                AZStd::string namespacedTopic = ROS2Names::GetNamespacedName(
                         ros2Frame->GetNamespace(),
                         m_controlConfiguration.GetTopic());
 
@@ -57,6 +58,8 @@ namespace ROS2
             m_controlSubscription.reset(); // Note: topic and qos can change, need to re-subscribe
         };
 
+        virtual ~RobotControl() = default;
+
     protected:
         ControlConfiguration m_controlConfiguration;
 
@@ -65,7 +68,8 @@ namespace ROS2
         {
             if (!m_active) return;
 
-            if (m_controlConfiguration.IsBroadcastBusMode()) {
+            if (m_controlConfiguration.IsBroadcastBusMode())
+            {
                 BroadcastBus(message);
             } else {
                 ApplyControl(message);

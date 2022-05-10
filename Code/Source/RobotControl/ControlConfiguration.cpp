@@ -8,9 +8,11 @@
 
 #pragma once
 
-#include "RobotControl/ControlConfiguration.h"
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
+
+#include "RobotControl/ControlConfiguration.h"
+#include "RobotControl/TwistControl/TwistBus.h"
 
 namespace ROS2
 {
@@ -61,23 +63,28 @@ void ControlConfiguration::Reflect(AZ::ReflectContext* context)
     TwistNotificationHandler::Reflect(context);
 }
 
-AZStd::string ControlConfiguration::GetTopic() const {
+AZStd::string ControlConfiguration::GetTopic() const
+{
     return m_topic;
 }
 
-ControlConfiguration::Steering ControlConfiguration::GetSteering() const {
+ControlConfiguration::Steering ControlConfiguration::GetSteering() const
+{
     return m_steering;
 }
 
-bool ControlConfiguration::IsBroadcastBusMode() const {
+bool ControlConfiguration::IsBroadcastBusMode() const
+{
     return m_broadcastBusMode;
 }
 
-QoS ControlConfiguration::GetControlTopicQoS() const {
+QoS ControlConfiguration::GetControlTopicQoS() const
+{
     return m_qos;
 }
 
-RobotConfiguration ControlConfiguration::GetRobotConfiguration() const {
+RobotConfiguration ControlConfiguration::GetRobotConfiguration() const
+{
     return m_robotConfiguration;
 }
 

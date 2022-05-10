@@ -1,43 +1,36 @@
+--[[
+    This is an example of control implementation which sets the desired velocity on a single body.
+    To imitate the steering, current linear and angular velocities of a single rigidbody are forcefully overwritten
+    with the desired control.
+    TODO: Control the robot with forces applied to the wheels instead of directly setting up body velocity.
+--]]
+
 local SimpleTwistControl = {
     Properties = {}
 }
 
 function SimpleTwistControl:OnActivate()
-	self._gravity = -9.81
-	self._gotMessage = false
-
-    self._rotate = Vector3(0,0,0)
-    self._linear = Vector3(0,0,0)
-    
-    self.tickNotificationBus = TickBus.Connect(self);
     self.twistNotificationBus = TwistNotificationBus.Connect(self);
 end
 
 function SimpleTwistControl:TwistReceived(linear, angular)
-	self._gotMessage = true
-	self._linear = linear
-	self._rotate = angular
-end
+    -- Get current linear velocity
+    local currentLinearVelocity = RigidBodyRequestBus.Event.GetLinearVelocity(self.entityId)
 
-function SimpleTwistControl:OnTick(deltaTime, currentTime)
-	if not self._gotMessage then
-		return
-	end
+    -- Convert local steering to world frame
+    local worldTM = TransformBus.Event.GetWorldTM(self.entityId)
+    local linearVelocityTransformed = Transform.TransformVector(worldTM, linear)
 
-	RigidBodyRequestBus.Event.SetAngularVelocity(self.entityId, self._rotate)
-	
-	-- Local to world linear velocity
-	local worldTM = TransformBus.Event.GetWorldTM(self.entityId)
-	local linearVelocityTransformed = Transform.TransformVector(worldTM, self._linear)
-	
-	RigidBodyRequestBus.Event.ApplyLinearImpulse(self.entityId, Vector3(0,0,self._gravity))
-	RigidBodyRequestBus.Event.SetLinearVelocity(self.entityId, linearVelocityTransformed)
+    -- Overwrite control velocities on two axis
+    currentLinearVelocity["x"] = linearVelocityTransformed["x"]
+    currentLinearVelocity["y"] = linearVelocityTransformed["y"]
 
-	self._gotMessage = false
+    -- Reapply altered velocities for the rigidbody
+    RigidBodyRequestBus.Event.SetAngularVelocity(self.entityId, angular)
+    RigidBodyRequestBus.Event.SetLinearVelocity(self.entityId, currentLinearVelocity)
 end
 
 function SimpleTwistControl:OnDeactivate()
-    self.tickNotificationBus:Disconnect()
     self.twistNotificationBus:Disconnect()
 end
 

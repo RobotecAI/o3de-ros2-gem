@@ -26,6 +26,7 @@ set(FILES
     Source/RobotControl/TwistControl/TwistControl.cpp
     Source/RobotControl/TwistControl/TwistControl.h
     Source/RobotControl/TwistControl/TwistBus.h
+    Source/RobotControl/TwistControl/TwistBus.cpp
     Source/ROS2ModuleInterface.h
     Source/ROS2SystemComponent.cpp
     Source/ROS2SystemComponent.h

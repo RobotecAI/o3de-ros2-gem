@@ -10,14 +10,15 @@
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Math/Vector3.h>
 
-namespace ROS2 {
+namespace ROS2
+{
     class TwistNotifications
             : public AZ::EBusTraits
     {
     public:
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Multiple;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
-        virtual void TwistReceived(const AZ::Vector3& /*linear*/, const AZ::Vector3& /*angular*/) {}
+        virtual void TwistReceived(const AZ::Vector3& /*linear*/, const AZ::Vector3& /*angular*/) = 0;
     };
 
     using TwistNotificationBus = AZ::EBus <TwistNotifications>;
@@ -30,20 +31,7 @@ namespace ROS2 {
         AZ_EBUS_BEHAVIOR_BINDER(TwistNotificationHandler, "{CD26E702-6F40-4FF9-816D-4DCB652D97DF}", AZ::SystemAllocator,
             TwistReceived);
         
-        void TwistReceived(const AZ::Vector3& v, const AZ::Vector3 &a) override
-        {
-            Call(FN_TwistReceived, v, a);
-        }
-
-        static void Reflect(AZ::ReflectContext* context)
-        {
-            if (AZ::BehaviorContext* behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
-            {
-                behaviorContext->EBus<TwistNotificationBus>("TwistNotificationBus")->
-                        Handler<TwistNotificationHandler>()->
-                        Event("TwistReceived", &TwistNotificationBus::Events::TwistReceived)
-                        ;
-            }
-        }
+        void TwistReceived(const AZ::Vector3& v, const AZ::Vector3 &a) override;
+        static void Reflect(AZ::ReflectContext* context);
     };
 }

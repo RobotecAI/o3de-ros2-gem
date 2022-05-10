@@ -6,6 +6,7 @@
  *
  */
 #pragma once
+#include <memory>
 
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/SerializeContext.h>
@@ -14,17 +15,16 @@
 #include <AzCore/Debug/Trace.h>
 
 #include "RobotControl/ROS2RobotControlComponent.h"
-
 #include "RobotControl/TwistControl/TwistControl.h"
-#include "RobotControl/TwistControl/TwistBus.h"
 
 namespace ROS2
 {
     void ROS2RobotControlComponent::Activate()
     {
-        switch (m_controlConfiguration.GetSteering()) {
+        switch (m_controlConfiguration.GetSteering())
+        {
             case ControlConfiguration::Twist:
-                m_robotControl.reset(new TwistControl());
+                m_robotControl = std::make_unique<TwistControl>(m_controlConfiguration);
                 break;
             case ControlConfiguration::Ackermann:
                 //TODO add ackermann
@@ -33,14 +33,16 @@ namespace ROS2
             default:
                 break;
         }
-        if(m_robotControl) {
-            m_robotControl->Activate(GetEntity(), m_controlConfiguration);
+        if(m_robotControl)
+        {
+            m_robotControl->Activate(GetEntity());
         }
     }
 
     void ROS2RobotControlComponent::Deactivate()
     {
-        if(m_robotControl) {
+        if(m_robotControl)
+        {
             m_robotControl->Deactivate();
             m_robotControl.reset();
         }

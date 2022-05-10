@@ -12,21 +12,16 @@
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Component/Entity.h>
 
-namespace ROS2 {
+namespace ROS2
+{
 //! Robot configuration description.
-struct RobotConfiguration {
+struct RobotConfiguration
+{
     public:
         AZ_TYPE_INFO(RobotConfiguration, "{0E179498-AFCE-4589-A845-5BF1A35228DA}");
 
         static void Reflect(AZ::ReflectContext* context);
 
-        const AZ::EntityId& GetBody() { return m_body; };
-        const AZ::EntityId& GetWheelFL() { return m_wheelFrontLeft; };
-        const AZ::EntityId& GetWheelFR() { return m_wheelFrontRight; };
-        const AZ::EntityId& GetWheelBL() { return m_wheelBackLeft; };
-        const AZ::EntityId& GetWheelBR() { return m_wheelBackRight; };
-
-    private:
         //! Robot body object.
         AZ::EntityId m_body;
 
@@ -35,6 +30,9 @@ struct RobotConfiguration {
         AZ::EntityId m_wheelFrontRight;
         AZ::EntityId m_wheelBackLeft;
         AZ::EntityId m_wheelBackRight;
+
+    private:
+        AZ::Outcome<void, AZStd::string> ValidateField(void* newValue, const AZ::Uuid& valueType);
 };
 
 }

@@ -8,7 +8,6 @@
 #pragma once
 
 #include "RobotControl/RobotControl.h"
-#include "RobotControl/TwistControl/TwistBus.h"
 
 #include "geometry_msgs/msg/twist.hpp"
 
@@ -16,6 +15,9 @@ namespace ROS2
 {
     class TwistControl : public RobotControl<geometry_msgs::msg::Twist>
     {
+    public:
+        explicit TwistControl(ControlConfiguration controlConfiguration)
+            : RobotControl<geometry_msgs::msg::Twist>{std::move(controlConfiguration)} {}
     private:
         void BroadcastBus(const geometry_msgs::msg::Twist& message) override;
         void ApplyControl(const geometry_msgs::msg::Twist& message) override;
