@@ -30,11 +30,15 @@ namespace ROS2
     private:
         void FrequencyTick() override;
 
+        void InitializeImuMessage();
+        double GetCurrentTimeInSec() const;
+
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> m_imuPublisher;
 
+        sensor_msgs::msg::Imu m_imuMsg;
         double m_previousTime;
-        AZ::Quaternion m_previousRotation;
-        AZ::Vector3 m_previousLocalPosition;
-        AZ::Vector3 m_previousLinearVelocity;
+        AZ::Quaternion m_previousRotation = AZ::Quaternion::CreateIdentity();
+        AZ::Vector3 m_previousLocalPosition = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_previousLinearVelocity = AZ::Vector3::CreateZero();
     };
 }  // namespace ROS2

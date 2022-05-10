@@ -44,10 +44,10 @@ namespace ROS2
     ROS2ImuSensorComponent::ROS2ImuSensorComponent()
     {
         PublisherConfiguration pc;
-        AZStd::string type = Internal::kImuMsgType;
+        const AZStd::string type = Internal::kImuMsgType;
         pc.m_type = type;
         pc.m_topic = "imu";
-        m_sensorConfiguration.m_frequency = 10;
+        m_sensorConfiguration.m_frequency = 5;
         m_sensorConfiguration.m_publishersConfigurations.insert(AZStd::make_pair(type, pc));
     }
 
@@ -58,11 +58,12 @@ namespace ROS2
         AZ_Assert(m_sensorConfiguration.m_publishersConfigurations.size() == 1, "Invalid configuration of publishers for IMU sensor");
 
         const auto publisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kImuMsgType];
-        AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig.m_topic);
+        const auto fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig.m_topic);
         m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig.GetQoS());
 
-        AZ::ScriptTimePoint timePoint;
-        m_previousTime = timePoint.GetSeconds();
+        m_previousTime = GetCurrentTimeInSec();
+
+        InitializeImuMessage();
     }
 
     void ROS2ImuSensorComponent::Deactivate()
@@ -73,11 +74,9 @@ namespace ROS2
 
     void ROS2ImuSensorComponent::FrequencyTick()
     {
-        AZ::ScriptTimePoint timePoint;
-        const double currentTime = timePoint.GetSeconds();
+        const double currentTime = GetCurrentTimeInSec();
         const auto timeDiff = currentTime - m_previousTime;
 
-        // Get current pose
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
         const auto & currentPose = entityTransform->GetWorldTM();
         const auto & frequency = 1.0 / timeDiff;
@@ -94,60 +93,66 @@ namespace ROS2
         const auto & currentPosition = currentPose.GetTranslation();
         const auto currentLocalPosition = currentPose.GetInverse().TransformVector(currentPosition);
 
-        const auto velocity = (currentLocalPosition - m_previousLocalPosition) * frequency;
-        const auto velDiff = velocity - m_previousLinearVelocity;
-        const auto acceleration = (velocity - m_previousLinearVelocity) * frequency;
+        const auto linearVelocity = (currentLocalPosition - m_previousLocalPosition) * frequency;
+        const auto linearAcceleration = (linearVelocity - m_previousLinearVelocity) * frequency;
 
-        AZ_TracePrintf("IMU 1", "c_pos: (%.2f %.2f, %.2f) p_pos: (%.2f %.2f, %.2f) l_pos: (%.2f %.2f, %.2f)",
-            currentPosition.GetX(), currentPosition.GetY(), currentPosition.GetZ(),
-            m_previousLocalPosition.GetX(), m_previousLocalPosition.GetY(), m_previousLocalPosition.GetZ(),
-            currentLocalPosition.GetX(), currentLocalPosition.GetY(), currentLocalPosition.GetZ()
+        AZ_TracePrintf("IMU 1", "c_pos: (%.2f %.2f, %.2f) p_pos: (%.2f %.2f, %.2f)",
+            currentLocalPosition.GetX(), currentLocalPosition.GetY(), currentLocalPosition.GetZ(),
+            m_previousLocalPosition.GetX(), m_previousLocalPosition.GetY(), m_previousLocalPosition.GetZ()
         );
 
-        AZ_TracePrintf("IMU 2", "c_vel: (%.2f %.2f, %.2f) p_vel: (%.2f %.2f, %.2f) vel_diff: (%.3f %.3f, %.3f)",
-            velocity.GetX(), velocity.GetY(), velocity.GetZ(),
-            m_previousLinearVelocity.GetX(), m_previousLinearVelocity.GetY(), m_previousLinearVelocity.GetZ(),
-            velDiff.GetX(), velDiff.GetY(), velDiff.GetZ());
+        AZ_TracePrintf("IMU 2", "c_vel: (%.2f %.2f, %.2f) p_vel: (%.2f %.2f, %.2f)",
+            linearVelocity.GetX(), linearVelocity.GetY(), linearVelocity.GetZ(),
+            m_previousLinearVelocity.GetX(), m_previousLinearVelocity.GetY(), m_previousLinearVelocity.GetZ());
 
-        AZ_TracePrintf("IMU 3", "Time diff: %.4f f: %.4f ang_vel_z: %.2f lin_acc_x: %.2f",
-            timeDiff, frequency, angularVelocity.GetZ(), acceleration.GetX());
+        AZ_TracePrintf("IMU 3", "f: %.4f ang_vel_z: %.2f lin_acc_x: %.2f",
+            frequency, angularVelocity.GetZ(), linearAcceleration.GetX());
 
+        // Store current values
         m_previousTime = currentTime;
         m_previousRotation = currentRotation;
         m_previousLocalPosition = currentLocalPosition;
-        m_previousLinearVelocity = velocity;
+        m_previousLinearVelocity = linearVelocity;
 
         // Fill message fields
-        auto ros2Frame = GetEntity()->FindComponent<ROS2FrameComponent>();
-        auto message = sensor_msgs::msg::Imu();
-        message.header.frame_id = ros2Frame->GetFrameID().data();
-        message.header.stamp = ROS2Interface::Get()->GetROSTimestamp();
+        m_imuMsg.header.frame_id = GetFrameID().data();
+        m_imuMsg.header.stamp = ROS2Interface::Get()->GetROSTimestamp();
 
-        message.angular_velocity = ROS2Conversions::ToROS2Vector3(velocity);
-        message.linear_acceleration = ROS2Conversions::ToROS2Vector3(acceleration);
+        m_imuMsg.angular_velocity = ROS2Conversions::ToROS2Vector3(angularVelocity);
+        m_imuMsg.linear_acceleration = ROS2Conversions::ToROS2Vector3(linearAcceleration);
 
-        // Set neutral orientation
-        message.orientation.x = 0.0;
-        message.orientation.y = 0.0;
-        message.orientation.z = 0.0;
-        message.orientation.w = 1.0;
+        m_imuPublisher->publish(m_imuMsg);
+    }
+
+    void ROS2ImuSensorComponent::InitializeImuMessage()
+    {
+        // Set identity orientation
+        m_imuMsg.orientation.x = 0.0;
+        m_imuMsg.orientation.y = 0.0;
+        m_imuMsg.orientation.z = 0.0;
+        m_imuMsg.orientation.w = 1.0;
 
         // Set covariances to 0
-        for (auto & e : message.orientation_covariance)
+        for (auto & e : m_imuMsg.orientation_covariance)
         {
             e = 0.0;
         }
 
-        for (auto & e : message.angular_velocity_covariance)
+        for (auto & e : m_imuMsg.angular_velocity_covariance)
         {
             e = 0.0;
         }
 
-        for (auto & e : message.linear_acceleration_covariance)
+        for (auto & e : m_imuMsg.linear_acceleration_covariance)
         {
             e = 0.0;
         }
-
-        m_imuPublisher->publish(message);
     }
+
+    double ROS2ImuSensorComponent::GetCurrentTimeInSec() const
+    {
+        AZ::ScriptTimePoint timePoint;
+        return timePoint.GetSeconds();
+    }
+
 } // namespace ROS2
