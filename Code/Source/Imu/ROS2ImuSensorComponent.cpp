@@ -63,8 +63,6 @@ namespace ROS2
 
         AZ::ScriptTimePoint timePoint;
         m_previousTime = timePoint.GetSeconds();
-        auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        m_previousPose = entityTransform->GetLocalTM();
     }
 
     void ROS2ImuSensorComponent::Deactivate()
@@ -81,14 +79,12 @@ namespace ROS2
 
         // Get current pose
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        const auto & currentPose = entityTransform->GetLocalTM();
-        const auto & currentLocalPose = entityTransform->GetLocalTM();
+        const auto & currentPose = entityTransform->GetWorldTM();
         const auto & frequency = 1.0 / timeDiff;
 
         // Angular velocity calculations
         const auto & currentRotation = currentPose.GetRotation();
-        const auto & lastRotation = m_previousPose.GetRotation();
-        const auto deltaRotation = currentRotation * lastRotation.GetInverseFull();
+        const auto deltaRotation = currentRotation * m_previousRotation.GetInverseFull();
         AZ::Vector3 axis;
         float angle;
         deltaRotation.ConvertToAxisAngle(axis, angle);
@@ -96,18 +92,17 @@ namespace ROS2
 
         // Linear acceleration calculations
         const auto & currentPosition = currentPose.GetTranslation();
-        const auto & currentLocalPosition = currentLocalPose.GetTranslation();
-        const auto & previousPosition = m_previousPose.GetTranslation();
-        const auto pDiff = currentPosition - previousPosition;
-        const auto velocity = (currentPosition - previousPosition) * frequency;
+        const auto currentLocalPosition = currentPose.GetInverse().TransformVector(currentPosition);
+
+        const auto velocity = (currentLocalPosition - m_previousLocalPosition) * frequency;
         const auto velDiff = velocity - m_previousLinearVelocity;
         const auto acceleration = (velocity - m_previousLinearVelocity) * frequency;
 
-        AZ_TracePrintf("IMU 1", "c_pos: (%.2f %.2f, %.2f) p_pos: (%.2f %.2f, %.2f) p_diff: (%.3f %.3f, %.3f) l_pos: (%.2f %.2f, %.2f)",
+        AZ_TracePrintf("IMU 1", "c_pos: (%.2f %.2f, %.2f) p_pos: (%.2f %.2f, %.2f) l_pos: (%.2f %.2f, %.2f)",
             currentPosition.GetX(), currentPosition.GetY(), currentPosition.GetZ(),
-            previousPosition.GetX(), previousPosition.GetY(), previousPosition.GetZ(),
-            pDiff.GetX(), pDiff.GetY(), pDiff.GetZ(),
-            currentLocalPosition.GetX(), currentLocalPosition.GetY(), currentLocalPosition.GetZ());
+            m_previousLocalPosition.GetX(), m_previousLocalPosition.GetY(), m_previousLocalPosition.GetZ(),
+            currentLocalPosition.GetX(), currentLocalPosition.GetY(), currentLocalPosition.GetZ()
+        );
 
         AZ_TracePrintf("IMU 2", "c_vel: (%.2f %.2f, %.2f) p_vel: (%.2f %.2f, %.2f) vel_diff: (%.3f %.3f, %.3f)",
             velocity.GetX(), velocity.GetY(), velocity.GetZ(),
@@ -118,7 +113,8 @@ namespace ROS2
             timeDiff, frequency, angularVelocity.GetZ(), acceleration.GetX());
 
         m_previousTime = currentTime;
-        m_previousPose = currentPose;
+        m_previousRotation = currentRotation;
+        m_previousLocalPosition = currentLocalPosition;
         m_previousLinearVelocity = velocity;
 
         // Fill message fields
@@ -127,7 +123,7 @@ namespace ROS2
         message.header.frame_id = ros2Frame->GetFrameID().data();
         message.header.stamp = ROS2Interface::Get()->GetROSTimestamp();
 
-        message.angular_velocity = ROS2Conversions::ToROS2Vector3(angularVelocity);
+        message.angular_velocity = ROS2Conversions::ToROS2Vector3(velocity);
         message.linear_acceleration = ROS2Conversions::ToROS2Vector3(acceleration);
 
         // Set neutral orientation
