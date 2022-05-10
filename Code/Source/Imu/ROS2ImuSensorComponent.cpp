@@ -61,9 +61,8 @@ namespace ROS2
         const auto fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig.m_topic);
         m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig.GetQoS());
 
-        m_previousTime = GetCurrentTimeInSec();
-
         InitializeImuMessage();
+        m_previousTime = GetCurrentTimeInSec();
     }
 
     void ROS2ImuSensorComponent::Deactivate()
@@ -81,7 +80,7 @@ namespace ROS2
         const auto & currentPose = entityTransform->GetWorldTM();
         const auto & frequency = 1.0 / timeDiff;
 
-        // Angular velocity calculations
+        // Calculate angular velocity
         const auto & currentRotation = currentPose.GetRotation();
         const auto deltaRotation = currentRotation * m_previousRotation.GetInverseFull();
         AZ::Vector3 axis;
@@ -89,29 +88,16 @@ namespace ROS2
         deltaRotation.ConvertToAxisAngle(axis, angle);
         const auto angularVelocity = frequency * angle * axis;
 
-        // Linear acceleration calculations
+        // Calculate linear acceleration
         const auto & currentPosition = currentPose.GetTranslation();
-        const auto currentLocalPosition = currentPose.GetInverse().TransformVector(currentPosition);
-
-        const auto linearVelocity = (currentLocalPosition - m_previousLocalPosition) * frequency;
+        const auto deltaPositions = currentPosition - m_previousPosition;
+        const auto linearVelocity = currentPose.GetInverse().TransformVector(deltaPositions) * frequency;
         const auto linearAcceleration = (linearVelocity - m_previousLinearVelocity) * frequency;
-
-        AZ_TracePrintf("IMU 1", "c_pos: (%.2f %.2f, %.2f) p_pos: (%.2f %.2f, %.2f)",
-            currentLocalPosition.GetX(), currentLocalPosition.GetY(), currentLocalPosition.GetZ(),
-            m_previousLocalPosition.GetX(), m_previousLocalPosition.GetY(), m_previousLocalPosition.GetZ()
-        );
-
-        AZ_TracePrintf("IMU 2", "c_vel: (%.2f %.2f, %.2f) p_vel: (%.2f %.2f, %.2f)",
-            linearVelocity.GetX(), linearVelocity.GetY(), linearVelocity.GetZ(),
-            m_previousLinearVelocity.GetX(), m_previousLinearVelocity.GetY(), m_previousLinearVelocity.GetZ());
-
-        AZ_TracePrintf("IMU 3", "f: %.4f ang_vel_z: %.2f lin_acc_x: %.2f",
-            frequency, angularVelocity.GetZ(), linearAcceleration.GetX());
 
         // Store current values
         m_previousTime = currentTime;
         m_previousRotation = currentRotation;
-        m_previousLocalPosition = currentLocalPosition;
+        m_previousPosition = currentPosition;
         m_previousLinearVelocity = linearVelocity;
 
         // Fill message fields

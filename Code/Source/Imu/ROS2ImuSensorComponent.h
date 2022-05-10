@@ -38,7 +38,7 @@ namespace ROS2
         sensor_msgs::msg::Imu m_imuMsg;
         double m_previousTime;
         AZ::Quaternion m_previousRotation = AZ::Quaternion::CreateIdentity();
-        AZ::Vector3 m_previousLocalPosition = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_previousPosition = AZ::Vector3::CreateZero();
         AZ::Vector3 m_previousLinearVelocity = AZ::Vector3::CreateZero();
     };
 }  // namespace ROS2
