@@ -32,13 +32,13 @@ namespace ROS2
 
         void InitializeImuMessage();
         double GetCurrentTimeInSec() const;
+        AZ::Transform GetCurrentPose() const;
 
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> m_imuPublisher;
 
         sensor_msgs::msg::Imu m_imuMsg;
         double m_previousTime;
-        AZ::Quaternion m_previousRotation = AZ::Quaternion::CreateIdentity();
-        AZ::Vector3 m_previousPosition = AZ::Vector3::CreateZero();
+        AZ::Transform m_previousPose;
         AZ::Vector3 m_previousLinearVelocity = AZ::Vector3::CreateZero();
     };
 }  // namespace ROS2

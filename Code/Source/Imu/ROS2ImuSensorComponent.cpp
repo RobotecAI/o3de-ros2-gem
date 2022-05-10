@@ -47,7 +47,7 @@ namespace ROS2
         const AZStd::string type = Internal::kImuMsgType;
         pc.m_type = type;
         pc.m_topic = "imu";
-        m_sensorConfiguration.m_frequency = 5;
+        m_sensorConfiguration.m_frequency = 10;
         m_sensorConfiguration.m_publishersConfigurations.insert(AZStd::make_pair(type, pc));
     }
 
@@ -62,6 +62,8 @@ namespace ROS2
         m_imuPublisher = ros2Node->create_publisher<sensor_msgs::msg::Imu>(fullTopic.data(), publisherConfig.GetQoS());
 
         InitializeImuMessage();
+
+        m_previousPose = GetCurrentPose();
         m_previousTime = GetCurrentTimeInSec();
     }
 
@@ -76,13 +78,13 @@ namespace ROS2
         const double currentTime = GetCurrentTimeInSec();
         const auto timeDiff = currentTime - m_previousTime;
 
-        auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        const auto & currentPose = entityTransform->GetWorldTM();
-        const auto & frequency = 1.0 / timeDiff;
+        const auto currentPose = GetCurrentPose();
+        const auto frequency = 1.0 / timeDiff;
 
         // Calculate angular velocity
         const auto & currentRotation = currentPose.GetRotation();
-        const auto deltaRotation = currentRotation * m_previousRotation.GetInverseFull();
+        const auto & previousRotation = m_previousPose.GetRotation();
+        const auto deltaRotation = currentRotation * previousRotation.GetInverseFull();
         AZ::Vector3 axis;
         float angle;
         deltaRotation.ConvertToAxisAngle(axis, angle);
@@ -90,14 +92,13 @@ namespace ROS2
 
         // Calculate linear acceleration
         const auto & currentPosition = currentPose.GetTranslation();
-        const auto deltaPositions = currentPosition - m_previousPosition;
+        const auto deltaPositions = currentPosition - m_previousPose.GetTranslation();
         const auto linearVelocity = currentPose.GetInverse().TransformVector(deltaPositions) * frequency;
         const auto linearAcceleration = (linearVelocity - m_previousLinearVelocity) * frequency;
 
         // Store current values
         m_previousTime = currentTime;
-        m_previousRotation = currentRotation;
-        m_previousPosition = currentPosition;
+        m_previousPose = currentPose;
         m_previousLinearVelocity = linearVelocity;
 
         // Fill message fields
@@ -139,6 +140,12 @@ namespace ROS2
     {
         AZ::ScriptTimePoint timePoint;
         return timePoint.GetSeconds();
+    }
+
+    AZ::Transform ROS2ImuSensorComponent::GetCurrentPose() const
+    {
+        auto ros2Frame = GetEntity()->FindComponent<ROS2FrameComponent>();
+        return ros2Frame->GetFrameTransform();
     }
 
 } // namespace ROS2
