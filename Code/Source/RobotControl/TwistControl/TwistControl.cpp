@@ -33,7 +33,7 @@ namespace ROS2
         */
 
         // Check the body entity id (it might be not set at all)
-        auto body = m_controlConfiguration.GetRobotConfiguration().m_body;
+        auto body = m_controlConfiguration.m_robotConfiguration.m_body;
         if (!body.IsValid())
         {
             AZ_ErrorOnce("TwistControl", false, "Invalid body component for twist control.");

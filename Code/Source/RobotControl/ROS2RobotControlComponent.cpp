@@ -21,10 +21,10 @@ namespace ROS2
 {
     void ROS2RobotControlComponent::Activate()
     {
-        switch (m_controlConfiguration.GetSteering())
+        switch (m_controlConfiguration.m_steering)
         {
             case ControlConfiguration::Twist:
-                m_robotControl = std::make_unique<TwistControl>(m_controlConfiguration);
+                m_robotControl = AZStd::make_unique<TwistControl>(m_controlConfiguration);
                 break;
             case ControlConfiguration::Ackermann:
                 //TODO add ackermann

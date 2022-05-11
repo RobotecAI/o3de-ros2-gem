@@ -42,12 +42,12 @@ namespace ROS2
                 auto ros2Frame = entity->FindComponent<ROS2FrameComponent>();
                 AZStd::string namespacedTopic = ROS2Names::GetNamespacedName(
                         ros2Frame->GetNamespace(),
-                        m_controlConfiguration.GetTopic());
+                        m_controlConfiguration.m_topic);
 
                 auto ros2Node = ROS2Interface::Get()->GetNode();
                 m_controlSubscription = ros2Node->create_subscription<T>(
                     namespacedTopic.data(),
-                    m_controlConfiguration.GetControlTopicQoS().GetQoS(),
+                    m_controlConfiguration.m_qos.GetQoS(),
                     std::bind(&RobotControl<T>::OnControlMessage, this, std::placeholders::_1));
             }
         };
@@ -68,7 +68,7 @@ namespace ROS2
         {
             if (!m_active) return;
 
-            if (m_controlConfiguration.IsBroadcastBusMode())
+            if (m_controlConfiguration.m_broadcastBusMode)
             {
                 BroadcastBus(message);
             } else {

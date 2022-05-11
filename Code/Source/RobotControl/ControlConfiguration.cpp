@@ -12,6 +12,7 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 
 #include "RobotControl/ControlConfiguration.h"
+#include "Utilities/ROS2Names.h"
 #include "RobotControl/TwistControl/TwistBus.h"
 
 namespace ROS2
@@ -19,7 +20,7 @@ namespace ROS2
 
 bool ControlConfiguration::IsBroadcastBusModeDisabled() const
 {
-    return !IsBroadcastBusMode();
+    return !m_broadcastBusMode;
 }
 
 void ControlConfiguration::Reflect(AZ::ReflectContext* context)
@@ -40,6 +41,7 @@ void ControlConfiguration::Reflect(AZ::ReflectContext* context)
             ec->Class<ControlConfiguration>("Robot control", "Handles robot control")
                 ->DataElement(AZ::Edit::UIHandlers::Default, &ControlConfiguration::m_topic,
                               "Topic", "ROS2 topic to subscribe to")
+                    ->Attribute(AZ::Edit::Attributes::ChangeValidate, &ROS2Names::ValidateTopicField)
                 ->DataElement(AZ::Edit::UIHandlers::Default, &ControlConfiguration::m_qos, "QoS",
                               "Quality of Service settings for subscriber")
                 ->DataElement(AZ::Edit::UIHandlers::ComboBox, &ControlConfiguration::m_steering,
@@ -61,31 +63,6 @@ void ControlConfiguration::Reflect(AZ::ReflectContext* context)
 
     // Enable twist control notification bus
     TwistNotificationHandler::Reflect(context);
-}
-
-AZStd::string ControlConfiguration::GetTopic() const
-{
-    return m_topic;
-}
-
-ControlConfiguration::Steering ControlConfiguration::GetSteering() const
-{
-    return m_steering;
-}
-
-bool ControlConfiguration::IsBroadcastBusMode() const
-{
-    return m_broadcastBusMode;
-}
-
-QoS ControlConfiguration::GetControlTopicQoS() const
-{
-    return m_qos;
-}
-
-RobotConfiguration ControlConfiguration::GetRobotConfiguration() const
-{
-    return m_robotConfiguration;
 }
 
 }  // namespace ROS2

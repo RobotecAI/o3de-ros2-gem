@@ -33,15 +33,6 @@ public:
 
     static void Reflect(AZ::ReflectContext* context);
 
-    [[nodiscard]] RobotConfiguration GetRobotConfiguration() const;
-    [[nodiscard]] AZStd::string GetTopic() const;
-    [[nodiscard]] Steering GetSteering() const;
-    [[nodiscard]] bool IsBroadcastBusMode() const;
-    [[nodiscard]] QoS GetControlTopicQoS() const;
-
-private:
-    [[nodiscard]] bool IsBroadcastBusModeDisabled() const;
-
     QoS m_qos;
     AZStd::string m_topic = "o3de_robot_control";
     Steering m_steering = Steering::Twist;
@@ -49,6 +40,10 @@ private:
     //! Switch between two modes. If enabled, only notification bus is running and no control is handled on
     //! component side.
     bool m_broadcastBusMode = true;
+
+private:
+    [[nodiscard]] bool IsBroadcastBusModeDisabled() const;
+
 };
 }  // namespace ROS2
 
