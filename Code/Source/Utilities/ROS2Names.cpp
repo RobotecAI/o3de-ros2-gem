@@ -38,9 +38,9 @@ namespace ROS2
         if (input[0] == underscore)
         {
             AZ_Warning("RosifyName",
-                       false,
-                       "'%s' name starts with an underscore, which makes topic/namespace/parameter hidden by default. Is this intended?",
-                       input.c_str());
+               false,
+               "'%s' name starts with an underscore, which makes topic/namespace/parameter hidden by default. Is this intended?",
+               input.c_str());
         }
         
         const AZStd::string stringToReplaceViolations(1, underscore);
@@ -52,6 +52,11 @@ namespace ROS2
             // Also, starting with '_' is not desired unless explicit. Topics/namespaces/parameters starting with "_" are hidden by default.
             const AZStd::string prependToNumberStart = "o3de_";
             rosified = prependToNumberStart + rosified;
+        }
+
+        if (input != rosified)
+        {
+            AZ_TracePrintf("RosifyName", "Name '%s' has been changed to '%s' to conform with ros2 naming restrictions", input.c_str(), rosified.c_str());
         }
         return rosified;
     }
