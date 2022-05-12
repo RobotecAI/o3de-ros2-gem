@@ -9,6 +9,7 @@
 
 #include <rclcpp/publisher.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
+#include <Atom/RPI.Public/AuxGeom/AuxGeomDraw.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include "Sensor/ROS2SensorComponent.h"
 #include "Lidar/LidarTemplate.h"
@@ -38,6 +39,7 @@ namespace ROS2
 
         // Used only when visualisation is on - points differ since they are in global transform as opposed to local
         AZStd::vector<AZ::Vector3> m_visualisationPoints;
+        AZ::RPI::AuxGeomDrawPtr m_drawQueue;
 
         AZStd::vector<AZ::Vector3> m_lastScanResults;
     };

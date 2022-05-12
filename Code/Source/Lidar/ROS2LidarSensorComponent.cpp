@@ -11,7 +11,6 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "Utilities/ROS2Names.h"
 
-#include <Atom/RPI.Public/AuxGeom/AuxGeomDraw.h>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomFeatureProcessorInterface.h>
 #include <Atom/RPI.Public/RPISystemInterface.h>
 #include <Atom/RPI.Public/Scene.h>
@@ -66,9 +65,7 @@ namespace ROS2
             return;
         }
 
-        auto defaultScene = AZ::RPI::Scene::GetSceneForEntityId(GetEntityId());
-        AZ::RPI::AuxGeomDrawPtr drawQueue = AZ::RPI::AuxGeomFeatureProcessorInterface::GetDrawQueueForScene(defaultScene);
-        if (drawQueue)
+        if (m_drawQueue)
         {
             const uint8_t pixelSize = 2;
             AZ::RPI::AuxGeomDraw::AuxGeomDynamicDrawArguments drawArgs;
@@ -78,7 +75,7 @@ namespace ROS2
             drawArgs.m_colorCount = 1;
             drawArgs.m_opacityType = AZ::RPI::AuxGeomDraw::OpacityType::Opaque;
             drawArgs.m_size = pixelSize;
-            drawQueue->DrawPoints(drawArgs);
+            m_drawQueue->DrawPoints(drawArgs);
         }
     }
 
@@ -91,6 +88,12 @@ namespace ROS2
         const PublisherConfiguration& publisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kPointCloudType];
         AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig.m_topic);
         m_pointCloudPublisher = ros2Node->create_publisher<sensor_msgs::msg::PointCloud2>(fullTopic.data(), publisherConfig.GetQoS());
+
+        if (m_sensorConfiguration.m_visualise)
+        {
+            auto defaultScene = AZ::RPI::Scene::GetSceneForEntityId(GetEntityId());
+            m_drawQueue = AZ::RPI::AuxGeomFeatureProcessorInterface::GetDrawQueueForScene(defaultScene);
+        }
     }
 
     void ROS2LidarSensorComponent::Deactivate()
