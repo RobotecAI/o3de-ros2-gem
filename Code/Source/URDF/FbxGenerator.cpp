@@ -182,22 +182,22 @@ namespace ROS2
             Node definitions("Definitions");
             definitions.AddChild("Version", 100);
             definitions.AddChild("Count", 3);
-
-            Node globalSettings("ObjectType", {"GlobalSettings"});
-            globalSettings.AddChild("Count", 1);
-            definitions.AddChild(std::move(globalSettings));
-
-            Node model("ObjectType", {"Model"});
-            model.AddChild("Count", 1);
-            definitions.AddChild(std::move(model));
-
-            Node geometry("ObjectType", {"Geometry"});
-            geometry.AddChild("Count", 1);
-            definitions.AddChild(std::move(geometry));
-
-            Node material("ObjectType", {"Material"});
-            material.AddChild("Count", 1);
-            definitions.AddChild(std::move(material));
+            definitions.AddChild(
+                Node("ObjectType", {"GlobalSettings"}, {
+                    Node("Count", {1})
+            }));
+            definitions.AddChild(
+                Node("ObjectType", {"Model"}, {
+                    Node("Count", {1})
+            }));
+            definitions.AddChild(
+                Node("ObjectType", {"Geometry"}, {
+                    Node("Count", {1})
+            }));
+            definitions.AddChild(
+                Node("ObjectType", {"Material"}, {
+                    Node("Count", {1})
+            }));
 
             return definitions;
         }

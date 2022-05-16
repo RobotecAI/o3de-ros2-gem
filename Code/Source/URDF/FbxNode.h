@@ -36,7 +36,8 @@ namespace ROS2
         class Node
         {
         public:
-            Node(const std::string & name, const Properties & properties = {});
+            Node(const std::string & name,
+                const Properties & properties = {}, const std::vector<Node> & children = {});
 
             std::string GetName() const;
             std::vector<Node> GetChildren() const;

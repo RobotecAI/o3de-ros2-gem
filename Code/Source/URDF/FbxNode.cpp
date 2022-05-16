@@ -8,6 +8,7 @@
 
 #include "FbxNode.h"
 
+#include <iomanip>
 #include <fstream>
 #include <string>
 
@@ -48,12 +49,15 @@ namespace ROS2
                 return std::any_cast<RawString>(a).data;
             }
 
+            AZ_Warning(__func__, false, "Unhandled type: %s", a.type().name());
             return "";
         }
 
-        Node::Node(const std::string & name, const Properties & properties)
+        Node::Node(
+            const std::string & name, const Properties & properties, const std::vector<Node> & children)
             : m_name(name)
             , m_properties(properties)
+            , m_children(children)
         {}
 
         std::string Node::GetName() const
@@ -103,20 +107,20 @@ namespace ROS2
 
         std::string Node::ToString(int nodeDepth) const
         {
-            std::stringstream ss;
-            std::string offset;
-
             // Calculate offset
-            for (int i = 0; i < nodeDepth; ++i)
-                offset += "  ";
+            constexpr int spacesPerIndentLevel = 2;
+            std::stringstream offsetStream;
+            offsetStream << std::setfill(' ') << std::setw(nodeDepth * spacesPerIndentLevel ) << "";
+            std::string offset = offsetStream.str();
 
             // Write name
+            std::stringstream ss;
             ss << offset << m_name << ": ";
 
             if (!HasProperties() && !HasChildren())
             {
                 ss << " {\n";
-                ss << offset + "}";
+                ss << offset << "}";
             }
 
             // Write properties
@@ -147,7 +151,7 @@ namespace ROS2
                         ss << node.ToString(nodeDepth + 1);
                     }
                 }
-                ss << offset + "}\n";
+                ss << offset << "}\n";
             }
             else
             {
