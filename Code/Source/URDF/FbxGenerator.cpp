@@ -10,6 +10,8 @@
 
 #include <fstream>
 #include <string>
+#include <chrono>
+#include <ctime>
 
 #include <AzCore/Console/Console.h>
 
@@ -363,14 +365,17 @@ namespace ROS2
 
         Node FbxGenerator::GetTimeStamp() const
         {
-            // TODO: get proper time stamp
+            auto now = std::chrono::system_clock::now();
+            std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+            struct tm *parts = std::localtime(&now_c);
+
             Node timeStamp("CreationTimeStamp");
             timeStamp.AddChild("Version", Constants::FbxHeader::timeStampVersion);
-            timeStamp.AddChild("Year", 2022);
-            timeStamp.AddChild("Month", 01);
-            timeStamp.AddChild("Day", 01);
-            timeStamp.AddChild("Hour", 0);
-            timeStamp.AddChild("Minute", 0);
+            timeStamp.AddChild("Year", 1900 + parts->tm_year);
+            timeStamp.AddChild("Month", 1 + parts->tm_mon);
+            timeStamp.AddChild("Day", parts->tm_mday);
+            timeStamp.AddChild("Hour", parts->tm_hour);
+            timeStamp.AddChild("Minute", parts->tm_min);
             timeStamp.AddChild("Second", 0);
             timeStamp.AddChild("Millisecond", 0);
 
