@@ -10,6 +10,11 @@ set(FILES
     Source/Imu/ROS2ImuSensorComponent.h
     Source/QoS/QoS.cpp
     Source/QoS/QoS.h
+    Source/RobotControl/RobotControl.h
+    Source/RobotControl/ROS2RobotControlComponent.cpp
+    Source/RobotControl/ROS2RobotControlComponent.h
+    Source/RobotControl/TwistControl.cpp
+    Source/RobotControl/TwistControl.h
     Source/ROS2ModuleInterface.h
     Source/ROS2SystemComponent.cpp
     Source/ROS2SystemComponent.h
