@@ -11,7 +11,9 @@
 #include <fstream>
 #include <string>
 
-#include <AzCore/Debug/Trace.h>
+#include <AzCore/Console/Console.h>
+
+#include "Constants.h"
 
 namespace ROS2
 {
@@ -74,14 +76,14 @@ namespace ROS2
             // Attach first object to the root node
             if (m_first_object)
             {
-                m_connections.push_back(Connection(rootId, model.id, "OO"));
+                m_connections.push_back(Connection(rootId, model.id, Constants::defaultConnectionType));
                 m_first_object = false;
             }
 
-            m_connections.push_back(Connection(model.id, geometry.id, "OO"));
+            m_connections.push_back(Connection(model.id, geometry.id, Constants::defaultConnectionType));
 
             // TODO: Would be great to add validation if materialId exists.
-            m_connections.push_back(Connection(model.id, materialId, "OO"));
+            m_connections.push_back(Connection(model.id, materialId, Constants::defaultConnectionType));
 
             return model.id;
         }
@@ -98,7 +100,7 @@ namespace ROS2
         void FbxGenerator::SetRelationBetweenObjects(Id parentId, Id childId)
         {
             m_nodesUpdated = false;
-            m_connections.push_back(Connection(parentId, childId, "OO"));
+            m_connections.push_back(Connection(parentId, childId, Constants::defaultConnectionType));
         }
 
         void FbxGenerator::GenerateFbxStructure()
@@ -120,10 +122,10 @@ namespace ROS2
         Node FbxGenerator::GetFbxHeaderExtension() const
         {
             Node fbxHeader("FBXHeaderExtension");
-            fbxHeader.AddChild("FBXHeaderVersion", 1003);
-            fbxHeader.AddChild("FBXVersion", 7500);
+            fbxHeader.AddChild("FBXHeaderVersion", Constants::FbxHeader::headerVersion);
+            fbxHeader.AddChild("FBXVersion", Constants::FbxHeader::fileVersion);
             fbxHeader.AddChild(GetTimeStamp());
-            fbxHeader.AddChild("Creator", "O3DE ROS2 Gem");
+            fbxHeader.AddChild("Creator", Constants::FbxHeader::creatorName);
             fbxHeader.AddChild(GetSceneInfo());
 
             return fbxHeader;
@@ -132,7 +134,7 @@ namespace ROS2
         Node FbxGenerator::GetGlobalSettings() const
         {
             Node globalSettings("GlobalSettings");
-            globalSettings.AddChild("Version", 1000);
+            globalSettings.AddChild("Version", Constants::GlobalSettings::version);
 
             Node properties("Properties70");
             properties.AddChild(Node("P", {"UpAxis", "int", "Integer", "", 1}));
@@ -146,15 +148,24 @@ namespace ROS2
             properties.AddChild(Node("P", {"UnitScaleFactor", "double", "Number", "", 1}));
             properties.AddChild(Node("P", {"OriginalUnitScaleFactor", "double", "Number", "", 1}));
             properties.AddChild(Node("P", {"AmbientColor", "ColorRGB", "Color", "", 0, 0, 0}));
-            properties.AddChild(Node("P", {"DefaultCamera", "KString", "", "", "Producer Perspective"}));
-            properties.AddChild(Node("P", {"TimeMode", "enum", "", "", 11}));
-            properties.AddChild(Node("P", {"TimeProtocol", "enum", "", "", 2}));
-            properties.AddChild(Node("P", {"SnapOnFrameMode", "enum", "", "", 0}));
-            properties.AddChild(Node("P", {"TimeSpanStart", "KTime", "Time", "", 1924423250}));
-            properties.AddChild(Node("P", {"TimeSpanStop", "KTime", "Time", "", 1924423250}));
-            properties.AddChild(Node("P", {"CustomFrameRate", "double", "Number", "", -1}));
-            properties.AddChild(Node("P", {"TimeMarker", "Compound", "", ""}));
-            properties.AddChild(Node("P", {"CurrentTimeMarker", "int", "Integer", "", -1}));
+            properties.AddChild(
+                Node("P", {"DefaultCamera", "KString", "", "", Constants::GlobalSettings::defaultCamera}));
+            properties.AddChild(
+                Node("P", {"TimeMode", "enum", "", "", Constants::GlobalSettings::timeMode}));
+            properties.AddChild(
+                Node("P", {"TimeProtocol", "enum", "", "", Constants::GlobalSettings::timeProtocol}));
+            properties.AddChild(
+                Node("P", {"SnapOnFrameMode", "enum", "", "", Constants::GlobalSettings::snapOnFrameMode}));
+            properties.AddChild(
+                Node("P", {"TimeSpanStart", "KTime", "Time", "", Constants::GlobalSettings::defaultTimeSpan}));
+            properties.AddChild(
+                Node("P", {"TimeSpanStop", "KTime", "Time", "", Constants::GlobalSettings::defaultTimeSpan}));
+            properties.AddChild(
+                Node("P", {"CustomFrameRate", "double", "Number", "", Constants::GlobalSettings::customFrameRate}));
+            properties.AddChild(
+                Node("P", {"TimeMarker", "Compound", "", ""}));
+            properties.AddChild(
+                Node("P", {"CurrentTimeMarker", "int", "Integer", "", Constants::GlobalSettings::currentTimeMarker}));
 
             globalSettings.AddChild(std::move(properties));
 
@@ -170,7 +181,8 @@ namespace ROS2
 
             Node properties("Properties70");
             properties.AddChild(Node("P", {"SourceObject", "object", "", ""}));
-            properties.AddChild(Node("P", {"ActiveAnimStackName", "KString", "", "Take 001"}));
+            properties.AddChild(
+                Node("P", {"ActiveAnimStackName", "KString", "", Constants::FbxHeader::documentActiveAnimStackName}));
 
             document.AddChild(std::move(properties));
             document.AddChild("RootNode", 0);
@@ -180,7 +192,7 @@ namespace ROS2
         Node FbxGenerator::GetDefinitions() const
         {
             Node definitions("Definitions");
-            definitions.AddChild("Version", 100);
+            definitions.AddChild("Version", Constants::definitionsVersion);
             definitions.AddChild("Count", 3);
             definitions.AddChild(
                 Node("ObjectType", {"GlobalSettings"}, {
@@ -207,7 +219,7 @@ namespace ROS2
             const int modelId = UniqueIdGenerator::GetUniqueId();
 
             Node model("Model", {modelId, modelName, "Mesh"});
-            model.AddChild("Version", 232);
+            model.AddChild("Version", Constants::Object::modelVersion);
             model.AddChild("Culling", "CullingOff");
 
             Node properties("Properties70");
@@ -227,14 +239,16 @@ namespace ROS2
             const int materialId = UniqueIdGenerator::GetUniqueId();
 
             Node material("Material", {materialId, name, ""});
-            material.AddChild("Version", 102);
-            material.AddChild("ShadingModel", "phong");
+            material.AddChild("Version", Constants::Material::defaultVersion);
+            material.AddChild("ShadingModel", Constants::Material::defaultShadingModel);
             material.AddChild("Multilayer", 0);
 
+            // TODO: set more parameters of material
             Node properties("Properties70");
             properties.AddChild(Node("P", {"AmbientColor", "Color", "", "A", 0, 0, 0}));
             properties.AddChild(Node("P", {"DiffuseColor", "Color", "", "A", 1, 1, 1}));
-            properties.AddChild(Node("P", {"DiffuseFactor", "Number", "", "A", 0.9}));
+            properties.AddChild(
+                Node("P", {"DiffuseFactor", "Number", "", "A", Constants::Material::defaultDiffuseFactor}));
             properties.AddChild(Node("P", {"TransparencyFactor", "Number", "", "A", 1}));
             properties.AddChild(Node("P", {"SpecularColor", "Color", "", "A", color.r, color.g, color.b}));
             properties.AddChild(Node("P", {"ReflectionFactor", "Number", "", "A", 0.5}));
@@ -243,8 +257,10 @@ namespace ROS2
             properties.AddChild(Node("P", {"Diffuse", "Vector3D", "Vector", "", 0.9, 0.9, 0.9}));
             properties.AddChild(Node("P", {"Specular", "Vector3D", "Vector", "", 0.5, 0.5, 0.5}));
             properties.AddChild(Node("P", {"Shininess", "double", "Number", "", 20}));
-            properties.AddChild(Node("P", {"Opacity", "double", "Number", "", 1}));
-            properties.AddChild(Node("P", {"Reflectivity", "double", "Number", "", 0}));
+            properties.AddChild(
+                Node("P", {"Opacity", "double", "Number", "", Constants::Material::defaultOpacity}));
+            properties.AddChild(
+                Node("P", {"Reflectivity", "double", "Number", "", Constants::Material::defaultReflectivity}));
             material.AddChild(std::move(properties));
 
             return NodeWithId(materialId, material);
@@ -263,7 +279,7 @@ namespace ROS2
 
             // Example cube geometry
             Node geometry("Geometry", {geometryId, "Geometry::cube", "Mesh"});
-            geometry.AddChild("GeometryVersion", 102);
+            geometry.AddChild("GeometryVersion", Constants::Object::geometryVersion);
 
             // Vertices
             // Single vertex v1: v1_x, v1_y, v1_z
@@ -297,7 +313,7 @@ namespace ROS2
 
             // Normals
             auto layerElementNormal = Node("LayerElementNormal", {0});
-            layerElementNormal.AddChild("Version", 102);
+            layerElementNormal.AddChild("Version", Constants::Object::layerElementNormalVersion);
             layerElementNormal.AddChild("Name", "");
             layerElementNormal.AddChild("MappingInformationType", "ByPolygonVertex");
             layerElementNormal.AddChild("ReferenceInformationType", "Direct");
@@ -315,7 +331,7 @@ namespace ROS2
 
             // UV
             auto layerElementUV = Node("LayerElementUV", {0});
-            layerElementUV.AddChild("Version", 101);
+            layerElementUV.AddChild("Version", Constants::Object::layerElementUvVersion);
             layerElementUV.AddChild("Name", "map1");
             layerElementUV.AddChild("MappingInformationType", "ByPolygonVertex");
             layerElementUV.AddChild("ReferenceInformationType", "IndexToDirect");
@@ -349,7 +365,7 @@ namespace ROS2
         {
             // TODO: get proper time stamp
             Node timeStamp("CreationTimeStamp");
-            timeStamp.AddChild("Version", 1000);
+            timeStamp.AddChild("Version", Constants::FbxHeader::timeStampVersion);
             timeStamp.AddChild("Year", 2022);
             timeStamp.AddChild("Month", 01);
             timeStamp.AddChild("Day", 01);
@@ -367,40 +383,40 @@ namespace ROS2
             sceneInfo.AddProperty("SceneInfo::GlobalInfo");
             sceneInfo.AddProperty("UserData");
             sceneInfo.AddChild("Type", "UserData");
-            sceneInfo.AddChild("Version", 100);
+            sceneInfo.AddChild("Version", Constants::FbxHeader::sceneInfoVersion);
             sceneInfo.AddChild(GetMetaData());
 
             Node properties("Properties70");
             properties.AddChild(
-                Node("P", {"DocumentUrl", "KString", "Url", "", "/dummy_path.fbx"}));
+                Node("P", {"DocumentUrl", "KString", "Url", "", Constants::FbxHeader::dummyPath}));
             properties.AddChild(
-                Node("P", {"SrcDocumentUrl", "KString", "Url", "", "/dummy_path.fbx"}));
+                Node("P", {"SrcDocumentUrl", "KString", "Url", "", Constants::FbxHeader::dummyPath}));
             properties.AddChild(
                 Node("P", {"Original", "Compound", "", ""}));
             properties.AddChild(
-                Node("P", {"Original|ApplicationVendor", "KString", "", "", "O3DE"}));
+                Node("P", {"Original|ApplicationVendor", "KString", "", "", Constants::FbxHeader::applicationName}));
             properties.AddChild(
-                Node("P", {"Original|ApplicationName", "KString", "", "", "O3DE"}));
+                Node("P", {"Original|ApplicationName", "KString", "", "", Constants::FbxHeader::applicationName}));
             properties.AddChild(
-                Node("P", {"Original|ApplicationVersion", "KString", "", "", "2022"}));
+                Node("P", {"Original|ApplicationVersion", "KString", "", "", Constants::FbxHeader::applicationVersion}));
             properties.AddChild(
-                Node("P", {"Original|DateTime_GMT", "DateTime", "", "", "01/01/2022 00:00:00.000"}));
+                Node("P", {"Original|DateTime_GMT", "DateTime", "", "", Constants::FbxHeader::fileCreationDate}));
             properties.AddChild(
-                Node("P", {"Original|FileName", "KString", "", "", "/dummy_path.fbx"}));
+                Node("P", {"Original|FileName", "KString", "", "", Constants::FbxHeader::dummyPath}));
             properties.AddChild(
                 Node("P", {"LastSaved", "Compound", "", ""}));
             properties.AddChild(
-                Node("P", {"LastSaved|ApplicationVendor", "KString", "", "", "O3DE"}));
+                Node("P", {"LastSaved|ApplicationVendor", "KString", "", "", Constants::FbxHeader::applicationName}));
             properties.AddChild(
-                Node("P", {"LastSaved|ApplicationName", "KString", "", "", "O3DE"}));
+                Node("P", {"LastSaved|ApplicationName", "KString", "", "", Constants::FbxHeader::applicationName}));
             properties.AddChild(
-                Node("P", {"LastSaved|ApplicationVersion", "KString", "", "", "2022"}));
+                Node("P", {"LastSaved|ApplicationVersion", "KString", "", "", Constants::FbxHeader::applicationVersion}));
             properties.AddChild(
-                Node("P", {"LastSaved|DateTime_GMT", "DateTime", "", "", "01/01/2022 00:00:00.000"}));
+                Node("P", {"LastSaved|DateTime_GMT", "DateTime", "", "", Constants::FbxHeader::fileCreationDate}));
             properties.AddChild(
-                Node("P", {"Original|ApplicationActiveProject", "KString", "", "", "/dummy_path.fbx"}));
+                Node("P", {"Original|ApplicationActiveProject", "KString", "", "", Constants::FbxHeader::dummyPath}));
             properties.AddChild(
-                Node("P", {"Original|ApplicationNativeFile", "KString", "", "", "/dummy_path.fbx"}));
+                Node("P", {"Original|ApplicationNativeFile", "KString", "", "", Constants::FbxHeader::dummyPath}));
 
             sceneInfo.AddChild(std::move(properties));
 
@@ -410,8 +426,8 @@ namespace ROS2
         Node FbxGenerator::GetMetaData() const
         {
             Node metaData("MetaData");
-            metaData.AddChild("Version", 100);
-            metaData.AddChild("Title", "");
+            metaData.AddChild("Version", Constants::FbxHeader::metaDataVersion);
+            metaData.AddChild("Title", Constants::FbxHeader::metaDataTitle);
             metaData.AddChild("Subject", "");
             metaData.AddChild("Author", "");
             metaData.AddChild("Keywords", "");
