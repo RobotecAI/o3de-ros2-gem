@@ -9,6 +9,7 @@
 #include <AzCore/Module/Module.h>
 #include <Frame/ROS2FrameComponent.h>
 #include <Sensor/ROS2SensorComponent.h>
+#include <Imu/ROS2ImuSensorComponent.h>
 #include <ROS2SystemComponent.h>
 
 namespace ROS2
@@ -29,6 +30,7 @@ namespace ROS2
             m_descriptors.insert(m_descriptors.end(), {
                 ROS2SystemComponent::CreateDescriptor(),
                 ROS2SensorComponent::CreateDescriptor(),
+                ROS2ImuSensorComponent::CreateDescriptor(),
                 ROS2FrameComponent::CreateDescriptor()
                 });
         }

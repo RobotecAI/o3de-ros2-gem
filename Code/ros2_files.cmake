@@ -6,6 +6,8 @@
 set(FILES
     Source/Clock/SimulationClock.cpp
     Source/Clock/SimulationClock.h
+    Source/Imu/ROS2ImuSensorComponent.cpp
+    Source/Imu/ROS2ImuSensorComponent.h
     Source/QoS/QoS.cpp
     Source/QoS/QoS.h
     Source/ROS2ModuleInterface.h
