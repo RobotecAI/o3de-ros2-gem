@@ -30,10 +30,6 @@ namespace ROS2
         void Deactivate() override;
 
     private:
-        float m_gnssOriginLatitudeDeg = 0.0f;
-        float m_gnssOriginLongitudeDeg = 0.0f;
-        float m_gnssOriginAltitude = 0.0f;
-
         void FrequencyTick() override;
 
         AZ::Transform GetCurrentPose() const;

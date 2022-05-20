@@ -10,8 +10,7 @@
 
 #include "AzCore/Math/Matrix4x4.h"
 
-namespace ROS2::GNSS
-{
+namespace ROS2::Utilities::GeodeticTransforms {
     //! Converts radians to degrees
     float Rad2Deg(float rad);
 
@@ -47,4 +46,4 @@ namespace ROS2::GNSS
     //!     latitude and longitude are in decimal degrees
     //!     altitude is in meters
     AZ::Vector3 ECEFToWGS84(const AZ::Vector3& ECFEPoint);
-} // namespace ROS2::GNSS
+} // namespace ROS2::Map
