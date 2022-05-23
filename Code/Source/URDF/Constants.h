@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include <string>
-
 namespace ROS2
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,52 +19,52 @@ namespace ROS2
         {
             struct FbxHeader
             {
-                inline static const int headerVersion = 1003;
-                inline static const int fileVersion = 7500;
-                inline static const std::string creatorName = "O3DE ROS2 Gem";
-                inline static const int timeStampVersion = 1000;
-                inline static const int metaDataVersion = 100;
-                inline static const std::string metaDataTitle = "";
-                inline static const int sceneInfoVersion = 100;
-                inline static const std::string applicationName = "O3DE";
-                inline static const std::string applicationVersion = "2022";
-                inline static const std::string documentActiveAnimStackName = "Take 001";
-                inline static const std::string dummyPath = "/dummy_path.fbx";
-                inline static const std::string fileCreationDate = "01/01/2022 00:00:00.000";
+                static constexpr int headerVersion = 1003;
+                static constexpr int fileVersion = 7500;
+                static constexpr const char* creatorName = "O3DE ROS2 Gem";
+                static constexpr int timeStampVersion = 1000;
+                static constexpr int metaDataVersion = 100;
+                static constexpr const char* metaDataTitle = "";
+                static constexpr int sceneInfoVersion = 100;
+                static constexpr const char* applicationName = "O3DE";
+                static constexpr const char* applicationVersion = "2022";
+                static constexpr const char* documentActiveAnimStackName = "Take 001";
+                static constexpr const char* dummyPath = "/dummy_path.fbx";
+                static constexpr const char* fileCreationDate = "01/01/2022 00:00:00.000";
             };
 
             struct GlobalSettings
             {
-                inline static const int version = 1000;
-                inline static const int defaultTimeSpan = 1924423250;
-                inline static const std::string defaultCamera = "Producer Perspective";
-                inline static const int timeMode = 11;
-                inline static const int timeProtocol = 2;
-                inline static const int snapOnFrameMode = 0;
-                inline static const int customFrameRate = -1;
-                inline static const int currentTimeMarker = -1;
+                static constexpr int version = 1000;
+                static constexpr int defaultTimeSpan = 1924423250;
+                static constexpr const char* defaultCamera = "Producer Perspective";
+                static constexpr int timeMode = 11;
+                static constexpr int timeProtocol = 2;
+                static constexpr int snapOnFrameMode = 0;
+                static constexpr int customFrameRate = -1;
+                static constexpr int currentTimeMarker = -1;
             };
 
             struct Material
             {
-                inline static const int defaultVersion = 102;
-                inline static const std::string defaultShadingModel = "phong";
-                inline static const float defaultDiffuseFactor = 0.9;
-                inline static const float defaultOpacity = 1.0;
-                inline static const float defaultReflectivity = 0.0;
+                static constexpr int defaultVersion = 102;
+                static constexpr const char* defaultShadingModel = "phong";
+                static constexpr float defaultDiffuseFactor = 0.9;
+                static constexpr float defaultOpacity = 1.0;
+                static constexpr float defaultReflectivity = 0.0;
             };
 
             struct Object
             {
-                inline static const int modelVersion = 232;
-                inline static const int geometryVersion = 102;
-                inline static const int layerElementNormalVersion = 102;
-                inline static const int layerElementUvVersion = 101;
+                static constexpr int modelVersion = 232;
+                static constexpr int geometryVersion = 102;
+                static constexpr int layerElementNormalVersion = 102;
+                static constexpr int layerElementUvVersion = 101;
             };
 
             // Other
-            inline static const int definitionsVersion = 100;
-            inline static const std::string defaultConnectionType = "OO";
+            static constexpr int definitionsVersion = 100;
+            static constexpr const char* defaultConnectionType = "OO";
         };
     } // namespace Fbx
 } // namespace ROS2

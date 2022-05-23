@@ -8,6 +8,8 @@
 
 #include <URDF/FbxGenerator.h>
 
+#include <string>
+
 #include <AzTest/AzTest.h>
 
 namespace {
@@ -63,10 +65,6 @@ TEST_F(FbxGeneratorTest, AddModelAndMaterial)
 
     const auto fbxStr = generator.GetFbxString();
     PrintFbxContent(fbxStr);
-
-    // Save generated FBX to file (it's loaded by Asset Processor).
-    // std::string projectPath = "/home/user/o3de/o3de-demo-project/test.fbx";
-    // generator.SaveToFile(projectPath);
 }
 
 } // namespace
