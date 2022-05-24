@@ -54,13 +54,13 @@ namespace ROS2
         }
 
         Node::Node(
-            const std::string & name, const Properties & properties, const Nodes & children)
+            const AZStd::string & name, const Properties & properties, const Nodes & children)
             : m_name(name)
             , m_properties(properties)
             , m_children(children)
         {}
 
-        std::string Node::GetName() const
+        AZStd::string Node::GetName() const
         {
             return m_name;
         }
@@ -95,7 +95,7 @@ namespace ROS2
             m_children.push_back(child);
         }
 
-        void Node::AddChild(const std::string & name, const Property & property)
+        void Node::AddChild(const AZStd::string & name, const Property & property)
         {
             m_children.push_back(Node(name, { property }));
         }
@@ -105,7 +105,7 @@ namespace ROS2
             m_children.push_back(child);
         }
 
-        std::string Node::ToString(int nodeDepth) const
+        AZStd::string Node::ToString(int nodeDepth) const
         {
             // Calculate offset
             constexpr int spacesPerIndentLevel = 2;
@@ -115,7 +115,7 @@ namespace ROS2
 
             // Write name
             std::stringstream ss;
-            ss << offset << m_name << ": ";
+            ss << offset << m_name.data() << ": ";
 
             if (!HasProperties() && !HasChildren())
             {
@@ -148,7 +148,7 @@ namespace ROS2
                 {
                     for(auto node : m_children)
                     {
-                        ss << node.ToString(nodeDepth + 1);
+                        ss << node.ToString(nodeDepth + 1).data();
                     }
                 }
                 ss << offset << "}\n";
@@ -158,7 +158,7 @@ namespace ROS2
                 ss << "\n";
             }
 
-            return ss.str();
+            return ss.str().c_str();
         }
 
     } // namespace Fbx

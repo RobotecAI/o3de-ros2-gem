@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include <string>
 #include <any>
 
 #include <AzCore/std/containers/vector.h>
+#include <AzCore/std/string/string.h>
 #include <AzCore/Memory/SystemAllocator.h>
 
 #include "UniqueIdGenerator.h"
@@ -42,10 +42,10 @@ namespace ROS2
         public:
             AZ_CLASS_ALLOCATOR(Node, AZ::SystemAllocator, 0);
 
-            Node(const std::string & name,
+            Node(const AZStd::string & name,
                 const Properties & properties = {}, const Nodes & children = {});
 
-            std::string GetName() const;
+            AZStd::string GetName() const;
             Nodes GetChildren() const;
             Properties GetProperties() const;
             bool HasChildren() const;
@@ -56,14 +56,14 @@ namespace ROS2
 
             //! Add new child node to existing node
             void AddChild(const Node & child);
-            void AddChild(const std::string & name, const Property & property);
+            void AddChild(const AZStd::string & name, const Property & property);
             void AddChild(const Node && child);
 
             //! Convert the node to string (ASCII Fbx).
-            std::string ToString(int nodeDepth = 0)  const;
+            AZStd::string ToString(int nodeDepth = 0)  const;
 
         private:
-            std::string m_name;
+            AZStd::string m_name;
             Nodes m_children;
             Properties m_properties;
         };

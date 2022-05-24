@@ -11,6 +11,7 @@
 #include <string>
 
 #include <AzCore/std/containers/vector.h>
+#include <AzCore/std/string/string.h>
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
 
@@ -65,7 +66,7 @@ namespace ROS2
             void SaveToFile(const std::string & filePath, FileType type = FileType::Text);
 
             //! Return the string with ASCII version of current FBX structure.
-            std::string GetFbxString();
+            AZStd::string GetFbxString();
 
             //! Reset the internal data used for FBX file structure creation.
             void Reset();
@@ -75,11 +76,11 @@ namespace ROS2
             //! Notice: First added object is attached to the root node.
             //! TODO: generalization for other types of objects e.g. cuboid, cylinder
             //! TODO: handle textures
-            Id AddCubeObject(const std::string & objectName, double size, Id materialId);
+            Id AddCubeObject(const AZStd::string & objectName, double size, Id materialId);
 
             //! Add default material and returns its id
             //! TODO: add more material parameters
-            Id AddMaterial(const std::string & materialName, const Color & color);
+            Id AddMaterial(const AZStd::string & materialName, const Color & color);
 
             ///! Create relation between objects
             void SetRelationBetweenObjects(Id parentId, Id childId);
@@ -89,12 +90,12 @@ namespace ROS2
             {
                 AZ_CLASS_ALLOCATOR(Connection, AZ::SystemAllocator, 0);
 
-                Connection(Id parent, Id child, std::string connectionType)
+                Connection(Id parent, Id child, AZStd::string connectionType)
                     : parentId(parent), childId(child), type(connectionType) {}
 
                 Id parentId = -1;
                 Id childId = -1;
-                std::string type = "OO";
+                AZStd::string type = "OO";
             };
 
             //! Generate the FBX file structure.
@@ -113,8 +114,8 @@ namespace ROS2
             Node GetDefinitions() const;
 
             // Objects creation
-            NodeWithId CreateModel(const std::string & modelName) const;
-            NodeWithId CreateMaterial(const std::string & name, const Color & color) const;
+            NodeWithId CreateModel(const AZStd::string & modelName) const;
+            NodeWithId CreateMaterial(const AZStd::string & name, const Color & color) const;
             NodeWithId CreateGeometryCube(double size = 1.0) const;
 
             // Generate connections based on the m_connections.

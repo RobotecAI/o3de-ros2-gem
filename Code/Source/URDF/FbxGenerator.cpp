@@ -9,7 +9,6 @@
 #include "FbxGenerator.h"
 
 #include <fstream>
-#include <string>
 #include <chrono>
 #include <ctime>
 
@@ -35,18 +34,18 @@ namespace ROS2
                 std::runtime_error(std::string(__func__) + ": Unable to open file: " + filePath);
             }
 
-            file << GetFbxString();
+            file << GetFbxString().data();
             AZ_Printf("Fbx", "Data structure saved to file: %s", filePath.c_str());
         }
 
-        std::string FbxGenerator::GetFbxString()
+        AZStd::string FbxGenerator::GetFbxString()
         {
             if (!m_nodesUpdated)
             {
                 GenerateFbxStructure();
             }
 
-            std::string data;
+            AZStd::string data;
             // Traverse tree in depth-first order and generate string
             for (const auto & n : m_basicNodes)
             {
@@ -65,7 +64,7 @@ namespace ROS2
         }
 
         Id FbxGenerator::AddCubeObject(
-            const std::string & objectName, double size, Id materialId)
+            const AZStd::string & objectName, double size, Id materialId)
         {
             m_nodesUpdated = false;
 
@@ -90,7 +89,7 @@ namespace ROS2
             return model.id;
         }
 
-        Id FbxGenerator::AddMaterial(const std::string & materialName, const Color & color)
+        Id FbxGenerator::AddMaterial(const AZStd::string & materialName, const Color & color)
         {
             m_nodesUpdated = false;
 
@@ -216,7 +215,7 @@ namespace ROS2
             return definitions;
         }
 
-        NodeWithId FbxGenerator::CreateModel(const std::string & modelName) const
+        NodeWithId FbxGenerator::CreateModel(const AZStd::string & modelName) const
         {
             const int modelId = UniqueIdGenerator::GetUniqueId();
 
@@ -236,7 +235,7 @@ namespace ROS2
             return NodeWithId(modelId, model);
         }
 
-        NodeWithId FbxGenerator::CreateMaterial(const std::string & name, const Color & color) const
+        NodeWithId FbxGenerator::CreateMaterial(const AZStd::string & name, const Color & color) const
         {
             const int materialId = UniqueIdGenerator::GetUniqueId();
 

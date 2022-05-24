@@ -8,8 +8,6 @@
 
 #include <URDF/FbxGenerator.h>
 
-#include <string>
-
 #include <AzTest/AzTest.h>
 #include <AzCore/UnitTest/TestTypes.h>
 #include <AzCore/Memory/AllocatorScope.h>
@@ -23,11 +21,11 @@ using namespace ROS2::Fbx;
 class FbxGeneratorTest : public AllocatorsTestFixture
 {
 public:
-    void PrintFbxContent(const std::string & str)
+    void PrintFbxContent(const AZStd::string & str)
     {
         std::cout << __func__ << " fbx data:"
             << "\n---------------\n"
-            << str
+            << str.data()
             << "\n---------------\n";
     }
 };
@@ -38,7 +36,7 @@ TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 
     const auto fbxStr = generator.GetFbxString();
 
-    std::istringstream iss(fbxStr);
+    std::istringstream iss(fbxStr.data());
     std::string line;
 
     std::getline(iss, line);
