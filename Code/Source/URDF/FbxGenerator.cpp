@@ -20,7 +20,7 @@ namespace ROS2
 {
     namespace Fbx
     {
-        void FbxGenerator::SaveToFile(const std::string & filePath, FileType type)
+        void FbxGenerator::SaveToFile(const AZStd::string & filePath, FileType type)
         {
             // TODO: add support for binary files
             if (type != FileType::Text)
@@ -28,13 +28,13 @@ namespace ROS2
                 std::runtime_error(std::string(__func__) + ": Only text file type is supported!");
             }
 
-            std::ofstream file(filePath);
+            std::ofstream file(filePath.c_str());
             if (!file.is_open())
             {
-                std::runtime_error(std::string(__func__) + ": Unable to open file: " + filePath);
+                std::runtime_error(std::string(__func__) + ": Unable to open file: " + std::string(filePath.c_str()));
             }
 
-            file << GetFbxString().data();
+            file << GetFbxString().c_str();
             AZ_Printf("Fbx", "Data structure saved to file: %s", filePath.c_str());
         }
 

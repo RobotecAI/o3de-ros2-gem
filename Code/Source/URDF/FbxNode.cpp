@@ -46,7 +46,7 @@ namespace ROS2
             }
             else if (a.type() == typeid(RawString))
             {
-                return std::any_cast<RawString>(a).data;
+                return std::any_cast<RawString>(a).data.c_str();
             }
 
             AZ_Warning(__func__, false, "Unhandled type: %s", a.type().name());
@@ -148,7 +148,7 @@ namespace ROS2
                 {
                     for(auto node : m_children)
                     {
-                        ss << node.ToString(nodeDepth + 1).data();
+                        ss << node.ToString(nodeDepth + 1).c_str();
                     }
                 }
                 ss << offset << "}\n";

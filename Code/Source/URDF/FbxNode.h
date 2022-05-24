@@ -30,9 +30,9 @@ namespace ROS2
         //! But in very rare cases it's necessary to add field without quotation marks.
         struct RawString
         {
-            RawString(const std::string & str)
+            RawString(const AZStd::string & str)
                 : data(str) {}
-            std::string data;
+            AZStd::string data;
         };
 
         //! A node in FBX file tree structure.

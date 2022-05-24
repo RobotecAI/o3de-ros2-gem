@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include <string>
-
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 #include <AzCore/Memory/SystemAllocator.h>
@@ -63,7 +61,7 @@ namespace ROS2
 
             //! Save the current FBX structure to file.
             //! Note: only ASCII version is supported
-            void SaveToFile(const std::string & filePath, FileType type = FileType::Text);
+            void SaveToFile(const AZStd::string & filePath, FileType type = FileType::Text);
 
             //! Return the string with ASCII version of current FBX structure.
             AZStd::string GetFbxString();

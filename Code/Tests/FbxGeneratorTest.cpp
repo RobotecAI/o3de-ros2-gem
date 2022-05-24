@@ -10,8 +10,6 @@
 
 #include <AzTest/AzTest.h>
 #include <AzCore/UnitTest/TestTypes.h>
-#include <AzCore/Memory/AllocatorScope.h>
-#include <AzCore/base.h>
 
 namespace UnitTest
 {
@@ -25,7 +23,7 @@ public:
     {
         std::cout << __func__ << " fbx data:"
             << "\n---------------\n"
-            << str.data()
+            << str.c_str()
             << "\n---------------\n";
     }
 };

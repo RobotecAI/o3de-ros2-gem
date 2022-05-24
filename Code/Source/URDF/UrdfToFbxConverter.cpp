@@ -8,14 +8,14 @@
 
 #include "UrdfToFbxConverter.h"
 
-#include <string>
+#include <AzCore/std/string/string.h>
 
 #include "UrdfParser.h"
 #include "FbxGenerator.h"
 
 namespace ROS2
 {
-    std::string UrdfToFbxConverter::ConvertUrdfToFbx(const std::string & urdfString)
+    AZStd::string UrdfToFbxConverter::ConvertUrdfToFbx(const AZStd::string & urdfString)
     {
         // TODO: Add implementation
 

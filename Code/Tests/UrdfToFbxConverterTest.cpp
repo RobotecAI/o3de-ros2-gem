@@ -9,15 +9,17 @@
 #include <URDF/UrdfToFbxConverter.h>
 
 #include <AzTest/AzTest.h>
+#include <AzCore/UnitTest/TestTypes.h>
 
-namespace {
+namespace UnitTest
+{
 
-class UrdfToFbxConverterTest : public ::testing::Test
+class UrdfToFbxConverterTest : public AllocatorsTestFixture
 {
     public:
-        std::string GetUrdfWithOneLink()
+        AZStd::string GetUrdfWithOneLink()
         {
-            std::string xmlStr =
+            return
                 "<robot name=\"test_one_link\">"
                 "  <link name=\"link1\">"
                 "    <inertial>"
@@ -37,15 +39,12 @@ class UrdfToFbxConverterTest : public ::testing::Test
                 "    </collision>"
                 "  </link>"
                 "</robot>";
-            return xmlStr;
         }
-
-    protected:
-        ROS2::UrdfToFbxConverter converter; 
 };
 
 TEST_F(UrdfToFbxConverterTest, ConvertUrdfWithOneLink)
 {
+    ROS2::UrdfToFbxConverter converter;
     const auto xmlStr = GetUrdfWithOneLink();
     const auto fbxStr = converter.ConvertUrdfToFbx(xmlStr);
 

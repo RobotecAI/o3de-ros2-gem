@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <string>
+#include <AzCore/std/string/string.h>
 
 namespace ROS2
 {
@@ -17,7 +17,7 @@ namespace ROS2
     class UrdfToFbxConverter
     {
     public:
-        static std::string ConvertUrdfToFbx(const std::string & urdfString);
+        AZStd::string ConvertUrdfToFbx(const AZStd::string & urdfString);
     };
 
 } // namespace ROS2
