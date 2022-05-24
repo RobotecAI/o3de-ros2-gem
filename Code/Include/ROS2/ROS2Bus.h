@@ -43,6 +43,7 @@ namespace ROS2
         virtual builtin_interfaces::msg::Time GetROSTimestamp() const = 0;
 
         //! Send transformation between ROS2 frames.
+        //! @param t is a <a href="https://docs.ros2.org/latest/api/geometry_msgs/msg/TransformStamped.html">ROS2 TransformStamped message</a>.
         //! @param isDynamic controls whether a static or dynamic transform is sent. Static transforms are published
         //! only once and are to be used when the spatial relationship between two frames does not change.
         //! @note Transforms are already published by each ROS2FrameComponent.
