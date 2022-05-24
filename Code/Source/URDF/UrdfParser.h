@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <string>
+#include <AzCore/std/string/string.h>
 
 #include <urdf_parser/urdf_parser.h>
 
@@ -20,10 +20,10 @@ namespace ROS2
     {
     public:
         //! Parse string with URDF data and generate model
-        static urdf::ModelInterfaceSharedPtr Parse(const std::string & xmlString);
+        static urdf::ModelInterfaceSharedPtr Parse(const AZStd::string & xmlString);
 
         //! Parse file with URDF data and generate model
-        static urdf::ModelInterfaceSharedPtr ParseFromFile(const std::string & filePath);
+        static urdf::ModelInterfaceSharedPtr ParseFromFile(const AZStd::string & filePath);
     };
 
 } // namespace ROS2
