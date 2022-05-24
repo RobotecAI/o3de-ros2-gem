@@ -61,7 +61,7 @@ namespace ROS2
             m_basicNodes.clear();
             m_nodesUpdated = false;
             m_connections.clear();
-            m_objects.reset(new Node("Objects"));
+            m_objects = AZStd::make_shared<Node>("Objects");
         }
 
         Id FbxGenerator::AddCubeObject(

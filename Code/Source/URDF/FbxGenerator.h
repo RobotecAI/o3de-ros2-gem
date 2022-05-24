@@ -9,7 +9,10 @@
 #pragma once
 
 #include <string>
-#include <vector>
+
+#include <AzCore/std/containers/vector.h>
+#include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/std/smart_ptr/make_shared.h>
 
 #include "FbxNode.h"
 #include "UniqueIdGenerator.h"
@@ -55,6 +58,8 @@ namespace ROS2
         class FbxGenerator
         {
         public:
+            AZ_CLASS_ALLOCATOR(FbxGenerator, AZ::SystemAllocator, 0);
+
             //! Save the current FBX structure to file.
             //! Note: only ASCII version is supported
             void SaveToFile(const std::string & filePath, FileType type = FileType::Text);
@@ -82,6 +87,8 @@ namespace ROS2
         private:
             struct Connection
             {
+                AZ_CLASS_ALLOCATOR(Connection, AZ::SystemAllocator, 0);
+
                 Connection(Id parent, Id child, std::string connectionType)
                     : parentId(parent), childId(child), type(connectionType) {}
 
@@ -115,11 +122,11 @@ namespace ROS2
 
             static constexpr Id rootId = 0;
 
-            std::vector<Node> m_basicNodes;
+            AZStd::vector<Node> m_basicNodes;
             bool m_nodesUpdated = false;
-            std::vector<Connection> m_connections;
+            AZStd::vector<Connection> m_connections;
 
-            std::shared_ptr<Node> m_objects = std::make_shared<Node>("Objects");
+            AZStd::shared_ptr<Node> m_objects = AZStd::make_shared<Node>("Objects");
             bool m_first_object = true;
         };
     } // namespace Fbx

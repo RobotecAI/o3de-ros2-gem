@@ -11,6 +11,9 @@
 #include <string>
 #include <any>
 
+#include <AzCore/std/containers/vector.h>
+#include <AzCore/Memory/SystemAllocator.h>
+
 #include "UniqueIdGenerator.h"
 
 namespace ROS2
@@ -18,7 +21,8 @@ namespace ROS2
     namespace Fbx
     {
         using Property = std::any;
-        using Properties = std::vector<Property>;
+        using Properties = AZStd::vector<Property>;
+        using Nodes = AZStd::vector<class Node>;
 
         //! Represents raw string without quotation marks for Node properties purposes.
         //!
@@ -36,11 +40,13 @@ namespace ROS2
         class Node
         {
         public:
+            AZ_CLASS_ALLOCATOR(Node, AZ::SystemAllocator, 0);
+
             Node(const std::string & name,
-                const Properties & properties = {}, const std::vector<Node> & children = {});
+                const Properties & properties = {}, const Nodes & children = {});
 
             std::string GetName() const;
-            std::vector<Node> GetChildren() const;
+            Nodes GetChildren() const;
             Properties GetProperties() const;
             bool HasChildren() const;
             bool HasProperties() const;
@@ -58,7 +64,7 @@ namespace ROS2
 
         private:
             std::string m_name;
-            std::vector<Node> m_children;
+            Nodes m_children;
             Properties m_properties;
         };
 

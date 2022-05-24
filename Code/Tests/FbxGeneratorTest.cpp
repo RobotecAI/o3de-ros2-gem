@@ -11,12 +11,16 @@
 #include <string>
 
 #include <AzTest/AzTest.h>
+#include <AzCore/UnitTest/TestTypes.h>
+#include <AzCore/Memory/AllocatorScope.h>
+#include <AzCore/base.h>
 
-namespace {
+namespace UnitTest
+{
 
 using namespace ROS2::Fbx;
 
-class FbxGeneratorTest : public ::testing::Test
+class FbxGeneratorTest : public AllocatorsTestFixture
 {
 public:
     void PrintFbxContent(const std::string & str)
@@ -26,13 +30,12 @@ public:
             << str
             << "\n---------------\n";
     }
-
-protected:
-    FbxGenerator generator;
 };
 
 TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 {
+    FbxGenerator generator;
+
     const auto fbxStr = generator.GetFbxString();
 
     std::istringstream iss(fbxStr);
@@ -53,6 +56,8 @@ TEST_F(FbxGeneratorTest, BasicStructureGeneration)
 
 TEST_F(FbxGeneratorTest, AddModelAndMaterial)
 {
+    FbxGenerator generator;
+
     // Add material
     Color color(0.0, 0.0, 0.0);
     const auto materialId = generator.AddMaterial("black", color);
@@ -67,4 +72,4 @@ TEST_F(FbxGeneratorTest, AddModelAndMaterial)
     PrintFbxContent(fbxStr);
 }
 
-} // namespace
+} // namespace UnitTest

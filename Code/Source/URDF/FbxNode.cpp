@@ -54,7 +54,7 @@ namespace ROS2
         }
 
         Node::Node(
-            const std::string & name, const Properties & properties, const std::vector<Node> & children)
+            const std::string & name, const Properties & properties, const Nodes & children)
             : m_name(name)
             , m_properties(properties)
             , m_children(children)
@@ -65,7 +65,7 @@ namespace ROS2
             return m_name;
         }
 
-        std::vector<Node> Node::GetChildren() const
+        Nodes Node::GetChildren() const
         {
             return m_children;
         }
