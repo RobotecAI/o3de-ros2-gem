@@ -8,6 +8,14 @@ set(FILES
     Source/Clock/SimulationClock.h
     Source/Imu/ROS2ImuSensorComponent.cpp
     Source/Imu/ROS2ImuSensorComponent.h
+    Source/Lidar/LidarRaycaster.cpp
+    Source/Lidar/LidarRaycaster.h
+    Source/Lidar/LidarTemplate.cpp
+    Source/Lidar/LidarTemplate.h
+    Source/Lidar/LidarTemplateUtils.cpp
+    Source/Lidar/LidarTemplateUtils.h
+    Source/Lidar/ROS2LidarSensorComponent.cpp
+    Source/Lidar/ROS2LidarSensorComponent.h
     Source/QoS/QoS.cpp
     Source/QoS/QoS.h
     Source/RobotControl/RobotControl.h

@@ -31,7 +31,8 @@ namespace ROS2
             m_descriptors.insert(m_descriptors.end(), {
                 ROS2SystemComponent::CreateDescriptor(),
                 ROS2SensorComponent::CreateDescriptor(),
-                ROS2ImuSensorComponent::CreateDescriptor(),
+                ROS2ImuSensorComponent::CreateDescriptor(), 
+                ROS2LidarSensorComponent::CreateDescriptor(),
                 ROS2FrameComponent::CreateDescriptor(),
                 ROS2RobotControlComponent::CreateDescriptor()
                 });
