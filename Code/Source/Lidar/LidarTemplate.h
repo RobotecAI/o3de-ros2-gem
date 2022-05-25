@@ -19,6 +19,7 @@ namespace ROS2
         AZ_TYPE_INFO(LidarTemplate, "{9E9EF583-733D-4450-BBA0-ADD4D1BEFBF2}");
         static void Reflect(AZ::ReflectContext* context);
 
+        // TODO - implement more models. Add at least one realistic model.
         enum LidarModel
         {
             Generic3DLidar
