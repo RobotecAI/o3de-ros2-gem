@@ -12,37 +12,38 @@
 #include <fstream>
 #include <string>
 
-#include <AzCore/Debug/Trace.h>
+#include <AzCore/std/string/string.h>
+#include <AzCore/Console/Console.h>
 
 namespace ROS2
 {
     namespace Fbx
     {
-        std::string AnyToString(const std::any & a)
+        AZStd::string AnyToString(const std::any & a)
         {
             if (a.type() == typeid(int))
             {
-                return std::to_string(std::any_cast<int>(a));
+                return std::to_string(std::any_cast<int>(a)).c_str();
             }
             else if (a.type() == typeid(unsigned))
             {
-                return std::to_string(std::any_cast<unsigned>(a));
+                return std::to_string(std::any_cast<unsigned>(a)).c_str();
             }
             else if (a.type() == typeid(float))
             {
-                return std::to_string(std::any_cast<float>(a));
+                return std::to_string(std::any_cast<float>(a)).c_str();
             }
             else if (a.type() == typeid(double))
             {
-                return std::to_string(std::any_cast<double>(a));
+                return std::to_string(std::any_cast<double>(a)).c_str();
             }
             else if (a.type() == typeid(const char*))
             {
-                return std::string("\"") + std::any_cast<const char*>(a) + std::string("\"");
+                return AZStd::string("\"") + std::any_cast<const char*>(a) + AZStd::string("\"");
             }
-            else if (a.type() == typeid(std::string))
+            else if (a.type() == typeid(AZStd::string))
             {
-                return std::string("\"") + std::any_cast<std::string>(a) + std::string("\"");
+                return AZStd::string("\"") + std::any_cast<AZStd::string>(a).c_str() + AZStd::string("\"");
             }
             else if (a.type() == typeid(RawString))
             {
@@ -134,7 +135,7 @@ namespace ROS2
                         ss << ", ";
                     }
                     (void)property;
-                    ss << AnyToString(property);
+                    ss << AnyToString(property).c_str();
                     hasPrevious = true;
                 }
             }
