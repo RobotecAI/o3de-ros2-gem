@@ -1,0 +1,1288 @@
+diff --git a/Assets/Models/Sensors/Camera/AO.png b/Assets/Models/Sensors/Camera/AO.png
+deleted file mode 100644
+index dc71487..0000000
+Binary files a/Assets/Models/Sensors/Camera/AO.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/Camera/Body_Diffuse.png b/Assets/Models/Sensors/Camera/Body_Diffuse.png
+deleted file mode 100644
+index b4cf9cf..0000000
+Binary files a/Assets/Models/Sensors/Camera/Body_Diffuse.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/Camera/CameraOrbbeck.fbx b/Assets/Models/Sensors/Camera/CameraOrbbeck.fbx
+deleted file mode 100644
+index 85938e1..0000000
+Binary files a/Assets/Models/Sensors/Camera/CameraOrbbeck.fbx and /dev/null differ
+diff --git a/Assets/Models/Sensors/Camera/CameraOrbbeck.fbx.assetinfo b/Assets/Models/Sensors/Camera/CameraOrbbeck.fbx.assetinfo
+deleted file mode 100755
+index f67833a..0000000
+--- a/Assets/Models/Sensors/Camera/CameraOrbbeck.fbx.assetinfo
++++ /dev/null
+@@ -1,47 +0,0 @@
+-{
+-    "values": [
+-        {
+-            "$type": "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup",
+-            "id": "{4EC8CA5C-ED77-539D-A0D5-FDE774D3AE48}",
+-            "name": "CameraOrbbeck",
+-            "NodeSelectionList": {
+-                "selectedNodes": [
+-                    "RootNode.Collider"
+-                ],
+-                "unselectedNodes": [
+-                    {},
+-                    "RootNode",
+-                    "RootNode.Orbbeck"
+-                ]
+-            },
+-            "MaterialSlots": [
+-                "DefaultMaterial"
+-            ],
+-            "PhysicsMaterials": [
+-                "<Default Physics Material>"
+-            ]
+-        },
+-        {
+-            "$type": "{07B356B7-3635-40B5-878A-FAC4EFD5AD86} MeshGroup",
+-            "name": "CameraOrbbeck",
+-            "nodeSelectionList": {
+-                "selectedNodes": [
+-                    {},
+-                    "RootNode",
+-                    "RootNode.Orbbeck"
+-                ],
+-                "unselectedNodes": [
+-                    "RootNode.Collider"
+-                ]
+-            },
+-            "rules": {
+-                "rules": [
+-                    {
+-                        "$type": "MaterialRule"
+-                    }
+-                ]
+-            },
+-            "id": "{DD50FDF8-5780-543A-AA6E-E5D30DFE7E72}"
+-        }
+-    ]
+-}
+\ No newline at end of file
+diff --git a/Assets/Models/Sensors/IMU/AO.png b/Assets/Models/Sensors/IMU/AO.png
+deleted file mode 100644
+index 2dab496..0000000
+Binary files a/Assets/Models/Sensors/IMU/AO.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/IMU/Diffuse.png b/Assets/Models/Sensors/IMU/Diffuse.png
+deleted file mode 100644
+index 92982bd..0000000
+Binary files a/Assets/Models/Sensors/IMU/Diffuse.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/IMU/IMU_MTi10.fbx b/Assets/Models/Sensors/IMU/IMU_MTi10.fbx
+deleted file mode 100644
+index b5838cc..0000000
+Binary files a/Assets/Models/Sensors/IMU/IMU_MTi10.fbx and /dev/null differ
+diff --git a/Assets/Models/Sensors/IMU/IMU_MTi10.fbx.assetinfo b/Assets/Models/Sensors/IMU/IMU_MTi10.fbx.assetinfo
+deleted file mode 100755
+index a910e70..0000000
+--- a/Assets/Models/Sensors/IMU/IMU_MTi10.fbx.assetinfo
++++ /dev/null
+@@ -1,47 +0,0 @@
+-{
+-    "values": [
+-        {
+-            "$type": "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup",
+-            "id": "{F1C07FE3-CCB1-5FEB-8CDD-8101E20A52D1}",
+-            "name": "IMU_MTi10",
+-            "NodeSelectionList": {
+-                "selectedNodes": [
+-                    "RootNode.Collider"
+-                ],
+-                "unselectedNodes": [
+-                    {},
+-                    "RootNode",
+-                    "RootNode.MTi"
+-                ]
+-            },
+-            "MaterialSlots": [
+-                "DefaultMaterial"
+-            ],
+-            "PhysicsMaterials": [
+-                "<Default Physics Material>"
+-            ]
+-        },
+-        {
+-            "$type": "{07B356B7-3635-40B5-878A-FAC4EFD5AD86} MeshGroup",
+-            "name": "IMU_MTi10",
+-            "nodeSelectionList": {
+-                "selectedNodes": [
+-                    {},
+-                    "RootNode",
+-                    "RootNode.MTi"
+-                ],
+-                "unselectedNodes": [
+-                    "RootNode.Collider"
+-                ]
+-            },
+-            "rules": {
+-                "rules": [
+-                    {
+-                        "$type": "MaterialRule"
+-                    }
+-                ]
+-            },
+-            "id": "{8347CDE5-E6B6-50DC-B7FC-21B26C248E51}"
+-        }
+-    ]
+-}
+\ No newline at end of file
+diff --git a/Assets/Models/Sensors/IMU/Normal.png b/Assets/Models/Sensors/IMU/Normal.png
+deleted file mode 100644
+index b0c0c87..0000000
+Binary files a/Assets/Models/Sensors/IMU/Normal.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/LidarOS2.fbx b/Assets/Models/Sensors/LidarOS2/LidarOS2.fbx
+deleted file mode 100644
+index 827b14a..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/LidarOS2.fbx and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/LidarOS2.fbx.assetinfo b/Assets/Models/Sensors/LidarOS2/LidarOS2.fbx.assetinfo
+deleted file mode 100755
+index f034668..0000000
+--- a/Assets/Models/Sensors/LidarOS2/LidarOS2.fbx.assetinfo
++++ /dev/null
+@@ -1,47 +0,0 @@
+-{
+-    "values": [
+-        {
+-            "$type": "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup",
+-            "id": "{8B671FF3-450D-5007-AC79-F2E406301A08}",
+-            "name": "LidarOS2",
+-            "NodeSelectionList": {
+-                "selectedNodes": [
+-                    "RootNode.Collider"
+-                ],
+-                "unselectedNodes": [
+-                    {},
+-                    "RootNode",
+-                    "RootNode.OS2"
+-                ]
+-            },
+-            "MaterialSlots": [
+-                "DefaultMaterial"
+-            ],
+-            "PhysicsMaterials": [
+-                "<Default Physics Material>"
+-            ]
+-        },
+-        {
+-            "$type": "{07B356B7-3635-40B5-878A-FAC4EFD5AD86} MeshGroup",
+-            "name": "LidarOS2",
+-            "nodeSelectionList": {
+-                "selectedNodes": [
+-                    {},
+-                    "RootNode",
+-                    "RootNode.OS2"
+-                ],
+-                "unselectedNodes": [
+-                    "RootNode.Collider"
+-                ]
+-            },
+-            "rules": {
+-                "rules": [
+-                    {
+-                        "$type": "MaterialRule"
+-                    }
+-                ]
+-            },
+-            "id": "{830ADBFF-66E2-505D-BEE1-EFBD789FDF62}"
+-        }
+-    ]
+-}
+\ No newline at end of file
+diff --git a/Assets/Models/Sensors/LidarOS2/textures/AO_green.png b/Assets/Models/Sensors/LidarOS2/textures/AO_green.png
+deleted file mode 100644
+index e3ca0cd..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/textures/AO_green.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/textures/AO_grey.png b/Assets/Models/Sensors/LidarOS2/textures/AO_grey.png
+deleted file mode 100644
+index 92d54ea..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/textures/AO_grey.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/textures/Diffuse.png b/Assets/Models/Sensors/LidarOS2/textures/Diffuse.png
+deleted file mode 100644
+index 0466d8e..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/textures/Diffuse.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/textures/Metallic.png b/Assets/Models/Sensors/LidarOS2/textures/Metallic.png
+deleted file mode 100644
+index 42fe790..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/textures/Metallic.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/textures/Roughness.png b/Assets/Models/Sensors/LidarOS2/textures/Roughness.png
+deleted file mode 100644
+index a967c81..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/textures/Roughness.png and /dev/null differ
+diff --git a/Assets/Models/Sensors/LidarOS2/textures/Smoothness.png b/Assets/Models/Sensors/LidarOS2/textures/Smoothness.png
+deleted file mode 100644
+index 3c0a1f7..0000000
+Binary files a/Assets/Models/Sensors/LidarOS2/textures/Smoothness.png and /dev/null differ
+diff --git a/Assets/Prefabs/Sensors/CameraOrbbeck.prefab b/Assets/Prefabs/Sensors/CameraOrbbeck.prefab
+deleted file mode 100755
+index f7789e3..0000000
+--- a/Assets/Prefabs/Sensors/CameraOrbbeck.prefab
++++ /dev/null
+@@ -1,165 +0,0 @@
+-{
+-    "ContainerEntity": {
+-        "Id": "ContainerEntity",
+-        "Name": "CameraOrbbeck",
+-        "Components": {
+-            "Component_[11102275644839424768]": {
+-                "$type": "EditorDisabledCompositionComponent",
+-                "Id": 11102275644839424768
+-            },
+-            "Component_[11542908075789116644]": {
+-                "$type": "SelectionComponent",
+-                "Id": 11542908075789116644
+-            },
+-            "Component_[13196476423961983989]": {
+-                "$type": "EditorVisibilityComponent",
+-                "Id": 13196476423961983989
+-            },
+-            "Component_[13762686544738860494]": {
+-                "$type": "EditorPendingCompositionComponent",
+-                "Id": 13762686544738860494
+-            },
+-            "Component_[14647808383678281689]": {
+-                "$type": "EditorPrefabComponent",
+-                "Id": 14647808383678281689
+-            },
+-            "Component_[16541569782343084053]": {
+-                "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+-                "Id": 16541569782343084053,
+-                "Parent Entity": ""
+-            },
+-            "Component_[362243497987326595]": {
+-                "$type": "EditorEntitySortComponent",
+-                "Id": 362243497987326595,
+-                "Child Entity Order": [
+-                    "Entity_[505721939488]"
+-                ]
+-            },
+-            "Component_[6195463370225568393]": {
+-                "$type": "EditorLockComponent",
+-                "Id": 6195463370225568393
+-            },
+-            "Component_[7051867183047048361]": {
+-                "$type": "EditorEntityIconComponent",
+-                "Id": 7051867183047048361
+-            },
+-            "Component_[8693333803190442857]": {
+-                "$type": "EditorOnlyEntityComponent",
+-                "Id": 8693333803190442857
+-            },
+-            "Component_[921489768285039708]": {
+-                "$type": "EditorInspectorComponent",
+-                "Id": 921489768285039708
+-            }
+-        }
+-    },
+-    "Entities": {
+-        "Entity_[505721939488]": {
+-            "Id": "Entity_[505721939488]",
+-            "Name": "shape",
+-            "Components": {
+-                "Component_[10894288830090806011]": {
+-                    "$type": "SelectionComponent",
+-                    "Id": 10894288830090806011
+-                },
+-                "Component_[12232650884412772636]": {
+-                    "$type": "EditorDisabledCompositionComponent",
+-                    "Id": 12232650884412772636
+-                },
+-                "Component_[13423704711553959863]": {
+-                    "$type": "EditorLockComponent",
+-                    "Id": 13423704711553959863
+-                },
+-                "Component_[14616296837285217185]": {
+-                    "$type": "EditorVisibilityComponent",
+-                    "Id": 14616296837285217185
+-                },
+-                "Component_[14985514809153430690]": {
+-                    "$type": "EditorColliderComponent",
+-                    "Id": 14985514809153430690,
+-                    "ColliderConfiguration": {
+-                        "MaterialSelection": {
+-                            "MaterialIds": [
+-                                {}
+-                            ]
+-                        }
+-                    },
+-                    "ShapeConfiguration": {
+-                        "PhysicsAsset": {
+-                            "Asset": {
+-                                "assetId": {
+-                                    "guid": "{0E27CF27-5752-5557-B77A-4B29A5870E0E}",
+-                                    "subId": 3865077323
+-                                },
+-                                "assetHint": "models/sensors/camera/cameraorbbeck.pxmesh"
+-                            },
+-                            "Configuration": {
+-                                "PhysicsAsset": {
+-                                    "assetId": {
+-                                        "guid": "{0E27CF27-5752-5557-B77A-4B29A5870E0E}",
+-                                        "subId": 3865077323
+-                                    },
+-                                    "loadBehavior": "QueueLoad",
+-                                    "assetHint": "models/sensors/camera/cameraorbbeck.pxmesh"
+-                                }
+-                            }
+-                        }
+-                    }
+-                },
+-                "Component_[15329441649387498950]": {
+-                    "$type": "AZ::Render::EditorMeshComponent",
+-                    "Id": 15329441649387498950,
+-                    "Controller": {
+-                        "Configuration": {
+-                            "ModelAsset": {
+-                                "assetId": {
+-                                    "guid": "{0E27CF27-5752-5557-B77A-4B29A5870E0E}",
+-                                    "subId": 272993556
+-                                },
+-                                "assetHint": "models/sensors/camera/cameraorbbeck.azmodel"
+-                            }
+-                        }
+-                    }
+-                },
+-                "Component_[16525421850445080131]": {
+-                    "$type": "EditorPendingCompositionComponent",
+-                    "Id": 16525421850445080131
+-                },
+-                "Component_[1664914396196781949]": {
+-                    "$type": "EditorEntityIconComponent",
+-                    "Id": 1664914396196781949
+-                },
+-                "Component_[18099860883597356778]": {
+-                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+-                    "Id": 18099860883597356778,
+-                    "Parent Entity": "ContainerEntity"
+-                },
+-                "Component_[18322469032445804849]": {
+-                    "$type": "EditorOnlyEntityComponent",
+-                    "Id": 18322469032445804849
+-                },
+-                "Component_[2491808840491479985]": {
+-                    "$type": "EditorInspectorComponent",
+-                    "Id": 2491808840491479985,
+-                    "ComponentOrderEntryArray": [
+-                        {
+-                            "ComponentId": 18099860883597356778
+-                        },
+-                        {
+-                            "ComponentId": 15329441649387498950,
+-                            "SortIndex": 1
+-                        },
+-                        {
+-                            "ComponentId": 14985514809153430690,
+-                            "SortIndex": 2
+-                        }
+-                    ]
+-                },
+-                "Component_[6578496273892635118]": {
+-                    "$type": "EditorEntitySortComponent",
+-                    "Id": 6578496273892635118
+-                }
+-            }
+-        }
+-    }
+-}
+\ No newline at end of file
+diff --git a/Assets/Prefabs/Sensors/Imu.prefab b/Assets/Prefabs/Sensors/Imu.prefab
+deleted file mode 100755
+index ba1e3f4..0000000
+--- a/Assets/Prefabs/Sensors/Imu.prefab
++++ /dev/null
+@@ -1,173 +0,0 @@
+-{
+-    "ContainerEntity": {
+-        "Id": "ContainerEntity",
+-        "Name": "Imu",
+-        "Components": {
+-            "Component_[10933327020638125059]": {
+-                "$type": "EditorLockComponent",
+-                "Id": 10933327020638125059
+-            },
+-            "Component_[13139737976503828664]": {
+-                "$type": "SelectionComponent",
+-                "Id": 13139737976503828664
+-            },
+-            "Component_[15418568890677341368]": {
+-                "$type": "EditorOnlyEntityComponent",
+-                "Id": 15418568890677341368
+-            },
+-            "Component_[1567675407994048561]": {
+-                "$type": "EditorEntityIconComponent",
+-                "Id": 1567675407994048561
+-            },
+-            "Component_[2143987639398891621]": {
+-                "$type": "EditorDisabledCompositionComponent",
+-                "Id": 2143987639398891621
+-            },
+-            "Component_[4252676114928404176]": {
+-                "$type": "EditorPrefabComponent",
+-                "Id": 4252676114928404176
+-            },
+-            "Component_[6700600896017100313]": {
+-                "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+-                "Id": 6700600896017100313,
+-                "Parent Entity": ""
+-            },
+-            "Component_[8103406177016615226]": {
+-                "$type": "EditorVisibilityComponent",
+-                "Id": 8103406177016615226
+-            },
+-            "Component_[8182586409240141630]": {
+-                "$type": "EditorPendingCompositionComponent",
+-                "Id": 8182586409240141630
+-            },
+-            "Component_[901516877242196147]": {
+-                "$type": "EditorEntitySortComponent",
+-                "Id": 901516877242196147,
+-                "Child Entity Order": [
+-                    "Entity_[690707340010]"
+-                ]
+-            },
+-            "Component_[9830322531478794982]": {
+-                "$type": "EditorInspectorComponent",
+-                "Id": 9830322531478794982
+-            }
+-        }
+-    },
+-    "Entities": {
+-        "Entity_[690707340010]": {
+-            "Id": "Entity_[690707340010]",
+-            "Name": "shape",
+-            "Components": {
+-                "Component_[10340392978555572105]": {
+-                    "$type": "EditorVisibilityComponent",
+-                    "Id": 10340392978555572105
+-                },
+-                "Component_[11958193181460909696]": {
+-                    "$type": "EditorOnlyEntityComponent",
+-                    "Id": 11958193181460909696
+-                },
+-                "Component_[12008599340723129520]": {
+-                    "$type": "SelectionComponent",
+-                    "Id": 12008599340723129520
+-                },
+-                "Component_[12053638524449760314]": {
+-                    "$type": "EditorColliderComponent",
+-                    "Id": 12053638524449760314,
+-                    "ColliderConfiguration": {
+-                        "MaterialSelection": {
+-                            "MaterialIds": [
+-                                {}
+-                            ]
+-                        }
+-                    },
+-                    "ShapeConfiguration": {
+-                        "PhysicsAsset": {
+-                            "Asset": {
+-                                "assetId": {
+-                                    "guid": "{50286487-658B-5B99-99D6-3AB4002EFF73}",
+-                                    "subId": 3726733934
+-                                },
+-                                "assetHint": "models/sensors/imu/imu_mti10.pxmesh"
+-                            },
+-                            "Configuration": {
+-                                "PhysicsAsset": {
+-                                    "assetId": {
+-                                        "guid": "{50286487-658B-5B99-99D6-3AB4002EFF73}",
+-                                        "subId": 3726733934
+-                                    },
+-                                    "loadBehavior": "QueueLoad",
+-                                    "assetHint": "models/sensors/imu/imu_mti10.pxmesh"
+-                                }
+-                            }
+-                        }
+-                    }
+-                },
+-                "Component_[12417918822595867875]": {
+-                    "$type": "EditorEntitySortComponent",
+-                    "Id": 12417918822595867875
+-                },
+-                "Component_[13004836012029176840]": {
+-                    "$type": "EditorInspectorComponent",
+-                    "Id": 13004836012029176840,
+-                    "ComponentOrderEntryArray": [
+-                        {
+-                            "ComponentId": 16208993720168044799
+-                        },
+-                        {
+-                            "ComponentId": 13855119924746268003,
+-                            "SortIndex": 1
+-                        },
+-                        {
+-                            "ComponentId": 1876289897715338766,
+-                            "SortIndex": 2
+-                        },
+-                        {
+-                            "ComponentId": 8463513152996653994,
+-                            "SortIndex": 3
+-                        },
+-                        {
+-                            "ComponentId": 12053638524449760314,
+-                            "SortIndex": 4
+-                        }
+-                    ]
+-                },
+-                "Component_[13717336165918392]": {
+-                    "$type": "EditorDisabledCompositionComponent",
+-                    "Id": 13717336165918392
+-                },
+-                "Component_[13855119924746268003]": {
+-                    "$type": "AZ::Render::EditorMeshComponent",
+-                    "Id": 13855119924746268003,
+-                    "Controller": {
+-                        "Configuration": {
+-                            "ModelAsset": {
+-                                "assetId": {
+-                                    "guid": "{50286487-658B-5B99-99D6-3AB4002EFF73}",
+-                                    "subId": 282234899
+-                                },
+-                                "assetHint": "models/sensors/imu/imu_mti10.azmodel"
+-                            }
+-                        }
+-                    }
+-                },
+-                "Component_[14241613391642309632]": {
+-                    "$type": "EditorEntityIconComponent",
+-                    "Id": 14241613391642309632
+-                },
+-                "Component_[1528101389635990529]": {
+-                    "$type": "EditorLockComponent",
+-                    "Id": 1528101389635990529
+-                },
+-                "Component_[15355821739017208405]": {
+-                    "$type": "EditorPendingCompositionComponent",
+-                    "Id": 15355821739017208405
+-                },
+-                "Component_[16208993720168044799]": {
+-                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+-                    "Id": 16208993720168044799,
+-                    "Parent Entity": "ContainerEntity"
+-                }
+-            }
+-        }
+-    }
+-}
+\ No newline at end of file
+diff --git a/Assets/Prefabs/Sensors/LidarOS2.prefab b/Assets/Prefabs/Sensors/LidarOS2.prefab
+deleted file mode 100755
+index 410e6b6..0000000
+--- a/Assets/Prefabs/Sensors/LidarOS2.prefab
++++ /dev/null
+@@ -1,169 +0,0 @@
+-{
+-    "ContainerEntity": {
+-        "Id": "ContainerEntity",
+-        "Name": "LidarOS2",
+-        "Components": {
+-            "Component_[11054240545439632695]": {
+-                "$type": "EditorPendingCompositionComponent",
+-                "Id": 11054240545439632695
+-            },
+-            "Component_[12267693294305582384]": {
+-                "$type": "EditorPrefabComponent",
+-                "Id": 12267693294305582384
+-            },
+-            "Component_[13753717631378233523]": {
+-                "$type": "EditorInspectorComponent",
+-                "Id": 13753717631378233523
+-            },
+-            "Component_[14137377640240728084]": {
+-                "$type": "EditorOnlyEntityComponent",
+-                "Id": 14137377640240728084
+-            },
+-            "Component_[17530435867448426523]": {
+-                "$type": "EditorLockComponent",
+-                "Id": 17530435867448426523
+-            },
+-            "Component_[18045801361193694910]": {
+-                "$type": "EditorEntityIconComponent",
+-                "Id": 18045801361193694910
+-            },
+-            "Component_[3246013088748543125]": {
+-                "$type": "EditorEntitySortComponent",
+-                "Id": 3246013088748543125,
+-                "Child Entity Order": [
+-                    "Entity_[417184227077]"
+-                ]
+-            },
+-            "Component_[5389828146587111030]": {
+-                "$type": "EditorDisabledCompositionComponent",
+-                "Id": 5389828146587111030
+-            },
+-            "Component_[5989395931141545750]": {
+-                "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+-                "Id": 5989395931141545750,
+-                "Parent Entity": ""
+-            },
+-            "Component_[6982904761689756877]": {
+-                "$type": "EditorVisibilityComponent",
+-                "Id": 6982904761689756877
+-            },
+-            "Component_[8195205509917477088]": {
+-                "$type": "SelectionComponent",
+-                "Id": 8195205509917477088
+-            }
+-        }
+-    },
+-    "Entities": {
+-        "Entity_[417184227077]": {
+-            "Id": "Entity_[417184227077]",
+-            "Name": "shape",
+-            "Components": {
+-                "Component_[10387713135725007135]": {
+-                    "$type": "AZ::Render::EditorMeshComponent",
+-                    "Id": 10387713135725007135,
+-                    "Controller": {
+-                        "Configuration": {
+-                            "ModelAsset": {
+-                                "assetId": {
+-                                    "guid": "{99D850A3-8E59-5E78-93FE-AE8DB228684D}",
+-                                    "subId": 268955557
+-                                },
+-                                "assetHint": "models/sensors/lidaros2/lidaros2.azmodel"
+-                            }
+-                        }
+-                    }
+-                },
+-                "Component_[11659553095730431803]": {
+-                    "$type": "EditorPendingCompositionComponent",
+-                    "Id": 11659553095730431803
+-                },
+-                "Component_[13177781661023720894]": {
+-                    "$type": "EditorOnlyEntityComponent",
+-                    "Id": 13177781661023720894
+-                },
+-                "Component_[14535670656735835043]": {
+-                    "$type": "EditorColliderComponent",
+-                    "Id": 14535670656735835043,
+-                    "ColliderConfiguration": {
+-                        "MaterialSelection": {
+-                            "MaterialIds": [
+-                                {}
+-                            ]
+-                        }
+-                    },
+-                    "ShapeConfiguration": {
+-                        "PhysicsAsset": {
+-                            "Asset": {
+-                                "assetId": {
+-                                    "guid": "{99D850A3-8E59-5E78-93FE-AE8DB228684D}",
+-                                    "subId": 2574200790
+-                                },
+-                                "assetHint": "models/sensors/lidaros2/lidaros2.pxmesh"
+-                            },
+-                            "Configuration": {
+-                                "PhysicsAsset": {
+-                                    "assetId": {
+-                                        "guid": "{99D850A3-8E59-5E78-93FE-AE8DB228684D}",
+-                                        "subId": 2574200790
+-                                    },
+-                                    "loadBehavior": "QueueLoad",
+-                                    "assetHint": "models/sensors/lidaros2/lidaros2.pxmesh"
+-                                }
+-                            }
+-                        }
+-                    }
+-                },
+-                "Component_[1651548302861032559]": {
+-                    "$type": "SelectionComponent",
+-                    "Id": 1651548302861032559
+-                },
+-                "Component_[17075071070477116796]": {
+-                    "$type": "EditorDisabledCompositionComponent",
+-                    "Id": 17075071070477116796
+-                },
+-                "Component_[3201525403568523459]": {
+-                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+-                    "Id": 3201525403568523459,
+-                    "Parent Entity": "ContainerEntity"
+-                },
+-                "Component_[5004394864880282263]": {
+-                    "$type": "EditorEntityIconComponent",
+-                    "Id": 5004394864880282263
+-                },
+-                "Component_[5142969012241927438]": {
+-                    "$type": "EditorInspectorComponent",
+-                    "Id": 5142969012241927438,
+-                    "ComponentOrderEntryArray": [
+-                        {
+-                            "ComponentId": 3201525403568523459
+-                        },
+-                        {
+-                            "ComponentId": 10387713135725007135,
+-                            "SortIndex": 1
+-                        },
+-                        {
+-                            "ComponentId": 18284489930066132216,
+-                            "SortIndex": 2
+-                        },
+-                        {
+-                            "ComponentId": 98811077871648366,
+-                            "SortIndex": 3
+-                        }
+-                    ]
+-                },
+-                "Component_[6868930103042649999]": {
+-                    "$type": "EditorLockComponent",
+-                    "Id": 6868930103042649999
+-                },
+-                "Component_[8621809176728013021]": {
+-                    "$type": "EditorVisibilityComponent",
+-                    "Id": 8621809176728013021
+-                },
+-                "Component_[8808389010192194694]": {
+-                    "$type": "EditorEntitySortComponent",
+-                    "Id": 8808389010192194694
+-                }
+-            }
+-        }
+-    }
+-}
+\ No newline at end of file
+diff --git a/Code/CMakeLists.txt b/Code/CMakeLists.txt
+index 56aeb9f..124ef71 100644
+--- a/Code/CMakeLists.txt
++++ b/Code/CMakeLists.txt
+@@ -27,10 +27,9 @@ ly_add_target(
+         PUBLIC
+             AZ::AzCore
+             AZ::AzFramework
+-            Gem::Atom_RPI.Public
+ )
+ 
+-target_depends_on_ros2_packages(ROS2.Static rclcpp builtin_interfaces std_msgs sensor_msgs urdfdom tf2_ros)
++target_depends_on_ros2_packages(ROS2.Static rclcpp builtin_interfaces std_msgs tf2_ros)
+ 
+ ly_add_target(
+     NAME ROS2.API HEADERONLY
+@@ -113,12 +112,14 @@ endif()
+ ################################################################################
+ # See if globally, tests are supported
+ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
+-    if(PAL_TRAIT_TEST_GOOGLE_TEST_SUPPORTED)
++    # We globally support tests, see if we support tests on this platform for ROS2.Static
++    if(PAL_TRAIT_ROS2_TEST_SUPPORTED)
+         # We support ROS2.Tests on this platform, add ROS2.Tests target which depends on ROS2.Static
+         ly_add_target(
+             NAME ROS2.Tests ${PAL_TRAIT_TEST_TARGET_TYPE}
+             NAMESPACE Gem
+             FILES_CMAKE
++                ros2_files.cmake
+                 ros2_tests_files.cmake
+             INCLUDE_DIRECTORIES
+                 PRIVATE
+@@ -127,6 +128,7 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
+             BUILD_DEPENDENCIES
+                 PRIVATE
+                     AZ::AzTest
++                    AZ::AzFramework
+                     Gem::ROS2.Static
+         )
+ 
+@@ -138,7 +140,8 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
+ 
+     # If we are a host platform we want to add tools test like editor tests here
+     if(PAL_TRAIT_BUILD_HOST_TOOLS)
+-        if(PAL_TRAIT_TEST_GOOGLE_TEST_SUPPORTED)
++        # We are a host platform, see if Editor tests are supported on this platform
++        if(PAL_TRAIT_ROS2_EDITOR_TEST_SUPPORTED)
+             # We support ROS2.Editor.Tests on this platform, add ROS2.Editor.Tests target which depends on ROS2.Editor
+             ly_add_target(
+                 NAME ROS2.Editor.Tests ${PAL_TRAIT_TEST_TARGET_TYPE}
+diff --git a/Code/Source/Clock/SimulationClock.cpp b/Code/Source/Clock/SimulationClock.cpp
+index ca5815f..03bce43 100644
+--- a/Code/Source/Clock/SimulationClock.cpp
++++ b/Code/Source/Clock/SimulationClock.cpp
+@@ -6,9 +6,8 @@
+  *
+  */
+ 
+-#include "ROS2/ROS2Bus.h"
+ #include "SimulationClock.h"
+-#include <ROS2/ROS2Bus.h>
++#include "ROS2/ROS2Bus.h"
+ #include <rclcpp/qos.hpp>
+ 
+ namespace ROS2
+@@ -41,7 +40,7 @@ namespace ROS2
+         if (!m_clockPublisher)
+         {   //Lazy construct
+             auto ros2Node = ROS2Interface::Get()->GetNode();
+-            
++
+             rclcpp::ClockQoS qos;
+             m_clockPublisher = ros2Node->create_publisher<rosgraph_msgs::msg::Clock>("/clock", qos);
+         }
+diff --git a/Code/Source/Frame/NamespaceConfiguration.cpp b/Code/Source/Frame/NamespaceConfiguration.cpp
+index 44f7b16..beaf3ff 100644
+--- a/Code/Source/Frame/NamespaceConfiguration.cpp
++++ b/Code/Source/Frame/NamespaceConfiguration.cpp
+@@ -97,4 +97,3 @@ namespace ROS2
+         }
+     }
+ }  // namespace ROS2
+-
+diff --git a/Code/Source/Frame/ROS2FrameComponent.cpp b/Code/Source/Frame/ROS2FrameComponent.cpp
+index e20deb0..b2da951 100644
+--- a/Code/Source/Frame/ROS2FrameComponent.cpp
++++ b/Code/Source/Frame/ROS2FrameComponent.cpp
+@@ -5,9 +5,10 @@
+  * SPDX-License-Identifier: Apache-2.0 OR MIT
+  *
+  */
+-#include "ROS2/ROS2Bus.h"
++
+ #include "Frame/ROS2FrameComponent.h"
+ #include "Utilities/ROS2Names.h"
++#include "ROS2/ROS2Bus.h"
+ #include <AzCore/Component/Entity.h>
+ #include <AzCore/Serialization/EditContext.h>
+ #include <AzCore/Serialization/EditContextConstants.inl>
+@@ -61,7 +62,7 @@ namespace ROS2
+     }
+ 
+     bool ROS2FrameComponent::IsDynamic() const
+-    {   // TODO - determine by joint type
++    {   // TODO - determine by joint type. Also, there are immobile robots.
+         return IsTopLevel();
+     }
+ 
+diff --git a/Code/Source/Frame/ROS2FrameComponent.h b/Code/Source/Frame/ROS2FrameComponent.h
+index 7e5bd83..02d919c 100644
+--- a/Code/Source/Frame/ROS2FrameComponent.h
++++ b/Code/Source/Frame/ROS2FrameComponent.h
+@@ -17,7 +17,8 @@ namespace ROS2
+ {
+     /// This component marks an interesting reference frame and captures common behavior
+     /// for sensor data frame of reference, publishing ros2 static and dynamic transforms (tf)
+-    /// and helping to export robot prefab to URDF.
++    /// and helping to export robot prefab to URDF. A robot should have a ROS2Frame defined for every
++    /// entity (each level).
+     class ROS2FrameComponent
+         : public AZ::Component
+         , public AZ::TickBus::Handler
+@@ -55,12 +56,12 @@ namespace ROS2
+         AZ::TransformInterface* GetEntityTransformInterface() const;
+         const ROS2FrameComponent* GetParentROS2FrameComponent() const;
+ 
+-        // If parent entity does not exist or does not have a ROS2Frame component, return ros2 default global frame: "world"
++        // If parent entity does not exist or does not have a ROS2Frame component, return ros2 default global frame
+         AZStd::string GetParentFrameID() const;
+ 
+         // TODO - Editor component: validation of fields, constraints between values and so on
+         NamespaceConfiguration m_namespaceConfiguration; // TODO - validation
+-        AZStd::string m_frameName = "sensor_frame"; // TODO - option to fill from entity name, validation
++        AZStd::string m_frameName = "sensor_frame"; // TODO - option to fill from entity/sensor component name, validation
+ 
+         bool m_publishTransform = true;
+         AZStd::unique_ptr<ROS2Transform> m_ros2Transform;
+diff --git a/Code/Source/Frame/ROS2Transform.h b/Code/Source/Frame/ROS2Transform.h
+index 8cfe0e2..a79f420 100644
+--- a/Code/Source/Frame/ROS2Transform.h
++++ b/Code/Source/Frame/ROS2Transform.h
+@@ -9,7 +9,6 @@
+ 
+ #include <AzCore/Math/Transform.h>
+ #include <AzCore/std/string/string.h>
+-#include <AzCore/std/smart_ptr/unique_ptr.h>
+ #include <geometry_msgs/msg/transform_stamped.hpp>
+ 
+ namespace ROS2
+@@ -30,4 +29,4 @@ namespace ROS2
+        bool m_isPublished = false;
+        bool m_isDynamic;
+    };
+-}  // namespace ROS2
+\ No newline at end of file
++}  // namespace ROS2
+diff --git a/Code/Source/ROS2ModuleInterface.h b/Code/Source/ROS2ModuleInterface.h
+index 7706e2c..235995a 100644
+--- a/Code/Source/ROS2ModuleInterface.h
++++ b/Code/Source/ROS2ModuleInterface.h
+@@ -8,8 +8,8 @@
+ #include <AzCore/Memory/SystemAllocator.h>
+ #include <AzCore/Module/Module.h>
+ #include <Frame/ROS2FrameComponent.h>
+-#include <Lidar/ROS2LidarSensorComponent.h>
+-#include <RobotControl/ROS2RobotControlComponent.h>
++#include <RobotControl/ROS2RobotControlComponent.h">
++#include <Sensor/ROS2SensorComponent.h>
+ #include <Imu/ROS2ImuSensorComponent.h>
+ #include <ROS2SystemComponent.h>
+ 
+@@ -31,7 +31,7 @@ namespace ROS2
+             m_descriptors.insert(m_descriptors.end(), {
+                 ROS2SystemComponent::CreateDescriptor(),
+                 ROS2SensorComponent::CreateDescriptor(),
+-                ROS2ImuSensorComponent::CreateDescriptor(),
++                ROS2ImuSensorComponent::CreateDescriptor(), 
+                 ROS2LidarSensorComponent::CreateDescriptor(),
+                 ROS2FrameComponent::CreateDescriptor(),
+                 ROS2RobotControlComponent::CreateDescriptor()
+diff --git a/Code/Source/ROS2SystemComponent.cpp b/Code/Source/ROS2SystemComponent.cpp
+index e2dfe29..709d4dd 100644
+--- a/Code/Source/ROS2SystemComponent.cpp
++++ b/Code/Source/ROS2SystemComponent.cpp
+@@ -7,9 +7,6 @@
+  */
+ #include <ROS2SystemComponent.h>
+ 
+-#include "QoS/QoS.h"
+-#include "Sensor/PublisherConfiguration.h"
+-
+ #include <AzCore/Serialization/SerializeContext.h>
+ #include <AzCore/Serialization/EditContext.h>
+ #include <AzCore/Serialization/EditContextConstants.inl>
+@@ -20,9 +17,6 @@ namespace ROS2
+ {
+     void ROS2SystemComponent::Reflect(AZ::ReflectContext* context)
+     {
+-        // Reflect structs not strictly owned by any single component
+-        QoS::Reflect(context);
+-        PublisherConfiguration::Reflect(context);
+         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
+         {
+             serialize->Class<ROS2SystemComponent, AZ::Component>()
+@@ -31,7 +25,7 @@ namespace ROS2
+ 
+             if (AZ::EditContext* ec = serialize->GetEditContext())
+             {
+-                ec->Class<ROS2SystemComponent>("ROS2 System Component", "[Description of functionality provided by this System Component]")
++                ec->Class<ROS2SystemComponent>("ROS2", "[Description of functionality provided by this System Component]")
+                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                         ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("System"))
+                         ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
+diff --git a/Code/Source/Sensor/PublisherConfiguration.cpp b/Code/Source/Sensor/PublisherConfiguration.cpp
+index 2241af4..2a3416d 100644
+--- a/Code/Source/Sensor/PublisherConfiguration.cpp
++++ b/Code/Source/Sensor/PublisherConfiguration.cpp
+@@ -15,6 +15,7 @@ namespace ROS2
+ {
+     void PublisherConfiguration::Reflect(AZ::ReflectContext* context)
+     {
++        QoS::Reflect(context);
+         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
+         {
+             serializeContext->Class<PublisherConfiguration>()
+diff --git a/Code/Source/Sensor/ROS2SensorComponent.cpp b/Code/Source/Sensor/ROS2SensorComponent.cpp
+index 9f14bac..f872ea7 100644
+--- a/Code/Source/Sensor/ROS2SensorComponent.cpp
++++ b/Code/Source/Sensor/ROS2SensorComponent.cpp
+@@ -31,7 +31,6 @@ namespace ROS2
+     void ROS2SensorComponent::Reflect(AZ::ReflectContext* context)
+     {
+         SensorConfiguration::Reflect(context);
+-
+         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
+         {
+             serialize->Class<ROS2SensorComponent, AZ::Component>()
+diff --git a/Code/Source/Sensor/SensorConfiguration.cpp b/Code/Source/Sensor/SensorConfiguration.cpp
+index 8ab462c..f26ca72 100644
+--- a/Code/Source/Sensor/SensorConfiguration.cpp
++++ b/Code/Source/Sensor/SensorConfiguration.cpp
+@@ -14,6 +14,7 @@ namespace ROS2
+ {
+     void SensorConfiguration::Reflect(AZ::ReflectContext* context)
+     {
++        PublisherConfiguration::Reflect(context);
+         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
+         {
+             serializeContext->RegisterGenericType<AZStd::shared_ptr<PublisherConfiguration>>();
+diff --git a/Code/Source/URDF/UrdfParser.cpp b/Code/Source/URDF/UrdfParser.cpp
+deleted file mode 100644
+index b5bdbbf..0000000
+--- a/Code/Source/URDF/UrdfParser.cpp
++++ /dev/null
+@@ -1,38 +0,0 @@
+-/*
+- * Copyright (c) Contributors to the Open 3D Engine Project.
+- * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+- *
+- * SPDX-License-Identifier: Apache-2.0 OR MIT
+- *
+- */
+-
+-#include "UrdfParser.h"
+-
+-#include <fstream>
+-#include <string>
+-
+-#include <AzCore/Debug/Trace.h>
+-#include <urdf_model/model.h>
+-
+-namespace ROS2
+-{
+-    urdf::ModelInterfaceSharedPtr UrdfParser::Parse(const std::string & xmlString)
+-    {
+-        return urdf::parseURDF(xmlString);
+-    }
+-
+-    urdf::ModelInterfaceSharedPtr UrdfParser::ParseFromFile(const std::string & filePath)
+-    {
+-        std::ifstream istream(filePath);
+-        if (!istream)
+-        {
+-          AZ_Error("UrdfParser", false, "File %s not exist", filePath.c_str());
+-          return urdf::ModelInterfaceSharedPtr();
+-        }
+-
+-        std::string xmlStr((std::istreambuf_iterator<char>(istream)), std::istreambuf_iterator<char>());
+-
+-        return Parse(xmlStr);
+-    }
+-
+-} // namespace ROS2
+\ No newline at end of file
+diff --git a/Code/Source/URDF/UrdfParser.h b/Code/Source/URDF/UrdfParser.h
+deleted file mode 100644
+index 2939c63..0000000
+--- a/Code/Source/URDF/UrdfParser.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Copyright (c) Contributors to the Open 3D Engine Project.
+- * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+- *
+- * SPDX-License-Identifier: Apache-2.0 OR MIT
+- *
+- */
+-
+-#pragma once
+-
+-#include <string>
+-
+-#include <urdf_parser/urdf_parser.h>
+-
+-namespace ROS2
+-{
+-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+-    //! Class for parsing URDF data
+-    class UrdfParser
+-    {
+-        public:
+-            //! Parse string with URDF data and generate model
+-            static urdf::ModelInterfaceSharedPtr Parse(const std::string & xmlString);
+-
+-            //! Parse file with URDF data and generate model
+-            static urdf::ModelInterfaceSharedPtr ParseFromFile(const std::string & filePath);
+-    };
+-
+-} // namespace ROS2
+\ No newline at end of file
+diff --git a/Code/Source/Utilities/ROS2Names.h b/Code/Source/Utilities/ROS2Names.h
+index cf7db58..aeef068 100644
+--- a/Code/Source/Utilities/ROS2Names.h
++++ b/Code/Source/Utilities/ROS2Names.h
+@@ -27,4 +27,4 @@ namespace ROS2
+         static AZ::Outcome<void, AZStd::string> ValidateTopic(const AZStd::string& topic);
+         static AZ::Outcome<void, AZStd::string> ValidateTopicField(void* newValue, const AZ::Uuid& valueType);
+     };
+-}  // namespace ROS2
+\ No newline at end of file
++}  // namespace ROS2
+diff --git a/Code/Tests/UrdfParserTest.cpp b/Code/Tests/UrdfParserTest.cpp
+deleted file mode 100644
+index c3ea509..0000000
+--- a/Code/Tests/UrdfParserTest.cpp
++++ /dev/null
+@@ -1,163 +0,0 @@
+-/*
+- * Copyright (c) Contributors to the Open 3D Engine Project.
+- * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+- *
+- * SPDX-License-Identifier: Apache-2.0 OR MIT
+- *
+- */
+-
+-#include <URDF/UrdfParser.h>
+-
+-#include <AzTest/AzTest.h>
+-
+-namespace {
+-
+-class UrdfParserTest : public ::testing::Test
+-{
+-    public:
+-        std::string GetUrdfWithOneLink()
+-        {
+-            std::string xmlStr =
+-                "<robot name=\"test_one_link\">"
+-                "  <link name=\"link1\">"
+-                "    <inertial>"
+-                "      <mass value=\"1.0\"/>"
+-                "      <inertia ixx=\"1.0\" iyy=\"1.0\" izz=\"1.0\" ixy=\"0\" ixz=\"0\" iyz=\"0\"/>"
+-                "    </inertial>"
+-                "    <visual>"
+-                "      <geometry>"
+-                "        <box size=\"1.0 2.0 1.0\"/>"
+-                "      </geometry>"
+-                "      <material name=\"black\"/>"
+-                "    </visual>"
+-                "    <collision>"
+-                "      <geometry>"
+-                "        <box size=\"1.0 2.0 1.0\"/>"
+-                "      </geometry>"
+-                "    </collision>"
+-                "  </link>"
+-                "</robot>";
+-            return xmlStr;
+-        }
+-
+-        std::string GetUrdfWithTwoLinksAndJoint()
+-        {
+-            std::string xmlStr =
+-                "<robot name=\"test_two_links_one_joint\">"
+-                "  <link name=\"link1\">"
+-                "    <inertial>"
+-                "      <mass value=\"1.0\"/>"
+-                "      <inertia ixx=\"1.0\" iyy=\"1.0\" izz=\"1.0\" ixy=\"0\" ixz=\"0\" iyz=\"0\"/>"
+-                "    </inertial>"
+-                "    <visual>"
+-                "      <geometry>"
+-                "        <box size=\"1.0 2.0 1.0\"/>"
+-                "      </geometry>"
+-                "      <material name=\"black\"/>"
+-                "    </visual>"
+-                "  </link>"
+-                "  <link name=\"link2\">"
+-                "    <inertial>"
+-                "      <mass value=\"1.0\"/>"
+-                "      <inertia ixx=\"1.0\" iyy=\"1.0\" izz=\"1.0\" ixy=\"0\" ixz=\"0\" iyz=\"0\"/>"
+-                "    </inertial>"
+-                "    <visual>"
+-                "      <geometry>"
+-                "        <box size=\"1.0 1.0 1.0\"/>"
+-                "      </geometry>"
+-                "      <material name=\"black\"/>"
+-                "    </visual>"
+-                "  </link>"
+-                "  <joint name=\"joint12\" type=\"fixed\">"
+-                "    <parent link=\"link1\"/>"
+-                "    <child link=\"link2\"/>"
+-                "    <origin rpy=\"0 0 0\" xyz=\"1.0 0.5 0.0\"/>"
+-                "    <dynamics damping=\"10.0\" friction=\"5.0\"/>"
+-                "    <limit lower=\"10.0\" upper=\"20.0\" effort=\"90.0\" velocity=\"10.0\"/>"
+-                "  </joint>"
+-                "</robot>";
+-            return xmlStr;
+-        }
+-    protected:
+-        ROS2::UrdfParser parser; 
+-};
+-
+-TEST_F(UrdfParserTest, ParseUrdfWithOneLink)
+-{
+-    const auto xmlStr = GetUrdfWithOneLink();
+-    const auto urdf = parser.Parse(xmlStr);
+-
+-    EXPECT_EQ(urdf->getName(), "test_one_link");
+-
+-    std::vector<urdf::LinkSharedPtr> links;
+-    urdf->getLinks(links);
+-    EXPECT_EQ(links.size(), 1U);
+-
+-    const auto link1 = urdf->getLink("link1");
+-
+-    ASSERT_TRUE(link1);
+-    EXPECT_EQ(link1->inertial->mass, 1.0);
+-    EXPECT_EQ(link1->inertial->ixx, 1.0);
+-    EXPECT_EQ(link1->inertial->ixy, 0.0);
+-    EXPECT_EQ(link1->inertial->ixz, 0.0);
+-    EXPECT_EQ(link1->inertial->iyy, 1.0);
+-    EXPECT_EQ(link1->inertial->iyz, 0.0);
+-    EXPECT_EQ(link1->inertial->izz, 1.0);
+-
+-    EXPECT_EQ(link1->visual->material->name, "black");
+-    EXPECT_EQ(link1->visual->geometry->type, 1);
+-    const auto visualBox = std::dynamic_pointer_cast<urdf::Box>(link1->visual->geometry);
+-    EXPECT_EQ(visualBox->dim.x, 1.0);
+-    EXPECT_EQ(visualBox->dim.y, 2.0);
+-    EXPECT_EQ(visualBox->dim.z, 1.0);
+-
+-    EXPECT_EQ(link1->collision->geometry->type, 1);
+-    const auto collisionBox = std::dynamic_pointer_cast<urdf::Box>(link1->visual->geometry);
+-    EXPECT_EQ(collisionBox->dim.x, 1.0);
+-    EXPECT_EQ(collisionBox->dim.y, 2.0);
+-    EXPECT_EQ(collisionBox->dim.z, 1.0);
+-}
+-
+-TEST_F(UrdfParserTest, ParseUrdfWithTwoLinksAndJoint)
+-{
+-    const auto xmlStr = GetUrdfWithTwoLinksAndJoint();
+-    const auto urdf = parser.Parse(xmlStr);
+-
+-    EXPECT_EQ(urdf->getName(), "test_two_links_one_joint");
+-
+-    std::vector<urdf::LinkSharedPtr> links;
+-    urdf->getLinks(links);
+-    EXPECT_EQ(links.size(), 2U);
+-
+-    const auto link1 = urdf->getLink("link1");
+-    ASSERT_TRUE(link1);
+-
+-    const auto link2 = urdf->getLink("link2");
+-    ASSERT_TRUE(link2);
+-
+-    const auto joint12 = urdf->getJoint("joint12");
+-    ASSERT_TRUE(joint12);
+-
+-    EXPECT_EQ(joint12->parent_link_name, "link1");
+-    EXPECT_EQ(joint12->child_link_name, "link2");
+-
+-    EXPECT_EQ(joint12->parent_to_joint_origin_transform.position.x, 1.0);
+-    EXPECT_EQ(joint12->parent_to_joint_origin_transform.position.y, 0.5);
+-    EXPECT_EQ(joint12->parent_to_joint_origin_transform.position.z, 0.0);
+-
+-    double roll, pitch, yaw;
+-    joint12->parent_to_joint_origin_transform.rotation.getRPY(roll, pitch, yaw);
+-    EXPECT_DOUBLE_EQ(roll, 0.0);
+-    EXPECT_DOUBLE_EQ(pitch, 0.0);
+-    EXPECT_DOUBLE_EQ(yaw, 0.0);
+-
+-    EXPECT_EQ(joint12->dynamics->damping, 10.0);
+-    EXPECT_EQ(joint12->dynamics->friction, 5.0);
+-
+-    EXPECT_EQ(joint12->limits->lower, 10.0);
+-    EXPECT_EQ(joint12->limits->upper, 20.0);
+-    EXPECT_EQ(joint12->limits->effort, 90.0);
+-    EXPECT_EQ(joint12->limits->velocity, 10.0);
+-}
+-
+-} // namespace
+diff --git a/Code/ros2_files.cmake b/Code/ros2_files.cmake
+index 62a8400..4310c3c 100644
+--- a/Code/ros2_files.cmake
++++ b/Code/ros2_files.cmake
+@@ -6,6 +6,8 @@
+ set(FILES
+     Source/Clock/SimulationClock.cpp
+     Source/Clock/SimulationClock.h
++    Source/Imu/ROS2ImuSensorComponent.cpp
++    Source/Imu/ROS2ImuSensorComponent.h
+     Source/Lidar/LidarRaycaster.cpp
+     Source/Lidar/LidarRaycaster.h
+     Source/Lidar/LidarTemplate.cpp
+@@ -46,8 +48,4 @@ set(FILES
+     Source/Utilities/ROS2Conversions.h
+     Source/Utilities/ROS2Names.cpp
+     Source/Utilities/ROS2Names.h
+-    Source/URDF/UrdfParser.cpp
+-    Source/URDF/UrdfParser.h
+-    Source/Imu/ROS2ImuSensorComponent.cpp
+-    Source/Imu/ROS2ImuSensorComponent.h
+ )
+diff --git a/Code/ros2_tests_files.cmake b/Code/ros2_tests_files.cmake
+index a84e78d..9a0410a 100644
+--- a/Code/ros2_tests_files.cmake
++++ b/Code/ros2_tests_files.cmake
+@@ -5,5 +5,4 @@
+ 
+ set(FILES
+     Tests/ROS2Test.cpp
+-    Tests/UrdfParserTest.cpp
+ )
