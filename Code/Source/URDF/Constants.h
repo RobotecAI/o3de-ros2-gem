@@ -10,11 +10,10 @@
 
 namespace ROS2
 {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    //! The struct contains all constant parameters used in FBX files.
-    //! TODO: Could be moved to configuration file
     namespace Fbx
     {
+        //! The struct contains all constant parameters used in FBX files.
+        //! @note Constant values could be moved to configuration file.
         struct Constants
         {
             struct FbxHeader

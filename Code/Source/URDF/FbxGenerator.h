@@ -33,7 +33,6 @@ namespace ROS2
             float b = 0;
         };
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
         //! The class represents the FBX file structure generator and operations on that files.
         //!
         //! FBX file has a tree based structure.
@@ -60,30 +59,40 @@ namespace ROS2
             AZ_CLASS_ALLOCATOR(FbxGenerator, AZ::SystemAllocator, 0);
 
             //! Save the current FBX structure to file.
-            //! Note: only ASCII version is supported
+            //! @note only ASCII version is supported.
+            //! @param filePath is a path of the generated file.
+            //! @param type of the generated FBX file.
             void SaveToFile(const AZStd::string & filePath, FileType type = FileType::Text);
 
-            //! Return the string with ASCII version of current FBX structure.
+            //! Get the string with FBX data.
+            //! @return The string with ASCII version of current FBX structure.
             AZStd::string GetFbxString();
 
             //! Reset the internal data used for FBX file structure creation.
             void Reset();
 
-            //! Add cube object
-            //! Returns id of created object
+            //! Add cube object.
             //! Notice: First added object is attached to the root node.
-            //! TODO: generalization for other types of objects e.g. cuboid, cylinder
-            //! TODO: handle textures
+            //! @note TODO: generalization for other types of objects e.g. cuboid, cylinder
+            //! @note TODO: handle textures.
+            //! @param objectName A name of created object.
+            //! @param size A size of the cube in meters.
+            //! @param materialId The id of the created previously material that will be used in object.
+            //! @return id of created object.
             Id AddCubeObject(const AZStd::string & objectName, double size, Id materialId);
 
-            //! Add default material and returns its id
-            //! TODO: add more material parameters
+            //! Add default material and return its id.
+            //! @note TODO: add more material parameters.
+            //! @return id of created material.
             Id AddMaterial(const AZStd::string & materialName, const Color & color);
 
-            ///! Create relation between objects
+            //! Create relation between objects
+            //! @param parentId The id of the parent object in created relation.
+            //! @param parentId The id of the child object in created relation.
             void SetRelationBetweenObjects(Id parentId, Id childId);
 
         private:
+            //! Represents the connection between two objects.
             struct Connection
             {
                 AZ_CLASS_ALLOCATOR(Connection, AZ::SystemAllocator, 0);
@@ -128,5 +137,6 @@ namespace ROS2
             AZStd::shared_ptr<Node> m_objects = AZStd::make_shared<Node>("Objects");
             bool m_first_object = true;
         };
+
     } // namespace Fbx
 } // namespace ROS2
