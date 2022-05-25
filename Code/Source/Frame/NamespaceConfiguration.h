@@ -14,7 +14,7 @@
 namespace ROS2
 {
     //! Configuration for handling of namespaces.
-    //! Namespaces are useful for various ROS 2 components. This structure encapsulates the namespace itself,
+    //! Namespaces are useful for various ROS2 components. This structure encapsulates the namespace itself,
     //! composing namespaces and context-dependent default values.
     //! @note This structure is handled through ROS2FrameComponent.
     struct NamespaceConfiguration

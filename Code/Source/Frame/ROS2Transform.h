@@ -13,7 +13,7 @@
 
 namespace ROS2
 {
-   //! Publishes transforms as standard ros2 tf2 messages. Static transforms are published once.
+   //! Publishes transforms as standard ROS2 tf2 messages. Static transforms are published once.
    //! @note This class is already used through ROS2FrameComponent.
    // TODO - Rework this class (name, function). Separate broadcaster out of ROS2SystemComponent
    class ROS2Transform

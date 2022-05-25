@@ -44,8 +44,8 @@ namespace ROS2
         AZStd::string GetNamespace() const;
 
         //! Get AZ Transform for this frame
-        //! @return If parent ROS2Frame is found, return its transform.
-        //! Otherwise, return a global transformation.
+        //! @return If parent ROS2Frame is found, return its Transform.
+        //! Otherwise, return a global Transform.
         const AZ::Transform& GetFrameTransform() const;
 
         //! Global frame name in ros2 ecosystem.
@@ -55,21 +55,21 @@ namespace ROS2
     private:
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
 
-        // True if this entity does not have a parent entity with ROS2 Frame
-        bool IsTopLevel() const;
+        bool IsTopLevel() const; //!< True if this entity does not have a parent entity with ROS2.
 
-        // Whether transformation to parent frame can change during the simulation, or is fixed
+        //! Whether transformation to parent frame can change during the simulation, or is fixed
         bool IsDynamic() const;
 
         AZ::TransformInterface* GetEntityTransformInterface() const;
         const ROS2FrameComponent* GetParentROS2FrameComponent() const;
 
-        // If parent entity does not exist or does not have a ROS2Frame component, return ros2 default global frame: "world"
+        //! If parent entity does not exist or does not have a ROS2FrameComponent, return ROS2 default global frame.
+        //! @see GetGlobalFrameName().
         AZStd::string GetParentFrameID() const;
 
         // TODO - Editor component: validation of fields, constraints between values and so on
-        NamespaceConfiguration m_namespaceConfiguration; // TODO - validation
-        AZStd::string m_frameName = "sensor_frame"; // TODO - option to fill from entity name, validation
+        NamespaceConfiguration m_namespaceConfiguration;
+        AZStd::string m_frameName = "sensor_frame"; // TODO - option to fill from entity name
 
         bool m_publishTransform = true;
         AZStd::unique_ptr<ROS2Transform> m_ros2Transform;

@@ -15,7 +15,7 @@
 namespace ROS2
 {
     //! A wrapper for rclcpp::QoS (Quality of Service for DDS) with reflection.
-    //! Q
+    //! @see <a href="https://design.ros2.org/articles/qos.html">Quality of Service policies</a>.
     struct QoS
     {
     public:
@@ -31,7 +31,7 @@ namespace ROS2
         AZ::Crc32 OnQoSSelected();
 
         // TODO - only for Editor component
-        // Can be extended to also expose history and liveliness
+        //! If necessary, extend to also expose history and liveliness
         rclcpp::ReliabilityPolicy m_reliabilityPolicy;
         rclcpp::DurabilityPolicy m_durabilityPolicy;
         uint32_t m_depth;
