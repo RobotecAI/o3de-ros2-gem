@@ -16,7 +16,7 @@ namespace ROS2
     //! Configuration for handling of namespaces.
     //! Namespaces are useful for various ROS 2 components. This structure encapsulates the namespace itself,
     //! composing namespaces and context-dependent default values.
-    //! @note This structure is handled through ROS2Frame.
+    //! @note This structure is handled through ROS2FrameComponent.
     struct NamespaceConfiguration
     {
     public:
@@ -24,9 +24,9 @@ namespace ROS2
         static void Reflect(AZ::ReflectContext* context);
 
         //! A choice of methods to handle namespaces.
-        //! @note Top level ROS2Frame will likely be associated with an interesting object (robot). For multi-robot
+        //! @note Top level ROS2FrameComponent will likely be associated with an interesting object (robot). For multi-robot
         //! simulation, namespaces are often derived from the robot name itself. For this reason, the default behavior
-        //! for top level ROS2Frame is to generate namespace from entity name.
+        //! for top level ROS2FrameComponent is to generate namespace from entity name.
         enum NamespaceStrategy
         {
             Default, //!< FromEntityName for top-level frames, Empty otherwise

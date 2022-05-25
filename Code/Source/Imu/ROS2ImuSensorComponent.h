@@ -17,7 +17,7 @@ namespace ROS2
 {
     //! An IMU (Inertial Measurement Unit) sensor Component.
     //! IMUs typically include gyroscopes, accelerometers and magnetometers. This Component encapsulates data
-    //! acquisition and its publishing to ROS2 ecosystem.
+    //! acquisition and its publishing to ROS2 ecosystem. IMU Component requires ROS2FrameComponent.
     class ROS2ImuSensorComponent
         : public ROS2SensorComponent
     {

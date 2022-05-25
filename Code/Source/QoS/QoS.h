@@ -14,13 +14,17 @@
 
 namespace ROS2
 {
-    /// A wrapper on rclcpp::QoS (Quality of Service for DDS) with reflection
+    //! A wrapper for rclcpp::QoS (Quality of Service for DDS) with reflection.
+    //! Q
     struct QoS
     {
     public:
         AZ_TYPE_INFO(QoS, "{46692EA4-EA4C-495E-AD3C-426EAB8954D3}");
         QoS(const rclcpp::QoS& qos = rclcpp::QoS(rmw_qos_profile_default.depth));
         static void Reflect(AZ::ReflectContext* context);
+
+        //! Create and return QoS based on member values (Editor combos selection).
+        //! @return a <a href="https://docs.ros2.org/latest/api/rclcpp/classrclcpp_1_1QoS.html">ROS2 QoS struct</a>.
         rclcpp::QoS GetQoS() const;
 
     private:
