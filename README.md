@@ -16,7 +16,7 @@ This Gem enables users to develop robotic simulations through ROS2 tools and com
   * No bridges. Your simulation node will function as any other ROS2 node.
     * This is also good for performance
   * Easy way to include ROS2 dependencies.
-* Sensors
+* Sensors:
   * Sensor Component serving as a handy abstraction.
   * Example implementations of Lidar, Camera, IMU sensors.
     * Including a few Assets and prefabs which are ready to use. 
@@ -24,7 +24,7 @@ This Gem enables users to develop robotic simulations through ROS2 tools and com
   * Simulation time, publishing `/clock` supporting non-real time.
   * Publishing of transformation frames (`/tf`, `/tf_static`).
   * Validation for topic and namespace names.
-* Robot Control Component
+* Robot Control Component:
   * A quick to use method of controlling your robot with Twist messages.
   * Can be used with custom LUA scripting. 
 
