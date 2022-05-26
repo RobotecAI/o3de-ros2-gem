@@ -15,7 +15,6 @@ namespace ROS2
 {
     void PublisherConfiguration::Reflect(AZ::ReflectContext* context)
     {
-        QoS::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<PublisherConfiguration>()
