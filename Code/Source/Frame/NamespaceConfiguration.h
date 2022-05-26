@@ -36,7 +36,7 @@ namespace ROS2
         };
 
         //! Set namespace based on context.
-        //! @param isRoot Whether namespace belongs to top-level entity in the entity hierarchy.
+        //! @param isRoot Whether or not namespace belongs to top-level entity in the entity hierarchy.
         //! @param entityName Raw (not ros-ified) name of the entity to which the namespace belongs.
         void PopulateNamespace(bool isRoot, AZStd::string entityName);
         AZStd::string GetNamespace(const AZStd::string& parentNamespace) const;

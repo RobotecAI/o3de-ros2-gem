@@ -48,7 +48,7 @@ namespace ROS2
         //! Otherwise, return a global Transform.
         const AZ::Transform& GetFrameTransform() const;
 
-        //! Global frame name in ros2 ecosystem.
+        //! Get the global frame name in ros2 ecosystem.
         //! @return The name of the global frame. It is typically "odom", "map", "world".
         static const char* GetGlobalFrameName(); // TODO - allow to configure global frame in a specialized component
 

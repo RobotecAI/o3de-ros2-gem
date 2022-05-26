@@ -40,7 +40,6 @@ namespace ROS2
         if (!m_clockPublisher)
         {   //Lazy construct
             auto ros2Node = ROS2Interface::Get()->GetNode();
-            
             rclcpp::ClockQoS qos;
             m_clockPublisher = ros2Node->create_publisher<rosgraph_msgs::msg::Clock>("/clock", qos);
         }
