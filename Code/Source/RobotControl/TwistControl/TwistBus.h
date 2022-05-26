@@ -23,8 +23,8 @@ namespace ROS2
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
 
         //! Handle control command
-        //! @param linear Linear speed in each axis, in robot reference frame, in m/s
-        //! @param angular Angular speed in each axis, in robot reference frame, in m/2
+        //! @param linear Linear speed in each axis, in robot reference frame, in m/s.
+        //! @param angular Angular speed in each axis, in robot reference frame, in m/s.
         virtual void TwistReceived(const AZ::Vector3& linear, const AZ::Vector3& angular) = 0;
     };
 

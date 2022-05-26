@@ -14,7 +14,7 @@
 
 namespace ROS2
 {
-    //! Utility class for conversions between ROS2 types and O3DE (AZ::) types
+    //! Utility class for conversions between ROS2 types and O3DE (AZ::) types.
     class ROS2Conversions
     {
     public:

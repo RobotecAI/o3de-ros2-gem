@@ -17,7 +17,7 @@
 
 namespace ROS2
 {
-    //! Component extension enabling polymorphic use of generics
+    //! Component extension enabling polymorphic use of generics.
     // TODO - naming (this is a component activation interface capturing component and entity state)
     class IRobotControl
     {
@@ -31,7 +31,7 @@ namespace ROS2
     };
 
     //! The generic class for handling subscriptions to ROS2 control messages of different types.
-    //! @see ControlConfiguration::Steering
+    //! @see ControlConfiguration::Steering.
     template <typename T>
     class RobotControl : public IRobotControl
     {

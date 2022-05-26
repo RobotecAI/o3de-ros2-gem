@@ -13,11 +13,11 @@
 
 namespace ROS2
 {
-    //! Utility class for handling ROS2 naming rules
+    //! Utility class for handling ROS2 naming rules.
     class ROS2Names
     {
     public:
-        //! Joins namespace and the given name
+        //! Joins namespace and the given name.
         static AZStd::string GetNamespacedName(const AZStd::string& ns, const AZStd::string& name);
 
         //! Converts input to a ROS2-acceptable name for topics and namespaces.
