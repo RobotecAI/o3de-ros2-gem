@@ -47,7 +47,7 @@ namespace ROS2
 
         AZStd::vector<AZ::Vector3> m_lastScanResults;
 
-        // EntityId for self collision filter
-        AZ::EntityId m_selfColliderEntityId;
+        // EntityId to ignore in lidar simulation (e.g. do not detect lidar own physical collider)
+        AZ::EntityId m_lidarTransparentEntityId;
     };
 }  // namespace ROS2
