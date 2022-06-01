@@ -15,7 +15,7 @@
 namespace ROS2
 {
     // A simplified, non-optimized first version. TODO - generalize results (fields)
-    AZStd::vector<AZ::Vector3> LidarRaycaster::PerformRaycast(const AZ::Vector3& start, const AZStd::vector<AZ::Vector3>& directions, float distance, const AZ::EntityId& selfCollisionEntity)
+    AZStd::vector<AZ::Vector3> LidarRaycaster::PerformRaycast(const AZ::Vector3& start, const AZStd::vector<AZ::Vector3>& directions, float distance)
     {
         AZStd::vector<AZ::Vector3> results;
         AzPhysics::SceneQueryRequests requests;
@@ -27,11 +27,13 @@ namespace ROS2
             request->m_direction = direction;
             request->m_distance = distance;
             request->m_reportMultipleHits = false;
-            request->m_filterCallback = [selfCollisionEntity](const AzPhysics::SimulatedBody* simBody, const Physics::Shape *) {
-                if (simBody->GetEntityId() == selfCollisionEntity)
+            request->m_filterCallback = [selfCollider = m_selfColliderEntityId](const AzPhysics::SimulatedBody* simBody, const Physics::Shape *) {
+                if (simBody->GetEntityId() == selfCollider)
                 {
                     return AzPhysics::SceneQuery::QueryHitType::None;
-                } else {
+                } 
+                else 
+                {
                     return AzPhysics::SceneQuery::QueryHitType::Block;
                 }
             };
@@ -54,5 +56,9 @@ namespace ROS2
             }
         }
         return results;
+    }
+
+    void LidarRaycaster::setSelfColliderEntity(const AZ::EntityId &selfColliderEntity) {
+        m_selfColliderEntityId = selfColliderEntity;
     }
 } // namespace ROS2

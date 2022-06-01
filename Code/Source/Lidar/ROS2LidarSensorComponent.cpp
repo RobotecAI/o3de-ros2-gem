@@ -44,7 +44,8 @@ namespace ROS2
                     ->DataElement(AZ::Edit::UIHandlers::ComboBox, &ROS2LidarSensorComponent::m_lidarModel, "Lidar Model", "Lidar model")
                         ->EnumAttribute(LidarTemplate::LidarModel::Generic3DLidar, "Generic Lidar")
                         // TODO - show lidar template field values (read only) - see Reflect for LidarTemplate
-                    ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2LidarSensorComponent::m_selfColliderEntityId, "Self collision Entity", "Entity to be transparent for the lidar")
+                    ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2LidarSensorComponent::m_selfColliderEntityId, "Self collision Entity",
+                                  "Entity to be transparent for the lidar. If not set, use this entity")
                     ;
             }
         }
@@ -96,6 +97,15 @@ namespace ROS2
             auto defaultScene = AZ::RPI::Scene::GetSceneForEntityId(GetEntityId());
             m_drawQueue = AZ::RPI::AuxGeomFeatureProcessorInterface::GetDrawQueueForScene(defaultScene);
         }
+
+        if (m_selfColliderEntityId.IsValid())
+        {
+            m_lidarRaycaster.setSelfColliderEntity(m_selfColliderEntityId);
+        } 
+        else 
+        {
+            m_lidarRaycaster.setSelfColliderEntity(GetEntityId());
+        }
     }
 
     void ROS2LidarSensorComponent::Deactivate()
@@ -104,7 +114,8 @@ namespace ROS2
         m_pointCloudPublisher.reset();
     }
 
-    void ROS2LidarSensorComponent::FrequencyTick() {
+    void ROS2LidarSensorComponent::FrequencyTick()
+    {
         float distance = LidarTemplateUtils::GetTemplate(m_lidarModel).m_maxRange;
         auto entityTransform = GetEntity()->FindComponent<AzFramework::TransformComponent>(); // TODO - go through ROS2Frame
         const auto directions = LidarTemplateUtils::PopulateRayDirections(m_lidarModel,
@@ -112,13 +123,7 @@ namespace ROS2
         AZ::Vector3 start = entityTransform->GetWorldTM().GetTranslation();
         start.SetZ(start.GetZ());
 
-        // If self collision entity is not set, use this one
-        if (!m_selfColliderEntityId.IsValid())
-        {
-            m_selfColliderEntityId = GetEntityId();
-        }
-
-        m_lastScanResults = m_lidarRaycaster.PerformRaycast(start, directions, distance, m_selfColliderEntityId);
+        m_lastScanResults = m_lidarRaycaster.PerformRaycast(start, directions, distance);
         if (m_lastScanResults.empty())
         {
             AZ_TracePrintf("Lidar Sensor Component", "No results from raycast\n");
