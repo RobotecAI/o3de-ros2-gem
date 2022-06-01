@@ -15,7 +15,7 @@
 namespace ROS2
 {
     // A simplified, non-optimized first version. TODO - generalize results (fields)
-    AZStd::vector<AZ::Vector3> LidarRaycaster::PerformRaycast(const AZ::Vector3& start, const AZStd::vector<AZ::Vector3>& directions, float distance)
+    AZStd::vector<AZ::Vector3> LidarRaycaster::PerformRaycast(const AZ::Vector3& start, const AZStd::vector<AZ::Vector3>& directions, float distance, const AZ::EntityId& selfCollisionEntity)
     {
         AZStd::vector<AZ::Vector3> results;
         AzPhysics::SceneQueryRequests requests;
@@ -27,6 +27,14 @@ namespace ROS2
             request->m_direction = direction;
             request->m_distance = distance;
             request->m_reportMultipleHits = false;
+            request->m_filterCallback = [selfCollisionEntity](const AzPhysics::SimulatedBody* simBody, const Physics::Shape *) {
+                if (simBody->GetEntityId() == selfCollisionEntity)
+                {
+                    return AzPhysics::SceneQuery::QueryHitType::None;
+                } else {
+                    return AzPhysics::SceneQuery::QueryHitType::Block;
+                }
+            };
             requests.emplace_back(AZStd::move(request));
         }
 

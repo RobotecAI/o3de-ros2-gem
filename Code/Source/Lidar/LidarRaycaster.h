@@ -7,6 +7,7 @@
  */
 #pragma once
 
+#include <AzCore/Component/EntityId.h>
 #include <AzCore/Math/Vector3.h>
 #include <AzCore/std/containers/vector.h>
 
@@ -22,10 +23,11 @@ namespace ROS2
         //! in real sensors.
         //! @param directions Directions in which to shoot rays. These should be generated from Lidar configuration.
         //! @param distance Maximum distance for ray-casting.
+        //! @param parentId EntityId for self collision filtering.
         //! @return Hits of raycast. The returned vector size can be anything between zero and size of directions.
         //! No hits further than distance will be reported.
         // TODO - different starting points for rays, distance from reference point, noise models, rotating mirror sim, other
         // TODO - customized settings. Encapsulate in lidar definition and pass in constructor, update transform.
-        AZStd::vector<AZ::Vector3> PerformRaycast(const AZ::Vector3& start, const AZStd::vector<AZ::Vector3>& directions, float distance);
+        AZStd::vector<AZ::Vector3> PerformRaycast(const AZ::Vector3& start, const AZStd::vector<AZ::Vector3>& directions, float distance, const AZ::EntityId& parentId);
     };
 }  // namespace ROS2
