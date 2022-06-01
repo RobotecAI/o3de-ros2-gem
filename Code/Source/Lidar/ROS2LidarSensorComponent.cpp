@@ -84,6 +84,21 @@ namespace ROS2
         }
     }
 
+    void ROS2LidarSensorComponent::SetPhysicsScene()
+    {
+        auto* physicsSystem = AZ::Interface<AzPhysics::SystemInterface>::Get();
+        auto foundBody = physicsSystem->FindAttachedBodyHandleFromEntityId(GetEntityId());
+        auto lidarPhysicsSceneHandle = foundBody.first;
+        if (foundBody.first == AzPhysics::InvalidSceneHandle)
+        {
+            auto* sceneInterface = AZ::Interface<AzPhysics::SceneInterface>::Get();
+            lidarPhysicsSceneHandle = sceneInterface->GetSceneHandle(AzPhysics::DefaultPhysicsSceneName);
+        }
+
+        AZ_Assert(lidarPhysicsSceneHandle != AzPhysics::InvalidSceneHandle, "Invalid physics scene handle for entity");
+        m_lidarRaycaster.SetRaycasterScene(lidarPhysicsSceneHandle);
+    }
+
     void ROS2LidarSensorComponent::Activate()
     {
         auto ros2Node = ROS2Interface::Get()->GetNode();
@@ -93,10 +108,7 @@ namespace ROS2
         AZStd::string fullTopic = ROS2Names::GetNamespacedName(GetNamespace(), publisherConfig.m_topic);
         m_pointCloudPublisher = ros2Node->create_publisher<sensor_msgs::msg::PointCloud2>(fullTopic.data(), publisherConfig.GetQoS());
 
-        auto* physicsSystem = AZ::Interface<AzPhysics::SystemInterface>::Get();
-        auto foundBody = physicsSystem->FindAttachedBodyHandleFromEntityId(GetEntityId());
-        AZ_Assert(foundBody.first != AzPhysics::InvalidSceneHandle, "Invalid physics scene handle for entity");
-        m_lidarRaycaster.SetRaycasterScene(foundBody.first);
+        SetPhysicsScene();
         if (m_sensorConfiguration.m_visualise)
         {
             auto* entityScene = AZ::RPI::Scene::GetSceneForEntityId(GetEntityId());

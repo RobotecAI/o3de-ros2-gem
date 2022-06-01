@@ -36,6 +36,7 @@ namespace ROS2
     private:
         void FrequencyTick() override;
         void Visualise() override;
+        void SetPhysicsScene();
 
         LidarTemplate::LidarModel m_lidarModel = LidarTemplate::Generic3DLidar;
         LidarRaycaster m_lidarRaycaster;
