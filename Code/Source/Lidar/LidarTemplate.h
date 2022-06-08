@@ -35,8 +35,8 @@ namespace ROS2
         float m_maxHAngle = 0.0f;
         float m_minVAngle = 0.0f;
         float m_maxVAngle = 0.0f;
-        unsigned int m_layers = 0;
-        unsigned int m_numberOfIncrements = 0;
+        uint32_t m_layers = 0;
+        uint32_t m_numberOfIncrements = 0;
         float m_maxRange = 0.0f;
     };
 } // namespace ROS2
