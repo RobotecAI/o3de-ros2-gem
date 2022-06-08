@@ -54,7 +54,7 @@ namespace ROS2
     const char* ROS2FrameComponent::GetGlobalFrameName()
     {
         // TODO - parametrize this (typically: "odom", "world" and sometimes "map")
-        return "world";
+        return "odom"; // Odometry frame: https://www.ros.org/reps/rep-0105.html#odom
     }
 
     bool ROS2FrameComponent::IsTopLevel() const
