@@ -81,7 +81,8 @@ If you intend to add your own sensor, it might be useful to look at how sensors 
 #### Robot Control
 
 The Gem comes with `ROS2RobotControlComponent`, which you can use to move your robot through [Twist](https://github.com/ros2/common_interfaces/blob/master/geometry_msgs/msg/Twist.msg) messages.
-The component subscribes to these messages on a configured topic. You can use tools such as `rqt_robot_steering` to move your robot with Twist messages.
+The component subscribes to these messages on a configured topic. 
+You can use tools such as [rqt_robot_steering](https://index.ros.org/p/rqt_robot_steering/#galactic) to move your robot with Twist messages.
 
 It is possible to implement your own control mechanisms with this Component.
 
