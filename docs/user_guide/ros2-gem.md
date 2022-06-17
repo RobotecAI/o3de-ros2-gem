@@ -108,3 +108,9 @@ Lets assume your project is called `MyProject`, the custom message package is ca
 4. You can now build `MyProject` and use the new messages.
 
 Remember to __always have your ROS 2 overlay sourced__ when building and running the project as sourcing provides visibility of ROS 2 package paths.
+
+## Diagram of classes
+
+Some classes with relationships and functions are presented on this diagram. Specific sensor classes (e.g. Lidar) are not included.
+
+![classes diagram](diagrams/diagram_ros2_gem.png)
