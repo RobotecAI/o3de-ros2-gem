@@ -17,19 +17,18 @@ namespace ROS2 {
     //! Structure containing all information required to create the camera sensor
     struct CameraSensorDescription {
         //! Constructor to create the description
-        //! @param cameraName - name of the camera; used to differentiate the cameras in multi-camera setup
+        //! @param cameraName - name of the camera; used to differentiate cameras in a multi-camera setup
         //! @param verticalFov - vertical field of view of camera sensor
         //! @param width - camera image width in pixels
         //! @param height - camera image height in pixels
         CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height);
-        CameraSensorDescription() = delete;
 
-        const float verticalFieldOfViewDeg; //!< cameras vertical vield of view
+        const float verticalFieldOfViewDeg; //!< camera vertical field of view
         const int width;                    //!< camera image width in pixels
         const int height;                   //!< camera image height in pixels
-        const AZStd::string cameraName;     //!< camera nam eto differeniate the camera in mulit-camera setup
+        const AZStd::string cameraName;     //!< camera name to differentiate cameras in a multi-camera setup
 
-        const float aspectRatio;              //!< camera image aspect ration; derived from widht and height
+        const float aspectRatio;              //!< camera image aspect ratio; equal to (width / height)
         const AZ::Matrix4x4 viewToClipMatrix; //!< camera view to clip space transform matrix; derived from other parameters
 
     private:
@@ -41,14 +40,14 @@ namespace ROS2 {
     //! It creates dedicated rendering pipeline for each camera
     class CameraSensor {
     public:
-        //! Function to initialize rendering pipeline for the camera sensor
+        //! Initializes rendering pipeline for the camera sensor
         //! @param cameraSensorDescription - camera sensor description used to create camera pipeline
-        void InitializePipeline(const CameraSensorDescription& cameraSensorDescription);
+        CameraSensor(const CameraSensorDescription& cameraSensorDescription);
 
-        //! Function to deinitialize rendering pipeline for the camera sensor
-        void DestroyPipeline();
+        //! Deinitializes rendering pipeline for the camera sensor
+        ~CameraSensor();
 
-        //! Function requiesting frame from rendering pipeline
+        //! Function requesting frame from rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
         //!                   it's argument is readback structure containing, among other thins, captured image
@@ -58,10 +57,7 @@ namespace ROS2 {
         AZStd::vector<AZStd::string> m_passHierarchy;
         AZ::RPI::RenderPipelinePtr m_pipeline;
         AZ::RPI::ViewPtr m_view;
-
         AZ::RPI::Scene* m_scene = nullptr;
-
-        bool m_isInitialized = false;
     };
 
 }

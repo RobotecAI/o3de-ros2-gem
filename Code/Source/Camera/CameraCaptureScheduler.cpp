@@ -23,8 +23,8 @@ CameraCaptureScheduler::~CameraCaptureScheduler() {
 }
 
 bool CameraCaptureScheduler::TryRequestFrame(const AZStd::vector <AZStd::string>& passHierarchy,
-                                             std::function<void(
-                               const AZ::RPI::AttachmentReadback::ReadbackResult &result)> frameRenderedCallback,
+                                             std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult
+                                                           &result)> frameRenderedCallback,
                                              AZ::RPI::RenderPipelinePtr pipeline) {
     if (passHierarchy.size() != 2) {
         AZ_TracePrintf("CameraCaptureScheduler", "Pipeline hierarchy must have exactly size of 2. Has %lu\n",

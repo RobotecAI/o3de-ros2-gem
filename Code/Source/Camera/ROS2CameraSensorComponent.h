@@ -19,7 +19,7 @@
 namespace ROS2
 {
     //! ROS2 Camera sensor component class
-    //! Allows to place camera sensor in the scene
+    //! Allows turning an entity into a camera sensor
     //! Can be parametrized with following values:
     //!   - camera name
     //!   - camera image width and height in pixels
@@ -46,8 +46,6 @@ namespace ROS2
         void FrequencyTick() override;
 
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> m_imagePublisher;
-        CameraSensor m_cameraSensor;
-
-        AZStd::string m_frameName;
+        std::optional<CameraSensor> m_cameraSensor;
     };
 }  // namespace ROS2

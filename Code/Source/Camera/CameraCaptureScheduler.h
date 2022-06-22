@@ -19,9 +19,10 @@
 
 namespace ROS2 {
 
-//! Singleton class to initialize and synchronize the frame captures for multiple cameras
-//! It supports following features:
-//! - only one frame is rendered and captured at a time with waiting for capture finished notification
+//! Singleton class to initialize and synchronize frame captures for multiple cameras
+//! It supports the following features:
+//! - only one frame is rendered and captured at a time
+//! - scheduler waits for a notification that capture is finished
 //! - queue with camera captures collects only one capture request per camera
 //! @note This is a temporary solution until the multi camera continuous capture is implemented on Atom side
 //! @note Components are synchronous by default, so no multithreading guards were placed

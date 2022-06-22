@@ -46,7 +46,7 @@ namespace ROS2 {
         AZ_Assert(!cameraName.empty(), "Camera name cannot be empty");
     }
 
-    void CameraSensor::InitializePipeline(const CameraSensorDescription& cameraSensorDescription) {
+    CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription) {
         AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", cameraSensorDescription.cameraName.c_str());
 
         AZ::Name viewName = AZ::Name("MainCamera");
@@ -60,6 +60,7 @@ namespace ROS2 {
         pipelineDesc.m_mainViewTagName = "MainCamera";
         pipelineDesc.m_name = pipelineName;
         pipelineDesc.m_rootPassTemplate = "MainPipelineRenderToTexture";
+        // TODO: expose sample count to user as it might substantially affect the performance
         pipelineDesc.m_renderSettings.m_multisampleState.m_samples = 4;
         m_pipeline = AZ::RPI::RenderPipeline::CreateRenderPipeline(pipelineDesc);
         m_pipeline->RemoveFromRenderTick();
@@ -79,12 +80,9 @@ namespace ROS2 {
         if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>()) {
             fp->SetViewAlias(m_view, targetView);
         }
-        m_isInitialized = true;
     }
 
-    void CameraSensor::DestroyPipeline() {
-        m_isInitialized = false;
-
+    CameraSensor::~CameraSensor() {
         if (m_scene) {
             if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>())
             {
@@ -99,8 +97,6 @@ namespace ROS2 {
     }
 
     void CameraSensor::RequestFrame(const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback) {
-        AZ_Assert(m_isInitialized, "Used uninitialized camera");
-
         AZ::Transform inverse = cameraPose.GetInverse();
         m_view->SetWorldToViewMatrix(AZ::Matrix4x4::CreateFromQuaternionAndTranslation(inverse.GetRotation(),
                                                                                        inverse.GetTranslation()));
