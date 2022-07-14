@@ -1,0 +1,6 @@
+<map id="ROS2::ROS2FrameComponent::GetNamespace" name="ROS2::ROS2FrameComponent::GetNamespace">
+<area shape="rect" id="node1" title=" " alt="" coords="539,39,755,80"/>
+<area shape="rect" id="node2" href="$class_r_o_s2_1_1_r_o_s2_frame_component.html#a634aa142324096228faccd6eb023d14c" title=" " alt="" coords="273,5,489,47"/>
+<area shape="rect" id="node4" href="$class_r_o_s2_1_1_r_o_s2_sensor_component.html#a452f044dfb869774f0610cac89946ff7" title="Get a complete namespace for this sensor topics and frame ids." alt="" coords="272,71,491,112"/>
+<area shape="rect" id="node3" href="$class_r_o_s2_1_1_r_o_s2_sensor_component.html#a989cb6379ebb4a9ad9e28c08b5426eea" title="Already includes namespace." alt="" coords="5,5,224,47"/>
+</map>

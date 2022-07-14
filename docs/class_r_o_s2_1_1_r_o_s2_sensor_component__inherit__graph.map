@@ -1,0 +1,9 @@
+<map id="ROS2::ROS2SensorComponent" name="ROS2::ROS2SensorComponent">
+<area shape="rect" id="node1" title=" " alt="" coords="212,81,431,108"/>
+<area shape="rect" id="node4" href="$class_r_o_s2_1_1_r_o_s2_camera_sensor_component.html" title=" " alt="" coords="479,5,749,32"/>
+<area shape="rect" id="node5" href="$class_r_o_s2_1_1_r_o_s2_g_n_s_s_sensor_component.html" title=" " alt="" coords="487,56,741,83"/>
+<area shape="rect" id="node6" href="$class_r_o_s2_1_1_r_o_s2_imu_sensor_component.html" title=" " alt="" coords="492,107,736,133"/>
+<area shape="rect" id="node7" href="$class_r_o_s2_1_1_r_o_s2_lidar_sensor_component.html" title=" " alt="" coords="489,157,739,184"/>
+<area shape="rect" id="node2" title=" " alt="" coords="23,56,146,83"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,107,164,133"/>
+</map>
