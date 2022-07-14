@@ -95,6 +95,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAMESPACE Gem
         AUTOMOC
         FILES_CMAKE
+            ros2_editor_files.cmake
             ros2_editor_shared_files.cmake
         INCLUDE_DIRECTORIES
             PRIVATE

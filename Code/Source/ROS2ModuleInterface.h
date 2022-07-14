@@ -14,6 +14,7 @@
 #include "Lidar/ROS2LidarSensorComponent.h"
 #include "ROS2SystemComponent.h"
 #include "RobotControl/ROS2RobotControlComponent.h"
+#include "URDF/RobotImporter/ROS2RobotImporterSystemComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 
@@ -34,6 +35,7 @@ namespace ROS2
             m_descriptors.insert(
                 m_descriptors.end(),
                 { ROS2SystemComponent::CreateDescriptor(),
+                  ROS2RobotImporterSystemComponent::CreateDescriptor(),
                   ROS2SensorComponent::CreateDescriptor(),
                   ROS2ImuSensorComponent::CreateDescriptor(),
                   ROS2GNSSSensorComponent::CreateDescriptor(),
@@ -48,6 +50,7 @@ namespace ROS2
         {
             return AZ::ComponentTypeList{
                 azrtti_typeid<ROS2SystemComponent>(),
+                azrtti_typeid<ROS2RobotImporterSystemComponent>()
             };
         }
     };

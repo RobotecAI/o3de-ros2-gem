@@ -7,6 +7,7 @@
  */
 #include <ROS2EditorSystemComponent.h>
 #include <ROS2ModuleInterface.h>
+#include "URDF/RobotImporter/ROS2RobotImporterEditorSystemComponent.h"
 
 namespace ROS2
 {
@@ -26,6 +27,7 @@ namespace ROS2
                 m_descriptors.end(),
                 {
                     ROS2EditorSystemComponent::CreateDescriptor(),
+                    ROS2RobotImporterEditorSystemComponent::CreateDescriptor()
                 });
         }
 
@@ -37,6 +39,7 @@ namespace ROS2
         {
             return AZ::ComponentTypeList{
                 azrtti_typeid<ROS2EditorSystemComponent>(),
+                azrtti_typeid<ROS2RobotImporterEditorSystemComponent>(),
             };
         }
     };
