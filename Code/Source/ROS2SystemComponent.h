@@ -44,7 +44,7 @@ namespace ROS2
 
         //! @see ROS2Requests::GetROSTimestamp()
         builtin_interfaces::msg::Time GetROSTimestamp() const override;
-        
+
         // TODO - rethink ownership of this one. It needs to be a singleton-like behavior, but not necessarily here
         void BroadcastTransform(const geometry_msgs::msg::TransformStamped& t, bool isDynamic) const override;
 
@@ -60,7 +60,7 @@ namespace ROS2
         // AZTickBus interface implementation
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
         ////////////////////////////////////////////////////////////////////////
-    
+
     private:
         std::shared_ptr<rclcpp::Node> m_ros2Node;
         AZStd::shared_ptr<rclcpp::executors::SingleThreadedExecutor> m_executor;

@@ -23,8 +23,7 @@ namespace ROS2
     //! Lidar Component allows customization of lidar type and behavior and encapsulates both simulation.
     //! and data publishing. Lidar Component requires ROS2FrameComponent.
     // TODO - Add selection of implementation choice (PhysX, GPU, other), noise
-    class ROS2LidarSensorComponent
-        : public ROS2SensorComponent
+    class ROS2LidarSensorComponent : public ROS2SensorComponent
     {
     public:
         AZ_COMPONENT(ROS2LidarSensorComponent, "{502A955F-7742-4E23-AD77-5E4063739DCA}", ROS2SensorComponent);
@@ -56,4 +55,4 @@ namespace ROS2
         // EntityId to ignore in lidar simulation (e.g. do not detect lidar own physical collider)
         AZ::EntityId m_lidarTransparentEntityId;
     };
-}  // namespace ROS2
+} // namespace ROS2

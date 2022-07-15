@@ -25,17 +25,14 @@ namespace ROS2
         PublisherConfiguration::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<ROS2SystemComponent, AZ::Component>()
-                ->Version(0)
-                ;
+            serialize->Class<ROS2SystemComponent, AZ::Component>()->Version(0);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<ROS2SystemComponent>("ROS2 System Component", "[Description of functionality provided by this System Component]")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                        ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("System"))
-                        ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
-                    ;
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("System"))
+                    ->Attribute(AZ::Edit::Attributes::AutoExpand, true);
             }
         }
     }
@@ -129,8 +126,8 @@ namespace ROS2
         {
             m_simulationClock.Tick();
 
-            //TODO - this can be in another thread and done with a higher resolution for less latency.
-            //TODO - callbacks will be called in the spinning thread (here, the main thread).
+            // TODO - this can be in another thread and done with a higher resolution for less latency.
+            // TODO - callbacks will be called in the spinning thread (here, the main thread).
             m_executor->spin_some();
         }
     }

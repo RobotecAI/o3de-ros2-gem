@@ -17,10 +17,10 @@ namespace ROS2
 {
     void TwistControl::BroadcastBus(const geometry_msgs::msg::Twist& message)
     {
-        TwistNotificationBus::Broadcast(&TwistNotifications::TwistReceived,
-                                        ROS2Conversions::FromROS2Vector3(message.linear),
-                                        ROS2Conversions::FromROS2Vector3(message.angular))
-                ;
+        TwistNotificationBus::Broadcast(
+            &TwistNotifications::TwistReceived,
+            ROS2Conversions::FromROS2Vector3(message.linear),
+            ROS2Conversions::FromROS2Vector3(message.angular));
     }
 
     void TwistControl::ApplyControl(const geometry_msgs::msg::Twist& message)
@@ -60,4 +60,4 @@ namespace ROS2
         Physics::RigidBodyRequestBus::Event(body, &Physics::RigidBodyRequests::SetLinearVelocity, currentLinearVelocity);
         Physics::RigidBodyRequestBus::Event(body, &Physics::RigidBodyRequests::SetAngularVelocity, angularVelocity);
     }
-}  // namespace ROS2
+} // namespace ROS2

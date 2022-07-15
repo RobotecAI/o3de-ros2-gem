@@ -19,8 +19,7 @@
 
 namespace ROS2
 {
-    class ROS2ModuleInterface
-        : public AZ::Module
+    class ROS2ModuleInterface : public AZ::Module
     {
     public:
         AZ_RTTI(ROS2ModuleInterface, "{8b5567cb-1de9-49af-9cd4-9750d4abcd6b}", AZ::Module);
@@ -32,16 +31,16 @@ namespace ROS2
             // Add ALL components descriptors associated with this gem to m_descriptors.
             // This will associate the AzTypeInfo information for the components with the SerializeContext, BehaviorContext and EditContext.
             // This happens through the [MyComponent]::Reflect() function.
-            m_descriptors.insert(m_descriptors.end(), {
-                ROS2SystemComponent::CreateDescriptor(),
-                ROS2SensorComponent::CreateDescriptor(),
-                ROS2ImuSensorComponent::CreateDescriptor(),
-                ROS2GNSSSensorComponent::CreateDescriptor(),
-                ROS2LidarSensorComponent::CreateDescriptor(),
-                ROS2FrameComponent::CreateDescriptor(),
-                ROS2RobotControlComponent::CreateDescriptor(),
-                ROS2CameraSensorComponent::CreateDescriptor()
-                });
+            m_descriptors.insert(
+                m_descriptors.end(),
+                { ROS2SystemComponent::CreateDescriptor(),
+                  ROS2SensorComponent::CreateDescriptor(),
+                  ROS2ImuSensorComponent::CreateDescriptor(),
+                  ROS2GNSSSensorComponent::CreateDescriptor(),
+                  ROS2LidarSensorComponent::CreateDescriptor(),
+                  ROS2FrameComponent::CreateDescriptor(),
+                  ROS2RobotControlComponent::CreateDescriptor(),
+                  ROS2CameraSensorComponent::CreateDescriptor() });
         }
 
         //! Add required SystemComponents to the SystemEntity.
@@ -52,4 +51,4 @@ namespace ROS2
             };
         }
     };
-}  // namespace ROS2
+} // namespace ROS2

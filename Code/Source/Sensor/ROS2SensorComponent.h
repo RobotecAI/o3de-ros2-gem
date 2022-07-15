@@ -41,13 +41,13 @@ namespace ROS2
     private:
         //! Executes the sensor action (acquire data -> publish) according to frequency.
         //! Override to implement a specific sensor behavior.
-        virtual void FrequencyTick() { };
+        virtual void FrequencyTick(){};
 
         //! Visualise sensor operation.
         //! For example, draw points or rays for a lidar, viewport for a camera, etc.
         //! Visualisation can be turned on or off in SensorConfiguration.
-        virtual void Visualise() { };
+        virtual void Visualise(){};
 
         float m_timeElapsedSinceLastTick = 0.0f;
     };
-}  // namespace ROS2
+} // namespace ROS2
