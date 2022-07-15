@@ -9,6 +9,9 @@
 
 #include <Atom/Feature/Utils/FrameCaptureBus.h>
 #include <chrono>
+#include <sensor_msgs/msg/image.hpp>
+#include <mutex>
+#include <condition_variable>
 
 class Entity;
 
@@ -50,14 +53,20 @@ namespace ROS2 {
         //! Function requesting frame from rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
-        //!                   it's argument is readback structure containing, among other thins, captured image
-        void RequestFrame(const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback);
+        //!                   it's argument is Image structure that can be easily published by ROS
+        void RequestImage(const AZ::Transform& cameraPose, std::function<void(const sensor_msgs::msg::Image& image)> callback);
 
     private:
+        void WaitForCapturesToFinish();
+
         AZStd::vector<AZStd::string> m_passHierarchy;
         AZ::RPI::RenderPipelinePtr m_pipeline;
         AZ::RPI::ViewPtr m_view;
         AZ::RPI::Scene* m_scene = nullptr;
+
+        std::mutex m_imageCallbackMutex;
+            size_t m_capturesInProgressCount;
+            std::condition_variable m_capturesFinishedCond;
     };
 
 }

@@ -21,6 +21,9 @@
 
 #include <PostProcess/PostProcessFeatureProcessor.h>
 
+#include <sensor_msgs/msg/image.hpp>
+#include <sensor_msgs/image_encodings.hpp>
+
 namespace ROS2 {
     CameraSensorDescription::CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height)
     : verticalFieldOfViewDeg(verticalFov)
@@ -81,6 +84,7 @@ namespace ROS2 {
     }
 
     CameraSensor::~CameraSensor() {
+        WaitForCapturesToFinish();
         if (m_scene) {
             if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>())
             {
@@ -94,20 +98,48 @@ namespace ROS2 {
         m_view.reset();
     }
 
-    void CameraSensor::RequestFrame(const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback) {
+    void CameraSensor::RequestImage(const AZ::Transform& cameraPose,
+                                    std::function<void(const sensor_msgs::msg::Image& image)> callback) {
         AZ::Transform inverse = cameraPose.GetInverse();
         m_view->SetWorldToViewMatrix(AZ::Matrix4x4::CreateFromQuaternionAndTranslation(inverse.GetRotation(),
                                                                                        inverse.GetTranslation()));
 
-        size_t userId = AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId;
+        size_t captureId = AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId;
 
         m_pipeline->AddToRenderTickOnce();
+
         AZ::Render::FrameCaptureRequestBus::BroadcastResult(
-                userId,
+                captureId,
                 &AZ::Render::FrameCaptureRequestBus::Events::CapturePassAttachmentWithCallback,
                 m_passHierarchy,
                 AZStd::string("Output"),
-                callback,
+                [callback, this](const AZ::RPI::AttachmentReadback::ReadbackResult &result) {
+                    const AZ::RHI::ImageDescriptor &descriptor = result.m_imageDescriptor;
+
+                    sensor_msgs::msg::Image image;
+                    image.encoding = sensor_msgs::image_encodings::RGBA8;
+
+                    image.width = descriptor.m_size.m_width;
+                    image.height = descriptor.m_size.m_height;
+                    image.data = std::vector<uint8_t>(result.m_dataBuffer->data(),
+                                                      result.m_dataBuffer->data() + result.m_dataBuffer->size());
+                    {
+                        std::lock_guard lock(m_imageCallbackMutex);
+                        callback(image);
+                        m_capturesInProgressCount--;
+                    }
+                    m_capturesFinishedCond.notify_all();
+                },
                 AZ::RPI::PassAttachmentReadbackOption::Output);
+
+        if (captureId != AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId) {
+            std::lock_guard lock(m_imageCallbackMutex);
+            m_capturesInProgressCount++;
+        }
+    }
+
+    void CameraSensor::WaitForCapturesToFinish() {
+        std::unique_lock lock(m_imageCallbackMutex);
+        m_capturesFinishedCond.wait(lock, [this]{ return m_capturesInProgressCount == 0; });
     }
 }
