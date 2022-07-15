@@ -23,4 +23,4 @@ namespace ROS2
                 ->Event("TwistReceived", &TwistNotificationBus::Events::TwistReceived);
         }
     }
-}
+} // namespace ROS2

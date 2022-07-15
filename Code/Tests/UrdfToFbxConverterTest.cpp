@@ -8,10 +8,9 @@
 
 #include <URDF/UrdfToFbxConverter.h>
 
+#include <AzCore/UnitTest/TestTypes.h>
 #include <AzCore/std/string/string.h>
-#include <AzCore/UnitTest/TestTypes.h>
 #include <AzTest/AzTest.h>
-#include <AzCore/UnitTest/TestTypes.h>
 
 namespace UnitTest
 {

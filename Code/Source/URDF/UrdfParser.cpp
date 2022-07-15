@@ -10,8 +10,8 @@
 
 #include <fstream>
 
-#include <AzCore/std/string/string.h>
 #include <AzCore/Debug/Trace.h>
+#include <AzCore/std/string/string.h>
 
 #include <urdf_model/model.h>
 

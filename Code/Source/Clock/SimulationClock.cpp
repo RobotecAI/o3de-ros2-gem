@@ -6,8 +6,8 @@
  *
  */
 
-#include "ROS2/ROS2Bus.h"
 #include "SimulationClock.h"
+#include "ROS2/ROS2Bus.h"
 #include <AzCore/Time/ITime.h>
 #include <rclcpp/qos.hpp>
 

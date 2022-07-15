@@ -64,4 +64,4 @@ namespace ROS2
         AZ::RPI::Scene* m_scene = nullptr;
     };
 
-}
+} // namespace ROS2

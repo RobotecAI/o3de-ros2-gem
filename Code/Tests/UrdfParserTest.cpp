@@ -8,9 +8,9 @@
 
 #include <URDF/UrdfParser.h>
 
-#include <AzTest/AzTest.h>
 #include <AzCore/UnitTest/TestTypes.h>
 #include <AzCore/std/string/string.h>
+#include <AzTest/AzTest.h>
 
 namespace UnitTest
 {

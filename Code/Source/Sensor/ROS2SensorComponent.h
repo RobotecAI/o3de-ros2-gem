@@ -7,10 +7,10 @@
  */
 #pragma once
 
+#include "SensorConfiguration.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
-#include "SensorConfiguration.h"
 
 namespace ROS2
 {

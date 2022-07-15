@@ -10,11 +10,11 @@
 #include "QoS/QoS.h"
 #include "Sensor/PublisherConfiguration.h"
 
-#include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
-#include <AzCore/std/smart_ptr/make_shared.h>
+#include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Time/ITime.h>
+#include <AzCore/std/smart_ptr/make_shared.h>
 
 namespace ROS2
 {

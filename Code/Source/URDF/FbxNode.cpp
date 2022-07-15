@@ -8,12 +8,12 @@
 
 #include "FbxNode.h"
 
-#include <iomanip>
 #include <fstream>
+#include <iomanip>
 #include <string>
 
-#include <AzCore/std/string/string.h>
 #include <AzCore/Console/Console.h>
+#include <AzCore/std/string/string.h>
 
 namespace ROS2
 {

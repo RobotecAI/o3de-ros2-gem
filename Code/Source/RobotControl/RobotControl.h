@@ -8,9 +8,9 @@
 #pragma once
 
 #include "Frame/ROS2FrameComponent.h"
+#include "ROS2/ROS2Bus.h"
 #include "RobotControl/ControlConfiguration.h"
 #include "RobotControl/RobotConfiguration.h"
-#include "ROS2/ROS2Bus.h"
 #include "Utilities/ROS2Names.h"
 #include <memory>
 #include <rclcpp/rclcpp.hpp>

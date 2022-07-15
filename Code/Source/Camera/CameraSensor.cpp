@@ -9,10 +9,10 @@
 
 #include <AzCore/Math/MatrixUtils.h>
 
-#include <Atom/RPI.Public/RPISystemInterface.h>
-#include <Atom/RPI.Public/Scene.h>
-#include <Atom/RPI.Public/RenderPipeline.h>
 #include <Atom/RPI.Public/Base.h>
+#include <Atom/RPI.Public/RPISystemInterface.h>
+#include <Atom/RPI.Public/RenderPipeline.h>
+#include <Atom/RPI.Public/Scene.h>
 
 #include <AzFramework/Components/TransformComponent.h>
 #include <AzFramework/Scene/SceneSystemInterface.h>
@@ -120,4 +120,4 @@ namespace ROS2
             callback,
             AZ::RPI::PassAttachmentReadbackOption::Output);
     }
-}
+} // namespace ROS2

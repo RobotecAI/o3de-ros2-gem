@@ -8,9 +8,9 @@
 
 #include "FbxGenerator.h"
 
-#include <fstream>
 #include <chrono>
 #include <ctime>
+#include <fstream>
 
 #include <AzCore/Console/Console.h>
 

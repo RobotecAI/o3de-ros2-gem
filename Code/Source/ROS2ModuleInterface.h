@@ -7,13 +7,13 @@
  */
 #pragma once
 
-#include "Frame/ROS2FrameComponent.h"
-#include "Imu/ROS2ImuSensorComponent.h"
-#include "GNSS/ROS2GNSSSensorComponent.h"
-#include "Lidar/ROS2LidarSensorComponent.h"
-#include "RobotControl/ROS2RobotControlComponent.h"
-#include "ROS2SystemComponent.h"
 #include "Camera/ROS2CameraSensorComponent.h"
+#include "Frame/ROS2FrameComponent.h"
+#include "GNSS/ROS2GNSSSensorComponent.h"
+#include "Imu/ROS2ImuSensorComponent.h"
+#include "Lidar/ROS2LidarSensorComponent.h"
+#include "ROS2SystemComponent.h"
+#include "RobotControl/ROS2RobotControlComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 

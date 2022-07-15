@@ -11,8 +11,8 @@
 #include "Lidar/LidarTemplate.h"
 #include "Lidar/LidarTemplateUtils.h"
 #include "Sensor/ROS2SensorComponent.h"
-#include <AzCore/Serialization/SerializeContext.h>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomDraw.h>
+#include <AzCore/Serialization/SerializeContext.h>
 #include <rclcpp/publisher.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 

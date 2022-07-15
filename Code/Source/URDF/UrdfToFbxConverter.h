@@ -10,9 +10,9 @@
 
 #include <AzCore/std/string/string.h>
 
-#include <AzCore/std/string/string.h>
-#include <AzCore/std/containers/map.h>
 #include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/std/containers/map.h>
+#include <AzCore/std/string/string.h>
 
 #include "FbxGenerator.h"
 #include "UrdfParser.h"

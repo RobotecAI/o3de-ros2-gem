@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include <AzCore/std/containers/vector.h>
-#include <AzCore/std/string/string.h>
 #include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
+#include <AzCore/std/string/string.h>
 
 #include "FbxNode.h"
 #include "UniqueIdGenerator.h"

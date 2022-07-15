@@ -10,13 +10,13 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
 
-#include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TransformBus.h>
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
-#include <sensor_msgs/image_encodings.hpp>
 #include <Utilities/ROS2Names.h>
+#include <sensor_msgs/image_encodings.hpp>
 
 namespace ROS2
 {

@@ -6,9 +6,9 @@
  *
  */
 
+#include "Sensor/ROS2SensorComponent.h"
 #include "Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
-#include "Sensor/ROS2SensorComponent.h"
 #include "Utilities/ROS2Names.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/EditContext.h>

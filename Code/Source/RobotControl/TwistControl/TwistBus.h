@@ -39,4 +39,4 @@ namespace ROS2
         void TwistReceived(const AZ::Vector3& v, const AZ::Vector3& a) override;
         static void Reflect(AZ::ReflectContext* context);
     };
-}
+} // namespace ROS2

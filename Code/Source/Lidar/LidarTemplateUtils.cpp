@@ -7,12 +7,12 @@
  */
 
 #include "LidarTemplateUtils.h"
-#include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/Math/MathUtils.h>
 #include <AzCore/Math/Matrix4x4.h>
-#include <AzCore/Math/Vector3.h>
 #include <AzCore/Math/Quaternion.h>
+#include <AzCore/Math/Vector3.h>
 #include <AzCore/Utils/Utils.h>
+#include <AzCore/std/containers/unordered_map.h>
 
 namespace ROS2
 {

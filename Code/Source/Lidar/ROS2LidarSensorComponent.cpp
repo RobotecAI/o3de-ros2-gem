@@ -6,17 +6,17 @@
  *
  */
 
-#include "Frame/ROS2FrameComponent.h"
 #include "Lidar/ROS2LidarSensorComponent.h"
+#include "Frame/ROS2FrameComponent.h"
 #include "Lidar/LidarTemplateUtils.h"
 #include "ROS2/ROS2Bus.h"
 #include "Utilities/ROS2Names.h"
-#include <AzCore/Component/Entity.h>
-#include <AzCore/Serialization/EditContext.h>
-#include <AzCore/Serialization/EditContextConstants.inl>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomFeatureProcessorInterface.h>
 #include <Atom/RPI.Public/RPISystemInterface.h>
 #include <Atom/RPI.Public/Scene.h>
+#include <AzCore/Component/Entity.h>
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzFramework/Physics/PhysicsSystem.h>
 
 namespace ROS2

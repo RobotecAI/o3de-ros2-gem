@@ -8,8 +8,8 @@
 
 #include <URDF/FbxGenerator.h>
 
-#include <AzTest/AzTest.h>
 #include <AzCore/UnitTest/TestTypes.h>
+#include <AzTest/AzTest.h>
 
 namespace UnitTest
 {

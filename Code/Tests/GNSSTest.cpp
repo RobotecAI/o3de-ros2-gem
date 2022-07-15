@@ -1,5 +1,5 @@
-#include <AzTest/AzTest.h>
 #include <AzCore/UnitTest/TestTypes.h>
+#include <AzTest/AzTest.h>
 
 #include "GNSS/GNSSFormatConversions.h"
 
@@ -81,4 +81,4 @@ namespace UnitTest
             EXPECT_NEAR(result.GetZ(), goldResult.GetZ(), 1.0f);
         }
     }
-}
+} // namespace UnitTest
