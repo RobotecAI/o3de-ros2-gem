@@ -88,12 +88,12 @@ $(document).ready(function(){initNavTree('_r_o_s2_transform_8h_source.html','');
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">* Copyright (c) Contributors to the Open 3D Engine Project.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">* For complete copyright and license terms please see the LICENSE at the root of this distribution.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">*</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">* SPDX-License-Identifier: Apache-2.0 OR MIT</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">*</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) Contributors to the Open 3D Engine Project.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * For complete copyright and license terms please see the LICENSE at the root of this distribution.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0 OR MIT</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Transform.h&gt;</span></div>
@@ -102,32 +102,32 @@ $(document).ready(function(){initNavTree('_r_o_s2_transform_8h_source.html','');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>ROS2</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;   <span class="comment">// TODO - Rework this class (name, function). Separate broadcaster out of ROS2SystemComponent</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_r_o_s2_transform.html">   19</a></span>&#160;   <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_r_o_s2_transform.html">ROS2Transform</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;   {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;   <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;       <a class="code" href="class_r_o_s2_1_1_r_o_s2_transform.html">ROS2Transform</a>(AZStd::string parentFrame, AZStd::string childFrame, <span class="keywordtype">bool</span> isDynamic);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">// TODO - Rework this class (name, function). Separate broadcaster out of ROS2SystemComponent</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_r_o_s2_transform.html">   19</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_r_o_s2_transform.html">ROS2Transform</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="class_r_o_s2_1_1_r_o_s2_transform.html">ROS2Transform</a>(AZStd::string parentFrame, AZStd::string childFrame, <span class="keywordtype">bool</span> isDynamic);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;       <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_r_o_s2_transform.html#acd5e23d22771ce83ad1311ba741ab79c">Publish</a>(<span class="keyword">const</span> AZ::Transform&amp; transform);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_r_o_s2_transform.html#acd5e23d22771ce83ad1311ba741ab79c">Publish</a>(<span class="keyword">const</span> AZ::Transform&amp; transform);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;   <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;       geometry_msgs::msg::TransformStamped CreateTransformMessage(<span class="keyword">const</span> AZ::Transform&amp; transform);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        geometry_msgs::msg::TransformStamped CreateTransformMessage(<span class="keyword">const</span> AZ::Transform&amp; transform);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;       <span class="keyword">const</span> AZStd::string m_parentFrame;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;       <span class="keyword">const</span> AZStd::string m_childFrame;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;       <span class="keywordtype">bool</span> m_isPublished = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;       <span class="keywordtype">bool</span> m_isDynamic;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;   };</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}  <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">const</span> AZStd::string m_parentFrame;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">const</span> AZStd::string m_childFrame;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">bool</span> m_isPublished = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordtype">bool</span> m_isDynamic;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    };</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_transform_html_acd5e23d22771ce83ad1311ba741ab79c"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_transform.html#acd5e23d22771ce83ad1311ba741ab79c">ROS2::ROS2Transform::Publish</a></div><div class="ttdeci">void Publish(const AZ::Transform &amp;transform)</div><div class="ttdef"><b>Definition:</b> ROS2Transform.cpp:33</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_transform_html_acd5e23d22771ce83ad1311ba741ab79c"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_transform.html#acd5e23d22771ce83ad1311ba741ab79c">ROS2::ROS2Transform::Publish</a></div><div class="ttdeci">void Publish(const AZ::Transform &amp;transform)</div><div class="ttdef"><b>Definition:</b> ROS2Transform.cpp:35</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_transform_html"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_transform.html">ROS2::ROS2Transform</a></div><div class="ttdef"><b>Definition:</b> ROS2Transform.h:19</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_42f976fc6d4aff13e0fde9c908639069.html">Frame</a></li><li class="navelem"><b>ROS2Transform.h</b></li>
-    <li class="footer">Generated on Fri Jul 15 2022 14:15:42 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Mon Jul 18 2022 10:05:02 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

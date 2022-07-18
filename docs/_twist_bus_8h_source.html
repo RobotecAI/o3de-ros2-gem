@@ -88,12 +88,12 @@ $(document).ready(function(){initNavTree('_twist_bus_8h_source.html',''); initRe
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">* Copyright (c) Contributors to the Open 3D Engine Project.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">* For complete copyright and license terms please see the LICENSE at the root of this distribution.</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">*</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">* SPDX-License-Identifier: Apache-2.0 OR MIT</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">*</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) Contributors to the Open 3D Engine Project.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * For complete copyright and license terms please see the LICENSE at the root of this distribution.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * SPDX-License-Identifier: Apache-2.0 OR MIT</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;AzCore/EBus/EBus.h&gt;</span></div>
@@ -102,40 +102,38 @@ $(document).ready(function(){initNavTree('_twist_bus_8h_source.html',''); initRe
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>ROS2</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_twist_notifications.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_twist_notifications.html">TwistNotifications</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        : <span class="keyword">public</span> AZ::EBusTraits</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Multiple;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_twist_notifications.html#a49faa912b2803f02396974d247b789ec">TwistReceived</a>(<span class="keyword">const</span> AZ::Vector3&amp; linear, <span class="keyword">const</span> AZ::Vector3&amp; angular) = 0;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    };</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">using</span> TwistNotificationBus = AZ::EBus &lt;TwistNotifications&gt;;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_twist_notification_handler.html">   33</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_twist_notification_handler.html">TwistNotificationHandler</a></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        : <span class="keyword">public</span> TwistNotificationBus::Handler</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        , <span class="keyword">public</span> AZ::BehaviorEBusHandler</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        AZ_EBUS_BEHAVIOR_BINDER(<a class="code" href="class_r_o_s2_1_1_twist_notification_handler.html">TwistNotificationHandler</a>, <span class="stringliteral">&quot;{CD26E702-6F40-4FF9-816D-4DCB652D97DF}&quot;</span>, AZ::SystemAllocator,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            TwistReceived);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> TwistReceived(<span class="keyword">const</span> AZ::Vector3&amp; v, <span class="keyword">const</span> AZ::Vector3 &amp;a) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> Reflect(AZ::ReflectContext* context);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    };</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_twist_notifications.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_twist_notifications.html">TwistNotifications</a> : <span class="keyword">public</span> AZ::EBusTraits</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Multiple;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_twist_notifications.html#a49faa912b2803f02396974d247b789ec">TwistReceived</a>(<span class="keyword">const</span> AZ::Vector3&amp; linear, <span class="keyword">const</span> AZ::Vector3&amp; angular) = 0;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">using</span> TwistNotificationBus = AZ::EBus&lt;TwistNotifications&gt;;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_twist_notification_handler.html">   32</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_twist_notification_handler.html">TwistNotificationHandler</a></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        : <span class="keyword">public</span> TwistNotificationBus::Handler</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        , <span class="keyword">public</span> AZ::BehaviorEBusHandler</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        AZ_EBUS_BEHAVIOR_BINDER(<a class="code" href="class_r_o_s2_1_1_twist_notification_handler.html">TwistNotificationHandler</a>, <span class="stringliteral">&quot;{CD26E702-6F40-4FF9-816D-4DCB652D97DF}&quot;</span>, AZ::SystemAllocator, TwistReceived);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">void</span> TwistReceived(<span class="keyword">const</span> AZ::Vector3&amp; v, <span class="keyword">const</span> AZ::Vector3&amp; a) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> Reflect(AZ::ReflectContext* context);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    };</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_r_o_s2_1_1_twist_notifications_html_a49faa912b2803f02396974d247b789ec"><div class="ttname"><a href="class_r_o_s2_1_1_twist_notifications.html#a49faa912b2803f02396974d247b789ec">ROS2::TwistNotifications::TwistReceived</a></div><div class="ttdeci">virtual void TwistReceived(const AZ::Vector3 &amp;linear, const AZ::Vector3 &amp;angular)=0</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_twist_notification_handler_html"><div class="ttname"><a href="class_r_o_s2_1_1_twist_notification_handler.html">ROS2::TwistNotificationHandler</a></div><div class="ttdef"><b>Definition:</b> TwistBus.h:33</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_twist_notification_handler_html"><div class="ttname"><a href="class_r_o_s2_1_1_twist_notification_handler.html">ROS2::TwistNotificationHandler</a></div><div class="ttdef"><b>Definition:</b> TwistBus.h:32</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_twist_notifications_html"><div class="ttname"><a href="class_r_o_s2_1_1_twist_notifications.html">ROS2::TwistNotifications</a></div><div class="ttdef"><b>Definition:</b> TwistBus.h:18</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_adc3ae9cdfb5b11809552fed381dcb1e.html">RobotControl</a></li><li class="navelem"><a class="el" href="dir_b71e3c122d589a754c543dd4378753d2.html">TwistControl</a></li><li class="navelem"><b>TwistBus.h</b></li>
-    <li class="footer">Generated on Fri Jul 15 2022 14:15:42 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Mon Jul 18 2022 10:05:02 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
