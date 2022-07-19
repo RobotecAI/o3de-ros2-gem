@@ -1,0 +1,15 @@
+name: Documentation Configuration Changed
+
+on:
+  push:
+    branches:
+      - gh-pages
+    paths:
+      - 'Doxyfile'
+      - 'static/**'
+
+jobs:
+  print-message:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Documentation configuration files have been changed."
