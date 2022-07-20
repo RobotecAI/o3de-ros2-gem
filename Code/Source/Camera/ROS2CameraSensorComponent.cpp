@@ -94,27 +94,27 @@ namespace ROS2
     {
         AZ::Transform transform = GetEntity()->GetTransform()->GetWorldTM();
 
-        if (m_cameraSensor)
+        if (!m_cameraSensor)
         {
-            auto stamp = ROS2Interface::Get()->GetROSTimestamp();
-
-            m_cameraSensor->RequestImage(
-                transform,
-                [stamp, this](const AZStd::vector<uint8_t>& imageData)
-                {
-                    const CameraSensorDescription& description = m_cameraSensor->GetCameraDescription();
-                    const auto encoding = sensor_msgs::image_encodings::RGBA8;
-
-                    sensor_msgs::msg::Image image;
-                    image.encoding = encoding;
-                    image.width = description.width;
-                    image.height = description.height;
-                    image.step = image.width * sensor_msgs::image_encodings::numChannels(encoding);
-                    image.header.frame_id = m_frameName.c_str();
-                    image.header.stamp = stamp;
-                    image.data = std::vector<uint8_t>(imageData.data(), imageData.data() + imageData.size());
-                    m_imagePublisher->publish(image);
-                });
+            return;
         }
+        auto stamp = ROS2Interface::Get()->GetROSTimestamp();
+        m_cameraSensor->RequestImage(
+            transform,
+            [stamp, this](const AZStd::vector<uint8_t>& imageData)
+            {
+                const CameraSensorDescription& description = m_cameraSensor->GetCameraDescription();
+                const auto encoding = sensor_msgs::image_encodings::RGBA8;
+
+                sensor_msgs::msg::Image image;
+                image.encoding = encoding;
+                image.width = description.width;
+                image.height = description.height;
+                image.step = image.width * sensor_msgs::image_encodings::numChannels(encoding);
+                image.header.frame_id = m_frameName.c_str();
+                image.header.stamp = stamp;
+                image.data = std::vector<uint8_t>(imageData.data(), imageData.data() + imageData.size());
+                m_imagePublisher->publish(image);
+            });
     }
 } // namespace ROS2

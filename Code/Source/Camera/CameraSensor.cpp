@@ -144,7 +144,8 @@ namespace ROS2
             {
                 {
                     std::lock_guard lock(m_imageCallbackMutex);
-                    if (result.m_dataBuffer) {
+                    if (result.m_dataBuffer)
+                    {
                         callback(*result.m_dataBuffer);
                     }
                     UpdateCaptureIdsInProgress(result.m_userIdentifier);
