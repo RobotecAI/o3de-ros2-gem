@@ -24,7 +24,7 @@ namespace ROS2
     struct CameraSensorDescription
     {
         //! Constructor to create the description
-        //! @param cameraFrameName - name of the camera; used to differentiate cameras in a multi-camera setup
+        //! @param cameraName - name of the camera; used to differentiate cameras in a multi-camera setup
         //! @param verticalFov - vertical field of view of camera sensor
         //! @param width - camera image width in pixels
         //! @param height - camera image height in pixels
@@ -33,7 +33,7 @@ namespace ROS2
         const float verticalFieldOfViewDeg; //!< camera vertical field of view
         const int width; //!< camera image width in pixels
         const int height; //!< camera image height in pixels
-        const AZStd::string cameraName; //!< camera name
+        const AZStd::string cameraName; //!< camera name to differentiate cameras in a multi-camera setup
 
         const float aspectRatio; //!< camera image aspect ratio; equal to (width / height)
         const AZ::Matrix4x4 viewToClipMatrix; //!< camera view to clip space transform matrix; derived from other parameters

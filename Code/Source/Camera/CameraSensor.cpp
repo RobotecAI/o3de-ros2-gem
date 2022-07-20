@@ -46,7 +46,7 @@ namespace ROS2
     {
         AZ_Assert(
             verticalFieldOfViewDeg > 0.0f && verticalFieldOfViewDeg < 180.0f, "Vertical fov should be in range 0.0 < FoV < 180.0 degrees");
-        AZ_Assert(!cameraName.empty(), "Camera frame name cannot be empty");
+        AZ_Assert(!cameraName.empty(), "Camera name cannot be empty");
     }
 
     CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription)
