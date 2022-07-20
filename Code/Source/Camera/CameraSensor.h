@@ -44,7 +44,7 @@ namespace ROS2
     };
 
     //! Class to create camera sensor using Atom renderer
-    //! It creates dedicated rendering pipeline for each camera
+    //! It creates a dedicated rendering pipeline for each camera
     class CameraSensor
     {
     public:
@@ -55,14 +55,16 @@ namespace ROS2
         //! Deinitializes rendering pipeline for the camera sensor
         ~CameraSensor();
 
-        //! Function requesting frame from rendering pipeline
+        //! Requests frame from rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
-        //!                   it's argument bytes vector containing image described by the camera description structure.
+        //!                   it's argument is a buffer containing image described by the camera description structure.
         //!                   Since readback function can be called from other threads, callback is called in a synchronized scope.
-        //!                   Any resources used in the callback nust not be released before CameraSensor class's object destruction!
+        //!                   Any resources used in the callback nust not be released before CameraSensor object is destroyed!
         void RequestImage(const AZ::Transform& cameraPose, std::function<void(const AZStd::vector<uint8_t>&)> callback);
 
+        //! Provides access to the camera sensor description
+        //! @returns camera sensor description
         [[nodiscard]] const CameraSensorDescription& GetCameraDescription() const;
 
     private:
