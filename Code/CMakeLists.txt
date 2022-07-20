@@ -87,6 +87,8 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
+                Gem::LmbrCentral.Static
+                Gem::PhysX.Editor.Static
                 Gem::ROS2.Static
     )
 

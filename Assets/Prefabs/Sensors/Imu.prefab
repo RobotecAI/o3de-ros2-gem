@@ -74,6 +74,13 @@
                     "$type": "EditorColliderComponent",
                     "Id": 12053638524449760314,
                     "ColliderConfiguration": {
+                        "MaterialSlots": {
+                            "Slots": [
+                                {
+                                    "Name": "DefaultMaterial"
+                                }
+                            ]
+                        },
                         "MaterialSelection": {
                             "MaterialIds": [
                                 {}

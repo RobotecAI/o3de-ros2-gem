@@ -6,14 +6,15 @@
 *
 */
 
-#include <AzCore/Component/TransformBus.h>
-#include <AzCore/Utils/Utils.h>
-#include <AzToolsFramework/Component/EditorComponentAPIBus.h>
+//#include <AzToolsFramework/ToolsComponents/EditorLockComponent.h>
+//#include <AzToolsFramework/ToolsComponents/EditorVisibilityComponent.h>
+//#include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 
 #include <QPushButton>
 #include <QVBoxLayout>
 
 #include "URDF/RobotImporter/RobotImporterWidget.h"
+#include "URDF/RobotImporter/URDFPrefabMaker.h"
 
 namespace ROS2
 {
@@ -58,5 +59,12 @@ namespace ROS2
     void RobotImporterWidget::OnModelLoaded()
     {
         m_robotNameLabel.setText(m_urdfModel->getName().c_str());
+
+        URDFPrefabMaker prefabMaker;
+        auto outcome = prefabMaker.CreatePrefabFromURDF(m_urdfModel);
+        if (!outcome)
+        {   // TODO - handle, show
+            AZ_Error("RobotImporterWidget", false, "Importing robot definition failed with error: %s", outcome.GetError().c_str());
+        }
     }
 } // namespace ROS2
