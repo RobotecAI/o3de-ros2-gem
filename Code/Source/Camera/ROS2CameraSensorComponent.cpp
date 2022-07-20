@@ -16,6 +16,9 @@
 
 #include <Utilities/ROS2Names.h>
 
+#include <sensor_msgs/image_encodings.hpp>
+#include <sensor_msgs/msg/image.hpp>
+
 namespace ROS2
 {
     namespace Internal
@@ -76,6 +79,7 @@ namespace ROS2
         m_imagePublisher = ros2Node->create_publisher<sensor_msgs::msg::Image>(fullTopic.data(), publisherConfig.GetQoS());
 
         m_frameName = GetEntity()->FindComponent<ROS2FrameComponent>()->GetFrameID();
+
         m_cameraSensor.emplace(CameraSensorDescription{ m_cameraName, m_VerticalFieldOfViewDeg, m_width, m_height });
     }
 
@@ -92,10 +96,23 @@ namespace ROS2
 
         if (m_cameraSensor)
         {
+            auto stamp = ROS2Interface::Get()->GetROSTimestamp();
+
             m_cameraSensor->RequestImage(
                 transform,
-                [this](const sensor_msgs::msg::Image& image)
+                [stamp, this](const AZStd::vector<uint8_t>& imageData)
                 {
+                    const CameraSensorDescription& description = m_cameraSensor->GetCameraDescription();
+                    const auto encoding = sensor_msgs::image_encodings::RGBA8;
+
+                    sensor_msgs::msg::Image image;
+                    image.encoding = encoding;
+                    image.width = description.width;
+                    image.height = description.height;
+                    image.step = image.width * sensor_msgs::image_encodings::numChannels(encoding);
+                    image.header.frame_id = m_frameName.c_str();
+                    image.header.stamp = stamp;
+                    image.data = std::vector<uint8_t>(imageData.data(), imageData.data() + imageData.size());
                     m_imagePublisher->publish(image);
                 });
         }

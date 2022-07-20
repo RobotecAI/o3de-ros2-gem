@@ -21,9 +21,6 @@
 
 #include <PostProcess/PostProcessFeatureProcessor.h>
 
-#include <sensor_msgs/image_encodings.hpp>
-#include <sensor_msgs/msg/image.hpp>
-
 namespace ROS2
 {
     CameraSensorDescription::CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height)
@@ -49,19 +46,25 @@ namespace ROS2
     {
         AZ_Assert(
             verticalFieldOfViewDeg > 0.0f && verticalFieldOfViewDeg < 180.0f, "Vertical fov should be in range 0.0 < FoV < 180.0 degrees");
-        AZ_Assert(!cameraName.empty(), "Camera name cannot be empty");
+        AZ_Assert(!cameraName.empty(), "Camera frame name cannot be empty");
     }
 
     CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription)
+        : m_cameraSensorDescription(cameraSensorDescription)
     {
-        AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", cameraSensorDescription.cameraName.c_str());
+        InitializePipeline();
+    }
+
+    void CameraSensor::InitializePipeline()
+    {
+        AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", m_cameraSensorDescription.cameraName.c_str());
 
         AZ::Name viewName = AZ::Name("MainCamera");
         m_view = AZ::RPI::View::CreateView(viewName, AZ::RPI::View::UsageCamera);
-        m_view->SetViewToClipMatrix(cameraSensorDescription.viewToClipMatrix);
+        m_view->SetViewToClipMatrix(m_cameraSensorDescription.viewToClipMatrix);
         m_scene = AZ::RPI::RPISystemInterface::Get()->GetSceneByName(AZ::Name("Main"));
 
-        AZStd::string pipelineName = cameraSensorDescription.cameraName + "Pipeline";
+        AZStd::string pipelineName = m_cameraSensorDescription.cameraName + "Pipeline";
 
         AZ::RPI::RenderPipelineDescriptor pipelineDesc;
         pipelineDesc.m_mainViewTagName = "MainCamera";
@@ -74,7 +77,7 @@ namespace ROS2
 
         if (auto renderToTexturePass = azrtti_cast<AZ::RPI::RenderToTexturePass*>(m_pipeline->GetRootPass().get()))
         {
-            renderToTexturePass->ResizeOutput(cameraSensorDescription.width, cameraSensorDescription.height);
+            renderToTexturePass->ResizeOutput(m_cameraSensorDescription.width, m_cameraSensorDescription.height);
         }
 
         m_scene->AddRenderPipeline(m_pipeline);
@@ -93,6 +96,22 @@ namespace ROS2
     CameraSensor::~CameraSensor()
     {
         WaitForCapturesToFinish();
+        DeinitializePipeline();
+    }
+
+    void CameraSensor::WaitForCapturesToFinish()
+    {
+        std::unique_lock lock(m_imageCallbackMutex);
+        m_capturesFinishedCond.wait(
+            lock,
+            [this]
+            {
+                return m_frameCaptureIdsInProgress.empty();
+            });
+    }
+
+    void CameraSensor::DeinitializePipeline()
+    {
         if (m_scene)
         {
             if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>())
@@ -107,7 +126,7 @@ namespace ROS2
         m_view.reset();
     }
 
-    void CameraSensor::RequestImage(const AZ::Transform& cameraPose, std::function<void(const sensor_msgs::msg::Image& image)> callback)
+    void CameraSensor::RequestImage(const AZ::Transform& cameraPose, std::function<void(const AZStd::vector<uint8_t>&)> callback)
     {
         AZ::Transform inverse = cameraPose.GetInverse();
         m_view->SetWorldToViewMatrix(AZ::Matrix4x4::CreateFromQuaternionAndTranslation(inverse.GetRotation(), inverse.GetTranslation()));
@@ -123,22 +142,10 @@ namespace ROS2
             AZStd::string("Output"),
             [callback, this](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
             {
-                const AZ::RHI::ImageDescriptor& descriptor = result.m_imageDescriptor;
-
-                sensor_msgs::msg::Image image;
-                image.encoding = sensor_msgs::image_encodings::RGBA8;
-
-                image.width = descriptor.m_size.m_width;
-                image.height = descriptor.m_size.m_height;
-                image.data = std::vector<uint8_t>(result.m_dataBuffer->data(), result.m_dataBuffer->data() + result.m_dataBuffer->size());
                 {
                     std::lock_guard lock(m_imageCallbackMutex);
-                    callback(image);
-                    auto it = AZStd::find(m_frameCaptureIdsInProgress.begin(), m_frameCaptureIdsInProgress.end(), result.m_userIdentifier);
-                    if (it != m_frameCaptureIdsInProgress.end())
-                    {
-                        m_frameCaptureIdsInProgress.erase(it);
-                    }
+                    callback(*result.m_dataBuffer);
+                    UpdateCaptureIdsInProgress(result.m_userIdentifier);
                 }
                 m_capturesFinishedCond.notify_all();
             },
@@ -151,14 +158,17 @@ namespace ROS2
         }
     }
 
-    void CameraSensor::WaitForCapturesToFinish()
+    void CameraSensor::UpdateCaptureIdsInProgress(uint32_t captureId)
     {
-        std::unique_lock lock(m_imageCallbackMutex);
-        m_capturesFinishedCond.wait(
-            lock,
-            [this]
-            {
-                return m_frameCaptureIdsInProgress.empty();
-            });
+        auto it = AZStd::find(m_frameCaptureIdsInProgress.begin(), m_frameCaptureIdsInProgress.end(), captureId);
+        if (it != m_frameCaptureIdsInProgress.end())
+        {
+            m_frameCaptureIdsInProgress.erase(it);
+        }
+    }
+
+    const CameraSensorDescription& CameraSensor::GetCameraDescription() const
+    {
+        return m_cameraSensorDescription;
     }
 } // namespace ROS2

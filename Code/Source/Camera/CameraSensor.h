@@ -24,7 +24,7 @@ namespace ROS2
     struct CameraSensorDescription
     {
         //! Constructor to create the description
-        //! @param cameraName - name of the camera; used to differentiate cameras in a multi-camera setup
+        //! @param cameraFrameName - name of the camera; used to differentiate cameras in a multi-camera setup
         //! @param verticalFov - vertical field of view of camera sensor
         //! @param width - camera image width in pixels
         //! @param height - camera image height in pixels
@@ -33,7 +33,7 @@ namespace ROS2
         const float verticalFieldOfViewDeg; //!< camera vertical field of view
         const int width; //!< camera image width in pixels
         const int height; //!< camera image height in pixels
-        const AZStd::string cameraName; //!< camera name to differentiate cameras in a multi-camera setup
+        const AZStd::string cameraName; //!< camera name
 
         const float aspectRatio; //!< camera image aspect ratio; equal to (width / height)
         const AZ::Matrix4x4 viewToClipMatrix; //!< camera view to clip space transform matrix; derived from other parameters
@@ -58,13 +58,18 @@ namespace ROS2
         //! Function requesting frame from rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
-        //!                   it's argument is Image structure that can be easily published via ROS topic.
+        //!                   it's argument bytes vector containing image described by the camera description structure.
         //!                   Since readback function can be called from other threads, callback is called in a synchronized scope.
         //!                   Any resources used in the callback nust not be released before CameraSensor class's object destruction!
-        void RequestImage(const AZ::Transform& cameraPose, std::function<void(const sensor_msgs::msg::Image& image)> callback);
+        void RequestImage(const AZ::Transform& cameraPose, std::function<void(const AZStd::vector<uint8_t>&)> callback);
+
+        [[nodiscard]] const CameraSensorDescription& GetCameraDescription() const;
 
     private:
+        void InitializePipeline();
+        void DeinitializePipeline();
         void WaitForCapturesToFinish();
+        void UpdateCaptureIdsInProgress(uint32_t captureId);
 
         AZStd::vector<AZStd::string> m_passHierarchy;
         AZ::RPI::RenderPipelinePtr m_pipeline;
@@ -74,6 +79,8 @@ namespace ROS2
         std::mutex m_imageCallbackMutex;
         std::list<size_t> m_frameCaptureIdsInProgress = {};
         std::condition_variable m_capturesFinishedCond;
+
+        CameraSensorDescription m_cameraSensorDescription;
     };
 
 } // namespace ROS2
