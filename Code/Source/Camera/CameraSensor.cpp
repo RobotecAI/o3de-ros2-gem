@@ -144,7 +144,7 @@ namespace ROS2
             {
                 {
                     std::lock_guard lock(m_imageCallbackMutex);
-                    if (result.m_dataBuffer)
+                    if (result.m_state == AZ::RPI::AttachmentReadback::ReadbackState::Success && result.m_dataBuffer)
                     {
                         callback(*result.m_dataBuffer);
                     }
