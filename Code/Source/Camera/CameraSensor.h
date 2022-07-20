@@ -58,7 +58,9 @@ namespace ROS2
         //! Function requesting frame from rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
-        //!                   it's argument is Image structure that can be easily published by ROS
+        //!                   it's argument is Image structure that can be easily published via ROS topic.
+        //!                   Since readback function can be called from other threads, callback is called in a synchronized scope.
+        //!                   Any resources used in the callback nust not be released before CameraSensor class's object destruction!
         void RequestImage(const AZ::Transform& cameraPose, std::function<void(const sensor_msgs::msg::Image& image)> callback);
 
     private:
