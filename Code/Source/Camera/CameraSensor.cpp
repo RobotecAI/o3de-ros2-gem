@@ -134,7 +134,11 @@ namespace ROS2
                 {
                     std::lock_guard lock(m_imageCallbackMutex);
                     callback(image);
-                    m_capturesInProgressCount--;
+                    auto it = AZStd::find(m_frameCaptureIdsInProgress.begin(), m_frameCaptureIdsInProgress.end(), result.m_userIdentifier);
+                    if (it != m_frameCaptureIdsInProgress.end())
+                    {
+                        m_frameCaptureIdsInProgress.erase(it);
+                    }
                 }
                 m_capturesFinishedCond.notify_all();
             },
@@ -143,7 +147,7 @@ namespace ROS2
         if (captureId != AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId)
         {
             std::lock_guard lock(m_imageCallbackMutex);
-            m_capturesInProgressCount++;
+            m_frameCaptureIdsInProgress.emplace_back(captureId);
         }
     }
 
@@ -154,7 +158,7 @@ namespace ROS2
             lock,
             [this]
             {
-                return m_capturesInProgressCount == 0;
+                return m_frameCaptureIdsInProgress.empty();
             });
     }
 } // namespace ROS2

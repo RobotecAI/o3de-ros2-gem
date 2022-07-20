@@ -13,6 +13,8 @@
 #include <mutex>
 #include <sensor_msgs/msg/image.hpp>
 
+#include <list>
+
 class Entity;
 
 namespace ROS2
@@ -68,7 +70,7 @@ namespace ROS2
         AZ::RPI::Scene* m_scene = nullptr;
 
         std::mutex m_imageCallbackMutex;
-        size_t m_capturesInProgressCount;
+        std::list<size_t> m_frameCaptureIdsInProgress = {};
         std::condition_variable m_capturesFinishedCond;
     };
 
