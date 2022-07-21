@@ -50,15 +50,21 @@ namespace ROS2
     }
 
     CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription)
+        : m_cameraSensorDescription(cameraSensorDescription)
     {
-        AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", cameraSensorDescription.cameraName.c_str());
+        InitializePipeline();
+    }
+
+    void CameraSensor::InitializePipeline()
+    {
+        AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", m_cameraSensorDescription.cameraName.c_str());
 
         AZ::Name viewName = AZ::Name("MainCamera");
         m_view = AZ::RPI::View::CreateView(viewName, AZ::RPI::View::UsageCamera);
-        m_view->SetViewToClipMatrix(cameraSensorDescription.viewToClipMatrix);
+        m_view->SetViewToClipMatrix(m_cameraSensorDescription.viewToClipMatrix);
         m_scene = AZ::RPI::RPISystemInterface::Get()->GetSceneByName(AZ::Name("Main"));
 
-        AZStd::string pipelineName = cameraSensorDescription.cameraName + "Pipeline";
+        AZStd::string pipelineName = m_cameraSensorDescription.cameraName + "Pipeline";
 
         AZ::RPI::RenderPipelineDescriptor pipelineDesc;
         pipelineDesc.m_mainViewTagName = "MainCamera";
@@ -71,7 +77,7 @@ namespace ROS2
 
         if (auto renderToTexturePass = azrtti_cast<AZ::RPI::RenderToTexturePass*>(m_pipeline->GetRootPass().get()))
         {
-            renderToTexturePass->ResizeOutput(cameraSensorDescription.width, cameraSensorDescription.height);
+            renderToTexturePass->ResizeOutput(m_cameraSensorDescription.width, m_cameraSensorDescription.height);
         }
 
         m_scene->AddRenderPipeline(m_pipeline);
@@ -89,6 +95,27 @@ namespace ROS2
 
     CameraSensor::~CameraSensor()
     {
+        WaitForCapturesToFinish();
+        DeinitializePipeline();
+    }
+
+    void CameraSensor::WaitForCapturesToFinish()
+    {
+        std::unique_lock lock(m_imageCallbackMutex);
+        m_capturesFinishedCond.wait(
+            lock,
+            [this]
+            {
+                return m_frameCaptureIdsInProgress.empty();
+            });
+    }
+
+    void CameraSensor::DeinitializePipeline()
+    {
+        if (m_pipeline) {
+            AZ_Assert(m_pipeline->GetRenderMode() == AZ::RPI::RenderPipeline::RenderMode::NoRender,
+                      "CameraSensor capturing in progress. They would be canceled");
+        }
         if (m_scene)
         {
             if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>())
@@ -103,21 +130,52 @@ namespace ROS2
         m_view.reset();
     }
 
-    void CameraSensor::RequestFrame(
-        const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback)
+    void CameraSensor::RequestImage(const AZ::Transform& cameraPose, std::function<void(const AZStd::vector<uint8_t>&)> callback)
     {
         AZ::Transform inverse = cameraPose.GetInverse();
         m_view->SetWorldToViewMatrix(AZ::Matrix4x4::CreateFromQuaternionAndTranslation(inverse.GetRotation(), inverse.GetTranslation()));
 
-        size_t userId = AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId;
+        size_t captureId = AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId;
 
         m_pipeline->AddToRenderTickOnce();
+
         AZ::Render::FrameCaptureRequestBus::BroadcastResult(
-            userId,
+            captureId,
             &AZ::Render::FrameCaptureRequestBus::Events::CapturePassAttachmentWithCallback,
             m_passHierarchy,
             AZStd::string("Output"),
-            callback,
+            [callback, this](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
+            {
+                {
+                    std::lock_guard lock(m_imageCallbackMutex);
+                    if (result.m_state == AZ::RPI::AttachmentReadback::ReadbackState::Success && result.m_dataBuffer)
+                    {
+                        callback(*result.m_dataBuffer);
+                    }
+                    UpdateCaptureIdsInProgress(result.m_userIdentifier);
+                }
+                m_capturesFinishedCond.notify_all();
+            },
             AZ::RPI::PassAttachmentReadbackOption::Output);
+
+        if (captureId != AZ::Render::FrameCaptureRequests::s_InvalidFrameCaptureId)
+        {
+            std::lock_guard lock(m_imageCallbackMutex);
+            m_frameCaptureIdsInProgress.emplace_back(captureId);
+        }
+    }
+
+    void CameraSensor::UpdateCaptureIdsInProgress(uint32_t captureId)
+    {
+        auto it = AZStd::find(m_frameCaptureIdsInProgress.begin(), m_frameCaptureIdsInProgress.end(), captureId);
+        if (it != m_frameCaptureIdsInProgress.end())
+        {
+            m_frameCaptureIdsInProgress.erase(it);
+        }
+    }
+
+    const CameraSensorDescription& CameraSensor::GetCameraDescription() const
+    {
+        return m_cameraSensorDescription;
     }
 } // namespace ROS2

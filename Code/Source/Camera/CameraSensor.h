@@ -9,6 +9,11 @@
 
 #include <Atom/Feature/Utils/FrameCaptureBus.h>
 #include <chrono>
+#include <condition_variable>
+#include <mutex>
+#include <sensor_msgs/msg/image.hpp>
+
+#include <list>
 
 class Entity;
 
@@ -39,7 +44,7 @@ namespace ROS2
     };
 
     //! Class to create camera sensor using Atom renderer
-    //! It creates dedicated rendering pipeline for each camera
+    //! It creates a dedicated rendering pipeline for each camera
     class CameraSensor
     {
     public:
@@ -50,18 +55,34 @@ namespace ROS2
         //! Deinitializes rendering pipeline for the camera sensor
         ~CameraSensor();
 
-        //! Function requesting frame from rendering pipeline
+        //! Requests frame from rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
-        //!                   it's argument is readback structure containing, among other thins, captured image
-        void RequestFrame(
-            const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback);
+        //!                   it's argument is a buffer containing image described by the camera description structure.
+        //!                   Since readback function can be called from other threads, callback is called in a synchronized scope.
+        //!                   Any resources used in the callback nust not be released before CameraSensor object is destroyed!
+        void RequestImage(const AZ::Transform& cameraPose, std::function<void(const AZStd::vector<uint8_t>&)> callback);
+
+        //! Provides access to the camera sensor description
+        //! @returns camera sensor description
+        [[nodiscard]] const CameraSensorDescription& GetCameraDescription() const;
 
     private:
+        void InitializePipeline();
+        void DeinitializePipeline();
+        void WaitForCapturesToFinish();
+        void UpdateCaptureIdsInProgress(uint32_t captureId);
+
         AZStd::vector<AZStd::string> m_passHierarchy;
         AZ::RPI::RenderPipelinePtr m_pipeline;
         AZ::RPI::ViewPtr m_view;
         AZ::RPI::Scene* m_scene = nullptr;
+
+        std::mutex m_imageCallbackMutex;
+        std::list<size_t> m_frameCaptureIdsInProgress = {};
+        std::condition_variable m_capturesFinishedCond;
+
+        CameraSensorDescription m_cameraSensorDescription;
     };
 
 } // namespace ROS2

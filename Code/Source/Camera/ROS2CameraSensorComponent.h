@@ -41,6 +41,7 @@ namespace ROS2
         int m_width = 640;
         int m_height = 480;
         AZStd::string m_cameraName = "camera";
+        AZStd::string m_frameName = "cameraFrame";
 
         void FrequencyTick() override;
 

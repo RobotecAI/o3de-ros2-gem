@@ -10,13 +10,14 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
 
-#include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
 #include <Utilities/ROS2Names.h>
+
 #include <sensor_msgs/image_encodings.hpp>
+#include <sensor_msgs/msg/image.hpp>
 
 namespace ROS2
 {
@@ -77,12 +78,15 @@ namespace ROS2
 
         m_imagePublisher = ros2Node->create_publisher<sensor_msgs::msg::Image>(fullTopic.data(), publisherConfig.GetQoS());
 
+        m_frameName = GetEntity()->FindComponent<ROS2FrameComponent>()->GetFrameID();
+
         m_cameraSensor.emplace(CameraSensorDescription{ m_cameraName, m_VerticalFieldOfViewDeg, m_width, m_height });
     }
 
     void ROS2CameraSensorComponent::Deactivate()
     {
         m_cameraSensor.reset();
+        m_imagePublisher.reset();
         ROS2SensorComponent::Deactivate();
     }
 
@@ -94,21 +98,23 @@ namespace ROS2
         {
             return;
         }
-        m_cameraSensor->RequestFrame(
+        auto stamp = ROS2Interface::Get()->GetROSTimestamp();
+        m_cameraSensor->RequestImage(
             transform,
-            [this](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
+            [stamp, this](const AZStd::vector<uint8_t>& imageData)
             {
-                const AZ::RHI::ImageDescriptor& descriptor = result.m_imageDescriptor;
+                const CameraSensorDescription& description = m_cameraSensor->GetCameraDescription();
+                const auto encoding = sensor_msgs::image_encodings::RGBA8;
 
-                sensor_msgs::msg::Image message;
-                message.encoding = sensor_msgs::image_encodings::RGBA8;
-
-                message.width = descriptor.m_size.m_width;
-                message.height = descriptor.m_size.m_height;
-                message.data = std::vector<uint8_t>(result.m_dataBuffer->data(), result.m_dataBuffer->data() + result.m_dataBuffer->size());
-                message.header.frame_id = GetEntity()->FindComponent<ROS2FrameComponent>()->GetFrameID().c_str();
-
-                m_imagePublisher->publish(message);
+                sensor_msgs::msg::Image image;
+                image.encoding = encoding;
+                image.width = description.width;
+                image.height = description.height;
+                image.step = image.width * sensor_msgs::image_encodings::numChannels(encoding);
+                image.header.frame_id = m_frameName.c_str();
+                image.header.stamp = stamp;
+                image.data = std::vector<uint8_t>(imageData.data(), imageData.data() + imageData.size());
+                m_imagePublisher->publish(image);
             });
     }
 } // namespace ROS2
