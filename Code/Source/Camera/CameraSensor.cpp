@@ -112,6 +112,10 @@ namespace ROS2
 
     void CameraSensor::DeinitializePipeline()
     {
+        if (m_pipeline) {
+            AZ_Assert(m_pipeline->GetRenderMode() == AZ::RPI::RenderPipeline::RenderMode::NoRender,
+                      "CameraSensor capturing in progress. They would be canceled");
+        }
         if (m_scene)
         {
             if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>())
