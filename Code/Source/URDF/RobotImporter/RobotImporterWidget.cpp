@@ -6,10 +6,6 @@
 *
 */
 
-//#include <AzToolsFramework/ToolsComponents/EditorLockComponent.h>
-//#include <AzToolsFramework/ToolsComponents/EditorVisibilityComponent.h>
-//#include <AzToolsFramework/ToolsComponents/TransformComponent.h>
-
 #include <QPushButton>
 #include <QVBoxLayout>
 
@@ -32,11 +28,9 @@ namespace ROS2
         mainLayout->addWidget(&m_robotFileNameLabel);
         mainLayout->addWidget(&m_robotNameLabel);
 
-        //QDir rootPath(Path::GetEditingGameDataFolder().c_str());
         m_importFileDialog.setFileMode(QFileDialog::ExistingFiles);
         m_importFileDialog.setNameFilter(QObject::tr("Unified Robot Description Format (*.urdf)"));
         m_importFileDialog.setViewMode(QFileDialog::Detail);
-        //m_importFileDialog.setDirectory(rootPath);
 
         QObject::connect(selectFileButton, &QPushButton::clicked, this, [this]() {
             int result = m_importFileDialog.exec();

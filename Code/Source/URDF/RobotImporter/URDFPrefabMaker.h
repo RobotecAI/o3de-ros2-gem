@@ -17,6 +17,14 @@ namespace ROS2
     class URDFPrefabMaker
     {
     public:
+        URDFPrefabMaker();
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF(urdf::ModelInterfaceSharedPtr model);
+
+    private:
+        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
+        void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
+        void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId);
+
+        AzToolsFramework::Prefab::PrefabPublicInterface* m_prefabInterface;
     };
 } // namespace ROS2
