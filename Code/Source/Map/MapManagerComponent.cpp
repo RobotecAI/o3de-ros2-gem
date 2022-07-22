@@ -31,10 +31,18 @@ namespace ROS2
 
     MapManagerComponent::MapManagerComponent()
     {
+        if (MapRequestInterface::Get() == nullptr)
+        {
+            MapRequestInterface::Register(this);
+        }
     }
 
     MapManagerComponent::~MapManagerComponent()
     {
+        if (MapRequestInterface::Get() == this)
+        {
+            MapRequestInterface::Unregister(this);
+        }
     }
 
     void MapManagerComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
@@ -63,9 +71,9 @@ namespace ROS2
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                         ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                         ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_mapFrameId, "Map frame name", "Frame name used for a map")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_mapFrameId, "Map frame name", "Frame name used for the map")
                         ->Attribute(AZ::Edit::Attributes::ChangeValidate, &ROS2Names::ValidateNamespaceField)
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_odomFrameId, "Odom frame name", "Frame name used for a robots odometry")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_odomFrameId, "Odom frame name", "Frame name used for a robot odometry")
                         ->Attribute(AZ::Edit::Attributes::ChangeValidate, &ROS2Names::ValidateNamespaceField)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_geodeticConfiguration, "Geodetic", "Geodetic configuration")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_spawnPointsConfiguration, "Spawn points", "Spawn points configuration")
@@ -74,30 +82,24 @@ namespace ROS2
         }
     }
 
+    AZ::Transform MapManagerComponent::ConvertToMapCoordinateSystem(AZ::Transform transform)
+    {
+        m_geodeticConfiguration.SetHook();
+        return m_geodeticConfiguration.m_mapHookTransform.GetInverse() * transform;
+    }
+
     AZStd::vector<AZ::Transform> MapManagerComponent::GetAvailableSpawnPoints() {
         auto spawnPointsTransforms = m_spawnPointsConfiguration.GetAvailableSpawnPointsTransforms();
         for (auto & spawnPointTransform : spawnPointsTransforms)
         {
-            spawnPointTransform = m_geodeticConfiguration.m_mapHookTransform.GetInverse() * spawnPointTransform;
+            spawnPointTransform = ConvertToMapCoordinateSystem(spawnPointTransform);
         }
         return spawnPointsTransforms;
     }
 
     AZ::Vector3 MapManagerComponent::LocalToLatLon(const AZ::Vector3 &local) {
-        if(m_geodeticConfiguration.m_useMapHook && !m_geodeticConfiguration.m_isMapHookSet) {
-            if (!m_geodeticConfiguration.m_mapHook.IsValid()) {
-                AZ_Warning("MapManager", false, "Map hook not set. Using identity on (0,0,0).");
-            } else {
-                AZ::TransformBus::EventResult(
-                        m_geodeticConfiguration.m_mapHookTransform,
-                        m_geodeticConfiguration.m_mapHook,
-                        &AZ::TransformBus::Events::GetWorldTM);
-            }
-            m_geodeticConfiguration.m_isMapHookSet = true;
-        }
-
         AZ::Transform localInMapHookFrame =
-                m_geodeticConfiguration.m_mapHookTransform.GetInverse() * AZ::Transform(local, AZ::Quaternion::CreateIdentity(), 1.0);
+                ConvertToMapCoordinateSystem(AZ::Transform(local, AZ::Quaternion::CreateIdentity(), 1.0));
 
         const AZ::Vector3 currentPositionECEF =
             Map::Utilities::ENUToECEF(

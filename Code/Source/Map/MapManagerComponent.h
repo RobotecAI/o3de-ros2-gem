@@ -16,6 +16,9 @@
 
 namespace ROS2
 {
+
+//! The map manager component provides the context about the o3de scene map and ROS2 environment.
+//! It is used for various map-orientated tasks and conversions.
 class MapManagerComponent
         : public AZ::Component
         , protected MapRequestBus::Handler
@@ -29,6 +32,7 @@ public:
     static void Reflect(AZ::ReflectContext* context);
     static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
 
+    [[nodiscard]] AZ::Transform ConvertToMapCoordinateSystem(AZ::Transform transform) override;
     [[nodiscard]] AZ::Vector3 LocalToLatLon(const AZ::Vector3 &local) override;
     [[nodiscard]] AZStd::vector<AZ::Transform> GetAvailableSpawnPoints() override;
     [[nodiscard]] AZStd::string GetMapFrameId() override { return m_mapFrameId;};
@@ -43,7 +47,6 @@ private:
 
     AZStd::string m_mapFrameId = "map";
     AZStd::string m_odomFrameId = "odom";
-
 };
 
 }

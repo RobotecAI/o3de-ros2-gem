@@ -11,16 +11,19 @@
 
 namespace ROS2::Map {
 
+//! Spawn point configuration holds the poses which can be used
+//! as a spawn point for a robot. Spawn points can be populated by using Entity list.
 class SpawnPointsConfiguration {
 public:
     AZ_TYPE_INFO(SpawnPointsConfiguration, "{f860a0f9-e24a-4a05-8dbf-a69bf061b675}");
 
     static void Reflect(AZ::ReflectContext* context);
-    AZStd::vector<AZ::Transform> GetAvailableSpawnPointsTransforms();
-    AZStd::vector<AZ::EntityId> m_spawnPoints = {};
 
-private:
-    AZStd::string m_spawnPointsFrameId;
+    //! Gets available spawn points.
+    //! @return Vector of Transforms for each available spawn point.
+    AZStd::vector<AZ::Transform> GetAvailableSpawnPointsTransforms();
+
+    AZStd::vector<AZ::EntityId> m_spawnPoints = {};
 };
 
 }
