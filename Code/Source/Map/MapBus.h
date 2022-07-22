@@ -21,10 +21,27 @@ namespace ROS2
         AZ_RTTI(MapRequests, "{a95c07bd-d8d6-4e24-b089-e96d34d79ebb}");
         virtual ~MapRequests() = default;
 
-        // Put your public methods here
+        //! Convert Transform to the map coordinate system.
+        //! @param transform - Transform to be converted.
+        //! @return Copy of a Transform in the map coordinate system.
+        virtual AZ::Transform ConvertToMapCoordinateSystem(AZ::Transform transform) = 0;
+
+        //! Convert the position vector in WorldTM to longitude, latitude, and altitude in the
+        //! geographic coordinate system relative to the map frame.
+        //! @param local - position vector to be converted.
+        //! @return Vector where x: longitude, y: latitude, z: altitude.
         virtual AZ::Vector3 LocalToLatLon(const AZ::Vector3 &local) = 0;
+
+        //! Get available spawn positions as Transforms.
+        //! @return Vector of available spawn Transforms in map frame.
         virtual AZStd::vector<AZ::Transform> GetAvailableSpawnPoints() = 0;
+
+        //! Get map frame id.
+        //! @return Map frame id.
         virtual AZStd::string GetMapFrameId() = 0;
+
+        //! Get odometry frame id.
+        //! @return Odometry frame id.
         virtual AZStd::string GetOdomFrameId() = 0;
     };
 
@@ -40,5 +57,6 @@ namespace ROS2
     };
 
     using MapRequestBus = AZ::EBus<MapRequests, MapBusTraits>;
+    using MapRequestInterface = AZ::Interface<MapRequests>;
 
 } // namespace ROS2

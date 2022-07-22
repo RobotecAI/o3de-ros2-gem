@@ -14,19 +14,15 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Math/Transform.h>
 
-#include "rclcpp/rclcpp.hpp"
-#include <memory>
-
 namespace ROS2
 {
     void MapManagerROS2Component::Activate()
     {
         using std::placeholders::_1;
         using std::placeholders::_2;
-        using std::placeholders::_3;
         auto ros2Node = ROS2Interface::Get()->GetNode();
         m_spawnPointsService = ros2Node->create_service<o3de_ros2_gem_interfaces::srv::GetSpawnPoints>(
-        "hello_serv",
+        m_spawnPointsServiceName.data(),
             std::bind(&MapManagerROS2Component::OnSpawnPointsRequest, this, _1, _2));
     }
 
@@ -83,7 +79,8 @@ namespace ROS2
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
-                ec->Class<MapManagerROS2Component>("ROS2 Map", "ROS2 Map component")
+                ec->Class<MapManagerROS2Component>("ROS2 Map manager interface",
+                    "ROS2 interface wrapper for map component")
                         ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                         ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                         ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))

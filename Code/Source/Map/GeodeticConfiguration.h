@@ -14,12 +14,18 @@
 
 namespace ROS2::Map
 {
+//! Configuration for handling geodetic map info.
+//! This configuration allows setting a geographic coordinate system hook to a simulation scene.
+//! System hook points to the real-world location in latitude, longitude, and altitude offsets.
 class GeodeticConfiguration
 {
 public:
     AZ_TYPE_INFO(GeodeticConfiguration, "{094e5059-698a-42ad-ae2d-36be20868004}");
 
     static void Reflect(AZ::ReflectContext* context);
+
+    //! Updates the hook Transform
+    void SetHook();
 
     bool m_useMapHook = false;
     bool m_isMapHookSet = false;

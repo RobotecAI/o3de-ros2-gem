@@ -7,6 +7,7 @@
  */
 
 #include <AzCore/Component/ComponentApplicationBus.h>
+#include <AzCore/Component/TransformBus.h>
 #include <AzCore/StringFunc/StringFunc.h>
 #include <AzCore/Serialization/EditContext.h>
 
@@ -38,7 +39,29 @@ namespace ROS2::Map
             return AZ::Failure(AZStd::string("Can't find entity."));
         }
 
+        // Check if entity has transform
+        AZ::TransformInterface* transformInterface = entity->GetTransform();
+        if (transformInterface == nullptr)
+        {
+            return AZ::Failure(AZStd::string("Entity doesn't have transform component."));
+        }
+
         return AZ::Success();
+    }
+
+    void GeodeticConfiguration::SetHook()
+    {
+        if(m_useMapHook && !m_isMapHookSet) {
+            if (!m_mapHook.IsValid()) {
+                AZ_Warning("GeodeticConfiguration", false, "Map hook not set. Using identity on (0,0,0).");
+            } else {
+                AZ::TransformBus::EventResult(
+                        m_mapHookTransform,
+                        m_mapHook,
+                        &AZ::TransformBus::Events::GetWorldTM);
+            }
+            m_isMapHookSet = true;
+        }
     }
 
     bool GeodeticConfiguration::IsMapHookUsed() const

@@ -16,12 +16,11 @@
 
 namespace ROS2
 {
+//! The MapManagerROS2Component wraps the MapManagerComponent with ROS2 services and topics.
+//! MapManagerComponent is accessed indirectly via MapRequestsBus.
 class MapManagerROS2Component
 : public AZ::Component
 {
-
-
-
 public:
     AZ_COMPONENT(MapManagerROS2Component, "{0ccfea4e-5275-4450-9a8f-a9862ef1dd20}");
 
@@ -31,6 +30,7 @@ public:
     static void Reflect(AZ::ReflectContext* context);
     static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
 
+    //! ROS2 service server implementation for getting available spawn points.
     void OnSpawnPointsRequest(
             o3de_ros2_gem_interfaces::srv::GetSpawnPoints::Request::SharedPtr request,
             o3de_ros2_gem_interfaces::srv::GetSpawnPoints::Response::SharedPtr response
@@ -39,7 +39,7 @@ public:
     MapManagerROS2Component();
     ~MapManagerROS2Component();
 
-    AZStd::string m_spawnPointsServiceName;
+    AZStd::string m_spawnPointsServiceName = "get_available_spawn_points";
 
 private:
     rclcpp::Service<o3de_ros2_gem_interfaces::srv::GetSpawnPoints>::SharedPtr m_spawnPointsService;
