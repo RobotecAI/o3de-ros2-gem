@@ -56,6 +56,8 @@ set(FILES
     Source/GNSS/GNSSFormatConversions.h
     Source/Imu/ROS2ImuSensorComponent.cpp
     Source/Imu/ROS2ImuSensorComponent.h
+    Source/URDF/RobotImporter/ROS2RobotImporterSystemComponent.cpp
+    Source/URDF/RobotImporter/ROS2RobotImporterSystemComponent.h
     Source/URDF/UrdfParser.cpp
     Source/URDF/UrdfParser.h
     Source/URDF/FbxGenerator.cpp

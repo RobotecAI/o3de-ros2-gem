@@ -9,7 +9,6 @@
 #pragma once
 
 #include <AzCore/std/string/string.h>
-
 #include <urdf_parser/urdf_parser.h>
 
 namespace ROS2
