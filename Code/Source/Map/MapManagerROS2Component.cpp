@@ -28,6 +28,7 @@ namespace ROS2
 
     void MapManagerROS2Component::Deactivate()
     {
+        m_spawnPointsService.reset();
     }
 
     MapManagerROS2Component::MapManagerROS2Component()
