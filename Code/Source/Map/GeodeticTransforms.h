@@ -10,7 +10,7 @@
 
 #include "AzCore/Math/Matrix4x4.h"
 
-namespace ROS2::Utilities::GeodeticTransforms {
+namespace ROS2::Map::Utilities {
     //! Converts radians to degrees
     float Rad2Deg(float rad);
 

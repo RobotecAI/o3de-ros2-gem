@@ -7,8 +7,10 @@
 */
 #pragma once
 
-
+#include <AzCore/std/string/string.h>
 #include <AzCore/EBus/EBus.h>
+#include <AzCore/Math/Vector3.h>
+#include <AzCore/Math/Transform.h>
 #include <AzCore/Interface/Interface.h>
 
 namespace ROS2
@@ -21,6 +23,9 @@ namespace ROS2
 
         // Put your public methods here
         virtual AZ::Vector3 LocalToLatLon(const AZ::Vector3 &local) = 0;
+        virtual AZStd::vector<AZ::Transform> GetAvailableSpawnPoints() = 0;
+        virtual AZStd::string GetMapFrameId() = 0;
+        virtual AZStd::string GetOdomFrameId() = 0;
     };
 
     class MapBusTraits
