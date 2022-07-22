@@ -12,12 +12,12 @@
 #include <AzCore/Component/Entity.h>
 #include <AzCore/std/string/string.h>
 
-namespace ROS2
+namespace ROS2::Map
 {
-class MapConfiguration
+class GeodeticConfiguration
 {
 public:
-    AZ_TYPE_INFO(MapConfiguration, "{094e5059-698a-42ad-ae2d-36be20868004}");
+    AZ_TYPE_INFO(GeodeticConfiguration, "{094e5059-698a-42ad-ae2d-36be20868004}");
 
     static void Reflect(AZ::ReflectContext* context);
 

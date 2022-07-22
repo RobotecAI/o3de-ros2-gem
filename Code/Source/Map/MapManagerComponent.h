@@ -5,13 +5,15 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+#pragma once
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/Math/Vector3.h>
 
-#include <Map/MapBus.h>
-#include "Map/MapConfiguration.h"
+#include "Map/MapBus.h"
+#include "Map/GeodeticConfiguration.h"
+#include "Map/SpawnPointsConfiguration.h"
 
-#pragma once
 namespace ROS2
 {
 class MapManagerComponent
@@ -25,14 +27,23 @@ public:
     void Deactivate() override;
 
     static void Reflect(AZ::ReflectContext* context);
+    static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
 
     [[nodiscard]] AZ::Vector3 LocalToLatLon(const AZ::Vector3 &local) override;
+    [[nodiscard]] AZStd::vector<AZ::Transform> GetAvailableSpawnPoints() override;
+    [[nodiscard]] AZStd::string GetMapFrameId() override { return m_mapFrameId;};
+    [[nodiscard]] AZStd::string GetOdomFrameId() override { return m_odomFrameId;};
 
     MapManagerComponent();
     ~MapManagerComponent();
 
 private:
-    MapConfiguration m_mapConfiguration;
+    Map::GeodeticConfiguration m_geodeticConfiguration;
+    Map::SpawnPointsConfiguration m_spawnPointsConfiguration;
+
+    AZStd::string m_mapFrameId = "map";
+    AZStd::string m_odomFrameId = "odom";
+
 };
 
 }

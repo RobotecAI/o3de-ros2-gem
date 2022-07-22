@@ -17,6 +17,7 @@
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 #include <Map/MapManagerComponent.h>
+#include <Map/MapManagerROS2Component.h>
 
 namespace ROS2
 {
@@ -41,7 +42,7 @@ namespace ROS2
                 ROS2FrameComponent::CreateDescriptor(),
                 ROS2RobotControlComponent::CreateDescriptor(),
                 ROS2CameraSensorComponent::CreateDescriptor(),
-                // TODO - add ROS2MapManager component for ROS2<->O3DE comm
+                MapManagerROS2Component::CreateDescriptor(),
                 MapManagerComponent::CreateDescriptor()
                 });
         }

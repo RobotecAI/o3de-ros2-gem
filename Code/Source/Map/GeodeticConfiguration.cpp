@@ -10,11 +10,11 @@
 #include <AzCore/StringFunc/StringFunc.h>
 #include <AzCore/Serialization/EditContext.h>
 
-#include "Map/MapConfiguration.h"
+#include "Map/GeodeticConfiguration.h"
 
-namespace ROS2
+namespace ROS2::Map
 {
-    AZ::Outcome<void, AZStd::string> MapConfiguration::ValidateHandle(void* newValue, [[maybe_unused]] const AZ::Uuid& valueType)
+    AZ::Outcome<void, AZStd::string> GeodeticConfiguration::ValidateHandle(void* newValue, [[maybe_unused]] const AZ::Uuid& valueType)
     {
         // Check if the object type is valid
         if (azrtti_typeid<AZ::EntityId>() != valueType)
@@ -41,39 +41,39 @@ namespace ROS2
         return AZ::Success();
     }
 
-    bool MapConfiguration::IsMapHookUsed() const
+    bool GeodeticConfiguration::IsMapHookUsed() const
     {
         return m_useMapHook;
     }
 
-    void MapConfiguration::Reflect(AZ::ReflectContext* context)
+    void GeodeticConfiguration::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<MapConfiguration>()
+            serializeContext->Class<GeodeticConfiguration>()
                     ->Version(1)
-                    ->Field("useMapHook", &MapConfiguration::m_useMapHook)
-                    ->Field("mapHook", &MapConfiguration::m_mapHook)
-                    ->Field("originLatitude", &MapConfiguration::m_originLatitudeDeg)
-                    ->Field("originLongitude", &MapConfiguration::m_originLongitudeDeg)
-                    ->Field("originAltitude", &MapConfiguration::m_originAltitude)
+                    ->Field("useMapHook", &GeodeticConfiguration::m_useMapHook)
+                    ->Field("mapHook", &GeodeticConfiguration::m_mapHook)
+                    ->Field("originLatitude", &GeodeticConfiguration::m_originLatitudeDeg)
+                    ->Field("originLongitude", &GeodeticConfiguration::m_originLongitudeDeg)
+                    ->Field("originAltitude", &GeodeticConfiguration::m_originAltitude)
 
                     ;
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
-                ec->Class<MapConfiguration>("Map configuration", "Map origin configuration")
-                        ->DataElement(AZ::Edit::UIHandlers::Default, &MapConfiguration::m_useMapHook,
+                ec->Class<GeodeticConfiguration>("Map configuration", "Map origin configuration")
+                        ->DataElement(AZ::Edit::UIHandlers::Default, &GeodeticConfiguration::m_useMapHook,
                                       "Use map hook", "Should a map hook be used to position the scene in the world.")
                             ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
-                        ->DataElement(AZ::Edit::UIHandlers::Default, &MapConfiguration::m_mapHook, "Map hook", "Map origin handle.")
-                            ->Attribute(AZ::Edit::Attributes::ChangeValidate, &MapConfiguration::ValidateHandle)
-                            ->Attribute(AZ::Edit::Attributes::Visibility, &MapConfiguration::IsMapHookUsed)
-                        ->DataElement(AZ::Edit::UIHandlers::Default, &MapConfiguration::m_originLatitudeDeg,
+                        ->DataElement(AZ::Edit::UIHandlers::Default, &GeodeticConfiguration::m_mapHook, "Map hook", "Map origin handle.")
+                            ->Attribute(AZ::Edit::Attributes::ChangeValidate, &GeodeticConfiguration::ValidateHandle)
+                            ->Attribute(AZ::Edit::Attributes::Visibility, &GeodeticConfiguration::IsMapHookUsed)
+                        ->DataElement(AZ::Edit::UIHandlers::Default, &GeodeticConfiguration::m_originLatitudeDeg,
                                       "Origin latitude", "Latitude position offset in degrees")
-                        ->DataElement(AZ::Edit::UIHandlers::Default, &MapConfiguration::m_originLongitudeDeg,
+                        ->DataElement(AZ::Edit::UIHandlers::Default, &GeodeticConfiguration::m_originLongitudeDeg,
                                       "Origin longitude", "Longitude position offset in degrees")
-                        ->DataElement(AZ::Edit::UIHandlers::Default, &MapConfiguration::m_originAltitude,
+                        ->DataElement(AZ::Edit::UIHandlers::Default, &GeodeticConfiguration::m_originAltitude,
                                       "Origin altitude", "Altitude position offset in meters")
                         ;
             }
