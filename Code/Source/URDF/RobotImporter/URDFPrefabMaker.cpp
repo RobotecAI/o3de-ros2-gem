@@ -184,10 +184,9 @@ namespace ROS2
                     auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
                     entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
                     entity->Activate();
-                    float radius = sphereGeometry->radius;
                     LmbrCentral::SphereShapeComponentRequestsBus::Event(entityId,
                         &LmbrCentral::SphereShapeComponentRequests::SetRadius,
-                        radius);
+                        sphereGeometry->radius);
                     entity->Deactivate();
                 }
                 break;
@@ -198,10 +197,10 @@ namespace ROS2
                     entity->Activate();
                     LmbrCentral::CylinderShapeComponentRequestsBus::Event(entityId,
                         &LmbrCentral::CylinderShapeComponentRequests::SetRadius,
-                        (float)cylinderGeometry->radius);
+                        cylinderGeometry->radius);
                     LmbrCentral::CylinderShapeComponentRequestsBus::Event(entityId,
                         &LmbrCentral::CylinderShapeComponentRequests::SetHeight,
-                        (float)cylinderGeometry->length);
+                        cylinderGeometry->length);
                     entity->Deactivate();
                 }
                 break;
