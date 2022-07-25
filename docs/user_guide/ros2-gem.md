@@ -93,7 +93,7 @@ It is possible to implement your own control mechanisms with this Component.
 
 Map manager handles geodetic and map frame transformations as well as provides map and odometry frame names for other components. 
 
-Map hook can be placed in a scene to keep the root reference of the geographic origin of the map.
+Map hook can be placed in a scene to keep the root reference for the geographic origin of the map.
 
 ### Handling custom ROS 2 dependencies
 
