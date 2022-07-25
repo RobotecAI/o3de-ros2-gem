@@ -7,6 +7,7 @@
  */
 
 #include "URDF/RobotImporter/URDFPrefabMaker.h"
+#include "URDF/RobotImporter/TypeConversions.h"
 #include "Frame/ROS2FrameComponent.h"
 
 #include <AzCore/Component/TransformBus.h>
@@ -22,6 +23,9 @@
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
+#include <LmbrCentral/Shape/BoxShapeComponentBus.h>
+#include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
+#include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 #include <Source/EditorShapeColliderComponent.h>
 
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
@@ -135,10 +139,8 @@ namespace ROS2
                 // Get URDF pose elements
                 urdf::Vector3 urdfPosition = joint->parent_to_joint_origin_transform.position;
                 urdf::Rotation urdfRotation = joint->parent_to_joint_origin_transform.rotation;
-
-                // TODO - create translation functions
-                AZ::Quaternion azRotation(urdfRotation.x, urdfRotation.y, urdfRotation.z, urdfRotation.w);
-                AZ::Vector3 azPosition(urdfPosition.x, urdfPosition.y, urdfPosition.z);
+                AZ::Quaternion azRotation = URDF::TypeConversions::ConvertQuaternion(urdfRotation);
+                AZ::Vector3 azPosition = URDF::TypeConversions::ConvertVector3(urdfPosition);
                 AZ::Transform transformForChild(azPosition, azRotation, 1.0f);
 
                 AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
@@ -174,28 +176,74 @@ namespace ROS2
             return;
         }
 
-        // TODO handle primitives (Sphere, box, cylinder)
-        if (geometry->type == urdf::Geometry::MESH)
-        {
-            auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
 
+        switch (geometry->type) {
+            case urdf::Geometry::SPHERE:
+                {
+                    auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                    entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
+                    entity->Activate();
+                    float radius = sphereGeometry->radius;
+                    LmbrCentral::SphereShapeComponentRequestsBus::Event(entityId,
+                        &LmbrCentral::SphereShapeComponentRequests::SetRadius,
+                        radius);
+                    entity->Deactivate();
+                }
+                break;
+            case urdf::Geometry::CYLINDER:
+                {
+                    auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                    entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
+                    entity->Activate();
+                    LmbrCentral::CylinderShapeComponentRequestsBus::Event(entityId,
+                        &LmbrCentral::CylinderShapeComponentRequests::SetRadius,
+                        (float)cylinderGeometry->radius);
+                    LmbrCentral::CylinderShapeComponentRequestsBus::Event(entityId,
+                        &LmbrCentral::CylinderShapeComponentRequests::SetHeight,
+                        (float)cylinderGeometry->length);
+                    entity->Deactivate();
+                }
+                break;
+            case urdf::Geometry::BOX:
+                {
+                    auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                    entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
+                    AZ::Vector3 boxDimensions = URDF::TypeConversions::ConvertVector3(boxGeometry->dim);
+                    entity->Activate();
+                    LmbrCentral::BoxShapeComponentRequestsBus::Event(entityId,
+                        &LmbrCentral::BoxShapeComponentRequests::SetBoxDimensions,
+                        boxDimensions);
+                    entity->Deactivate();
+                }
+                break;
+            case urdf::Geometry::MESH:
+                {
+                    auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
 
-            // TODO - a PoC solution, replace with something generic, robust, proper
-            std::filesystem::path modelPath(m_modelFilePath.c_str());
-            modelPath = modelPath.remove_filename();
-            auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
-            modelPath += relativePathToMesh;
-            AZ_TracePrintf("AddVisuals", "Adding mesh urdf_uri: %s, changed to filename: %s",
-                           meshGeometry->filename.c_str(), modelPath.c_str());
+                    // TODO - a PoC solution, replace with something generic, robust, proper
+                    std::filesystem::path modelPath(m_modelFilePath.c_str());
+                    modelPath = modelPath.remove_filename();
+                    auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
+                    modelPath += relativePathToMesh;
+                    AZ_Warning("AddVisuals", false, "Adding mesh urdf_uri: %s, changed to filename: %s",
+                               meshGeometry->filename.c_str(), modelPath.c_str());
 
-            AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-
-            // TODO load mesh, use asset processor
-            entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
-            AZ::Render::MeshComponentRequestBus::Event(entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, modelPath.c_str());
-            // TODO apply scale
-
+                    // TODO load mesh, use asset processor
+                    entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
+                    entity->Activate();
+                    AZ::Render::MeshComponentRequestBus::Event(entityId,
+                        &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath,
+                        modelPath.c_str());
+                    entity->Deactivate();
+                    // TODO apply scale
+                }
+                break;
+            default:
+                AZ_Warning("AddVisuals", false, "Unsupported visual geometry type, %d", geometry->type);
+                return;
         }
+
         // TODO handle material
     }
 
