@@ -26,15 +26,22 @@ namespace ROS2
         //! @return Copy of a Transform in the map coordinate system.
         virtual AZ::Transform ConvertToMapCoordinateSystem(AZ::Transform transform) = 0;
 
+        //! Convert Transform from the map coordinate system.
+        //! @param transform - Transform to be converted.
+        //! @return Copy of a Transform in the world coordinate system.
+        virtual AZ::Transform ConvertFromMapCoordinateSystem(AZ::Transform transform) = 0;
+
         //! Convert the position vector in WorldTM to longitude, latitude, and altitude in the
         //! geographic coordinate system relative to the map frame.
-        //! @param local - position vector to be converted.
+        //! @param worldPosition - position vector to be converted.
         //! @return Vector where x: longitude, y: latitude, z: altitude.
-        virtual AZ::Vector3 LocalToLatLon(const AZ::Vector3 &local) = 0;
+        virtual AZ::Vector3 WorldPositionToLatLon(const AZ::Vector3 &worldPosition) = 0;
 
-        //! Get available spawn positions as Transforms.
-        //! @return Vector of available spawn Transforms in map frame.
-        virtual AZStd::vector<AZ::Transform> GetAvailableSpawnPoints() = 0;
+        //! Convert the geographic position relative to the map frame to the global o3de coordinate system.
+        //! @param latlon - geographic position in degrees.
+        //! @return Vector where x: x position, y: y position, z: z position in o3de WorldTM.
+        virtual AZ::Vector3 LatLonToWorldPosition(const AZ::Vector3 &latlon) = 0;
+
 
         //! Get map frame id.
         //! @return Map frame id.

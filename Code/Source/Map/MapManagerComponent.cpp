@@ -13,9 +13,6 @@
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Serialization/EditContext.h>
 
-#include <AzCore/Debug/Trace.h>
-#include <AzCore/Math/MathStringConversions.h>
-
 namespace ROS2
 {
 
@@ -53,7 +50,6 @@ namespace ROS2
     void MapManagerComponent::Reflect(AZ::ReflectContext *context)
     {
         Map::GeodeticConfiguration::Reflect(context);
-        Map::SpawnPointsConfiguration::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
@@ -62,7 +58,6 @@ namespace ROS2
                     ->Field("MapFrameId", &MapManagerComponent::m_mapFrameId)
                     ->Field("OdomFrameId", &MapManagerComponent::m_odomFrameId)
                     ->Field("GeodeticConfiguration", &MapManagerComponent::m_geodeticConfiguration)
-                    ->Field("SpawnPointsConfiguration", &MapManagerComponent::m_spawnPointsConfiguration)
                     ;
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
@@ -76,7 +71,6 @@ namespace ROS2
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_odomFrameId, "Odom frame name", "Frame name used for a robot odometry")
                         ->Attribute(AZ::Edit::Attributes::ChangeValidate, &ROS2Names::ValidateNamespaceField)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_geodeticConfiguration, "Geodetic", "Geodetic configuration")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MapManagerComponent::m_spawnPointsConfiguration, "Spawn points", "Spawn points configuration")
                         ;
             }
         }
@@ -88,25 +82,38 @@ namespace ROS2
         return m_geodeticConfiguration.m_mapHookTransform.GetInverse() * transform;
     }
 
-    AZStd::vector<AZ::Transform> MapManagerComponent::GetAvailableSpawnPoints() {
-        auto spawnPointsTransforms = m_spawnPointsConfiguration.GetAvailableSpawnPointsTransforms();
-        for (auto & spawnPointTransform : spawnPointsTransforms)
-        {
-            spawnPointTransform = ConvertToMapCoordinateSystem(spawnPointTransform);
-        }
-        return spawnPointsTransforms;
+    AZ::Transform MapManagerComponent::ConvertFromMapCoordinateSystem(AZ::Transform transform)
+    {
+        m_geodeticConfiguration.SetHook();
+        return m_geodeticConfiguration.m_mapHookTransform * transform;
     }
 
-    AZ::Vector3 MapManagerComponent::LocalToLatLon(const AZ::Vector3 &local) {
-        AZ::Transform localInMapHookFrame =
-                ConvertToMapCoordinateSystem(AZ::Transform(local, AZ::Quaternion::CreateIdentity(), 1.0));
+    AZ::Vector3 MapManagerComponent::WorldPositionToLatLon(const AZ::Vector3 &worldPosition)
+    {
+        AZ::Transform worldPositionInMapHookFrame =
+                ConvertToMapCoordinateSystem(AZ::Transform(worldPosition, AZ::Quaternion::CreateIdentity(), 1.0));
 
         const AZ::Vector3 currentPositionECEF =
             Map::Utilities::ENUToECEF(
                     {m_geodeticConfiguration.m_originLatitudeDeg,
                      m_geodeticConfiguration.m_originLongitudeDeg,
                      m_geodeticConfiguration.m_originAltitude},
-                    localInMapHookFrame.GetTranslation());
+                    worldPositionInMapHookFrame.GetTranslation());
         return Map::Utilities::ECEFToWGS84(currentPositionECEF);
     }
+
+    AZ::Vector3 MapManagerComponent::LatLonToWorldPosition(const AZ::Vector3 &latlon)
+    {
+        const auto currentECEF = Map::Utilities::WGS84ToECEF(latlon);
+
+        auto localPose =  Map::Utilities::ECEFToENU({m_geodeticConfiguration.m_originLatitudeDeg,
+                                          m_geodeticConfiguration.m_originLongitudeDeg,
+                                          m_geodeticConfiguration.m_originAltitude},
+                                         currentECEF);
+
+        AZ_Printf("ROS2GNSSSensorComponent", "PRE CONV TO MAP %lf, %lf, %lf", localPose.GetX(), localPose.GetY(), localPose.GetZ());
+
+        return ConvertFromMapCoordinateSystem(AZ::Transform(localPose, AZ::Quaternion::CreateIdentity(), 1.0)).GetTranslation();
+    }
+
 }

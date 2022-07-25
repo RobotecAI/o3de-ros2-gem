@@ -12,13 +12,14 @@
 
 #include "Map/MapBus.h"
 #include "Map/GeodeticConfiguration.h"
-#include "Map/SpawnPointsConfiguration.h"
 
 namespace ROS2
 {
 
-//! The map manager component provides the context about the o3de scene map and ROS2 environment.
-//! It is used for various map-orientated tasks and conversions.
+//! The map manager component provides the context about the o3de scene in ROS2 environment.
+//! It provides position to GPS location tool, conversion to map frame for any o3de Transform as well
+//! as it handles the global information about map and odom frame names.
+//! A hook entity can be used to describe the map origin in geographic coordinate system.
 class MapManagerComponent
         : public AZ::Component
         , protected MapRequestBus::Handler
@@ -33,8 +34,9 @@ public:
     static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
 
     [[nodiscard]] AZ::Transform ConvertToMapCoordinateSystem(AZ::Transform transform) override;
-    [[nodiscard]] AZ::Vector3 LocalToLatLon(const AZ::Vector3 &local) override;
-    [[nodiscard]] AZStd::vector<AZ::Transform> GetAvailableSpawnPoints() override;
+    [[nodiscard]] AZ::Transform ConvertFromMapCoordinateSystem(AZ::Transform transform) override;
+    [[nodiscard]] AZ::Vector3 WorldPositionToLatLon(const AZ::Vector3 &worldPosition) override;
+    [[nodiscard]] AZ::Vector3 LatLonToWorldPosition(const AZ::Vector3 &latlon) override;
     [[nodiscard]] AZStd::string GetMapFrameId() override { return m_mapFrameId;};
     [[nodiscard]] AZStd::string GetOdomFrameId() override { return m_odomFrameId;};
 
@@ -43,7 +45,6 @@ public:
 
 private:
     Map::GeodeticConfiguration m_geodeticConfiguration;
-    Map::SpawnPointsConfiguration m_spawnPointsConfiguration;
 
     AZStd::string m_mapFrameId = "map";
     AZStd::string m_odomFrameId = "odom";

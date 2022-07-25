@@ -75,7 +75,7 @@ namespace ROS2
         const AZ::Vector3 currentPosition = GetCurrentPose().GetTranslation();
 
         AZ::Vector3 currentPositionWGS84;
-        MapRequestBus::BroadcastResult(currentPositionWGS84, &MapRequests::LocalToLatLon, currentPosition);
+        MapRequestBus::BroadcastResult(currentPositionWGS84, &MapRequests::WorldPositionToLatLon, currentPosition);
 
         m_gnssMsg.latitude = currentPositionWGS84.GetX();
         m_gnssMsg.longitude = currentPositionWGS84.GetY();

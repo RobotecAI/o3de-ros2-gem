@@ -35,8 +35,6 @@ set(FILES
     Source/Map/GeodeticTransforms.h
     Source/Map/GeodeticConfiguration.h
     Source/Map/GeodeticConfiguration.cpp
-    Source/Map/SpawnPointsConfiguration.h
-    Source/Map/SpawnPointsConfiguration.cpp
     Source/Map/MapManagerComponent.h
     Source/Map/MapManagerComponent.cpp
     Source/Map/MapManagerROS2Component.h

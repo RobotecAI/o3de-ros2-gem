@@ -9,7 +9,6 @@
 
 #include "Map/MapBus.h"
 #include "ROS2SystemComponent.h"
-#include "o3de_ros2_gem_interfaces/srv/get_spawn_points.hpp"
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Math/Vector3.h>
@@ -30,19 +29,10 @@ public:
     static void Reflect(AZ::ReflectContext* context);
     static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
 
-    //! ROS2 service server implementation for getting available spawn points.
-    void OnSpawnPointsRequest(
-            o3de_ros2_gem_interfaces::srv::GetSpawnPoints::Request::SharedPtr request,
-            o3de_ros2_gem_interfaces::srv::GetSpawnPoints::Response::SharedPtr response
-    );
+    //! TODO: ROS2 services and topics to communicate with MapManager.
 
     MapManagerROS2Component();
     ~MapManagerROS2Component();
-
-    AZStd::string m_spawnPointsServiceName = "get_available_spawn_points";
-
-private:
-    rclcpp::Service<o3de_ros2_gem_interfaces::srv::GetSpawnPoints>::SharedPtr m_spawnPointsService;
 };
 
 }
