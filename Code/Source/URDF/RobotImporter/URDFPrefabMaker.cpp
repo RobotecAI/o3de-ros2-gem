@@ -27,6 +27,7 @@
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 #include <Source/EditorShapeColliderComponent.h>
+#include <Source/EditorRigidBodyComponent.h>
 
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
 #include <filesystem> // TODO - instead, use AZ API for filesystem
@@ -250,7 +251,26 @@ namespace ROS2
     {   // TODO - implement
     }
 
-    void URDFPrefabMaker::AddInertia(urdf::LinkSharedPtr /*link*/, AZ::EntityId /*entityId*/)
-    {   // TODO - implement
+    void URDFPrefabMaker::AddInertia(urdf::LinkSharedPtr link, AZ::EntityId entityId)
+    {
+        urdf::InertialSharedPtr inertial = link->inertial;
+        if (!inertial)
+        {   // it is ok not to have inertia in a link
+            return;
+        }
+
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        // TODO - consider explicit 2 arg constructor instead
+        PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
+        rigidBodyConfiguration.m_mass = inertial->mass;
+        // TODO - is the origin.rotation part applicable? Does non-zero make value sense? Investigate.
+        rigidBodyConfiguration.m_centerOfMassOffset = URDF::TypeConversions::ConvertVector3(inertial->origin.position);
+
+        // Inertia tensor is symmetrical
+        auto inertiaMatrix = AZ::Matrix3x3::CreateFromRows(AZ::Vector3(inertial->ixx, inertial->ixy, inertial->ixz),
+                                                           AZ::Vector3(inertial->ixy, inertial->iyy, inertial->iyz),
+                                                           AZ::Vector3(inertial->ixz, inertial->iyz, inertial->izz));
+        rigidBodyConfiguration.m_inertiaTensor = inertiaMatrix;
+        entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration);
     }
 } // namespace ROS2
