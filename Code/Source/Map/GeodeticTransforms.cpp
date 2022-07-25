@@ -16,7 +16,8 @@ constexpr double secondEccentrictySquared =
     reciprocalFlattening * (2.0f - reciprocalFlattening) / ((1.0f - reciprocalFlattening) * (1.0f - reciprocalFlattening));
 
 // Based on http://wiki.gis.com/wiki/index.php/Geodetic_system
-namespace ROS2::Map::Utilities {
+namespace ROS2::Map::Utilities 
+{
     float Rad2Deg(float rad) {
         return rad * 180.0f / AZ::Constants::Pi;
     }

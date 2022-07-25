@@ -38,9 +38,9 @@ namespace ROS2
         virtual AZ::Vector3 WorldPositionToLatLon(const AZ::Vector3 &worldPosition) = 0;
 
         //! Convert the geographic position relative to the map frame to the global o3de coordinate system.
-        //! @param latlon - geographic position in degrees.
+        //! @param latLonAlt - geographic position in degrees, x: latitude, y: longitude, z: altitude.
         //! @return Vector where x: x position, y: y position, z: z position in o3de WorldTM.
-        virtual AZ::Vector3 LatLonToWorldPosition(const AZ::Vector3 &latlon) = 0;
+        virtual AZ::Vector3 LatLonToWorldPosition(const AZ::Vector3 &latLonAlt) = 0;
 
 
         //! Get map frame id.

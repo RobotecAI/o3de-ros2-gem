@@ -102,18 +102,16 @@ namespace ROS2
         return Map::Utilities::ECEFToWGS84(currentPositionECEF);
     }
 
-    AZ::Vector3 MapManagerComponent::LatLonToWorldPosition(const AZ::Vector3 &latlon)
+    AZ::Vector3 MapManagerComponent::LatLonToWorldPosition(const AZ::Vector3 &latLonAlt)
     {
-        const auto currentECEF = Map::Utilities::WGS84ToECEF(latlon);
+        const auto currentECEF = Map::Utilities::WGS84ToECEF(latLonAlt);
 
-        auto localPose =  Map::Utilities::ECEFToENU({m_geodeticConfiguration.m_originLatitudeDeg,
+        auto worldPosition =  Map::Utilities::ECEFToENU({m_geodeticConfiguration.m_originLatitudeDeg,
                                           m_geodeticConfiguration.m_originLongitudeDeg,
                                           m_geodeticConfiguration.m_originAltitude},
                                          currentECEF);
 
-        AZ_Printf("ROS2GNSSSensorComponent", "PRE CONV TO MAP %lf, %lf, %lf", localPose.GetX(), localPose.GetY(), localPose.GetZ());
-
-        return ConvertFromMapCoordinateSystem(AZ::Transform(localPose, AZ::Quaternion::CreateIdentity(), 1.0)).GetTranslation();
+        return ConvertFromMapCoordinateSystem(AZ::Transform(worldPosition, AZ::Quaternion::CreateIdentity(), 1.0)).GetTranslation();
     }
 
 }

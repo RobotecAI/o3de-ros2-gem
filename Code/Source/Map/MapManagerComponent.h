@@ -36,7 +36,7 @@ public:
     [[nodiscard]] AZ::Transform ConvertToMapCoordinateSystem(AZ::Transform transform) override;
     [[nodiscard]] AZ::Transform ConvertFromMapCoordinateSystem(AZ::Transform transform) override;
     [[nodiscard]] AZ::Vector3 WorldPositionToLatLon(const AZ::Vector3 &worldPosition) override;
-    [[nodiscard]] AZ::Vector3 LatLonToWorldPosition(const AZ::Vector3 &latlon) override;
+    [[nodiscard]] AZ::Vector3 LatLonToWorldPosition(const AZ::Vector3 &latLonAlt) override;
     [[nodiscard]] AZStd::string GetMapFrameId() override { return m_mapFrameId;};
     [[nodiscard]] AZStd::string GetOdomFrameId() override { return m_odomFrameId;};
 
