@@ -20,7 +20,12 @@
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 #include <AzToolsFramework/Prefab/PrefabPublicRequestBus.h>
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
+#include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
+#include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <Source/EditorShapeColliderComponent.h>
+
+#include <regex> // TODO - we are currently replacing package:// with an absolute path
+#include <filesystem> // TODO - instead, use AZ API for filesystem
 
 namespace ROS2
 {
@@ -39,9 +44,12 @@ namespace ROS2
         m_prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
     }
 
-    AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF(urdf::ModelInterfaceSharedPtr model)
+    AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF(urdf::ModelInterfaceSharedPtr model,
+                                                                                       const AZStd::string& modelFilePath)
     {   // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
         // TODO - add a check if the prefab with a given name already exists. Choice to cancel, overwrite or suffix name
+
+        m_modelFilePath = modelFilePath;
 
         // recursively add all entities
         AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", model->getName().c_str());
@@ -94,6 +102,11 @@ namespace ROS2
         entity->Deactivate();
         Internal::AddRequiredComponentsToEntity(entityId);
         entity->CreateComponent<ROS2FrameComponent>(entityName);
+
+        AddVisuals(link, entityId);
+        AddColliders(link, entityId);
+        AddInertia(link, entityId);
+
         for (auto childLink : link->child_links)
         {
             auto outcome = AddEntitiesForLink(childLink, entityId); // recursive call
@@ -165,12 +178,32 @@ namespace ROS2
         if (geometry->type == urdf::Geometry::MESH)
         {
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-            AZ_TracePrintf("AddVisuals", "Adding mesh filename: %s", meshGeometry->filename.c_str());
-            // TODO load mesh, use asset processor
 
+
+            // TODO - a PoC solution, replace with something generic, robust, proper
+            std::filesystem::path modelPath(m_modelFilePath.c_str());
+            modelPath = modelPath.remove_filename();
+            auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
+            modelPath += relativePathToMesh;
+            AZ_TracePrintf("AddVisuals", "Adding mesh urdf_uri: %s, changed to filename: %s",
+                           meshGeometry->filename.c_str(), modelPath.c_str());
+
+            AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+
+            // TODO load mesh, use asset processor
+            entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
+            AZ::Render::MeshComponentRequestBus::Event(entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, modelPath.c_str());
             // TODO apply scale
 
         }
         // TODO handle material
+    }
+
+    void URDFPrefabMaker::AddColliders(urdf::LinkSharedPtr /*link*/, AZ::EntityId /*entityId*/)
+    {   // TODO - implement
+    }
+
+    void URDFPrefabMaker::AddInertia(urdf::LinkSharedPtr /*link*/, AZ::EntityId /*entityId*/)
+    {   // TODO - implement
     }
 } // namespace ROS2

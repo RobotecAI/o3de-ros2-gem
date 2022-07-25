@@ -97,7 +97,7 @@ namespace ROS2
 
     AZ::TransformInterface* ROS2FrameComponent::GetEntityTransformInterface() const
     {
-        // TODO - this is very weird - replace with a correct approach.
+        // TODO - instead, use EditorFrameComponent to handle Editor-context queries and here only use the "Game" version
         auto* interface = GetEntity()->FindComponent<AzFramework::TransformComponent>();
         if (interface)
         {
