@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <AzCore/Math/Vector3.h>
-#include <AzCore/Math/Quaternion.h>
 #include "URDF/UrdfParser.h"
+#include <AzCore/Math/Quaternion.h>
+#include <AzCore/Math/Vector3.h>
 
 namespace ROS2
 {
@@ -23,5 +23,5 @@ namespace ROS2
             static AZ::Vector3 ConvertVector3(const urdf::Vector3& urdfVector);
             static AZ::Quaternion ConvertQuaternion(const urdf::Rotation& urdfQuaternion);
         };
-    }  // namespace URDF
+    } // namespace URDF
 } // namespace ROS2

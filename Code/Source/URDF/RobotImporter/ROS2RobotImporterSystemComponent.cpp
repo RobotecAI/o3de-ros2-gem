@@ -17,16 +17,15 @@ namespace ROS2
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<ROS2RobotImporterSystemComponent, AZ::Component>()
-                ->Version(0);
+            serializeContext->Class<ROS2RobotImporterSystemComponent, AZ::Component>()->Version(0);
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
-                ec->Class<ROS2RobotImporterSystemComponent>("Robot Importer", "Use this component to import robot definition from supported formats")
-                        ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                        ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("System"))
-                        ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
-                        ;
+                ec->Class<ROS2RobotImporterSystemComponent>(
+                      "Robot Importer", "Use this component to import robot definition from supported formats")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("System"))
+                    ->Attribute(AZ::Edit::Attributes::AutoExpand, true);
             }
         }
     }
