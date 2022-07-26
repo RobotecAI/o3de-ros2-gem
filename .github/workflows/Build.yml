@@ -35,7 +35,7 @@ jobs:
           cd ..
       - name: Set RUNNER_HOME
         run: |
-          RUNNER_WORK_DIR=$(pwd)
+          RUNNER_WORK=$(pwd)
           cd ../../..
           echo "RUNNER_HOME=$(pwd)" >> $GITHUB_ENV
           cd $RUNNER_WORK
@@ -43,7 +43,7 @@ jobs:
         run: |
           mkdir -p ${{ env.RUNNER_HOME }}/o3de-packages
           o3de/python/get_python.sh
-          o3de/scripts/o3de.sh register --this-engine
+          o3de/scripts/o3de.sh register --this-engine --force
       - name: Create an empty Project
         run: |
           o3de/scripts/o3de.sh create-project \
