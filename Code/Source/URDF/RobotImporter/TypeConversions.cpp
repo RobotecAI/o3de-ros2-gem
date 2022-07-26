@@ -21,5 +21,5 @@ namespace ROS2
         {
             return AZ::Quaternion(urdfQuaternion.x, urdfQuaternion.y, urdfQuaternion.z, urdfQuaternion.w);
         }
-    }  // namespace URDF
+    } // namespace URDF
 } // namespace ROS2

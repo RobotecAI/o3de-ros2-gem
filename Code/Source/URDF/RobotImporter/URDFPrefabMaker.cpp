@@ -7,9 +7,11 @@
  */
 
 #include "URDF/RobotImporter/URDFPrefabMaker.h"
-#include "URDF/RobotImporter/TypeConversions.h"
 #include "Frame/ROS2FrameComponent.h"
+#include "URDF/RobotImporter/TypeConversions.h"
 
+#include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
+#include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Math/Quaternion.h>
 #include <AzCore/Utils/Utils.h>
@@ -17,20 +19,18 @@
 #include <AzToolsFramework/Component/EditorComponentAPIBus.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <AzToolsFramework/Prefab/PrefabLoaderInterface.h>
-#include <AzToolsFramework/Prefab/PrefabSystemComponent.h>
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 #include <AzToolsFramework/Prefab/PrefabPublicRequestBus.h>
+#include <AzToolsFramework/Prefab/PrefabSystemComponent.h>
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
-#include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
-#include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
-#include <Source/EditorShapeColliderComponent.h>
 #include <Source/EditorRigidBodyComponent.h>
+#include <Source/EditorShapeColliderComponent.h>
 
-#include <regex> // TODO - we are currently replacing package:// with an absolute path
 #include <filesystem> // TODO - instead, use AZ API for filesystem
+#include <regex> // TODO - we are currently replacing package:// with an absolute path
 
 namespace ROS2
 {
@@ -40,18 +40,18 @@ namespace ROS2
         {
             AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
             AzToolsFramework::EditorEntityContextRequestBus::Broadcast(
-                    &AzToolsFramework::EditorEntityContextRequests::AddRequiredComponents, *entity);
+                &AzToolsFramework::EditorEntityContextRequests::AddRequiredComponents, *entity);
         }
-    }
+    } // namespace Internal
 
     URDFPrefabMaker::URDFPrefabMaker()
     {
         m_prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
     }
 
-    AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF(urdf::ModelInterfaceSharedPtr model,
-                                                                                       const AZStd::string& modelFilePath)
-    {   // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
+    AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF(
+        urdf::ModelInterfaceSharedPtr model, const AZStd::string& modelFilePath)
+    { // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
         // TODO - add a check if the prefab with a given name already exists. Choice to cancel, overwrite or suffix name
 
         m_modelFilePath = modelFilePath;
@@ -95,12 +95,11 @@ namespace ROS2
 
         AZ::EntityId entityId = createEntityResult.GetValue();
         if (!entityId.IsValid())
-        {   // Verify that a valid entity is created.
+        { // Verify that a valid entity is created.
             return AZ::Failure(AZStd::string("Invalid id for created entity"));
         }
 
-        AZ_TracePrintf("AddEntitiesForLink", "Processing entity id:%s with link name:%s",
-                       entityId.ToString().c_str(), link->name.c_str());
+        AZ_TracePrintf("AddEntitiesForLink", "Processing entity id:%s with link name:%s", entityId.ToString().c_str(), link->name.c_str());
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         AZStd::string entityName(link->name.c_str());
         entity->SetName(entityName);
@@ -116,7 +115,7 @@ namespace ROS2
         {
             auto outcome = AddEntitiesForLink(childLink, entityId); // recursive call
             if (!outcome.IsSuccess())
-            {   // TODO - decide on behavior. Still proceed to load other children?
+            { // TODO - decide on behavior. Still proceed to load other children?
                 AZ_Warning("AddEntitiesForLink", false, "Unable to add entity due to an error: %s", outcome.GetError().c_str());
                 continue;
             }
@@ -128,13 +127,12 @@ namespace ROS2
         return AZ::Success(entityId);
     }
 
-    void URDFPrefabMaker::AddJointInformationToEntity(urdf::LinkSharedPtr parentLink,
-                                                      urdf::LinkSharedPtr childLink, AZ::EntityId entityId)
-    {   // Find if there is a joint between this child and its parent, add / change relevant components
+    void URDFPrefabMaker::AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId)
+    { // Find if there is a joint between this child and its parent, add / change relevant components
         for (auto joint : parentLink->child_joints)
-        {   // TODO - replace with std algoritm
+        { // TODO - replace with std algoritm
             if (joint->child_link_name == childLink->name)
-            {   // Found a match!
+            { // Found a match!
                 // TODO - handle joint types etc. (a dedicated component) - check existing JointComponent
 
                 // Get URDF pose elements
@@ -164,7 +162,7 @@ namespace ROS2
     {
         urdf::VisualSharedPtr visual = link->visual;
         if (!visual)
-        {   // it is ok not to have a visual in a link
+        { // it is ok not to have a visual in a link
             return;
         }
 
@@ -172,90 +170,90 @@ namespace ROS2
 
         auto geometry = visual->geometry;
         if (!geometry)
-        {   // non-empty visual should have a geometry
+        { // non-empty visual should have a geometry
             AZ_Warning("AddVisuals", false, "No Geometry for a visual");
             return;
         }
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
 
-        switch (geometry->type) {
-            case urdf::Geometry::SPHERE:
-                {
-                    auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
-                    entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
-                    entity->Activate();
-                    LmbrCentral::SphereShapeComponentRequestsBus::Event(entityId,
-                        &LmbrCentral::SphereShapeComponentRequests::SetRadius,
-                        sphereGeometry->radius);
-                    entity->Deactivate();
-                }
-                break;
-            case urdf::Geometry::CYLINDER:
-                {
-                    auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
-                    entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
-                    entity->Activate();
-                    LmbrCentral::CylinderShapeComponentRequestsBus::Event(entityId,
-                        &LmbrCentral::CylinderShapeComponentRequests::SetRadius,
-                        cylinderGeometry->radius);
-                    LmbrCentral::CylinderShapeComponentRequestsBus::Event(entityId,
-                        &LmbrCentral::CylinderShapeComponentRequests::SetHeight,
-                        cylinderGeometry->length);
-                    entity->Deactivate();
-                }
-                break;
-            case urdf::Geometry::BOX:
-                {
-                    auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
-                    entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
-                    AZ::Vector3 boxDimensions = URDF::TypeConversions::ConvertVector3(boxGeometry->dim);
-                    entity->Activate();
-                    LmbrCentral::BoxShapeComponentRequestsBus::Event(entityId,
-                        &LmbrCentral::BoxShapeComponentRequests::SetBoxDimensions,
-                        boxDimensions);
-                    entity->Deactivate();
-                }
-                break;
-            case urdf::Geometry::MESH:
-                {
-                    auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+        switch (geometry->type)
+        {
+        case urdf::Geometry::SPHERE:
+            {
+                auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
+                entity->Activate();
+                LmbrCentral::SphereShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::SphereShapeComponentRequests::SetRadius, sphereGeometry->radius);
+                entity->Deactivate();
+            }
+            break;
+        case urdf::Geometry::CYLINDER:
+            {
+                auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
+                entity->Activate();
+                LmbrCentral::CylinderShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::CylinderShapeComponentRequests::SetRadius, cylinderGeometry->radius);
+                LmbrCentral::CylinderShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::CylinderShapeComponentRequests::SetHeight, cylinderGeometry->length);
+                entity->Deactivate();
+            }
+            break;
+        case urdf::Geometry::BOX:
+            {
+                auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
+                AZ::Vector3 boxDimensions = URDF::TypeConversions::ConvertVector3(boxGeometry->dim);
+                entity->Activate();
+                LmbrCentral::BoxShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::BoxShapeComponentRequests::SetBoxDimensions, boxDimensions);
+                entity->Deactivate();
+            }
+            break;
+        case urdf::Geometry::MESH:
+            {
+                auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
 
-                    // TODO - a PoC solution, replace with something generic, robust, proper
-                    std::filesystem::path modelPath(m_modelFilePath.c_str());
-                    modelPath = modelPath.remove_filename();
-                    auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
-                    modelPath += relativePathToMesh;
-                    AZ_Warning("AddVisuals", false, "Adding mesh urdf_uri: %s, changed to filename: %s",
-                               meshGeometry->filename.c_str(), modelPath.c_str());
+                // TODO - a PoC solution, replace with something generic, robust, proper
+                std::filesystem::path modelPath(m_modelFilePath.c_str());
+                modelPath = modelPath.remove_filename();
+                auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
+                modelPath += relativePathToMesh;
+                AZ_Warning(
+                    "AddVisuals",
+                    false,
+                    "Adding mesh urdf_uri: %s, changed to filename: %s",
+                    meshGeometry->filename.c_str(),
+                    modelPath.c_str());
 
-                    // TODO load mesh, use asset processor
-                    entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
-                    entity->Activate();
-                    AZ::Render::MeshComponentRequestBus::Event(entityId,
-                        &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath,
-                        modelPath.c_str());
-                    entity->Deactivate();
-                    // TODO apply scale
-                }
-                break;
-            default:
-                AZ_Warning("AddVisuals", false, "Unsupported visual geometry type, %d", geometry->type);
-                return;
+                // TODO load mesh, use asset processor
+                entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
+                entity->Activate();
+                AZ::Render::MeshComponentRequestBus::Event(
+                    entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, modelPath.c_str());
+                entity->Deactivate();
+                // TODO apply scale
+            }
+            break;
+        default:
+            AZ_Warning("AddVisuals", false, "Unsupported visual geometry type, %d", geometry->type);
+            return;
         }
 
         // TODO handle material
     }
 
     void URDFPrefabMaker::AddColliders(urdf::LinkSharedPtr /*link*/, AZ::EntityId /*entityId*/)
-    {   // TODO - implement
+    { // TODO - implement
     }
 
     void URDFPrefabMaker::AddInertia(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
         urdf::InertialSharedPtr inertial = link->inertial;
         if (!inertial)
-        {   // it is ok not to have inertia in a link
+        { // it is ok not to have inertia in a link
             return;
         }
 
@@ -267,9 +265,10 @@ namespace ROS2
         rigidBodyConfiguration.m_centerOfMassOffset = URDF::TypeConversions::ConvertVector3(inertial->origin.position);
 
         // Inertia tensor is symmetrical
-        auto inertiaMatrix = AZ::Matrix3x3::CreateFromRows(AZ::Vector3(inertial->ixx, inertial->ixy, inertial->ixz),
-                                                           AZ::Vector3(inertial->ixy, inertial->iyy, inertial->iyz),
-                                                           AZ::Vector3(inertial->ixz, inertial->iyz, inertial->izz));
+        auto inertiaMatrix = AZ::Matrix3x3::CreateFromRows(
+            AZ::Vector3(inertial->ixx, inertial->ixy, inertial->ixz),
+            AZ::Vector3(inertial->ixy, inertial->iyy, inertial->iyz),
+            AZ::Vector3(inertial->ixz, inertial->iyz, inertial->izz));
         rigidBodyConfiguration.m_inertiaTensor = inertiaMatrix;
         entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration);
     }
