@@ -15,6 +15,7 @@
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Math/Quaternion.h>
 #include <AzCore/Utils/Utils.h>
+#include <AzCore/std/string/conversions.h>
 #include <AzFramework/Components/TransformComponent.h>
 #include <AzToolsFramework/Component/EditorComponentAPIBus.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
@@ -30,7 +31,6 @@
 #include <Source/EditorRigidBodyComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
 
-#include <filesystem> // TODO - instead, use AZ API for filesystem
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
 
 namespace ROS2
@@ -235,19 +235,16 @@ namespace ROS2
                 modelPath = modelPath.remove_filename();
                 auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
                 modelPath += relativePathToMesh;
-                AZ_Warning(
-                    "AddVisual",
-                    false,
-                    "Adding mesh urdf_uri: %s, changed to filename: %s",
-                    meshGeometry->filename.c_str(),
-                    modelPath.c_str());
 
-                // TODO load mesh, use asset processor
+                // Get asset path for a given model path
+                auto assetPath = GetAssetPathFromModelPath(modelPath);
+
                 entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
                 entity->Activate();
                 AZ::Render::MeshComponentRequestBus::Event(
-                    entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, modelPath.c_str());
+                    entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, assetPath.c_str());
                 entity->Deactivate();
+
                 // TODO apply scale
             }
             break;
@@ -358,5 +355,39 @@ namespace ROS2
             AZ::Vector3(inertial->ixz, inertial->iyz, inertial->izz));
         rigidBodyConfiguration.m_inertiaTensor = inertiaMatrix;
         entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration);
+    }
+
+    AZStd::string URDFPrefabMaker::GetAssetPathFromModelPath(std::filesystem::path modelPath)
+    {
+        // It is assumed that the model is in project /Assets folder.
+        // TODO - get asset processor watched directories and support different paths
+        AZStd::vector<AZStd::string> watchedDirectoriesNames = {
+                "Assets"
+        };
+
+        auto azmodelPath = AZStd::string(modelPath.replace_extension("azmodel").string().c_str());
+        AZStd::to_lower(azmodelPath.begin(), azmodelPath.end());
+
+        size_t watchedDirPose = AZStd::string::npos;
+        for (auto watchedDirectory : watchedDirectoriesNames)
+        {
+            AZStd::to_lower(watchedDirectory.begin(), watchedDirectory.end());
+            auto dirToWatch = AZStd::string("/") + watchedDirectory + AZStd::string("/");
+            watchedDirPose = azmodelPath.find(dirToWatch);
+            if (watchedDirPose != AZStd::string::npos)
+            {
+                break;
+            }
+        }
+
+        AZStd::string assetPath {""};
+        if (watchedDirPose == AZStd::string::npos)
+        {
+            AZ_Error("AddVisuals", false, "Could not find asset path for %s", modelPath.c_str());
+        } else
+        {
+            assetPath = azmodelPath.substr(watchedDirPose+1, azmodelPath.length());
+        }
+        return assetPath;
     }
 } // namespace ROS2

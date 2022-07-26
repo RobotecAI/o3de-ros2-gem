@@ -11,6 +11,8 @@
 #include "URDF/UrdfParser.h"
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 
+#include <filesystem> // TODO - instead, use AZ API for filesystem
+
 namespace ROS2
 {
     //! Encapsulates constructive mapping of URDF elements to a complete prefab with entities and components
@@ -29,6 +31,7 @@ namespace ROS2
         void AddCollider(urdf::CollisionSharedPtr collider, AZ::EntityId entityId);
         void AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId);
         void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId);
+        AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
 
         AzToolsFramework::Prefab::PrefabPublicInterface* m_prefabInterface;
         AZStd::string m_modelFilePath;
