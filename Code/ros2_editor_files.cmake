@@ -10,6 +10,8 @@ set(FILES
     Source/URDF/RobotImporter/ROS2RobotImporterEditorSystemComponent.h
     Source/URDF/RobotImporter/RobotImporterWidget.cpp
     Source/URDF/RobotImporter/RobotImporterWidget.h
+    Source/URDF/RobotImporter/TypeConversions.h
+    Source/URDF/RobotImporter/TypeConversions.cpp
     Source/URDF/RobotImporter/URDFPrefabMaker.cpp
     Source/URDF/RobotImporter/URDFPrefabMaker.h
 )
