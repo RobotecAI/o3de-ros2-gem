@@ -24,8 +24,10 @@ namespace ROS2
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
         void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
+        void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
-        void AddInertia(urdf::LinkSharedPtr link, AZ::EntityId entityId);
+        void AddCollider(urdf::CollisionSharedPtr collider, AZ::EntityId entityId);
+        void AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId);
         void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId);
 
         AzToolsFramework::Prefab::PrefabPublicInterface* m_prefabInterface;

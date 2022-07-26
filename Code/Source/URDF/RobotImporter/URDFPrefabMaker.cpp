@@ -26,6 +26,7 @@
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
+#include <Source/EditorColliderComponent.h>
 #include <Source/EditorRigidBodyComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
 
@@ -109,7 +110,7 @@ namespace ROS2
 
         AddVisuals(link, entityId);
         AddColliders(link, entityId);
-        AddInertia(link, entityId);
+        AddInertial(link->inertial, entityId);
 
         for (auto childLink : link->child_links)
         {
@@ -160,7 +161,20 @@ namespace ROS2
 
     void URDFPrefabMaker::AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
-        urdf::VisualSharedPtr visual = link->visual;
+        if (link->visual_array.size() == 0)
+        { // one or zero visuals - element is used
+            AddVisual(link->visual, entityId);
+            return;
+        }
+
+        for (auto visual : link->visual_array)
+        { // one or more visuals - array is used
+            AddVisual(visual, entityId);
+        }
+    }
+
+    void URDFPrefabMaker::AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
+    {
         if (!visual)
         { // it is ok not to have a visual in a link
             return;
@@ -171,7 +185,7 @@ namespace ROS2
         auto geometry = visual->geometry;
         if (!geometry)
         { // non-empty visual should have a geometry
-            AZ_Warning("AddVisuals", false, "No Geometry for a visual");
+            AZ_Warning("AddVisual", false, "No Geometry for a visual");
             return;
         }
 
@@ -222,7 +236,7 @@ namespace ROS2
                 auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
                 modelPath += relativePathToMesh;
                 AZ_Warning(
-                    "AddVisuals",
+                    "AddVisual",
                     false,
                     "Adding mesh urdf_uri: %s, changed to filename: %s",
                     meshGeometry->filename.c_str(),
@@ -238,20 +252,93 @@ namespace ROS2
             }
             break;
         default:
-            AZ_Warning("AddVisuals", false, "Unsupported visual geometry type, %d", geometry->type);
+            AZ_Warning("AddVisual", false, "Unsupported visual geometry type, %d", geometry->type);
             return;
         }
 
         // TODO handle material
     }
 
-    void URDFPrefabMaker::AddColliders(urdf::LinkSharedPtr /*link*/, AZ::EntityId /*entityId*/)
-    { // TODO - implement
+    void URDFPrefabMaker::AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)
+    {
+        if (link->collision_array.size() == 0)
+        { // one or zero colliders - element is used
+            AddCollider(link->collision, entityId);
+            return;
+        }
+
+        for (auto collider : link->collision_array)
+        { // one or more colliders - array is used
+            AddCollider(collider, entityId);
+        }
     }
 
-    void URDFPrefabMaker::AddInertia(urdf::LinkSharedPtr link, AZ::EntityId entityId)
+    void URDFPrefabMaker::AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
     {
-        urdf::InertialSharedPtr inertial = link->inertial;
+        if (!collision)
+        { // it is ok not to have collision in a link
+            return;
+        }
+
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        auto geometry = collision->geometry;
+        if (!geometry)
+        { // non-empty visual should have a geometry
+            AZ_Warning("AddCollider", false, "No Geometry for a collider");
+            return;
+        }
+
+        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH; // class TriangleMeshShapeConfiguration : public ShapeConfiguration
+        if (isPrimitiveShape)
+        {
+            Physics::ColliderConfiguration colliderConfig;
+            colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
+            colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
+            colliderConfig.m_tag = AZStd::string(collision->name.c_str());
+            Physics::ShapeConfiguration* shapeConfig = nullptr; // This will be initialized and passed by const reference to be copied.
+            switch (geometry->type)
+            {
+            case urdf::Geometry::SPHERE:
+                {
+                    auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                    Physics::SphereShapeConfiguration sphere(sphereGeometry->radius);
+                    shapeConfig = &sphere;
+                }
+                break;
+            case urdf::Geometry::BOX:
+                {
+                    auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                    Physics::BoxShapeConfiguration box(URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
+                    shapeConfig = &box;
+                }
+                break;
+            case urdf::Geometry::CYLINDER:
+                {
+                    auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                    Physics::CapsuleShapeConfiguration capsule(cylinderGeometry->length, cylinderGeometry->radius);
+                    shapeConfig = &capsule;
+                }
+                break;
+            case urdf::Geometry::MESH:
+                {
+                    auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+                    Physics::TriangleMeshShapeConfiguration triangleMesh;
+                    // TODO - fill in this mesh shape configuration fields. Look at the memory management.
+                    *shapeConfig = triangleMesh;
+                }
+                break;
+            default:
+                AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
+                break;
+            }
+
+            entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, *shapeConfig);
+            // TODO - set name as in collision->name
+        }
+    }
+
+    void URDFPrefabMaker::AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId)
+    {
         if (!inertial)
         { // it is ok not to have inertia in a link
             return;
