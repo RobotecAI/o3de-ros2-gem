@@ -14,8 +14,7 @@ namespace ROS2
 {
     //! A Component for importing robot definition from standard formats such as URDF.
     //! Sometimes, user decisions will be involved in the process.
-    class ROS2RobotImporterSystemComponent
-        : public AZ::Component
+    class ROS2RobotImporterSystemComponent : public AZ::Component
     {
     public:
         AZ_COMPONENT(ROS2RobotImporterSystemComponent, "{f2566021-450a-4eae-896f-b268492a58eb}");
@@ -28,8 +27,8 @@ namespace ROS2
         virtual ~ROS2RobotImporterSystemComponent() = default;
 
     protected:
-        void Init() override {};
-        void Activate() override {};
-        void Deactivate() override {};
+        void Init() override{};
+        void Activate() override{};
+        void Deactivate() override{};
     };
 } // namespace ROS2

@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 #include "URDF/UrdfParser.h"
+#include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 
 namespace ROS2
 {
@@ -18,8 +18,8 @@ namespace ROS2
     {
     public:
         URDFPrefabMaker();
-        AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF(urdf::ModelInterfaceSharedPtr model,
-                                                                          const AZStd::string& modelFilePath);
+        AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF(
+            urdf::ModelInterfaceSharedPtr model, const AZStd::string& modelFilePath);
 
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
