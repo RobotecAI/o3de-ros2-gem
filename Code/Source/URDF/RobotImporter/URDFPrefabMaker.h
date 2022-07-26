@@ -12,6 +12,7 @@
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 
 #include <filesystem> // TODO - instead, use AZ API for filesystem
+#include "URDF/RobotImporter/RobotImporterInputInterface.h"
 
 namespace ROS2
 {
@@ -19,12 +20,12 @@ namespace ROS2
     class URDFPrefabMaker
     {
     public:
-        URDFPrefabMaker();
+        URDFPrefabMaker(RobotImporterInputInterface& inputInterface);
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF(
             urdf::ModelInterfaceSharedPtr model, const AZStd::string& modelFilePath);
 
     private:
-        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
+        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLinkRecursively(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
         void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
@@ -34,6 +35,8 @@ namespace ROS2
         AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
 
         AzToolsFramework::Prefab::PrefabPublicInterface* m_prefabInterface;
+        RobotImporterInputInterface& m_robotImporterInputInterface;
+
         AZStd::string m_modelFilePath;
     };
 } // namespace ROS2

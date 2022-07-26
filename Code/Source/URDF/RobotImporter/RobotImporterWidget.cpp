@@ -6,18 +6,19 @@
  *
  */
 
+#include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "URDF/RobotImporter/RobotImporterWidget.h"
+#include "RobotImporterWidget.h"
 #include "URDF/RobotImporter/URDFPrefabMaker.h"
 
 namespace ROS2
 {
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
-        , m_robotFileNameLabel("", this)
-        , m_robotNameLabel("", this)
+        , m_logLabel("", this)
+        , m_robotImporter(*this)
     {
         setWindowTitle(QObject::tr("Robot definition file importer"));
         QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -27,12 +28,8 @@ namespace ROS2
         mainLayout->addWidget(captionLabel);
         QPushButton* selectFileButton = new QPushButton(QObject::tr("Load"), this);
         mainLayout->addWidget(selectFileButton);
-        mainLayout->addWidget(&m_robotFileNameLabel);
-        mainLayout->addWidget(&m_robotNameLabel);
-
-        m_importFileDialog.setFileMode(QFileDialog::ExistingFiles);
-        m_importFileDialog.setNameFilter(QObject::tr("Unified Robot Description Format (*.urdf)"));
-        m_importFileDialog.setViewMode(QFileDialog::Detail);
+        mainLayout->addWidget(&m_logLabel);
+        mainLayout->addStretch();
 
         QObject::connect(
             selectFileButton,
@@ -40,32 +37,73 @@ namespace ROS2
             this,
             [this]()
             {
-                int result = m_importFileDialog.exec();
-                if (result != QDialog::DialogCode::Accepted)
-                {
-                    return;
-                }
-
-                auto fileNameToImport = m_importFileDialog.selectedFiles().first();
-                m_robotFileNameLabel.setText(fileNameToImport);
-                auto fileNameToImportAZ(fileNameToImport.toUtf8().constData());
-                m_urdfModel = UrdfParser::ParseFromFile(fileNameToImportAZ);
-                OnModelLoaded();
+                m_robotImporter.Import();
             });
-
-        mainLayout->addStretch();
         setLayout(mainLayout);
     }
 
-    void RobotImporterWidget::OnModelLoaded()
+    void RobotImporterWidget::ReportError(AZStd::string errorMessage)
     {
-        m_robotNameLabel.setText(m_urdfModel->getName().c_str());
+        QMessageBox::critical(this, QObject::tr("Error"), errorMessage.c_str());
+        m_logLabel.setText(errorMessage.c_str());
+        AZ_Error("RobotImporterWidget", false, errorMessage.c_str());
+    }
+    void RobotImporterWidget::ReportWarning(AZStd::string warningMessage)
+    {
+        AZ_Warning("RobotImporterWidget", false, warningMessage.c_str());
+    }
+    void RobotImporterWidget::ReportInfo(AZStd::string infoMessage)
+    {
+        m_logLabel.setText(infoMessage.c_str());
+        AZ_TracePrintf("RobotImporterWidget", infoMessage.c_str());
+    }
+    AZStd::string RobotImporterWidget::GetURDFPath()
+    {
+        return GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+    }
 
-        URDFPrefabMaker prefabMaker;
-        auto outcome = prefabMaker.CreatePrefabFromURDF(m_urdfModel, AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()));
-        if (!outcome)
-        { // TODO - handle, show
-            AZ_Error("RobotImporterWidget", false, "Importing robot definition failed with error: %s", outcome.GetError().c_str());
+    AZStd::string RobotImporterWidget::GetNewPrefabPath()
+    {
+        return GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
+    }
+
+    RobotImporterInputInterface::ExistingPrefabAction RobotImporterWidget::GetExistingPrefabAction()
+    {
+        QMessageBox msgBox;
+        msgBox.setText("The prefab file already exists");
+        msgBox.setInformativeText("Do you want to overwrite it or choose a new filename?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.setButtonText(QMessageBox::Save, "Overwrite");
+        msgBox.setButtonText(QMessageBox::Discard, "Save As..");
+        auto ret = msgBox.exec();
+        switch (ret)
+        {
+        case QMessageBox::Save:
+            return ExistingPrefabAction::Overwrite;
+        case QMessageBox::Discard:
+            return ExistingPrefabAction::NewName;
+        case QMessageBox::Cancel:
+            return ExistingPrefabAction::Cancel;
+        default:
+            return ExistingPrefabAction::Cancel;
         }
     }
+
+    AZStd::string RobotImporterWidget::GetPathWithExtension(AZStd::string extensionDescription, QFileDialog::FileMode mode)
+    {
+        QFileDialog m_importFileDialog;
+        m_importFileDialog.setFileMode(mode);
+        m_importFileDialog.setNameFilter(QObject::tr(extensionDescription.c_str()));
+        m_importFileDialog.setViewMode(QFileDialog::Detail);
+
+        int result = m_importFileDialog.exec();
+        if (result != QDialog::DialogCode::Accepted)
+        {
+            return {};
+        }
+
+        return m_importFileDialog.selectedFiles().first().toStdString().c_str();
+    }
+
 } // namespace ROS2

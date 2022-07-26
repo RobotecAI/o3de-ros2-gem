@@ -46,7 +46,8 @@ namespace ROS2
         }
     } // namespace Internal
 
-    URDFPrefabMaker::URDFPrefabMaker()
+    URDFPrefabMaker::URDFPrefabMaker(RobotImporterInputInterface& inputInterface)
+        : m_robotImporterInputInterface(inputInterface)
     {
         m_prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
     }
@@ -57,32 +58,44 @@ namespace ROS2
         // TODO - add a check if the prefab with a given name already exists. Choice to cancel, overwrite or suffix name
 
         m_modelFilePath = modelFilePath;
+        auto modelName = model->getName().c_str();
 
-        // recursively add all entities
-        AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", model->getName().c_str());
-        auto createEntityResult = AddEntitiesForLink(model->root_link_, AZ::EntityId());
+        AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", modelName);
+        auto createEntityResult = AddEntitiesForLinkRecursively(model->root_link_, AZ::EntityId());
         if (!createEntityResult.IsSuccess())
         {
             return AZ::Failure(AZStd::string(createEntityResult.GetError()));
         }
+        auto rootEntityId = createEntityResult.GetValue();
 
-        auto prefabName = AZStd::string::format("%s.%s", model->getName().c_str(), "prefab");
-        auto newPrefabPath = AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str();
-        auto contentEntityId = createEntityResult.GetValue();
+        auto prefabName = AZStd::string::format("%s.%s", modelName, "prefab");
+        auto prefabFileName = AZStd::string(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str());
 
-        // Create prefab, save it to disk immediately
+        if (AZ::IO::FileIOBase::GetInstance()->Exists(prefabFileName.c_str()))
+        {
+            switch (m_robotImporterInputInterface.GetExistingPrefabAction())
+            {
+            case RobotImporterInputInterface::ExistingPrefabAction::Cancel:
+                return AZ::Failure(AZStd::string("User cancelled"));
+            case RobotImporterInputInterface::ExistingPrefabAction::Overwrite:
+                break;
+            case RobotImporterInputInterface::ExistingPrefabAction::NewName:
+                prefabFileName = m_robotImporterInputInterface.GetNewPrefabPath();
+                break;
+            }
+        }
 
-        auto outcome = m_prefabInterface->CreatePrefabInDisk(AzToolsFramework::EntityIdList{ contentEntityId }, newPrefabPath);
+        auto outcome = m_prefabInterface->CreatePrefabInDisk(AzToolsFramework::EntityIdList({ rootEntityId }), prefabFileName.c_str());
         if (outcome.IsSuccess())
         {
             AZ::EntityId prefabContainerEntityId = outcome.GetValue();
             Internal::AddRequiredComponentsToEntity(prefabContainerEntityId);
         }
-        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created %s prefab", prefabName.c_str());
         return outcome;
     }
 
-    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId)
+    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::AddEntitiesForLinkRecursively(
+        urdf::LinkSharedPtr link, AZ::EntityId parentEntityId)
     {
         if (!link)
         {
@@ -101,7 +114,8 @@ namespace ROS2
             return AZ::Failure(AZStd::string("Invalid id for created entity"));
         }
 
-        AZ_TracePrintf("AddEntitiesForLink", "Processing entity id:%s with link name:%s", entityId.ToString().c_str(), link->name.c_str());
+        AZ_TracePrintf(
+            "AddEntitiesForLinkRecursively", "Processing entity id:%s with link name:%s", entityId.ToString().c_str(), link->name.c_str());
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         AZStd::string entityName(link->name.c_str());
         entity->SetName(entityName);
@@ -115,10 +129,10 @@ namespace ROS2
 
         for (auto childLink : link->child_links)
         {
-            auto outcome = AddEntitiesForLink(childLink, entityId); // recursive call
+            auto outcome = AddEntitiesForLinkRecursively(childLink, entityId); // recursive call
             if (!outcome.IsSuccess())
             { // TODO - decide on behavior. Still proceed to load other children?
-                AZ_Warning("AddEntitiesForLink", false, "Unable to add entity due to an error: %s", outcome.GetError().c_str());
+                AZ_Warning("AddEntitiesForLinkRecursively", false, "Unable to add entity due to an error: %s", outcome.GetError().c_str());
                 continue;
             }
 
