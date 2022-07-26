@@ -17,6 +17,7 @@
 #include <AzCore/Utils/Utils.h>
 #include <AzCore/std/string/conversions.h>
 #include <AzFramework/Components/TransformComponent.h>
+#include <AzToolsFramework/API/EditorAssetSystemAPI.h>
 #include <AzToolsFramework/Component/EditorComponentAPIBus.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <AzToolsFramework/Prefab/PrefabLoaderInterface.h>
@@ -359,35 +360,27 @@ namespace ROS2
 
     AZStd::string URDFPrefabMaker::GetAssetPathFromModelPath(std::filesystem::path modelPath)
     {
-        // It is assumed that the model is in project /Assets folder.
-        // TODO - get asset processor watched directories and support different paths
-        AZStd::vector<AZStd::string> watchedDirectoriesNames = {
-                "Assets"
-        };
+        bool assetFound = false;
+        AZ::Data::AssetInfo assetInfo;
+        AZStd::string watchDir;
+        AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
+            assetFound,
+            &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
+            modelPath.c_str(),
+            assetInfo,
+            watchDir);
 
-        auto azmodelPath = AZStd::string(modelPath.replace_extension("azmodel").string().c_str());
-        AZStd::to_lower(azmodelPath.begin(), azmodelPath.end());
-
-        size_t watchedDirPose = AZStd::string::npos;
-        for (auto watchedDirectory : watchedDirectoriesNames)
+        if (!assetFound)
         {
-            AZStd::to_lower(watchedDirectory.begin(), watchedDirectory.end());
-            auto dirToWatch = AZStd::string("/") + watchedDirectory + AZStd::string("/");
-            watchedDirPose = azmodelPath.find(dirToWatch);
-            if (watchedDirPose != AZStd::string::npos)
-            {
-                break;
-            }
+            AZ_Error("AddVisuals", false, "Could not find model asset for %s", modelPath.c_str());
+            return "";
         }
 
-        AZStd::string assetPath {""};
-        if (watchedDirPose == AZStd::string::npos)
-        {
-            AZ_Error("AddVisuals", false, "Could not find asset path for %s", modelPath.c_str());
-        } else
-        {
-            assetPath = azmodelPath.substr(watchedDirPose+1, azmodelPath.length());
-        }
+        auto relativePath = std::filesystem::path(assetInfo.m_relativePath.c_str());
+        relativePath.replace_extension("azmodel");
+        auto assetPath = AZStd::string(relativePath.string().c_str());
+        AZStd::to_lower(assetPath.begin(), assetPath.end());
+
         return assetPath;
     }
 } // namespace ROS2
