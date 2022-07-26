@@ -48,10 +48,7 @@ namespace ROS2
         //! Add required SystemComponents to the SystemEntity.
         AZ::ComponentTypeList GetRequiredSystemComponents() const override
         {
-            return AZ::ComponentTypeList{
-                azrtti_typeid<ROS2SystemComponent>(),
-                azrtti_typeid<ROS2RobotImporterSystemComponent>()
-            };
+            return AZ::ComponentTypeList{ azrtti_typeid<ROS2SystemComponent>(), azrtti_typeid<ROS2RobotImporterSystemComponent>() };
         }
     };
 } // namespace ROS2
