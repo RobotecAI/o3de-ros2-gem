@@ -31,6 +31,14 @@ set(FILES
     Source/RobotControl/TwistControl/TwistControl.h
     Source/RobotControl/TwistControl/TwistBus.h
     Source/RobotControl/TwistControl/TwistBus.cpp
+    Source/Map/GeodeticTransforms.cpp
+    Source/Map/GeodeticTransforms.h
+    Source/Map/GeodeticConfiguration.h
+    Source/Map/GeodeticConfiguration.cpp
+    Source/Map/MapManagerComponent.h
+    Source/Map/MapManagerComponent.cpp
+    Source/Map/MapManagerROS2Component.h
+    Source/Map/MapManagerROS2Component.cpp
     Source/ROS2ModuleInterface.h
     Source/ROS2SystemComponent.cpp
     Source/ROS2SystemComponent.h
@@ -52,8 +60,6 @@ set(FILES
     Source/Utilities/ROS2Names.h
     Source/GNSS/ROS2GNSSSensorComponent.cpp
     Source/GNSS/ROS2GNSSSensorComponent.h
-    Source/GNSS/GNSSFormatConversions.cpp
-    Source/GNSS/GNSSFormatConversions.h
     Source/Imu/ROS2ImuSensorComponent.cpp
     Source/Imu/ROS2ImuSensorComponent.h
     Source/URDF/UrdfParser.cpp

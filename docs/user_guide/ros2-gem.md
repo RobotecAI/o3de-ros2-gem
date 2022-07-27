@@ -21,6 +21,9 @@ For an example of use see [Warehouse Demo Project](https://github.com/RobotecAI/
   - ROS2LidarComponent
 - __Robot control__
   - ROS2RobotControlComponent
+- __Map manager__
+  - MapManagerComponent
+  - MapManagerROS2Component
   
 ## The Gem and ROS 2 ecosystem
 
@@ -85,6 +88,12 @@ The component subscribes to these messages on a configured topic.
 You can use tools such as [rqt_robot_steering](https://index.ros.org/p/rqt_robot_steering/#galactic) to move your robot with Twist messages.
 
 It is possible to implement your own control mechanisms with this Component.
+
+#### Map manager
+
+Map manager handles geodetic and map frame transformations as well as provides map and odometry frame names for other components. 
+
+Map hook can be placed in a scene to keep the root reference for the geographic origin of the map.
 
 ### Handling custom ROS 2 dependencies
 

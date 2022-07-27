@@ -7,7 +7,7 @@
  */
 
 #include "Frame/ROS2FrameComponent.h"
-#include "ROS2/ROS2Bus.h"
+#include "Map/MapBus.h"
 #include "Utilities/ROS2Names.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -52,8 +52,8 @@ namespace ROS2
 
     const char* ROS2FrameComponent::GetGlobalFrameName()
     {
-        // TODO - parametrize this (typically: "odom", "world" and sometimes "map")
-        return "odom";
+        AZStd::string odomFrame = MapRequestInterface::Get()->GetOdomFrameId();
+        return odomFrame.c_str();
     }
 
     bool ROS2FrameComponent::IsTopLevel() const

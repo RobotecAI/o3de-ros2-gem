@@ -16,6 +16,8 @@
 #include "RobotControl/ROS2RobotControlComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
+#include <Map/MapManagerComponent.h>
+#include <Map/MapManagerROS2Component.h>
 
 namespace ROS2
 {
@@ -31,16 +33,18 @@ namespace ROS2
             // Add ALL components descriptors associated with this gem to m_descriptors.
             // This will associate the AzTypeInfo information for the components with the SerializeContext, BehaviorContext and EditContext.
             // This happens through the [MyComponent]::Reflect() function.
-            m_descriptors.insert(
-                m_descriptors.end(),
-                { ROS2SystemComponent::CreateDescriptor(),
-                  ROS2SensorComponent::CreateDescriptor(),
-                  ROS2ImuSensorComponent::CreateDescriptor(),
-                  ROS2GNSSSensorComponent::CreateDescriptor(),
-                  ROS2LidarSensorComponent::CreateDescriptor(),
-                  ROS2FrameComponent::CreateDescriptor(),
-                  ROS2RobotControlComponent::CreateDescriptor(),
-                  ROS2CameraSensorComponent::CreateDescriptor() });
+            m_descriptors.insert(m_descriptors.end(), {
+                ROS2SystemComponent::CreateDescriptor(),
+                ROS2SensorComponent::CreateDescriptor(),
+                ROS2ImuSensorComponent::CreateDescriptor(),
+                ROS2GNSSSensorComponent::CreateDescriptor(),
+                ROS2LidarSensorComponent::CreateDescriptor(),
+                ROS2FrameComponent::CreateDescriptor(),
+                ROS2RobotControlComponent::CreateDescriptor(),
+                ROS2CameraSensorComponent::CreateDescriptor(),
+                MapManagerROS2Component::CreateDescriptor(),
+                MapManagerComponent::CreateDescriptor()
+                });
         }
 
         //! Add required SystemComponents to the SystemEntity.

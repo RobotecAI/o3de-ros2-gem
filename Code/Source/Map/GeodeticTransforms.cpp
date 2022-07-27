@@ -6,7 +6,7 @@
  *
  */
 
-#include "GNSSFormatConversions.h"
+#include "GeodeticTransforms.h"
 
 constexpr double earthSemimajorAxis = 6378137.0f;
 constexpr double reciprocalFlattening = 1 / 298.257223563f;
@@ -16,10 +16,9 @@ constexpr double secondEccentrictySquared =
     reciprocalFlattening * (2.0f - reciprocalFlattening) / ((1.0f - reciprocalFlattening) * (1.0f - reciprocalFlattening));
 
 // Based on http://wiki.gis.com/wiki/index.php/Geodetic_system
-namespace ROS2::GNSS
+namespace ROS2::Map::Utilities 
 {
-    float Rad2Deg(float rad)
-    {
+    float Rad2Deg(float rad) {
         return rad * 180.0f / AZ::Constants::Pi;
     }
 
@@ -113,4 +112,4 @@ namespace ROS2::GNSS
         return { Rad2Deg(static_cast<float>(latitude)), Rad2Deg(static_cast<float>(longitude)), static_cast<float>(altitude) };
     }
 
-} // namespace ROS2::GNSS
+} // namespace ROS2::Utilities::GeodeticTransforms
