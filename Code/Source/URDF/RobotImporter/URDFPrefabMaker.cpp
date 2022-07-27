@@ -60,7 +60,7 @@ namespace ROS2
 
         // recursively add all entities
         AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", model->getName().c_str());
-        auto createEntityResult = AddEntitiesForLink(model->root_link_, AZ::EntityId());
+        auto createEntityResult = AddEntitiesForLink(model->root_link_, AZ::EntityId(), true);
         if (!createEntityResult.IsSuccess())
         {
             return AZ::Failure(AZStd::string(createEntityResult.GetError()));
@@ -82,8 +82,13 @@ namespace ROS2
         return outcome;
     }
 
-    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId)
+    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::AddEntitiesForLink(
+        urdf::LinkSharedPtr link, AZ::EntityId parentEntityId, bool rootLink)
     {
+        // Important: Two assumptions are made for the current version of the importer:
+        // 1. Collision and visual (if both exist) must have the same origin position and orientation.
+        // 2. If multiple collisions or visuals exists for a single link, then they need to have the same origin position and orientation.
+
         if (!link)
         {
             AZ::Failure(AZStd::string("Failed to create prefab entity - link is null"));
@@ -109,13 +114,35 @@ namespace ROS2
         Internal::AddRequiredComponentsToEntity(entityId);
         entity->CreateComponent<ROS2FrameComponent>(entityName);
 
+        if (rootLink)
+        {
+            auto* transformInterface = entity->FindComponent<AzToolsFramework::Components::TransformComponent>();
+            urdf::Vector3 urdfPosition;
+            urdf::Rotation urdfRotation;
+
+            if (link->visual)
+            {
+                urdfPosition = link->visual->origin.position;
+                urdfRotation = link->visual->origin.rotation;
+            }
+            else if (link->collision)
+            {
+                urdfPosition = link->collision->origin.position;
+                urdfRotation = link->collision->origin.rotation;
+            }
+            AZ::Quaternion azRotation = URDF::TypeConversions::ConvertQuaternion(urdfRotation);
+            AZ::Vector3 azPosition = URDF::TypeConversions::ConvertVector3(urdfPosition);
+            AZ::Transform transformForRoot(azPosition, azRotation, 1.0f);
+            transformInterface->SetWorldTM(transformForRoot);
+        }
+
         AddVisuals(link, entityId);
         AddColliders(link, entityId);
         AddInertial(link->inertial, entityId);
 
         for (auto childLink : link->child_links)
         {
-            auto outcome = AddEntitiesForLink(childLink, entityId); // recursive call
+            auto outcome = AddEntitiesForLink(childLink, entityId, false); // recursive call
             if (!outcome.IsSuccess())
             { // TODO - decide on behavior. Still proceed to load other children?
                 AZ_Warning("AddEntitiesForLink", false, "Unable to add entity due to an error: %s", outcome.GetError().c_str());
@@ -154,7 +181,7 @@ namespace ROS2
                 // Alternative - but requires an active component. We would activate/deactivate a lot. Or - do it in a second pass.
                 // AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalTM, transformForChild);
 
-                transformInterface->SetLocalTM(transformForChild);
+                transformInterface->SetWorldTM(transformForChild);
                 break;
             }
         }

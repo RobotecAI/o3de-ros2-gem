@@ -24,7 +24,8 @@ namespace ROS2
             urdf::ModelInterfaceSharedPtr model, const AZStd::string& modelFilePath);
 
     private:
-        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
+        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(
+            urdf::LinkSharedPtr link, AZ::EntityId parentEntityId, bool rootLink);
         void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
