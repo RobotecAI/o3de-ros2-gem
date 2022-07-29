@@ -5,9 +5,9 @@ Make sure to read this guide and adjust your code accordingly before publishing 
 
 The repository performs 3 pull request checks:
 
-- [License header check]()
-- [Code formatting check]
-- [Build check]
+- License header check
+- Code formatting check
+- Build check
 
 ## License Header check
 
@@ -28,7 +28,7 @@ All of the *C++* files located in the Code directory **should be formatted** usi
 
 (version **13**) with the *[.clang-format](https://github.com/RobotecAI/o3de-ros2-gem/blob/development/.clang-format)* file located in the root of the repository.
 
-💡 If you plan on using Clion follow the Code Formatting section in the [Development in Clion](docs/static/development_in_clion.md) guide.
+💡 ***Note:*** If you plan on using Clion follow the Code Formatting section in the [Development in Clion](docs/static/development_in_clion.md) guide.
 
 ## Build check
 
