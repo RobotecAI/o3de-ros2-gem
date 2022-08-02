@@ -28,6 +28,7 @@ namespace ROS2
         void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
+        void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddCollider(urdf::CollisionSharedPtr collider, AZ::EntityId entityId);
         void AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId);
