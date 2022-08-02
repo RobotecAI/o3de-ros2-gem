@@ -10,6 +10,8 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "URDF/RobotImporter/TypeConversions.h"
 
+#include <AtomLyIntegration/CommonFeatures/Material/MaterialComponentBus.h>
+#include <AtomLyIntegration/CommonFeatures/Material/MaterialComponentConstants.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
 #include <AzCore/Component/TransformBus.h>
@@ -27,6 +29,7 @@
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
+#include <LmbrCentral/Shape/EditorShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorRigidBodyComponent.h>
@@ -166,6 +169,7 @@ namespace ROS2
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         auto* transformInterface = entity->FindComponent<AzToolsFramework::Components::TransformComponent>();
+
         if (!transformInterface)
         {
             AZ_Error("SetEntityTransform", false, "Missing Transform component!");
@@ -261,6 +265,41 @@ namespace ROS2
         }
     }
 
+    void URDFPrefabMaker::AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
+    {
+        // TODO URDF does not include information from <gazebo> tags with specific materials, diffuse, specular and emissive tags
+        if (!visual->material || !visual->geometry)
+        {
+            // Material is optional, and it requires geometry
+            return;
+        }
+
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        AZ::Color materialColor = URDF::TypeConversions::ConvertColor(visual->material->color);
+        bool isPrimitive = visual->geometry->type != urdf::Geometry::MESH;
+        if (isPrimitive)
+        { // For primitives, set the color in the shape component
+            entity->Activate();
+            LmbrCentral::EditorShapeComponentRequestsBus::Event(
+                entityId, &LmbrCentral::EditorShapeComponentRequests::SetShapeColor, materialColor);
+            entity->Deactivate();
+            return;
+        }
+
+        // Mesh visual - we can have either filename or default material with a given color
+        // TODO - handle texture_filename - file materials
+        entity->CreateComponent(AZ::Render::MaterialComponentTypeId);
+        AZ_Warning("AddVisual", false, "Setting color for material %s", visual->material->name.c_str());
+        entity->Activate();
+        AZ::Render::MaterialComponentRequestBus::Event(
+            entityId,
+            &AZ::Render::MaterialComponentRequestBus::Events::SetPropertyValue,
+            AZ::Render::DefaultMaterialAssignmentId,
+            "settings.color",
+            AZStd::any(materialColor));
+        entity->Deactivate();
+    }
+
     void URDFPrefabMaker::AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
     {
         if (!visual)
@@ -284,8 +323,7 @@ namespace ROS2
         }
         auto visualEntityId = createEntityResult.GetValue();
         AddVisualToEntity(visual, visualEntityId);
-
-        // TODO handle material
+        AddMaterialForVisual(visual, visualEntityId);
     }
 
     void URDFPrefabMaker::AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)

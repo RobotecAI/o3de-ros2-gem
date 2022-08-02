@@ -21,5 +21,10 @@ namespace ROS2
         {
             return AZ::Quaternion(urdfQuaternion.x, urdfQuaternion.y, urdfQuaternion.z, urdfQuaternion.w);
         }
+
+        AZ::Color TypeConversions::ConvertColor(const urdf::Color& color)
+        {
+            return AZ::Color(color.r, color.g, color.b, color.a);
+        }
     } // namespace URDF
 } // namespace ROS2
