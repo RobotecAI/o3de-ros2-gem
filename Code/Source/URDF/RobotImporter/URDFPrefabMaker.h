@@ -27,11 +27,14 @@ namespace ROS2
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
         void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
+        void AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddCollider(urdf::CollisionSharedPtr collider, AZ::EntityId entityId);
         void AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId);
         void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId);
         AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
+        void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
+        AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
 
         AzToolsFramework::Prefab::PrefabPublicInterface* m_prefabInterface;
         AZStd::string m_modelFilePath;

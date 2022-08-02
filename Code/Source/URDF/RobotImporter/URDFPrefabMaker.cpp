@@ -82,13 +82,8 @@ namespace ROS2
         return outcome;
     }
 
-    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId)
+    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name)
     {
-        if (!link)
-        {
-            AZ::Failure(AZStd::string("Failed to create prefab entity - link is null"));
-        }
-
         auto createEntityResult = m_prefabInterface->CreateEntity(parentEntityId, AZ::Vector3());
         if (!createEntityResult.IsSuccess())
         {
@@ -101,13 +96,32 @@ namespace ROS2
             return AZ::Failure(AZStd::string("Invalid id for created entity"));
         }
 
-        AZ_TracePrintf("AddEntitiesForLink", "Processing entity id:%s with link name:%s", entityId.ToString().c_str(), link->name.c_str());
+        AZ_TracePrintf("CreateEntity", "Processing entity id:%s with name:%s", entityId.ToString().c_str(), name.c_str());
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        AZStd::string entityName(link->name.c_str());
+        AZStd::string entityName(name.c_str());
         entity->SetName(entityName);
         entity->Deactivate();
         Internal::AddRequiredComponentsToEntity(entityId);
-        entity->CreateComponent<ROS2FrameComponent>(entityName);
+        return createEntityResult;
+    }
+
+    AzToolsFramework::Prefab::PrefabEntityResult URDFPrefabMaker::AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId)
+    {
+        if (!link)
+        {
+            AZ::Failure(AZStd::string("Failed to create prefab entity - link is null"));
+        }
+
+        auto createEntityResult = CreateEntity(parentEntityId, link->name.c_str());
+        if (!createEntityResult.IsSuccess())
+        {
+            return createEntityResult;
+        }
+        AZ::EntityId entityId = createEntityResult.GetValue();
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+
+        // Add ROS2FrameComponent - TODO: only for joints
+        entity->CreateComponent<ROS2FrameComponent>(link->name.c_str());
 
         AddVisuals(link, entityId);
         AddColliders(link, entityId);
@@ -136,28 +150,31 @@ namespace ROS2
             if (joint->child_link_name == childLink->name)
             { // Found a match!
                 // TODO - handle joint types etc. (a dedicated component) - check existing JointComponent
-
-                // Get URDF pose elements
-                urdf::Vector3 urdfPosition = joint->parent_to_joint_origin_transform.position;
-                urdf::Rotation urdfRotation = joint->parent_to_joint_origin_transform.rotation;
-                AZ::Quaternion azRotation = URDF::TypeConversions::ConvertQuaternion(urdfRotation);
-                AZ::Vector3 azPosition = URDF::TypeConversions::ConvertVector3(urdfPosition);
-                AZ::Transform transformForChild(azPosition, azRotation, 1.0f);
-
-                AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-                auto* transformInterface = entity->FindComponent<AzToolsFramework::Components::TransformComponent>();
-                if (!transformInterface)
-                {
-                    AZ_Error("AddJointInformationToEntity", false, "Missing Transform component!");
-                    continue;
-                }
-                // Alternative - but requires an active component. We would activate/deactivate a lot. Or - do it in a second pass.
-                // AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalTM, transformForChild);
-
-                transformInterface->SetLocalTM(transformForChild);
+                SetEntityTransform(joint->parent_to_joint_origin_transform, entityId);
                 break;
             }
         }
+    }
+
+    void URDFPrefabMaker::SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId)
+    {
+        urdf::Vector3 urdfPosition = origin.position;
+        urdf::Rotation urdfRotation = origin.rotation;
+        AZ::Quaternion azRotation = URDF::TypeConversions::ConvertQuaternion(urdfRotation);
+        AZ::Vector3 azPosition = URDF::TypeConversions::ConvertVector3(urdfPosition);
+        AZ::Transform tf(azPosition, azRotation, 1.0f);
+
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        auto* transformInterface = entity->FindComponent<AzToolsFramework::Components::TransformComponent>();
+        if (!transformInterface)
+        {
+            AZ_Error("SetEntityTransform", false, "Missing Transform component!");
+            return;
+        }
+        // Alternative - but requires an active component. We would activate/deactivate a lot. Or - do it in a second pass.
+        // AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalTM, transformForChild);
+
+        transformInterface->SetLocalTM(tf);
     }
 
     void URDFPrefabMaker::AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId)
@@ -174,24 +191,13 @@ namespace ROS2
         }
     }
 
-    void URDFPrefabMaker::AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
+    void URDFPrefabMaker::AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
     {
-        if (!visual)
-        { // it is ok not to have a visual in a link
-            return;
-        }
-
-        // TODO handle origin
-
-        auto geometry = visual->geometry;
-        if (!geometry)
-        { // non-empty visual should have a geometry
-            AZ_Warning("AddVisual", false, "No Geometry for a visual");
-            return;
-        }
+        // Apply transform as per origin
+        SetEntityTransform(visual->origin, entityId);
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-
+        auto geometry = visual->geometry;
         switch (geometry->type)
         {
         case urdf::Geometry::SPHERE:
@@ -253,6 +259,31 @@ namespace ROS2
             AZ_Warning("AddVisual", false, "Unsupported visual geometry type, %d", geometry->type);
             return;
         }
+    }
+
+    void URDFPrefabMaker::AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
+    {
+        if (!visual)
+        { // it is ok not to have a visual in a link
+            return;
+        }
+
+        if (!visual->geometry)
+        { // non-empty visual should have a geometry
+            AZ_Warning("AddVisual", false, "No Geometry for a visual");
+            return;
+        }
+
+        // Since o3de does not allow origin for visuals, we need to create a sub-entity and store visual there
+        AZStd::string subEntityName = "visual"; // TODO add index and maybe a name prefix for multiple visual case
+        auto createEntityResult = CreateEntity(entityId, subEntityName.c_str());
+        if (!createEntityResult.IsSuccess())
+        {
+            AZ_Error("AddVisual", false, "Unable to create a sub-entity for visual element %s", subEntityName.c_str());
+            return;
+        }
+        auto visualEntityId = createEntityResult.GetValue();
+        AddVisualToEntity(visual, visualEntityId);
 
         // TODO handle material
     }
