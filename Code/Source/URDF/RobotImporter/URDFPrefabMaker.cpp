@@ -31,12 +31,12 @@
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/EditorShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
-#include <Source/BallJointComponent.h>
+#include <Source/EditorBallJointComponent.h>
 #include <Source/EditorColliderComponent.h>
+#include <Source/EditorFixedJointComponent.h>
+#include <Source/EditorHingeJointComponent.h>
 #include <Source/EditorRigidBodyComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
-#include <Source/FixedJointComponent.h>
-#include <Source/HingeJointComponent.h>
 
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
 
@@ -158,48 +158,58 @@ namespace ROS2
             { // Found a match!
                 SetEntityTransform(joint->parent_to_joint_origin_transform, childEntityId);
                 // TODO - apply <axis>
+                /*
                 PhysX::JointComponentConfiguration jointComponentConfiguration(AZ::Transform::Identity(), parentEntityId, childEntityId);
                 PhysX::JointGenericProperties jointGenericProperties;
                 PhysX::JointLimitProperties jointLimitProperties;
-                if (joint->limits)
-                {
-                    jointLimitProperties.m_isLimited = true;
-                    jointLimitProperties.m_limitFirst = AZ::RadToDeg(joint->limits->upper);
-                    jointLimitProperties.m_limitSecond = AZ::RadToDeg(joint->limits->lower);
-                    // TODO - limit, velocity (how?)
-                }
+                */
 
                 AZ::Entity* childEntity = AzToolsFramework::GetEntityById(childEntityId);
+                AZ::Entity* parentEntity = AzToolsFramework::GetEntityById(parentEntityId);
 
+                if (!childEntity->FindComponent<PhysX::EditorColliderComponent>() ||
+                    !parentEntity->FindComponent<PhysX::EditorColliderComponent>())
+                {
+                    AZ_Error(
+                        "AddJointInformationToEntity",
+                        false,
+                        "Unable to add a joint %s without Collider component in both its own and parent entity",
+                        joint->name.c_str());
+                    return;
+                }
+
+                PhysX::EditorJointComponent* jointComponent = nullptr;
                 // TODO - ATM, there is no support in Joint Components for the following:
                 // TODO <calibration> <dynamics> <mimic>, friction, effort, velocity, joint safety and several joint types
                 switch (joint->type)
                 { // TODO - replace with a generic member function
                 case urdf::Joint::FIXED:
                     {
-                        childEntity->CreateComponent<PhysX::FixedJointComponent>(
-                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
-                    }
-                    break;
-                case urdf::Joint::REVOLUTE:
-                    { // Hinge
-                        childEntity->CreateComponent<PhysX::HingeJointComponent>(
-                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
+                        jointComponent = childEntity->CreateComponent<PhysX::EditorFixedJointComponent>();
                     }
                     break;
                 case urdf::Joint::CONTINUOUS:
+                    [[fallthrough]];
+                case urdf::Joint::REVOLUTE:
                     { // Hinge
-                        jointLimitProperties.m_isLimited = false;
-                        childEntity->CreateComponent<PhysX::HingeJointComponent>(
-                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
+                        jointComponent = childEntity->CreateComponent<PhysX::EditorHingeJointComponent>();
+                        childEntity->Deactivate();
+                        PhysX::EditorJointRequestBus::Event(
+                            AZ::EntityComponentIdPair(childEntityId, jointComponent->GetId()),
+                            &PhysX::EditorJointRequests::SetLinearValuePair,
+                            PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
+                            PhysX::AngleLimitsFloatPair(AZ::RadToDeg(joint->limits->upper), AZ::RadToDeg(joint->limits->upper)));
+                        childEntity->Activate();
                     }
                     break;
                 case urdf::Joint::FLOATING:
+                    /*
                     { // ~Ball
                         childEntity->CreateComponent<PhysX::BallJointComponent>(
                             jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
                     }
                     break;
+                    */
                 default:
                     AZ_Warning(
                         "AddJointInformationToEntity",
@@ -209,6 +219,19 @@ namespace ROS2
                         joint->name.c_str());
                     break;
                 }
+
+                if (!jointComponent)
+                {
+                    return;
+                }
+
+                childEntity->Activate();
+                PhysX::EditorJointRequestBus::Event(
+                    AZ::EntityComponentIdPair(childEntityId, jointComponent->GetId()),
+                    &PhysX::EditorJointRequests::SetEntityIdValue,
+                    PhysX::JointsComponentModeCommon::ParamaterNames::LeadEntity,
+                    parentEntityId);
+                childEntity->Deactivate();
                 break;
             }
         }
