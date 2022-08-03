@@ -34,8 +34,6 @@ All of the *C++* files located in the Code directory **should be formatted** usi
 
 New changes in the O3DE engine API may require the build workflow to be configured. This can be achieved by adjusting the ***O3DE_SHA*** environment variable in the [Build.yml](https://github.com/RobotecAI/o3de-ros2-gem/blob/development/.github/workflows/Build.yml) file (located in the *.github/workflows* directory) to a different o3de **long format** commit hash.
 
-💡 ***Note:*** Remember to make sure you chose a **stable** commit (at least a compilable one)
-
 ## Additional requirements
 
 Remember to sign all of your commits (*-s flag*).
