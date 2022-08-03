@@ -17,11 +17,6 @@
 
 #include <AzCore/Utils/Utils.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
-//#include <AzToolsFramework/Prefab/PrefabLoaderInterface.h>
-//#include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
-//#include <AzToolsFramework/Prefab/PrefabPublicRequestBus.h>
-//#include <AzToolsFramework/Prefab/PrefabSystemComponent.h>
-//
 
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
 
