@@ -20,7 +20,13 @@ namespace ROS2
         //! Add zero or one joint elements to a given entity (depending on link content).
         //! @param parentLink A parent link for the joint.
         //! @param childLink A child link for the joint.
-        //! @param childEntityId A non-active entity which will be populated with Joint components.
-        void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId);
+        //! @param childEntityId A non-active entity which will be populated with Joint components. Needs to have a collider.
+        //! @param parentEntityId An entity higher in hierarchy which is connected through the joint with the child entity. Needs to have a
+        //! collider.
+        void AddJointInformationToEntity(
+            urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId, AZ::EntityId parentEntityId);
+
+    private:
+        void AddJoint(urdf::JointSharedPtr joint, AZ::EntityId childEntityId, AZ::EntityId parentEntityId);
     };
 } // namespace ROS2

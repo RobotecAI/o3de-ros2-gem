@@ -87,7 +87,7 @@ namespace ROS2
             }
 
             AZ::EntityId childEntityId = outcome.GetValue();
-            m_jointsMaker.AddJointInformationToEntity(link, childLink, childEntityId);
+            m_jointsMaker.AddJointInformationToEntity(link, childLink, childEntityId, entityId);
         }
 
         return AZ::Success(entityId);

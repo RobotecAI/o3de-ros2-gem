@@ -8,19 +8,88 @@
 
 #include "RobotImporter/URDF/JointsMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
+#include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <Source/EditorColliderComponent.h>
+#include <Source/EditorHingeJointComponent.h>
+#include <Source/EditorFixedJointComponent.h>
 
 namespace ROS2
 {
-    void JointsMaker::AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId)
+    void JointsMaker::AddJointInformationToEntity(
+        urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId, AZ::EntityId parentEntityId)
     { // Find if there is a joint between this child and its parent, add / change relevant components
         for (auto joint : parentLink->child_joints)
         { // TODO - replace with std algorithm
             if (joint->child_link_name == childLink->name)
             { // Found a match!
-                // TODO - handle joint types etc. (a dedicated component) - check existing JointComponent
                 PrefabMakerUtils::SetEntityTransform(joint->parent_to_joint_origin_transform, childEntityId);
-                break;
+                return AddJoint(joint, childEntityId, parentEntityId);
             }
         }
+    }
+
+    void JointsMaker::AddJoint(urdf::JointSharedPtr joint, AZ::EntityId childEntityId, AZ::EntityId parentEntityId)
+    {
+        AZ::Entity* childEntity = AzToolsFramework::GetEntityById(childEntityId);
+        AZ::Entity* parentEntity = AzToolsFramework::GetEntityById(parentEntityId);
+
+        if (!childEntity->FindComponent<PhysX::EditorColliderComponent>() || !parentEntity->FindComponent<PhysX::EditorColliderComponent>())
+        {
+            AZ_Error(
+                "AddJointInformationToEntity",
+                false,
+                "Unable to add a joint %s without Collider component in both its own and parent entity",
+                joint->name.c_str());
+            return;
+        }
+
+        PhysX::EditorJointComponent* jointComponent = nullptr;
+        // TODO - ATM, there is no support withing Joint Components for the following:
+        // TODO <calibration> <dynamics> <mimic>, friction, effort, velocity, joint safety and several joint types
+        // TODO - apply <axis>
+        switch (joint->type)
+        { // TODO - replace with a generic member function
+        case urdf::Joint::FIXED:
+            {
+                jointComponent = childEntity->CreateComponent<PhysX::EditorFixedJointComponent>();
+            }
+            break;
+        case urdf::Joint::CONTINUOUS:
+            // TODO - diasable limits for Continuous type. API for this seems to be missing.
+            [[fallthrough]];
+        case urdf::Joint::REVOLUTE:
+            { // Hinge
+                jointComponent = childEntity->CreateComponent<PhysX::EditorHingeJointComponent>();
+                childEntity->Deactivate();
+                PhysX::EditorJointRequestBus::Event(
+                    AZ::EntityComponentIdPair(childEntityId, jointComponent->GetId()),
+                    &PhysX::EditorJointRequests::SetLinearValuePair,
+                    PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
+                    PhysX::AngleLimitsFloatPair(AZ::RadToDeg(joint->limits->upper), AZ::RadToDeg(joint->limits->upper)));
+                childEntity->Activate();
+            }
+            break;
+        default:
+            AZ_Warning(
+                "AddJointInformationToEntity",
+                false,
+                "Unknown or unsupported joint type %d for joint %s",
+                joint->type,
+                joint->name.c_str());
+            break;
+        }
+
+        if (!jointComponent)
+        {
+            return;
+        }
+
+        childEntity->Activate();
+        PhysX::EditorJointRequestBus::Event(
+            AZ::EntityComponentIdPair(childEntityId, jointComponent->GetId()),
+            &PhysX::EditorJointRequests::SetEntityIdValue,
+            PhysX::JointsComponentModeCommon::ParamaterNames::LeadEntity,
+            parentEntityId);
+        childEntity->Deactivate();
     }
 } // namespace ROS2
