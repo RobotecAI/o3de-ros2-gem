@@ -31,9 +31,12 @@
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/EditorShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
+#include <Source/BallJointComponent.h>
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorRigidBodyComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
+#include <Source/FixedJointComponent.h>
+#include <Source/HingeJointComponent.h>
 
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
 
@@ -140,20 +143,72 @@ namespace ROS2
             }
 
             AZ::EntityId childEntityId = outcome.GetValue();
-            AddJointInformationToEntity(link, childLink, childEntityId);
+            AddJointInformationToEntity(link, childLink, childEntityId, entityId);
         }
 
         return AZ::Success(entityId);
     }
 
-    void URDFPrefabMaker::AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId)
+    void URDFPrefabMaker::AddJointInformationToEntity(
+        urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId, AZ::EntityId parentEntityId)
     { // Find if there is a joint between this child and its parent, add / change relevant components
         for (auto joint : parentLink->child_joints)
-        { // TODO - replace with std algoritm
+        { // TODO - replace with std algorithm
             if (joint->child_link_name == childLink->name)
             { // Found a match!
-                // TODO - handle joint types etc. (a dedicated component) - check existing JointComponent
-                SetEntityTransform(joint->parent_to_joint_origin_transform, entityId);
+                SetEntityTransform(joint->parent_to_joint_origin_transform, childEntityId);
+                // TODO - apply <axis>
+                PhysX::JointComponentConfiguration jointComponentConfiguration(AZ::Transform::Identity(), parentEntityId, childEntityId);
+                PhysX::JointGenericProperties jointGenericProperties;
+                PhysX::JointLimitProperties jointLimitProperties;
+                if (joint->limits)
+                {
+                    jointLimitProperties.m_isLimited = true;
+                    jointLimitProperties.m_limitFirst = AZ::RadToDeg(joint->limits->upper);
+                    jointLimitProperties.m_limitSecond = AZ::RadToDeg(joint->limits->lower);
+                    // TODO - limit, velocity (how?)
+                }
+
+                AZ::Entity* childEntity = AzToolsFramework::GetEntityById(childEntityId);
+
+                // TODO - ATM, there is no support in Joint Components for the following:
+                // TODO <calibration> <dynamics> <mimic>, friction, effort, velocity, joint safety and several joint types
+                switch (joint->type)
+                { // TODO - replace with a generic member function
+                case urdf::Joint::FIXED:
+                    {
+                        childEntity->CreateComponent<PhysX::FixedJointComponent>(
+                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
+                    }
+                    break;
+                case urdf::Joint::REVOLUTE:
+                    { // Hinge
+                        childEntity->CreateComponent<PhysX::HingeJointComponent>(
+                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
+                    }
+                    break;
+                case urdf::Joint::CONTINUOUS:
+                    { // Hinge
+                        jointLimitProperties.m_isLimited = false;
+                        childEntity->CreateComponent<PhysX::HingeJointComponent>(
+                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
+                    }
+                    break;
+                case urdf::Joint::FLOATING:
+                    { // ~Ball
+                        childEntity->CreateComponent<PhysX::BallJointComponent>(
+                            jointComponentConfiguration, jointGenericProperties, jointLimitProperties);
+                    }
+                    break;
+                default:
+                    AZ_Warning(
+                        "AddJointInformationToEntity",
+                        false,
+                        "Unknown or unsupported joint type %d for joint %s",
+                        joint->type,
+                        joint->name.c_str());
+                    break;
+                }
                 break;
             }
         }
@@ -355,53 +410,57 @@ namespace ROS2
             return;
         }
 
-        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH; // class TriangleMeshShapeConfiguration : public ShapeConfiguration
-        if (isPrimitiveShape)
+        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
+        if (!isPrimitiveShape)
         {
-            Physics::ColliderConfiguration colliderConfig;
-            colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
-            colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
-            colliderConfig.m_tag = AZStd::string(collision->name.c_str());
-            Physics::ShapeConfiguration* shapeConfig = nullptr; // This will be initialized and passed by const reference to be copied.
-            switch (geometry->type)
-            {
-            case urdf::Geometry::SPHERE:
-                {
-                    auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
-                    Physics::SphereShapeConfiguration sphere(sphereGeometry->radius);
-                    shapeConfig = &sphere;
-                }
-                break;
-            case urdf::Geometry::BOX:
-                {
-                    auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
-                    Physics::BoxShapeConfiguration box(URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
-                    shapeConfig = &box;
-                }
-                break;
-            case urdf::Geometry::CYLINDER:
-                {
-                    auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
-                    Physics::CapsuleShapeConfiguration capsule(cylinderGeometry->length, cylinderGeometry->radius);
-                    shapeConfig = &capsule;
-                }
-                break;
-            case urdf::Geometry::MESH:
-                {
-                    auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-                    Physics::TriangleMeshShapeConfiguration triangleMesh;
-                    // TODO - fill in this mesh shape configuration fields. Look at the memory management.
-                    *shapeConfig = triangleMesh;
-                }
-                break;
-            default:
-                AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
-                break;
-            }
-
-            entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, *shapeConfig);
-            // TODO - set name as in collision->name
+            return;
         }
+
+        Physics::ColliderConfiguration colliderConfig;
+        colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
+        colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
+        colliderConfig.m_tag = AZStd::string(collision->name.c_str());
+        Physics::ShapeConfiguration* shapeConfig = nullptr; // This will be initialized and passed by const reference to be copied.
+        switch (geometry->type)
+        {
+        case urdf::Geometry::SPHERE:
+            {
+                auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                Physics::SphereShapeConfiguration sphere(sphereGeometry->radius);
+                shapeConfig = &sphere;
+            }
+            break;
+        case urdf::Geometry::BOX:
+            {
+                auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                Physics::BoxShapeConfiguration box(URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
+                shapeConfig = &box;
+            }
+            break;
+        case urdf::Geometry::CYLINDER:
+            {
+                auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                Physics::CapsuleShapeConfiguration capsule(cylinderGeometry->length, cylinderGeometry->radius);
+                shapeConfig = &capsule;
+            }
+            break;
+        case urdf::Geometry::MESH:
+            {
+                auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+                Physics::TriangleMeshShapeConfiguration triangleMesh;
+                // TODO - fill in this mesh shape configuration fields. Look at the memory management.
+                *shapeConfig = triangleMesh;
+
+                // TODO - it crashes when empty. Implement support for mesh collider
+            }
+            break;
+        default:
+            AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
+            break;
+        }
+
+        entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, *shapeConfig);
+        // TODO - set name as in collision->name
     }
 
     void URDFPrefabMaker::AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId)

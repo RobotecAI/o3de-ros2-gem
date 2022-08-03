@@ -32,7 +32,8 @@ namespace ROS2
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
         void AddCollider(urdf::CollisionSharedPtr collider, AZ::EntityId entityId);
         void AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId);
-        void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId);
+        void AddJointInformationToEntity(
+            urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId, AZ::EntityId parentEntityId);
         AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
         void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
         AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
