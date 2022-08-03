@@ -6,12 +6,22 @@
 set(FILES
     Source/ROS2EditorSystemComponent.cpp
     Source/ROS2EditorSystemComponent.h
-    Source/URDF/RobotImporter/ROS2RobotImporterEditorSystemComponent.cpp
-    Source/URDF/RobotImporter/ROS2RobotImporterEditorSystemComponent.h
-    Source/URDF/RobotImporter/RobotImporterWidget.cpp
-    Source/URDF/RobotImporter/RobotImporterWidget.h
-    Source/URDF/RobotImporter/TypeConversions.h
-    Source/URDF/RobotImporter/TypeConversions.cpp
-    Source/URDF/RobotImporter/URDFPrefabMaker.cpp
-    Source/URDF/RobotImporter/URDFPrefabMaker.h
+        Source/RobotImporter/ROS2RobotImporterEditorSystemComponent.cpp
+        Source/RobotImporter/ROS2RobotImporterEditorSystemComponent.h
+        Source/RobotImporter/RobotImporterWidget.cpp
+        Source/RobotImporter/RobotImporterWidget.h
+        Source/RobotImporter/URDF/TypeConversions.h
+        Source/RobotImporter/URDF/TypeConversions.cpp
+        Source/RobotImporter/URDF/URDFPrefabMaker.cpp
+        Source/RobotImporter/URDF/URDFPrefabMaker.h
+        Source/RobotImporter/URDF/VisualsMaker.cpp
+        Source/RobotImporter/URDF/VisualsMaker.h
+        Source/RobotImporter/URDF/CollidersMaker.cpp
+        Source/RobotImporter/URDF/CollidersMaker.h
+        Source/RobotImporter/URDF/InertialsMaker.cpp
+        Source/RobotImporter/URDF/InertialsMaker.cpp
+        Source/RobotImporter/URDF/JointsMaker.cpp
+        Source/RobotImporter/URDF/JointsMaker.h
+        Source/RobotImporter/URDF/PrefabMakerUtils.cpp
+        Source/RobotImporter/URDF/PrefabMakerUtils.cpp
 )

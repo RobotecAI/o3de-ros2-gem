@@ -9,8 +9,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "URDF/RobotImporter/RobotImporterWidget.h"
-#include "URDF/RobotImporter/URDFPrefabMaker.h"
+#include "RobotImporter/RobotImporterWidget.h"
+#include "RobotImporter/URDF/URDFPrefabMaker.h"
 
 namespace ROS2
 {
@@ -61,8 +61,8 @@ namespace ROS2
     {
         m_robotNameLabel.setText(m_urdfModel->getName().c_str());
 
-        URDFPrefabMaker prefabMaker;
-        auto outcome = prefabMaker.CreatePrefabFromURDF(m_urdfModel, AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()));
+        URDFPrefabMaker prefabMaker(AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()));
+        auto outcome = prefabMaker.CreatePrefabFromURDF(m_urdfModel);
         if (!outcome)
         { // TODO - handle, show
             AZ_Error("RobotImporterWidget", false, "Importing robot definition failed with error: %s", outcome.GetError().c_str());

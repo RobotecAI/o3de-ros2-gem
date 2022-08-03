@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "URDF/UrdfParser.h"
+#include "UrdfParser.h"
 #include <AzCore/Math/Color.h>
 #include <AzCore/Math/Quaternion.h>
 #include <AzCore/Math/Vector3.h>
