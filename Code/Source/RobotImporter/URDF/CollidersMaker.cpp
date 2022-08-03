@@ -41,52 +41,52 @@ namespace ROS2
             return;
         }
 
-        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH; // class TriangleMeshShapeConfiguration : public ShapeConfiguration
-        if (isPrimitiveShape)
-        {
-            Physics::ColliderConfiguration colliderConfig;
-            colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
-            colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
-            colliderConfig.m_tag = AZStd::string(collision->name.c_str());
-            Physics::ShapeConfiguration* shapeConfig = nullptr; // This will be initialized and passed by const reference to be copied.
-            switch (geometry->type)
-            {
-            case urdf::Geometry::SPHERE:
-                {
-                    auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
-                    Physics::SphereShapeConfiguration sphere(sphereGeometry->radius);
-                    shapeConfig = &sphere;
-                }
-                break;
-            case urdf::Geometry::BOX:
-                {
-                    auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
-                    Physics::BoxShapeConfiguration box(URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
-                    shapeConfig = &box;
-                }
-                break;
-            case urdf::Geometry::CYLINDER:
-                {
-                    auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
-                    Physics::CapsuleShapeConfiguration capsule(cylinderGeometry->length, cylinderGeometry->radius);
-                    shapeConfig = &capsule;
-                }
-                break;
-            case urdf::Geometry::MESH:
-                {
-                    auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-                    Physics::TriangleMeshShapeConfiguration triangleMesh;
-                    // TODO - fill in this mesh shape configuration fields. Look at the memory management.
-                    *shapeConfig = triangleMesh;
-                }
-                break;
-            default:
-                AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
-                break;
-            }
+        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
+        if (!isPrimitiveShape)
+        { // TODO - implement mesh colliders
+            return;
+        }
 
-            entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, *shapeConfig);
-            // TODO - set name as in collision->name
+        entity->CreateComponent<PhysX::EditorShapeColliderComponent>();
+        switch (geometry->type)
+        {
+        case urdf::Geometry::SPHERE:
+            {
+                entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
+                auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                entity->Activate();
+                LmbrCentral::SphereShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::SphereShapeComponentRequests::SetRadius, sphereGeometry->radius);
+                entity->Deactivate();
+            }
+            break;
+        case urdf::Geometry::BOX:
+            {
+                entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
+                auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                entity->Activate();
+                LmbrCentral::BoxShapeComponentRequestsBus::Event(
+                    entityId,
+                    &LmbrCentral::BoxShapeComponentRequests::SetBoxDimensions,
+                    URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
+                entity->Deactivate();
+            }
+            break;
+        case urdf::Geometry::CYLINDER:
+            {
+                entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
+                auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                entity->Activate();
+                LmbrCentral::CylinderShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::CylinderShapeComponentRequests::SetHeight, cylinderGeometry->length);
+                LmbrCentral::CylinderShapeComponentRequestsBus::Event(
+                    entityId, &LmbrCentral::CylinderShapeComponentRequests::SetRadius, cylinderGeometry->radius);
+                entity->Deactivate();
+            }
+            break;
+        default:
+            AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
+            break;
         }
     }
 } // namespace ROS2
