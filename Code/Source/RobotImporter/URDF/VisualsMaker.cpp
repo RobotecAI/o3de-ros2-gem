@@ -20,6 +20,8 @@
 #include <LmbrCentral/Shape/EditorShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 
+#include <regex>
+
 namespace ROS2
 {
     VisualsMaker::VisualsMaker(const AZStd::string& modelPath)

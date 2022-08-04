@@ -7,6 +7,11 @@
  */
 
 #include "RobotImporter/URDF/CollidersMaker.h"
+#include "RobotImporter/URDF/TypeConversions.h"
+#include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <LmbrCentral/Shape/BoxShapeComponentBus.h>
+#include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
+#include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
 

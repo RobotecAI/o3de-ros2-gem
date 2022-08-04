@@ -7,7 +7,9 @@
  */
 
 #include "RobotImporter/URDF/InertialsMaker.h"
+#include "RobotImporter/URDF/TypeConversions.h"
 #include <AzCore/Component/EntityId.h>
+#include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <Source/EditorRigidBodyComponent.h>
 
 namespace ROS2
