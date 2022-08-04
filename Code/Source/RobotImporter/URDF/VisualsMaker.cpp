@@ -14,7 +14,9 @@
 #include <AtomLyIntegration/CommonFeatures/Material/MaterialComponentConstants.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
+#include <AzCore/Component/NonUniformScaleBus.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <AzToolsFramework/ToolsComponents/EditorNonUniformScaleComponent.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/EditorShapeComponentBus.h>
@@ -123,12 +125,29 @@ namespace ROS2
                 auto assetPath = PrefabMakerUtils::GetAssetPathFromModelPath(modelPath);
 
                 entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
+
+                // Prepare scale
+                AZ::Vector3 scaleVector = URDF::TypeConversions::ConvertVector3(meshGeometry->scale);
+                bool isUniformScale = AZ::IsClose(scaleVector.GetMaxElement(), scaleVector.GetMinElement(), AZ::Constants::FloatEpsilon);
+                if (!isUniformScale)
+                {
+                    entity->CreateComponent<AzToolsFramework::Components::EditorNonUniformScaleComponent>();
+                }
+
                 entity->Activate();
+                // Set asset path
                 AZ::Render::MeshComponentRequestBus::Event(
                     entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, assetPath.c_str());
+                // Set scale, uniform or non-uniform
+                if (isUniformScale)
+                {
+                    AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalUniformScale, scaleVector.GetX());
+                }
+                else
+                {
+                    AZ::NonUniformScaleRequestBus::Event(entityId, &AZ::NonUniformScaleRequests::SetScale, scaleVector);
+                }
                 entity->Deactivate();
-
-                // TODO apply scale
             }
             break;
         default:
