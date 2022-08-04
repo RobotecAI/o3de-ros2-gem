@@ -10,8 +10,8 @@
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <Source/EditorColliderComponent.h>
-#include <Source/EditorHingeJointComponent.h>
 #include <Source/EditorFixedJointComponent.h>
+#include <Source/EditorHingeJointComponent.h>
 
 namespace ROS2
 {
