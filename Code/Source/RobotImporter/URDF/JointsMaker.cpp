@@ -60,13 +60,13 @@ namespace ROS2
         case urdf::Joint::REVOLUTE:
             { // Hinge
                 jointComponent = childEntity->CreateComponent<PhysX::EditorHingeJointComponent>();
-                childEntity->Deactivate();
+                childEntity->Activate();
                 PhysX::EditorJointRequestBus::Event(
                     AZ::EntityComponentIdPair(childEntityId, jointComponent->GetId()),
                     &PhysX::EditorJointRequests::SetLinearValuePair,
                     PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
                     PhysX::AngleLimitsFloatPair(AZ::RadToDeg(joint->limits->upper), AZ::RadToDeg(joint->limits->upper)));
-                childEntity->Activate();
+                childEntity->Deactivate();
             }
             break;
         default:
