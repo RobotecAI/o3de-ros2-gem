@@ -61,8 +61,8 @@ namespace ROS2
     {
         m_robotNameLabel.setText(m_urdfModel->getName().c_str());
 
-        URDFPrefabMaker prefabMaker(AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()));
-        auto outcome = prefabMaker.CreatePrefabFromURDF(m_urdfModel);
+        URDFPrefabMaker prefabMaker(AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()), m_urdfModel);
+        auto outcome = prefabMaker.CreatePrefabFromURDF();
         if (!outcome)
         { // TODO - handle, show
             AZ_Error("RobotImporterWidget", false, "Importing robot definition failed with error: %s", outcome.GetError().c_str());

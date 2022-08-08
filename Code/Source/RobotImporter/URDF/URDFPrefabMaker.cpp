@@ -22,24 +22,25 @@
 
 namespace ROS2
 {
-    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath)
-        : m_visualsMaker(modelFilePath)
+    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model)
+        : m_model(model)
+        , m_visualsMaker(modelFilePath, model->materials_)
     {
     }
 
-    AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF(urdf::ModelInterfaceSharedPtr model)
+    AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF()
     { // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
         // TODO - add a check if the prefab with a given name already exists. Choice to cancel, overwrite or suffix name
 
         // recursively add all entities
-        AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", model->getName().c_str());
-        auto createEntityResult = AddEntitiesForLink(model->root_link_, AZ::EntityId());
+        AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", m_model->getName().c_str());
+        auto createEntityResult = AddEntitiesForLink(m_model->root_link_, AZ::EntityId());
         if (!createEntityResult.IsSuccess())
         {
             return AZ::Failure(AZStd::string(createEntityResult.GetError()));
         }
 
-        auto prefabName = AZStd::string::format("%s.%s", model->getName().c_str(), "prefab");
+        auto prefabName = AZStd::string::format("%s.%s", m_model->getName().c_str(), "prefab");
         auto newPrefabPath = AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str();
         auto contentEntityId = createEntityResult.GetValue();
 

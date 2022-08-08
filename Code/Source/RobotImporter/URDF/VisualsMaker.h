@@ -17,7 +17,7 @@ namespace ROS2
     class VisualsMaker
     {
     public:
-        VisualsMaker(const AZStd::string& modelPath);
+        VisualsMaker(const AZStd::string& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials);
 
         //! Add zero, one or many visual elements to a given entity (depending on link content).
         //! Note that a sub-entity will be added to hold each visual (since they can have different transforms).
@@ -31,5 +31,6 @@ namespace ROS2
         void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
 
         AZStd::string m_modelPath; // TODO
+        std::map<std::string, urdf::MaterialSharedPtr> m_materials;
     };
 } // namespace ROS2

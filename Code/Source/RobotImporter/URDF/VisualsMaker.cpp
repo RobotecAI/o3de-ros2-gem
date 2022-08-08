@@ -26,8 +26,9 @@
 
 namespace ROS2
 {
-    VisualsMaker::VisualsMaker(const AZStd::string& modelPath)
+    VisualsMaker::VisualsMaker(const AZStd::string& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials)
         : m_modelPath(modelPath)
+        , m_materials(materials)
     {
     }
 
@@ -168,7 +169,13 @@ namespace ROS2
         }
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        AZ::Color materialColor = URDF::TypeConversions::ConvertColor(visual->material->color);
+
+        // If present in map, take map color definition as priority, otherwise apply local node definition
+        urdf::Color materialColorUrdf = m_materials.find(visual->material->name) == m_materials.end()
+            ? visual->material->color
+            : m_materials[visual->material->name]->color;
+
+        AZ::Color materialColor = URDF::TypeConversions::ConvertColor(materialColorUrdf);
         bool isPrimitive = visual->geometry->type != urdf::Geometry::MESH;
         if (isPrimitive)
         { // For primitives, set the color in the shape component
@@ -181,7 +188,7 @@ namespace ROS2
 
         // Mesh visual - we can have either filename or default material with a given color
         // TODO - handle texture_filename - file materials
-        entity->CreateComponent(AZ::Render::MaterialComponentTypeId);
+        entity->CreateComponent(AZ::Render::EditorMaterialComponentTypeId);
         AZ_Warning("AddVisual", false, "Setting color for material %s", visual->material->name.c_str());
         entity->Activate();
         AZ::Render::MaterialComponentRequestBus::Event(
