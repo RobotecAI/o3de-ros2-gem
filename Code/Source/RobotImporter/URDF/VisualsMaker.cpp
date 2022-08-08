@@ -34,19 +34,25 @@ namespace ROS2
 
     void VisualsMaker::AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
+        auto visualName = AZStd::string::format("%s_visual", link->name.c_str());
         if (link->visual_array.size() == 0)
         { // one or zero visuals - element is used
-            AddVisual(link->visual, entityId);
+            AddVisual(link->visual, entityId, visualName);
             return;
         }
 
+        int nameSuffixIndex = 1; // For disambiguation when multiple unnamed visuals are present. The order does not matter here
         for (auto visual : link->visual_array)
         { // one or more visuals - array is used
-            AddVisual(visual, entityId);
+            auto generatedName = link->visual_array.size() > 1
+                : AZStd::string::format("%s_%d", visualName.c_str(), nameSuffixIndex)
+                : visualName;
+            nameSuffixIndex++;
+            AddVisual(visual, entityId, generatedName);
         }
     }
 
-    void VisualsMaker::AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
+    void VisualsMaker::AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId, const AZStd::string& generatedName)
     {
         if (!visual)
         { // it is ok not to have a visual in a link
@@ -59,12 +65,13 @@ namespace ROS2
             return;
         }
 
-        // Since o3de does not allow origin for visuals, we need to create a sub-entity and store visual there
-        AZStd::string subEntityName = "visual"; // TODO add index and maybe a name prefix for multiple visual case
-        auto createEntityResult = PrefabMakerUtils::CreateEntity(entityId, subEntityName.c_str());
+        // Use a name generated from the link unless specific name is defined for this visual
+        const char* subEntityName = visual->name.empty() ? generatedName.c_str() : visual->name.c_str();
+        // Since O3DE does not allow origin for visuals, we need to create a sub-entity and store visual there
+        auto createEntityResult = PrefabMakerUtils::CreateEntity(entityId, subEntityName);
         if (!createEntityResult.IsSuccess())
         {
-            AZ_Error("AddVisual", false, "Unable to create a sub-entity for visual element %s", subEntityName.c_str());
+            AZ_Error("AddVisual", false, "Unable to create a sub-entity for visual element %s", subEntityName);
             return;
         }
         auto visualEntityId = createEntityResult.GetValue();
