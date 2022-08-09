@@ -45,7 +45,7 @@ namespace ROS2
         for (auto visual : link->visual_array)
         { // one or more visuals - array is used
             auto generatedName = link->visual_array.size() > 1
-                : AZStd::string::format("%s_%d", visualName.c_str(), nameSuffixIndex)
+                ? AZStd::string::format("%s_%d", visualName.c_str(), nameSuffixIndex)
                 : visualName;
             nameSuffixIndex++;
             AddVisual(visual, entityId, generatedName);

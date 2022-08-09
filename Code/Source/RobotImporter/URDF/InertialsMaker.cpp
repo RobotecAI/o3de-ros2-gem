@@ -21,11 +21,15 @@ namespace ROS2
             return;
         }
 
+        AZ_TracePrintf("AddInertial", "Processing inertial for entity id:%s", entityId.ToString().c_str());
+
+        // TODO - this is likely invalid due to domain mismatch
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         // TODO - consider explicit 2 arg constructor instead
         PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
         rigidBodyConfiguration.m_mass = inertial->mass;
         // TODO - is the origin.rotation part applicable? Does non-zero make value sense? Investigate.
+        // TODO - this should be in relationship to link, not the collider origin already applied in this entity
         rigidBodyConfiguration.m_centerOfMassOffset = URDF::TypeConversions::ConvertVector3(inertial->origin.position);
 
         // Inertia tensor is symmetrical

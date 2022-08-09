@@ -8,6 +8,7 @@
 
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include "Frame/ROS2FrameComponent.h"
+#include "RobotControl/ROS2RobotControlComponent.h"
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/InertialsMaker.h"
 #include "RobotImporter/URDF/JointsMaker.h"
@@ -40,9 +41,11 @@ namespace ROS2
             return AZ::Failure(AZStd::string(createEntityResult.GetError()));
         }
 
+        auto contentEntityId = createEntityResult.GetValue();
+        AddRobotControl(contentEntityId);
+
         auto prefabName = AZStd::string::format("%s.%s", m_model->getName().c_str(), "prefab");
         auto newPrefabPath = AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str();
-        auto contentEntityId = createEntityResult.GetValue();
 
         // Create prefab, save it to disk immediately
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
@@ -72,6 +75,7 @@ namespace ROS2
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
 
         // Add ROS2FrameComponent - TODO: only for top level and joints
+        // TODO - add unique namespace to the robot's top level frame
         entity->CreateComponent<ROS2FrameComponent>(link->name.c_str());
 
         m_visualsMaker.AddVisuals(link, entityId);
@@ -88,9 +92,20 @@ namespace ROS2
             }
 
             AZ::EntityId childEntityId = outcome.GetValue();
-            m_jointsMaker.AddJointInformationToEntity(link, childLink, childEntityId, entityId);
+            m_jointsMaker.AddJoint(link, childLink, childEntityId, entityId);
         }
 
         return AZ::Success(entityId);
+    }
+
+    void URDFPrefabMaker::AddRobotControl(AZ::EntityId rootEntityId)
+    {
+        // TODO - check for RigidBody
+        ControlConfiguration controlConfiguration;
+        controlConfiguration.m_robotConfiguration.m_body = rootEntityId;
+        controlConfiguration.m_broadcastBusMode = false;
+        controlConfiguration.m_topic = "cmd_vel";
+        AZ::Entity* rootEntity = AzToolsFramework::GetEntityById(rootEntityId);
+        rootEntity->CreateComponent<ROS2RobotControlComponent>(controlConfiguration);
     }
 } // namespace ROS2
