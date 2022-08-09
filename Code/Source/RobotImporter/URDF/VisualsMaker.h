@@ -26,7 +26,7 @@ namespace ROS2
         void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
 
     private:
-        void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
+        void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId, const AZStd::string& generatedName);
         void AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
 
