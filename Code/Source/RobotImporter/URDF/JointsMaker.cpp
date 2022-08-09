@@ -12,6 +12,7 @@
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorFixedJointComponent.h>
 #include <Source/EditorHingeJointComponent.h>
+#include <Source/EditorShapeColliderComponent.h>
 
 namespace ROS2
 {
@@ -28,21 +29,25 @@ namespace ROS2
         }
     }
 
+    bool JointsMaker::HasRequiredComponentsForJoint(AZ::EntityId entityId)
+    {
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        return entity->FindComponent<PhysX::EditorColliderComponent>() || entity->FindComponent<PhysX::EditorShapeColliderComponent>();
+    }
+
     void JointsMaker::AddJoint(urdf::JointSharedPtr joint, AZ::EntityId childEntityId, AZ::EntityId parentEntityId)
     {
-        AZ::Entity* childEntity = AzToolsFramework::GetEntityById(childEntityId);
-        AZ::Entity* parentEntity = AzToolsFramework::GetEntityById(parentEntityId);
-
-        if (!childEntity->FindComponent<PhysX::EditorColliderComponent>() || !parentEntity->FindComponent<PhysX::EditorColliderComponent>())
+        if (!HasRequiredComponentsForJoint(childEntityId) || !HasRequiredComponentsForJoint(parentEntityId))
         {
             AZ_Error(
-                "AddJointInformationToEntity",
+                "AddJoint",
                 false,
                 "Unable to add a joint %s without Collider component in both its own and parent entity",
                 joint->name.c_str());
             return;
         }
 
+        AZ::Entity* childEntity = AzToolsFramework::GetEntityById(childEntityId);
         PhysX::EditorJointComponent* jointComponent = nullptr;
         // TODO - ATM, there is no support withing Joint Components for the following:
         // TODO <calibration> <dynamics> <mimic>, friction, effort, velocity, joint safety and several joint types
@@ -55,7 +60,7 @@ namespace ROS2
             }
             break;
         case urdf::Joint::CONTINUOUS:
-            // TODO - diasable limits for Continuous type. API for this seems to be missing.
+            // TODO - disable limits for Continuous type. API for this seems to be missing.
             [[fallthrough]];
         case urdf::Joint::REVOLUTE:
             { // Hinge
@@ -70,12 +75,7 @@ namespace ROS2
             }
             break;
         default:
-            AZ_Warning(
-                "AddJointInformationToEntity",
-                false,
-                "Unknown or unsupported joint type %d for joint %s",
-                joint->type,
-                joint->name.c_str());
+            AZ_Warning("AddJoint", false, "Unknown or unsupported joint type %d for joint %s", joint->type, joint->name.c_str());
             break;
         }
 

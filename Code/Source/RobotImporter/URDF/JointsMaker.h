@@ -28,5 +28,6 @@ namespace ROS2
 
     private:
         void AddJoint(urdf::JointSharedPtr joint, AZ::EntityId childEntityId, AZ::EntityId parentEntityId);
+        bool HasRequiredComponentsForJoint(AZ::EntityId entityId);
     };
 } // namespace ROS2
