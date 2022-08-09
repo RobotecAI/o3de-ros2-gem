@@ -32,9 +32,7 @@ namespace ROS2
     bool JointsMaker::HasRequiredComponentsForJoint(AZ::EntityId entityId)
     {
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        return entity->FindComponent<PhysX::EditorColliderComponent>()
-            ? true
-            : entity->FindComponent<PhysX::EditorShapeColliderComponent>() != nullptr;
+        return entity->FindComponent<PhysX::EditorColliderComponent>() || entity->FindComponent<PhysX::EditorShapeColliderComponent>();
     }
 
     void JointsMaker::AddJoint(urdf::JointSharedPtr joint, AZ::EntityId childEntityId, AZ::EntityId parentEntityId)
