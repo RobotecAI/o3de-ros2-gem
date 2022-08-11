@@ -13,7 +13,9 @@
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 #include <Source/EditorColliderComponent.h>
+#include <Source/EditorRigidBodyComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
+#include <Source/Utils.h>
 
 namespace ROS2
 {
@@ -23,9 +25,8 @@ namespace ROS2
         int nameSuffixIndex = 1; // For disambiguation when multiple unnamed colliders are present. The order does not matter here
         for (auto collider : link->collision_array)
         { // one or more colliders - the array is used
-            auto generatedName = link->visual_array.size() > 1
-                ? AZStd::string::format("%s_%d", colliderName.c_str(), nameSuffixIndex)
-                : colliderName;
+            auto generatedName =
+                link->visual_array.size() > 1 ? AZStd::string::format("%s_%d", colliderName.c_str(), nameSuffixIndex) : colliderName;
             nameSuffixIndex++;
             AddCollider(collider, entityId, generatedName);
         }
@@ -56,43 +57,37 @@ namespace ROS2
     void CollidersMaker::AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
     {
         // TODO - we are unable to set collider origin. Sub-entities don't work since they would need to parent visuals etc.
-        //PrefabMakerUtils::SetEntityTransform(collision->origin, entityId);
+        // PrefabMakerUtils::SetEntityTransform(collision->origin, entityId);
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        auto geometry = collision->geometry;
-        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
-        if (!isPrimitiveShape)
-        { // TODO - implement mesh colliders
-            return;
+        Physics::ColliderConfiguration colliderConfig;
+        colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
+        colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
+        if (!collision->name.empty())
+        {
+            colliderConfig.m_tag = AZStd::string(collision->name.c_str());
         }
 
-        entity->CreateComponent<PhysX::EditorShapeColliderComponent>();
+        auto geometry = collision->geometry;
         switch (geometry->type)
         {
         case urdf::Geometry::SPHERE:
             {
-                entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
                 auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
-                entity->Activate();
-                LmbrCentral::SphereShapeComponentRequestsBus::Event(
-                    entityId, &LmbrCentral::SphereShapeComponentRequests::SetRadius, sphereGeometry->radius);
-                entity->Deactivate();
+                Physics::SphereShapeConfiguration sphere(sphereGeometry->radius);
+                entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, sphere);
             }
             break;
         case urdf::Geometry::BOX:
             {
-                entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
                 auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
-                entity->Activate();
-                LmbrCentral::BoxShapeComponentRequestsBus::Event(
-                    entityId,
-                    &LmbrCentral::BoxShapeComponentRequests::SetBoxDimensions,
-                    URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
-                entity->Deactivate();
+                Physics::BoxShapeConfiguration box(URDF::TypeConversions::ConvertVector3(boxGeometry->dim));
+                entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, box);
             }
             break;
         case urdf::Geometry::CYLINDER:
             {
+                entity->CreateComponent<PhysX::EditorShapeColliderComponent>();
                 entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
                 auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
                 entity->Activate();
@@ -101,11 +96,44 @@ namespace ROS2
                 LmbrCentral::CylinderShapeComponentRequestsBus::Event(
                     entityId, &LmbrCentral::CylinderShapeComponentRequests::SetRadius, cylinderGeometry->radius);
                 entity->Deactivate();
+
+                /* TODO - use shape config for EditorColliderComponent instead, provide convex mesh from cylinder
+                auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                const AZ::u8 subdivisionCount = 32;
+                const AZ::Vector3 scale(1.0f, 1.0f, 1.0f);
+                AZStd::optional<AZStd::vector<AZ::Vector3>> points = PhysX::Utils::CreatePointsAtFrustumExtents(
+                    cylinderGeometry->length, cylinderGeometry->radius, cylinderGeometry->radius, subdivisionCount);
+                if (!points.has_value())
+                {
+                    AZ_Warning("AddColliderToEntity", false, "Could not generate cylinder points for collider");
+                    return;
+                }
+
+                const AZStd::optional<Physics::CookedMeshShapeConfiguration> maybeShapeConfig =
+                    PhysX::Utils::CreatePxCookedMeshConfiguration(points.value(), scale);
+                if (!maybeShapeConfig.has_value())
+                {
+                    AZ_Warning("AddColliderToEntity", false, "Could not generate shapeConfig for collider");
+                    return;
+                }
+                entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, maybeShapeConfig.value());
+                */
+            }
+            break;
+        case urdf::Geometry::MESH:
+            {
+                AZ_Warning("AddColliderToEntity", false, "mesh collider is not supported at this moment");
+                entity->CreateComponent<PhysX::EditorColliderComponent>();
             }
             break;
         default:
-            AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
+            AZ_Warning("AddColliderToEntity", false, "Unsupported collider geometry type, %d", geometry->type);
             break;
+        }
+        if (!entity->FindComponent<PhysX::EditorRigidBodyComponent>())
+        {   // This component could already be there if inertia was defined in URDF for this entity's link
+            AZ_TracePrintf("AddColliderToEntity", "Adding RigidBody for entity id:%s", entityId.ToString().c_str());
+            entity->CreateComponent<PhysX::EditorRigidBodyComponent>();
         }
     }
 } // namespace ROS2

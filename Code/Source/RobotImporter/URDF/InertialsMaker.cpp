@@ -25,7 +25,6 @@ namespace ROS2
 
         // TODO - this is likely invalid due to domain mismatch
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        // TODO - consider explicit 2 arg constructor instead
         PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
         rigidBodyConfiguration.m_mass = inertial->mass;
         // TODO - is the origin.rotation part applicable? Does non-zero make value sense? Investigate.

@@ -79,8 +79,8 @@ namespace ROS2
         entity->CreateComponent<ROS2FrameComponent>(link->name.c_str());
 
         m_visualsMaker.AddVisuals(link, entityId);
-        m_collidersMaker.AddColliders(link, entityId);
         m_inertialsMaker.AddInertial(link->inertial, entityId);
+        m_collidersMaker.AddColliders(link, entityId);
 
         for (auto childLink : link->child_links)
         {
