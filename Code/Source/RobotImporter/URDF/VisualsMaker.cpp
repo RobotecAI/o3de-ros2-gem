@@ -15,6 +15,7 @@
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
 #include <AzCore/Component/NonUniformScaleBus.h>
+#include <AzCore/Component/TransformBus.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <AzToolsFramework/ToolsComponents/EditorNonUniformScaleComponent.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
@@ -131,7 +132,7 @@ namespace ROS2
                 modelPath += relativePathToMesh;
 
                 // Get asset path for a given model path
-                auto assetPath = PrefabMakerUtils::GetAssetPathFromModelPath(modelPath);
+                auto assetPath = PrefabMakerUtils::GetAzModelAssetPathFromModelPath(modelPath);
 
                 entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
 

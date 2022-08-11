@@ -25,17 +25,19 @@ namespace ROS2
         QLabel* captionLabel = new QLabel(QObject::tr("Select a robot definition (URDF) file to import"), this);
         captionLabel->setWordWrap(true);
         mainLayout->addWidget(captionLabel);
-        QPushButton* selectFileButton = new QPushButton(QObject::tr("Load"), this);
-        mainLayout->addWidget(selectFileButton);
+        m_selectFileButton = new QPushButton(QObject::tr("Load"), this);
+        mainLayout->addWidget(m_selectFileButton);
         mainLayout->addWidget(&m_robotFileNameLabel);
         mainLayout->addWidget(&m_robotNameLabel);
+
+        mainLayout->addWidget(&m_loadingLabel);
 
         m_importFileDialog.setFileMode(QFileDialog::ExistingFiles);
         m_importFileDialog.setNameFilter(QObject::tr("Unified Robot Description Format (*.urdf)"));
         m_importFileDialog.setViewMode(QFileDialog::Detail);
 
         QObject::connect(
-            selectFileButton,
+            m_selectFileButton,
             &QPushButton::clicked,
             this,
             [this]()
@@ -53,19 +55,46 @@ namespace ROS2
                 OnModelLoaded();
             });
 
+        QObject::connect(this, &RobotImporterWidget::CreateURDFPrefabSignal, this, &RobotImporterWidget::CreateURDFPrefab);
+
         mainLayout->addStretch();
         setLayout(mainLayout);
     }
 
     void RobotImporterWidget::OnModelLoaded()
     {
+        // Set GUI state
         m_robotNameLabel.setText(m_urdfModel->getName().c_str());
+        m_loadingLabel.setText("Processing URDF model...");
+        m_selectFileButton->setDisabled(true);
 
-        URDFPrefabMaker prefabMaker(AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()), m_urdfModel);
-        auto outcome = prefabMaker.CreatePrefabFromURDF();
+        // Load URDF
+        m_urdfPrefabMaker.reset(new URDFPrefabMaker(AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()), m_urdfModel));
+        m_urdfPrefabMaker->LoadURDF(AZStd::bind(&RobotImporterWidget::AssetsBuildFinished, this));
+    }
+
+    void RobotImporterWidget::AssetsBuildFinished()
+    {
+        // We need to call URDFPrefabMaker::CreatePrefabFromURDF from main thread, therefore we are using queued QT signal/slot.
+        emit CreateURDFPrefabSignal();
+    }
+
+    void RobotImporterWidget::CreateURDFPrefab()
+    {
+        if (!m_urdfPrefabMaker)
+        {
+            AZ_Error("RobotImporterWidget", false, "Prefab maker not ready");
+            return;
+        }
+
+        auto outcome = m_urdfPrefabMaker->CreatePrefabFromURDF();
         if (!outcome)
         { // TODO - handle, show
             AZ_Error("RobotImporterWidget", false, "Importing robot definition failed with error: %s", outcome.GetError().c_str());
         }
+
+        // Set GUI state
+        m_loadingLabel.setText("");
+        m_selectFileButton->setDisabled(false);
     }
 } // namespace ROS2

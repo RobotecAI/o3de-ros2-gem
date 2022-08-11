@@ -20,7 +20,7 @@ namespace ROS2
     {
     public:
         static void AddRequiredComponentsToEntity(AZ::EntityId entityId);
-        static AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
+        static AZStd::string GetAzModelAssetPathFromModelPath(std::filesystem::path modelPath);
         static void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
         static AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
         static AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId);

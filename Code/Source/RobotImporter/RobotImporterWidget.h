@@ -18,6 +18,7 @@
 
 namespace ROS2
 {
+    class URDFPrefabMaker;
     //! Handles UI for the process of URDF importing
     class RobotImporterWidget : public QWidget
     {
@@ -27,9 +28,21 @@ namespace ROS2
 
     private:
         void OnModelLoaded();
+        void AssetsBuildFinished();
         urdf::ModelInterfaceSharedPtr m_urdfModel;
+
+        AZStd::shared_ptr<URDFPrefabMaker> m_urdfPrefabMaker;
+
         QFileDialog m_importFileDialog;
         QLabel m_robotFileNameLabel;
         QLabel m_robotNameLabel;
+        QLabel m_loadingLabel;
+        QPushButton* m_selectFileButton;
+
+    private slots:
+        void CreateURDFPrefab();
+
+    signals:
+        void CreateURDFPrefabSignal();
     };
 } // namespace ROS2
