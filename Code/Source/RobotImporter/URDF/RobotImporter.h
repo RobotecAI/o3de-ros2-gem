@@ -25,7 +25,6 @@ namespace ROS2
         // Has to be a reference since Qt is not very kin of smart pointers. It should be fixed
         // For now, programmer must guarantee that this reference is valid for as long as the importer lives
         RobotImporterInputInterface& m_interactionInterface;
-        std::optional<URDFPrefabMaker> m_prefabMaker;
     };
 
 } // namespace ROS2

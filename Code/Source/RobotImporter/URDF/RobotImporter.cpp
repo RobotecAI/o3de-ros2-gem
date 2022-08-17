@@ -23,6 +23,7 @@ namespace ROS2
             m_interactionInterface.ReportError("User canceled or empty file was provided");
             return;
         }
+        m_interactionInterface.ReportInfo("Importing robot definition file: " + fileNameToImport);
 
         urdf::ModelInterfaceSharedPtr urdfModel = UrdfParser::ParseFromFile(fileNameToImport);
         if (!urdfModel)
@@ -32,8 +33,8 @@ namespace ROS2
         }
         m_interactionInterface.ReportInfo(AZStd::string::format("%s URDF file loaded", urdfModel->getName().c_str()));
 
-        m_prefabMaker.emplace(m_interactionInterface);
-        auto outcome = m_prefabMaker->CreatePrefabFromURDF(urdfModel, fileNameToImport);
+        URDFPrefabMaker prefabMaker(fileNameToImport, urdfModel, m_interactionInterface);
+        auto outcome = prefabMaker.CreatePrefabFromURDF();
         if (!outcome)
         {
             auto errorMessage = AZStd::string::format("Importing robot definition failed with error: %s", outcome.GetError().c_str());

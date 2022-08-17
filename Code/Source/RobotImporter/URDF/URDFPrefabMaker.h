@@ -8,11 +8,14 @@
 
 #pragma once
 
-#include "RobotImporter/URDF/UrdfParser.h"
-#include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
-
-#include <filesystem> // TODO - instead, use AZ API for filesystem
+#include "RobotImporter/URDF/CollidersMaker.h"
+#include "RobotImporter/URDF/InertialsMaker.h"
+#include "RobotImporter/URDF/JointsMaker.h"
+#include "RobotImporter/URDF/VisualsMaker.h"
 #include "RobotImporter/URDF/RobotImporterInputInterface.h"
+#include "UrdfParser.h"
+#include <AzCore/Component/EntityId.h>
+#include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 
 namespace ROS2
 {
@@ -20,23 +23,16 @@ namespace ROS2
     class URDFPrefabMaker
     {
     public:
-        URDFPrefabMaker(RobotImporterInputInterface& inputInterface);
-        AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF(
-            urdf::ModelInterfaceSharedPtr model, const AZStd::string& modelFilePath);
+        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterInputInterface& inputInterface);
+        AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF();
 
     private:
-        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLinkRecursively(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
-        void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId);
-        void AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
-        void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
-        void AddCollider(urdf::CollisionSharedPtr collider, AZ::EntityId entityId);
-        void AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId);
-        void AddJointInformationToEntity(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId entityId);
-        AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
-
-        AzToolsFramework::Prefab::PrefabPublicInterface* m_prefabInterface;
+        AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
+        urdf::ModelInterfaceSharedPtr m_model;
+        VisualsMaker m_visualsMaker;
+        CollidersMaker m_collidersMaker;
+        InertialsMaker m_inertialsMaker;
+        JointsMaker m_jointsMaker;
         RobotImporterInputInterface& m_robotImporterInputInterface;
-
-        AZStd::string m_modelFilePath;
     };
 } // namespace ROS2
