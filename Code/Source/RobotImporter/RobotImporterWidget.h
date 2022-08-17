@@ -9,8 +9,8 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include "URDF/RobotImporter/RobotImporter.h"
-#include "URDF/RobotImporter/RobotImporterInputInterface.h"
+#include "RobotImporter/URDF/RobotImporter.h"
+#include "RobotImporter/URDF/RobotImporterInputInterface.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QFileDialog>
 #include <QLabel>

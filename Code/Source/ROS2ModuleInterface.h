@@ -14,7 +14,7 @@
 #include "Lidar/ROS2LidarSensorComponent.h"
 #include "ROS2SystemComponent.h"
 #include "RobotControl/ROS2RobotControlComponent.h"
-#include "URDF/RobotImporter/ROS2RobotImporterSystemComponent.h"
+#include "RobotImporter/ROS2RobotImporterSystemComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 

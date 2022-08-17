@@ -6,9 +6,9 @@
  *
  */
 
-#include "URDF/RobotImporter/URDFPrefabMaker.h"
+#include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include "Frame/ROS2FrameComponent.h"
-#include "URDF/RobotImporter/TypeConversions.h"
+#include "RobotImporter/URDF/TypeConversions.h"
 
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>

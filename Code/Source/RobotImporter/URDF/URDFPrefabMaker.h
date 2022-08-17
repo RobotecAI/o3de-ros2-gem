@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "URDF/UrdfParser.h"
+#include "RobotImporter/URDF/UrdfParser.h"
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 
 #include <filesystem> // TODO - instead, use AZ API for filesystem
-#include "URDF/RobotImporter/RobotImporterInputInterface.h"
+#include "RobotImporter/URDF/RobotImporterInputInterface.h"
 
 namespace ROS2
 {

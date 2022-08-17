@@ -10,8 +10,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "RobotImporterWidget.h"
-#include "URDF/RobotImporter/URDFPrefabMaker.h"
+#include "RobotImporter/RobotImporterWidget.h"
+#include "RobotImporter/URDF/URDFPrefabMaker.h"
 
 namespace ROS2
 {
