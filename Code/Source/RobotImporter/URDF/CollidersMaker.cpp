@@ -18,27 +18,31 @@
 namespace ROS2
 {
     void CollidersMaker::AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)
-    {
-        if (link->collision_array.size() == 0)
-        { // one or zero colliders - element is used
-            AddCollider(link->collision, entityId);
-            return;
+    { // TODO - refactor out naming (colliders, visuals)
+        auto colliderName = AZStd::string::format("%s_collider", link->name.c_str());
+        int nameSuffixIndex = 1; // For disambiguation when multiple unnamed colliders are present. The order does not matter here
+        for (auto collider : link->collision_array)
+        { // one or more colliders - the array is used
+            auto generatedName = link->visual_array.size() > 1
+                ? AZStd::string::format("%s_%d", colliderName.c_str(), nameSuffixIndex)
+                : colliderName;
+            nameSuffixIndex++;
+            AddCollider(collider, entityId, generatedName);
         }
 
-        for (auto collider : link->collision_array)
-        { // one or more colliders - array is used
-            AddCollider(collider, entityId);
+        if (link->collision_array.size() == 0)
+        { // no colliders in the array - zero or one in total, the element member is used instead
+            AddCollider(link->collision, entityId, colliderName);
         }
     }
 
-    void CollidersMaker::AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
+    void CollidersMaker::AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZStd::string& generatedName)
     {
         if (!collision)
         { // it is ok not to have collision in a link
             return;
         }
 
-        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         auto geometry = collision->geometry;
         if (!geometry)
         { // non-empty visual should have a geometry
@@ -46,6 +50,16 @@ namespace ROS2
             return;
         }
 
+        AddColliderToEntity(collision, entityId);
+    }
+
+    void CollidersMaker::AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
+    {
+        // TODO - we are unable to set collider origin. Sub-entities don't work since they would need to parent visuals etc.
+        //PrefabMakerUtils::SetEntityTransform(collision->origin, entityId);
+
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        auto geometry = collision->geometry;
         bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
         if (!isPrimitiveShape)
         { // TODO - implement mesh colliders

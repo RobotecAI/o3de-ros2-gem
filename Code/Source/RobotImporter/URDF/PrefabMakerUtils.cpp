@@ -14,6 +14,8 @@
 #include <AzToolsFramework/API/EditorAssetSystemAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
+#include <Source/EditorColliderComponent.h>
+#include <Source/EditorShapeColliderComponent.h>
 
 namespace ROS2
 {
@@ -94,5 +96,28 @@ namespace ROS2
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         AzToolsFramework::EditorEntityContextRequestBus::Broadcast(
             &AzToolsFramework::EditorEntityContextRequests::AddRequiredComponents, *entity);
+    }
+
+    bool PrefabMakerUtils::HasCollider(AZ::EntityId entityId)
+    {
+        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        return entity->FindComponent<PhysX::EditorColliderComponent>() != nullptr ||
+            entity->FindComponent<PhysX::EditorShapeColliderComponent>() != nullptr;
+    }
+
+    AzToolsFramework::EntityIdList PrefabMakerUtils::GetColliderChildren(AZ::EntityId parentEntityId)
+    {
+        AzToolsFramework::EntityIdList colliderChildren;
+        AzToolsFramework::EntityIdList allChildren = AzToolsFramework::GetEntityChildOrder(parentEntityId);
+        for (auto childId : allChildren)
+        {
+            AZ_TracePrintf("GetColliderChildren", "Considering child %s", childId.ToString().c_str());
+            if (HasCollider(childId))
+            {
+                AZ_TracePrintf("GetColliderChildren", "Child %s has a collider", childId.ToString().c_str());
+                colliderChildren.push_back(childId);
+            }
+        }
+        return colliderChildren;
     }
 } // namespace ROS2

@@ -27,6 +27,7 @@ namespace ROS2
 
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
+        void AddRobotControl(AZ::EntityId rootEntityId);
         urdf::ModelInterfaceSharedPtr m_model;
         VisualsMaker m_visualsMaker;
         CollidersMaker m_collidersMaker;
