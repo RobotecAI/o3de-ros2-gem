@@ -23,9 +23,8 @@ namespace ROS2
         int nameSuffixIndex = 1; // For disambiguation when multiple unnamed colliders are present. The order does not matter here
         for (auto collider : link->collision_array)
         { // one or more colliders - the array is used
-            auto generatedName = link->visual_array.size() > 1
-                ? AZStd::string::format("%s_%d", colliderName.c_str(), nameSuffixIndex)
-                : colliderName;
+            auto generatedName =
+                link->visual_array.size() > 1 ? AZStd::string::format("%s_%d", colliderName.c_str(), nameSuffixIndex) : colliderName;
             nameSuffixIndex++;
             AddCollider(collider, entityId, generatedName);
         }
@@ -56,7 +55,7 @@ namespace ROS2
     void CollidersMaker::AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
     {
         // TODO - we are unable to set collider origin. Sub-entities don't work since they would need to parent visuals etc.
-        //PrefabMakerUtils::SetEntityTransform(collision->origin, entityId);
+        // PrefabMakerUtils::SetEntityTransform(collision->origin, entityId);
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         auto geometry = collision->geometry;
