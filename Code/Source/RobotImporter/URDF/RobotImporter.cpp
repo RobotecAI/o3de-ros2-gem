@@ -8,6 +8,7 @@
 
 #include "RobotImporter.h"
 #include "RobotImporter/RobotImporterWidget.h"
+#include "RobotImporter/URDF/URDFPrefabMaker.h"
 
 namespace ROS2
 {

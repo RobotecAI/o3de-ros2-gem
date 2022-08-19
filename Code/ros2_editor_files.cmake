@@ -6,7 +6,6 @@
 set(FILES
     Source/ROS2EditorSystemComponent.cpp
     Source/ROS2EditorSystemComponent.h
-        Source/RobotImporter/URDF/RobotImporterUserInteractions.h
     Source/RobotImporter/URDF/RobotImporter.cpp
     Source/RobotImporter/URDF/RobotImporter.h
     Source/RobotImporter/ROS2RobotImporterEditorSystemComponent.cpp

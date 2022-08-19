@@ -10,11 +10,7 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "RobotImporter/RobotImporterWidget.h"
 #include "RobotImporter/URDF/CollidersMaker.h"
-#include "RobotImporter/URDF/InertialsMaker.h"
-#include "RobotImporter/URDF/JointsMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/URDF/TypeConversions.h"
-#include "RobotImporter/URDF/VisualsMaker.h"
 
 #include <AzCore/IO/FileIO.h>
 #include <AzCore/Utils/Utils.h>

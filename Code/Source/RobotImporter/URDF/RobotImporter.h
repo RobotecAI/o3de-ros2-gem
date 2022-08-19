@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "RobotImporter/URDF/RobotImporterUserInteractions.h"
-#include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include <memory>
 
 namespace ROS2

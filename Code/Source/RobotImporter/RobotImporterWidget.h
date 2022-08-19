@@ -10,7 +10,6 @@
 
 #if !defined(Q_MOC_RUN)
 #include "RobotImporter/URDF/RobotImporter.h"
-#include "RobotImporter/URDF/RobotImporterUserInteractions.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QFileDialog>
 #include <QLabel>

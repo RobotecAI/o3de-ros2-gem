@@ -11,7 +11,6 @@
 #include <QVBoxLayout>
 
 #include "RobotImporter/RobotImporterWidget.h"
-#include "RobotImporter/URDF/URDFPrefabMaker.h"
 
 #include <AzCore/Utils/Utils.h>
 
