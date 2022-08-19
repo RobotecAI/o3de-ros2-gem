@@ -29,16 +29,25 @@ namespace ROS2
     //! Handles UI for the process of URDF importing
     class RobotImporterWidget
         : public QWidget
-        , public RobotImporterUserInteractions
     {
         Q_OBJECT
     public:
         explicit RobotImporterWidget(QWidget* parent = nullptr);
 
-        void ReportInfo(const AZStd::string& infoMessage) override;
-        void ReportError(const AZStd::string& errorMessage) override;
-        AZStd::optional<AZStd::string> GetURDFPath() override;
-        AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path) override;
+        //! Report an error to the user.
+        void ReportError(const AZStd::string& errorMessage);
+
+        //! Report an information to the user.
+        void ReportInfo(const AZStd::string& infoMessage);
+
+        //! Get valid path to the existing URDF file from the user
+        //! @return valid path to the existing URDF file or empty optional if the user canceled the operation
+        AZStd::optional<AZStd::string> GetURDFPath();
+
+        //! Validate whether a path exists. If yes, ask user to take a proper action to provide correct path.
+        //! @param path - path to validate
+        //! @return Valid path or an empty optional if it was not possible or user cancelled.
+        AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path);
 
     private:
         QLabel m_statusLabel;

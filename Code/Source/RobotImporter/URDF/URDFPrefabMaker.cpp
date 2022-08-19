@@ -14,6 +14,7 @@
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
 #include "RobotImporter/URDF/TypeConversions.h"
 #include "RobotImporter/URDF/VisualsMaker.h"
+#include "RobotImporter/RobotImporterWidget.h"
 
 #include <AzCore/IO/FileIO.h>
 #include <AzCore/Utils/Utils.h>
@@ -24,10 +25,10 @@
 namespace ROS2
 {
     URDFPrefabMaker::URDFPrefabMaker(
-        const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterUserInteractions& inputInterface)
+        const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterWidget& robotImporterWidget)
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
-        , m_robotImporterInputInterface(inputInterface)
+        , m_robotImporterWidget(robotImporterWidget)
     {
     }
 
@@ -47,7 +48,7 @@ namespace ROS2
         auto contentEntityId = createEntityResult.GetValue();
 
         AZStd::optional<AZStd::string> prefabPath =
-            m_robotImporterInputInterface.ValidatePrefabPathExistenceAndGetNewIfNecessary(prefabDefaultPath);
+            m_robotImporterWidget.ValidatePrefabPathExistenceAndGetNewIfNecessary(prefabDefaultPath);
 
         if (!prefabPath)
         {

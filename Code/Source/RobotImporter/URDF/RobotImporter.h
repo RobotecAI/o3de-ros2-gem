@@ -12,19 +12,21 @@
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include <memory>
 
+
 namespace ROS2
 {
+    class RobotImporterWidget;
 
     class RobotImporter
     {
     public:
-        explicit RobotImporter(RobotImporterUserInteractions& interactionInterface);
+        explicit RobotImporter(RobotImporterWidget& interactionInterface);
         void Import();
 
     private:
         // Has to be a reference since Qt is not very kin of smart pointers. It should be fixed
         // For now, programmer must guarantee that this reference is valid for as long as the importer lives
-        RobotImporterUserInteractions& m_interactionInterface;
+        RobotImporterWidget& m_robotImporterWidget;
     };
 
 } // namespace ROS2

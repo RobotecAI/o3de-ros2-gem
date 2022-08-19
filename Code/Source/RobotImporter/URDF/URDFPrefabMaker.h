@@ -11,7 +11,6 @@
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/InertialsMaker.h"
 #include "RobotImporter/URDF/JointsMaker.h"
-#include "RobotImporter/URDF/RobotImporterUserInteractions.h"
 #include "RobotImporter/URDF/VisualsMaker.h"
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
@@ -19,12 +18,14 @@
 
 namespace ROS2
 {
+    class RobotImporterWidget;
+
     //! Encapsulates constructive mapping of URDF elements to a complete prefab with entities and components
     class URDFPrefabMaker
     {
     public:
         URDFPrefabMaker(
-            const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterUserInteractions& inputInterface);
+            const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterWidget& robotImpo);
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF();
 
     private:
@@ -34,6 +35,6 @@ namespace ROS2
         CollidersMaker m_collidersMaker;
         InertialsMaker m_inertialsMaker;
         JointsMaker m_jointsMaker;
-        RobotImporterUserInteractions& m_robotImporterInputInterface;
+        RobotImporterWidget& m_robotImporterWidget;
     };
 } // namespace ROS2
