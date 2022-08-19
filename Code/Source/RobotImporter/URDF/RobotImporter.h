@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "RobotImporter/URDF/RobotImporterInputInterface.h"
+#include "RobotImporter/URDF/RobotImporterUserInteractions.h"
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include <memory>
 
@@ -18,13 +18,13 @@ namespace ROS2
     class RobotImporter
     {
     public:
-        explicit RobotImporter(RobotImporterInputInterface& interactionInterface);
+        explicit RobotImporter(RobotImporterUserInteractions& interactionInterface);
         void Import();
 
     private:
         // Has to be a reference since Qt is not very kin of smart pointers. It should be fixed
         // For now, programmer must guarantee that this reference is valid for as long as the importer lives
-        RobotImporterInputInterface& m_interactionInterface;
+        RobotImporterUserInteractions& m_interactionInterface;
     };
 
 } // namespace ROS2

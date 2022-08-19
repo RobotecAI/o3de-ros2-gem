@@ -10,17 +10,22 @@
 
 namespace ROS2
 {
-    RobotImporter::RobotImporter(RobotImporterInputInterface& interactionInterface)
+    RobotImporter::RobotImporter(RobotImporterUserInteractions& interactionInterface)
         : m_interactionInterface(interactionInterface)
     {
     }
 
     void RobotImporter::Import()
     {
-        AZStd::string fileNameToImport = m_interactionInterface.GetURDFPath();
+        AZStd::optional<AZStd::string> fileNameToImportOpt = m_interactionInterface.GetURDFPath();
+        if (!fileNameToImportOpt)
+        {
+            return;
+        }
+        const AZStd::string& fileNameToImport = fileNameToImportOpt.value();
         if (fileNameToImport.empty())
         {
-            m_interactionInterface.ReportError("User canceled or empty file was provided");
+            m_interactionInterface.ReportError("Empty file was provided");
             return;
         }
         m_interactionInterface.ReportInfo("Importing robot definition file: " + fileNameToImport);

@@ -10,7 +10,7 @@
 
 #if !defined(Q_MOC_RUN)
 #include "RobotImporter/URDF/RobotImporter.h"
-#include "RobotImporter/URDF/RobotImporterInputInterface.h"
+#include "RobotImporter/URDF/RobotImporterUserInteractions.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QFileDialog>
 #include <QLabel>
@@ -19,26 +19,32 @@
 
 namespace ROS2
 {
+    enum ExistingPrefabAction
+    {
+        Overwrite,
+        CreateWithNewName,
+        Cancel
+    };
+
     //! Handles UI for the process of URDF importing
     class RobotImporterWidget
         : public QWidget
-        , public RobotImporterInputInterface
+        , public RobotImporterUserInteractions
     {
         Q_OBJECT
     public:
         explicit RobotImporterWidget(QWidget* parent = nullptr);
 
-        void ReportWarning(AZStd::string warningMessage) override;
-        void ReportInfo(AZStd::string infoMessage) override;
-        void ReportError(AZStd::string errorMessage) override;
-        AZStd::string GetURDFPath() override;
-        RobotImporterInputInterface::ExistingPrefabAction GetExistingPrefabAction() override;
-        AZStd::string GetNewPrefabPath() override;
+        void ReportInfo(const AZStd::string& infoMessage) override;
+        void ReportError(const AZStd::string&  errorMessage) override;
+        AZStd::optional<AZStd::string> GetURDFPath() override;
+        AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path) override;
 
     private:
-        QLabel m_logLabel;
+        QLabel m_statusLabel;
         RobotImporter m_robotImporter;
 
-        AZStd::string GetPathWithExtension(AZStd::string extensionDescription, QFileDialog::FileMode mode);
+        ExistingPrefabAction GetExistingPrefabAction();
+        AZStd::optional<QString> GetPathWithExtension(const AZStd::string& extensionDescription, QFileDialog::FileMode mode);
     };
 } // namespace ROS2

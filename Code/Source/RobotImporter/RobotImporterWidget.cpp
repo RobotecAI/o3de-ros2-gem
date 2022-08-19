@@ -13,11 +13,13 @@
 #include "RobotImporter/RobotImporterWidget.h"
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 
+#include <AzCore/Utils/Utils.h>
+
 namespace ROS2
 {
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
-        , m_logLabel("", this)
+        , m_statusLabel("", this)
         , m_robotImporter(*this)
     {
         setWindowTitle(QObject::tr("Robot definition file importer"));
@@ -28,82 +30,114 @@ namespace ROS2
         mainLayout->addWidget(captionLabel);
         QPushButton* selectFileButton = new QPushButton(QObject::tr("Load"), this);
         mainLayout->addWidget(selectFileButton);
-        mainLayout->addWidget(&m_logLabel);
+        mainLayout->addWidget(&m_statusLabel);
         mainLayout->addStretch();
 
         QObject::connect(
             selectFileButton,
             &QPushButton::clicked,
             this,
-            [this]()
+            [&robotImporter = m_robotImporter]()
             {
-                m_robotImporter.Import();
+                robotImporter.Import();
             });
         setLayout(mainLayout);
     }
 
-    void RobotImporterWidget::ReportError(AZStd::string errorMessage)
+    void RobotImporterWidget::ReportError(const AZStd::string& errorMessage)
     {
-        QMessageBox::critical(this, QObject::tr("Error"), errorMessage.c_str());
-        m_logLabel.setText(errorMessage.c_str());
+        QMessageBox::critical(this, QObject::tr("Error"), QObject::tr(errorMessage.c_str()));
+        m_statusLabel.setText(errorMessage.c_str());
         AZ_Error("RobotImporterWidget", false, errorMessage.c_str());
     }
-    void RobotImporterWidget::ReportWarning(AZStd::string warningMessage)
+
+    void RobotImporterWidget::ReportInfo(const AZStd::string& infoMessage)
     {
-        AZ_Warning("RobotImporterWidget", false, warningMessage.c_str());
-    }
-    void RobotImporterWidget::ReportInfo(AZStd::string infoMessage)
-    {
-        m_logLabel.setText(infoMessage.c_str());
+        m_statusLabel.setText(QObject::tr(infoMessage.c_str()));
         AZ_TracePrintf("RobotImporterWidget", infoMessage.c_str());
     }
-    AZStd::string RobotImporterWidget::GetURDFPath()
+
+    AZStd::optional<AZStd::string> RobotImporterWidget::GetURDFPath()
     {
-        return GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+        std::optional<QString> path = GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+        if (!path) {
+            return AZStd::nullopt;
+        }
+
+        if (path->isEmpty()) {
+            QMessageBox::critical(this, QObject::tr("Empty path provided"), QObject::tr("No path was provided. Please try again"));
+            return GetURDFPath();
+        }
+
+        if (!QFile::exists(path.value())) {
+            QMessageBox::critical(this, QObject::tr("Does not exist"), QObject::tr("Provided path does ot exist. Please try again"));
+            return GetURDFPath();
+        }
+
+        return path->toStdString().c_str();
     }
 
-    AZStd::string RobotImporterWidget::GetNewPrefabPath()
+    AZStd::optional<AZStd::string> RobotImporterWidget::ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path)
     {
-        return GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
+        if (!QFile::exists(path.c_str()))
+        {
+            return path;
+        }
+
+        switch (GetExistingPrefabAction())
+        {
+        case ExistingPrefabAction::Cancel:
+            return AZStd::nullopt;
+        case ExistingPrefabAction::Overwrite:
+            return path;
+        case ExistingPrefabAction::CreateWithNewName:
+            AZStd::optional<QString> newPathCandidate = GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
+            if (!newPathCandidate || newPathCandidate->isEmpty())
+            {
+                return AZStd::nullopt;
+            }
+            return ValidatePrefabPathExistenceAndGetNewIfNecessary(newPathCandidate.value().toStdString().c_str());
+        }
     }
 
-    RobotImporterInputInterface::ExistingPrefabAction RobotImporterWidget::GetExistingPrefabAction()
+    ExistingPrefabAction RobotImporterWidget::GetExistingPrefabAction()
     {
-        QMessageBox msgBox;
-        msgBox.setText("The prefab file already exists");
-        msgBox.setInformativeText("Do you want to overwrite it or choose a new filename?");
+        QMessageBox msgBox(this);
+        msgBox.setWindowTitle(QObject::tr("Prefab file exists"));
+        msgBox.setText(QObject::tr("The prefab file already exists."));
+        msgBox.setInformativeText(QObject::tr("Do you want to overwrite it or save it with another file name?"));
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.setDefaultButton(QMessageBox::Discard);
         msgBox.setButtonText(QMessageBox::Save, "Overwrite");
-        msgBox.setButtonText(QMessageBox::Discard, "Save As..");
-        auto ret = msgBox.exec();
-        switch (ret)
+        msgBox.setButtonText(QMessageBox::Discard, "Save As...");
+
+        switch (msgBox.exec())
         {
         case QMessageBox::Save:
             return ExistingPrefabAction::Overwrite;
         case QMessageBox::Discard:
-            return ExistingPrefabAction::NewName;
-        case QMessageBox::Cancel:
-            return ExistingPrefabAction::Cancel;
+            return ExistingPrefabAction::CreateWithNewName;
         default:
             return ExistingPrefabAction::Cancel;
         }
     }
 
-    AZStd::string RobotImporterWidget::GetPathWithExtension(AZStd::string extensionDescription, QFileDialog::FileMode mode)
+    AZStd::optional<QString> RobotImporterWidget::GetPathWithExtension(const AZStd::string& extensionDescription, QFileDialog::FileMode mode)
     {
-        QFileDialog m_importFileDialog;
-        m_importFileDialog.setFileMode(mode);
-        m_importFileDialog.setNameFilter(QObject::tr(extensionDescription.c_str()));
-        m_importFileDialog.setViewMode(QFileDialog::Detail);
+        QFileDialog importFileDialog(this);
+        importFileDialog.setDirectory(AZ::Utils::GetProjectPath().c_str());
+        importFileDialog.setFileMode(mode);
+        importFileDialog.setNameFilter(QObject::tr(extensionDescription.c_str()));
+        importFileDialog.setViewMode(QFileDialog::Detail);
 
-        int result = m_importFileDialog.exec();
+        int result = importFileDialog.exec();
         if (result != QDialog::DialogCode::Accepted)
         {
-            return {};
+            ReportInfo("User cancelled");
+            return AZStd::nullopt;
         }
 
-        return m_importFileDialog.selectedFiles().first().toStdString().c_str();
+        return importFileDialog.selectedFiles().first();
     }
 
 } // namespace ROS2

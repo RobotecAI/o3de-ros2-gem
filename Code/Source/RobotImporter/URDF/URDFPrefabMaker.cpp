@@ -23,7 +23,7 @@
 
 namespace ROS2
 {
-    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterInputInterface& inputInterface)
+    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterUserInteractions& inputInterface)
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
         , m_robotImporterInputInterface(inputInterface)
@@ -32,7 +32,6 @@ namespace ROS2
 
     AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF()
     { // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
-        // TODO - add a check if the prefab with a given name already exists. Choice to cancel, overwrite or suffix name
 
         // recursively add all entities
         AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", m_model->getName().c_str());
@@ -43,27 +42,20 @@ namespace ROS2
         }
 
         auto prefabName = AZStd::string::format("%s.%s", m_model->getName().c_str(), "prefab");
-        auto newPrefabPath = AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str();
+        AZStd::string prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str());
         auto contentEntityId = createEntityResult.GetValue();
+
+        AZStd::optional<AZStd::string> prefabPath =
+            m_robotImporterInputInterface.ValidatePrefabPathExistenceAndGetNewIfNecessary(prefabDefaultPath);
+
+        if (!prefabPath)
+        {
+            return AZ::Failure(AZStd::string("User cancelled"));
+        }
 
         // Create prefab, save it to disk immediately
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
-
-        if (AZ::IO::FileIOBase::GetInstance()->Exists(newPrefabPath.c_str()))
-        {
-            switch (m_robotImporterInputInterface.GetExistingPrefabAction())
-            {
-            case RobotImporterInputInterface::ExistingPrefabAction::Cancel:
-                return AZ::Failure(AZStd::string("User cancelled"));
-            case RobotImporterInputInterface::ExistingPrefabAction::Overwrite:
-                break;
-            case RobotImporterInputInterface::ExistingPrefabAction::NewName:
-                newPrefabPath = m_robotImporterInputInterface.GetNewPrefabPath();
-                break;
-            }
-        }
-
-        auto outcome = prefabInterface->CreatePrefabInDisk(AzToolsFramework::EntityIdList{ contentEntityId }, newPrefabPath);
+        auto outcome = prefabInterface->CreatePrefabInDisk(AzToolsFramework::EntityIdList{ contentEntityId }, prefabPath.value().c_str());
         if (outcome.IsSuccess())
         {
             AZ::EntityId prefabContainerEntityId = outcome.GetValue();
