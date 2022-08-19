@@ -17,7 +17,7 @@ namespace ROS2
     class RobotImporter
     {
     public:
-        explicit RobotImporter(RobotImporterWidget& interactionInterface);
+        explicit RobotImporter(RobotImporterWidget& robotImporterWidget);
         void Import();
 
     private:
