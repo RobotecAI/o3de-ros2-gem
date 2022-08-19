@@ -60,16 +60,19 @@ namespace ROS2
     AZStd::optional<AZStd::string> RobotImporterWidget::GetURDFPath()
     {
         std::optional<QString> path = GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
-        if (!path) {
+        if (!path)
+        {
             return AZStd::nullopt;
         }
 
-        if (path->isEmpty()) {
+        if (path->isEmpty())
+        {
             QMessageBox::critical(this, QObject::tr("Empty path provided"), QObject::tr("No path was provided. Please try again"));
             return GetURDFPath();
         }
 
-        if (!QFile::exists(path.value())) {
+        if (!QFile::exists(path.value()))
+        {
             QMessageBox::critical(this, QObject::tr("Does not exist"), QObject::tr("Provided path does ot exist. Please try again"));
             return GetURDFPath();
         }
@@ -108,8 +111,8 @@ namespace ROS2
         msgBox.setInformativeText(QObject::tr("Do you want to overwrite it or save it with another file name?"));
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Discard);
-        msgBox.setButtonText(QMessageBox::Save, "Overwrite");
-        msgBox.setButtonText(QMessageBox::Discard, "Save As...");
+        msgBox.setButtonText(QMessageBox::Save, QObject::tr("Overwrite"));
+        msgBox.setButtonText(QMessageBox::Discard, QObject::tr("Save As..."));
 
         switch (msgBox.exec())
         {
@@ -122,7 +125,8 @@ namespace ROS2
         }
     }
 
-    AZStd::optional<QString> RobotImporterWidget::GetPathWithExtension(const AZStd::string& extensionDescription, QFileDialog::FileMode mode)
+    AZStd::optional<QString> RobotImporterWidget::GetPathWithExtension(
+        const AZStd::string& extensionDescription, QFileDialog::FileMode mode)
     {
         QFileDialog importFileDialog(this);
         importFileDialog.setDirectory(AZ::Utils::GetProjectPath().c_str());

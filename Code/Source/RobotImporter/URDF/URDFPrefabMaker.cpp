@@ -23,7 +23,8 @@
 
 namespace ROS2
 {
-    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterUserInteractions& inputInterface)
+    URDFPrefabMaker::URDFPrefabMaker(
+        const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterUserInteractions& inputInterface)
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
         , m_robotImporterInputInterface(inputInterface)

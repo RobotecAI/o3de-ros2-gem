@@ -25,9 +25,9 @@ namespace ROS2
         //! @return valid path to the existing URDF file or empty optional if the user canceled the operation
         virtual AZStd::optional<AZStd::string> GetURDFPath() = 0;
 
-        //! Validate whether path exists. If yes, ask user to take a proper action to provide correct path.
+        //! Validate whether a path exists. If yes, ask user to take a proper action to provide correct path.
         //! @param path - path to validate
-        //! @return Valid path or empty optional if it was not possible or user cancelled.
+        //! @return Valid path or an empty optional if it was not possible or user cancelled.
         virtual AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path) = 0;
     };
 

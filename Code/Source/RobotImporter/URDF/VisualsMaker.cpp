@@ -15,13 +15,13 @@
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentBus.h>
 #include <AtomLyIntegration/CommonFeatures/Mesh/MeshComponentConstants.h>
 #include <AzCore/Component/NonUniformScaleBus.h>
+#include <AzCore/Component/TransformBus.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <AzToolsFramework/ToolsComponents/EditorNonUniformScaleComponent.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/EditorShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
-#include <AzCore/Component/TransformBus.h>
 
 #include <regex>
 
@@ -45,9 +45,8 @@ namespace ROS2
         int nameSuffixIndex = 1; // For disambiguation when multiple unnamed visuals are present. The order does not matter here
         for (auto visual : link->visual_array)
         { // one or more visuals - array is used
-            auto generatedName = link->visual_array.size() > 1
-                ? AZStd::string::format("%s_%d", visualName.c_str(), nameSuffixIndex)
-                : visualName;
+            auto generatedName =
+                link->visual_array.size() > 1 ? AZStd::string::format("%s_%d", visualName.c_str(), nameSuffixIndex) : visualName;
             nameSuffixIndex++;
             AddVisual(visual, entityId, generatedName);
         }

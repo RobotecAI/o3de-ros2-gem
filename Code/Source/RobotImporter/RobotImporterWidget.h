@@ -36,7 +36,7 @@ namespace ROS2
         explicit RobotImporterWidget(QWidget* parent = nullptr);
 
         void ReportInfo(const AZStd::string& infoMessage) override;
-        void ReportError(const AZStd::string&  errorMessage) override;
+        void ReportError(const AZStd::string& errorMessage) override;
         AZStd::optional<AZStd::string> GetURDFPath() override;
         AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path) override;
 
