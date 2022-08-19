@@ -12,7 +12,6 @@
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include <memory>
 
-
 namespace ROS2
 {
     class RobotImporterWidget;

@@ -27,8 +27,7 @@ namespace ROS2
     };
 
     //! Handles UI for the process of URDF importing
-    class RobotImporterWidget
-        : public QWidget
+    class RobotImporterWidget : public QWidget
     {
         Q_OBJECT
     public:
