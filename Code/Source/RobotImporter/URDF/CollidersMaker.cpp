@@ -18,20 +18,18 @@
 namespace ROS2
 {
     void CollidersMaker::AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)
-    { // TODO - refactor out naming (colliders, visuals)
-        auto colliderName = AZStd::string::format("%s_collider", link->name.c_str());
-        int nameSuffixIndex = 1; // For disambiguation when multiple unnamed colliders are present. The order does not matter here
+    {
+        AZStd::string typeString = "collider";
+        size_t nameSuffixIndex = 0; // For disambiguation when multiple unnamed colliders are present. The order does not matter here
         for (auto collider : link->collision_array)
         { // one or more colliders - the array is used
-            auto generatedName =
-                link->visual_array.size() > 1 ? AZStd::string::format("%s_%d", colliderName.c_str(), nameSuffixIndex) : colliderName;
+            AddCollider(collider, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString, nameSuffixIndex));
             nameSuffixIndex++;
-            AddCollider(collider, entityId, generatedName);
         }
 
         if (link->collision_array.size() == 0)
         { // no colliders in the array - zero or one in total, the element member is used instead
-            AddCollider(link->collision, entityId, colliderName);
+            AddCollider(link->collision, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString));
         }
     }
 
@@ -41,6 +39,7 @@ namespace ROS2
         { // it is ok not to have collision in a link
             return;
         }
+        AZ_TracePrintf("AddCollider", "Processing collisions for entity id:%s", entityId.ToString().c_str());
 
         auto geometry = collision->geometry;
         if (!geometry)
@@ -55,7 +54,7 @@ namespace ROS2
     void CollidersMaker::AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
     {
         // TODO - we are unable to set collider origin. Sub-entities don't work since they would need to parent visuals etc.
-        // PrefabMakerUtils::SetEntityTransform(collision->origin, entityId);
+        // TODO - solution: once Collider Component supports Cylinder Shape, switch to it from Shape Collider Component.
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         auto geometry = collision->geometry;

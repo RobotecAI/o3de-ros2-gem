@@ -25,5 +25,6 @@ namespace ROS2
         static AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
         static AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId);
         static bool HasCollider(AZ::EntityId entityId);
+        static AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index = 0);
     };
 } // namespace ROS2

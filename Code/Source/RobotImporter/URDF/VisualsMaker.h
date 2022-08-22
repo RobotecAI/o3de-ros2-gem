@@ -30,7 +30,7 @@ namespace ROS2
         void AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
 
-        AZStd::string m_modelPath; // TODO
+        AZStd::string m_modelPath; // TODO - this should be handled on level of assets
         std::map<std::string, urdf::MaterialSharedPtr> m_materials;
     };
 } // namespace ROS2

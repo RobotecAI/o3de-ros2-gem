@@ -19,7 +19,7 @@ namespace ROS2
         urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId linkChildId, AZ::EntityId linkParentId)
     { // Find if there is a joint between this child and its parent, add / change relevant components
         for (auto joint : parentLink->child_joints)
-        { // TODO - replace with std algorithm
+        {
             if (joint->child_link_name == childLink->name)
             { // Found a match!
                 PrefabMakerUtils::SetEntityTransform(joint->parent_to_joint_origin_transform, linkChildId);

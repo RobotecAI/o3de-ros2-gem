@@ -34,20 +34,18 @@ namespace ROS2
 
     void VisualsMaker::AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
-        auto visualName = AZStd::string::format("%s_visual", link->name.c_str());
+        const AZStd::string typeString = "visual";
         if (link->visual_array.size() == 0)
         { // one or zero visuals - element is used
-            AddVisual(link->visual, entityId, visualName);
+            AddVisual(link->visual, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString));
             return;
         }
 
-        int nameSuffixIndex = 1; // For disambiguation when multiple unnamed visuals are present. The order does not matter here
+        size_t nameSuffixIndex = 0; // For disambiguation when multiple unnamed visuals are present. The order does not matter here
         for (auto visual : link->visual_array)
         { // one or more visuals - array is used
-            auto generatedName =
-                link->visual_array.size() > 1 ? AZStd::string::format("%s_%d", visualName.c_str(), nameSuffixIndex) : visualName;
+            AddVisual(visual, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString, nameSuffixIndex));
             nameSuffixIndex++;
-            AddVisual(visual, entityId, generatedName);
         }
     }
 
@@ -63,6 +61,8 @@ namespace ROS2
             AZ_Warning("AddVisual", false, "No Geometry for a visual");
             return;
         }
+
+        AZ_TracePrintf("AddVisual", "Processing visual for entity id:%s", entityId.ToString().c_str());
 
         // Use a name generated from the link unless specific name is defined for this visual
         const char* subEntityName = visual->name.empty() ? generatedName.c_str() : visual->name.c_str();
@@ -124,7 +124,7 @@ namespace ROS2
             {
                 auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
 
-                // TODO - a PoC solution, replace with something generic, robust, proper
+                // TODO - a PoC solution for path, replace with something generic, robust, proper
                 std::filesystem::path modelPath(m_modelPath.c_str());
                 modelPath = modelPath.remove_filename();
                 auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
@@ -167,7 +167,7 @@ namespace ROS2
 
     void VisualsMaker::AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
     {
-        // TODO URDF does not include information from <gazebo> tags with specific materials, diffuse, specular and emissive tags
+        // URDF does not include information from <gazebo> tags with specific materials, diffuse, specular and emissive params
         if (!visual->material || !visual->geometry)
         {
             // Material is optional, and it requires geometry

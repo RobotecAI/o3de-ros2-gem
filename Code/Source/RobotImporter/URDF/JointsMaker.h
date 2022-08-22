@@ -23,7 +23,7 @@ namespace ROS2
         //! @param childLink A child link for the joint.
         //! @param childEntityId A non-active entity which will be populated with Joint components. Needs to have a collider.
         //! @param parentEntityId An entity higher in hierarchy which is connected through the joint with the child entity. Needs to have a
-        //! collider.
+        //! rigid body and a collider.
         void AddJoint(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId linkChildId, AZ::EntityId linkParentId);
 
     private:
