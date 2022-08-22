@@ -16,6 +16,26 @@
 
 namespace ROS2
 {
+    namespace Internal {
+        AZStd::optional<QString> GetPathWithExtension(
+            const AZStd::string& extensionDescription, QFileDialog::FileMode mode, QWidget* parent = nullptr)
+        {
+            QFileDialog importFileDialog(parent);
+            importFileDialog.setDirectory(AZ::Utils::GetProjectPath().c_str());
+            importFileDialog.setFileMode(mode);
+            importFileDialog.setNameFilter(QObject::tr(extensionDescription.c_str()));
+            importFileDialog.setViewMode(QFileDialog::Detail);
+
+            int result = importFileDialog.exec();
+            if (result != QDialog::DialogCode::Accepted)
+            {
+                return AZStd::nullopt;
+            }
+
+            return importFileDialog.selectedFiles().first();
+        }
+    }
+
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
         , m_statusLabel("", this)
@@ -58,7 +78,7 @@ namespace ROS2
 
     AZStd::optional<AZStd::string> RobotImporterWidget::GetURDFPath()
     {
-        std::optional<QString> path = GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+        std::optional<QString> path = Internal::GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
         if (!path)
         {
             return AZStd::nullopt;
@@ -93,7 +113,7 @@ namespace ROS2
         case ExistingPrefabAction::Overwrite:
             return path;
         case ExistingPrefabAction::CreateWithNewName:
-            AZStd::optional<QString> newPathCandidate = GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
+            AZStd::optional<QString> newPathCandidate = Internal::GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
             if (!newPathCandidate || newPathCandidate->isEmpty())
             {
                 return AZStd::nullopt;
@@ -124,23 +144,5 @@ namespace ROS2
         }
     }
 
-    AZStd::optional<QString> RobotImporterWidget::GetPathWithExtension(
-        const AZStd::string& extensionDescription, QFileDialog::FileMode mode)
-    {
-        QFileDialog importFileDialog(this);
-        importFileDialog.setDirectory(AZ::Utils::GetProjectPath().c_str());
-        importFileDialog.setFileMode(mode);
-        importFileDialog.setNameFilter(QObject::tr(extensionDescription.c_str()));
-        importFileDialog.setViewMode(QFileDialog::Detail);
-
-        int result = importFileDialog.exec();
-        if (result != QDialog::DialogCode::Accepted)
-        {
-            ReportInfo("User cancelled");
-            return AZStd::nullopt;
-        }
-
-        return importFileDialog.selectedFiles().first();
-    }
 
 } // namespace ROS2

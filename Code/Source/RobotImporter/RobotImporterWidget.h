@@ -52,6 +52,5 @@ namespace ROS2
         RobotImporter m_robotImporter;
 
         ExistingPrefabAction GetExistingPrefabAction();
-        AZStd::optional<QString> GetPathWithExtension(const AZStd::string& extensionDescription, QFileDialog::FileMode mode);
     };
 } // namespace ROS2
