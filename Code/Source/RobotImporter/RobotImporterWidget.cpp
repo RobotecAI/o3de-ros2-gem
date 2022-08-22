@@ -16,9 +16,12 @@
 
 namespace ROS2
 {
-    namespace Internal {
+    namespace Internal
+    {
         AZStd::optional<QString> GetPathWithExtension(
-            const AZStd::string& extensionDescription, QFileDialog::FileMode mode, QWidget* parent = nullptr)
+            const AZStd::string& extensionDescription,
+            QFileDialog::FileMode mode,
+            QWidget* parent = nullptr)
         {
             QFileDialog importFileDialog(parent);
             importFileDialog.setDirectory(AZ::Utils::GetProjectPath().c_str());
@@ -33,6 +36,28 @@ namespace ROS2
             }
 
             return importFileDialog.selectedFiles().first();
+        }
+
+        ExistingPrefabAction GetExistingPrefabAction(QWidget* parent = nullptr)
+        {
+            QMessageBox msgBox(parent);
+            msgBox.setWindowTitle(QObject::tr("Prefab file exists"));
+            msgBox.setText(QObject::tr("The prefab file already exists."));
+            msgBox.setInformativeText(QObject::tr("Do you want to overwrite it or save it with another file name?"));
+            msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Discard);
+            msgBox.setButtonText(QMessageBox::Save, QObject::tr("Overwrite"));
+            msgBox.setButtonText(QMessageBox::Discard, QObject::tr("Save As..."));
+
+            switch (msgBox.exec())
+            {
+            case QMessageBox::Save:
+                return ExistingPrefabAction::Overwrite;
+            case QMessageBox::Discard:
+                return ExistingPrefabAction::CreateWithNewName;
+            default:
+                return ExistingPrefabAction::Cancel;
+            }
         }
     }
 
@@ -92,7 +117,7 @@ namespace ROS2
 
         if (!QFile::exists(path.value()))
         {
-            QMessageBox::critical(this, QObject::tr("Does not exist"), QObject::tr("Provided path does ot exist. Please try again"));
+            QMessageBox::critical(this, QObject::tr("Does not exist"), QObject::tr("Provided path does not exist. Please try again"));
             return GetURDFPath();
         }
 
@@ -106,13 +131,16 @@ namespace ROS2
             return path;
         }
 
-        switch (GetExistingPrefabAction())
+        switch (Internal::GetExistingPrefabAction(this))
         {
         case ExistingPrefabAction::Cancel:
             return AZStd::nullopt;
         case ExistingPrefabAction::Overwrite:
             return path;
         case ExistingPrefabAction::CreateWithNewName:
+            // I am aware that similar functionality might be available by QFileDialog::setAcceptMode
+            // However, the prompt to confirm the overwrite showed up under the file selection dialog, which made a terrible UX
+            // TODO: It should be fixed at some point in the future
             AZStd::optional<QString> newPathCandidate = Internal::GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
             if (!newPathCandidate || newPathCandidate->isEmpty())
             {
@@ -121,28 +149,5 @@ namespace ROS2
             return ValidatePrefabPathExistenceAndGetNewIfNecessary(newPathCandidate.value().toStdString().c_str());
         }
     }
-
-    ExistingPrefabAction RobotImporterWidget::GetExistingPrefabAction()
-    {
-        QMessageBox msgBox(this);
-        msgBox.setWindowTitle(QObject::tr("Prefab file exists"));
-        msgBox.setText(QObject::tr("The prefab file already exists."));
-        msgBox.setInformativeText(QObject::tr("Do you want to overwrite it or save it with another file name?"));
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Discard);
-        msgBox.setButtonText(QMessageBox::Save, QObject::tr("Overwrite"));
-        msgBox.setButtonText(QMessageBox::Discard, QObject::tr("Save As..."));
-
-        switch (msgBox.exec())
-        {
-        case QMessageBox::Save:
-            return ExistingPrefabAction::Overwrite;
-        case QMessageBox::Discard:
-            return ExistingPrefabAction::CreateWithNewName;
-        default:
-            return ExistingPrefabAction::Cancel;
-        }
-    }
-
 
 } // namespace ROS2

@@ -50,7 +50,5 @@ namespace ROS2
     private:
         QLabel m_statusLabel;
         RobotImporter m_robotImporter;
-
-        ExistingPrefabAction GetExistingPrefabAction();
     };
 } // namespace ROS2

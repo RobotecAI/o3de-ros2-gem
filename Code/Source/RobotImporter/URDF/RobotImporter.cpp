@@ -25,11 +25,6 @@ namespace ROS2
             return;
         }
         const AZStd::string& fileNameToImport = fileNameToImportOpt.value();
-        if (fileNameToImport.empty())
-        {
-            m_robotImporterWidget.ReportError("Empty file was provided");
-            return;
-        }
         m_robotImporterWidget.ReportInfo("Importing robot definition file: " + fileNameToImport);
 
         urdf::ModelInterfaceSharedPtr urdfModel = UrdfParser::ParseFromFile(fileNameToImport);

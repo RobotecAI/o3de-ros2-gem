@@ -20,13 +20,19 @@ namespace ROS2
         { // it is ok not to have inertia in a link
             return;
         }
+        AZ_TracePrintf("AddInertial", "Processing inertial for entity id:%s", entityId.ToString().c_str());
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        // TODO - consider explicit 2 arg constructor instead
         PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
         rigidBodyConfiguration.m_mass = inertial->mass;
-        // TODO - is the origin.rotation part applicable? Does non-zero make value sense? Investigate.
+
+        // TODO - Check whether this is a correct offset for every case (consider entity transform and collider origin)
         rigidBodyConfiguration.m_centerOfMassOffset = URDF::TypeConversions::ConvertVector3(inertial->origin.position);
+        if (!URDF::TypeConversions::ConvertQuaternion(inertial->origin.rotation).IsIdentity())
+        { // There is a rotation component in URDF that we are not able to apply
+            // TODO - determine a solution to also include rotation in import
+            AZ_Warning("AddInertial", false, "Ignoring URDF inertial origin rotation (no such field in rigid body configuration)");
+        }
 
         // Inertia tensor is symmetrical
         auto inertiaMatrix = AZ::Matrix3x3::CreateFromRows(

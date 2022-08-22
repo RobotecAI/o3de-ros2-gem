@@ -17,12 +17,13 @@ namespace ROS2
     class CollidersMaker
     {
     public:
-        //! Add zero, one or many collider elements to a given entity (depending on link content).
+        //! Add zero, one or many collider elements (depending on link content).
         //! @param link A parsed URDF tree link node which could hold information about colliders.
         //! @param entityId A non-active entity which will be affected.
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
 
     private:
-        void AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId);
+        void AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZStd::string& generatedName);
+        void AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId);
     };
 } // namespace ROS2

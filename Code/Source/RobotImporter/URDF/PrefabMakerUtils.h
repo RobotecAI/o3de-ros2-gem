@@ -23,5 +23,9 @@ namespace ROS2
         static AZStd::string GetAssetPathFromModelPath(std::filesystem::path modelPath);
         static void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
         static AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
+        static AzToolsFramework::Prefab::PrefabOperationResult RemoveEntityWithDescendants(AZ::EntityId parentEntityId);
+        static AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId);
+        static bool HasCollider(AZ::EntityId entityId);
+        static AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index = 0);
     };
 } // namespace ROS2

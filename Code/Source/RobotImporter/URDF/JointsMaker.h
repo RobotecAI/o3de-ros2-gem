@@ -14,20 +14,20 @@
 namespace ROS2
 {
     //! Populates a given entity with all the contents of the <joint> tag in robot description.
+    //! In URDF, joints are specified between two given links, but in PhysX they are between two Bodies / Colliders.
     class JointsMaker
     {
     public:
-        //! Add zero or one joint elements to a given entity (depending on link content).
-        //! @param parentLink A parent link for the joint.
+        //! Add zero or many joint elements to a given entity with a collider (depending on link content).
+        //! @param parentLink A parent link for the joint
         //! @param childLink A child link for the joint.
         //! @param childEntityId A non-active entity which will be populated with Joint components. Needs to have a collider.
         //! @param parentEntityId An entity higher in hierarchy which is connected through the joint with the child entity. Needs to have a
-        //! collider.
-        void AddJointInformationToEntity(
-            urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId childEntityId, AZ::EntityId parentEntityId);
+        //! rigid body and a collider.
+        void AddJoint(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId linkChildId, AZ::EntityId linkParentId);
 
     private:
-        void AddJoint(urdf::JointSharedPtr joint, AZ::EntityId childEntityId, AZ::EntityId parentEntityId);
-        bool HasRequiredComponentsForJoint(AZ::EntityId entityId);
+        void AddJoint(urdf::JointSharedPtr joint, AZ::EntityId linkChildId, AZ::EntityId linkParentId);
+        void AddJointComponent(urdf::JointSharedPtr joint, AZ::EntityId followColliderEntityId, AZ::EntityId leadColliderEntityId);
     };
 } // namespace ROS2
