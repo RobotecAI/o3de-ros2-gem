@@ -99,7 +99,8 @@ namespace ROS2
     }
 
     bool PrefabMakerUtils::HasCollider(AZ::EntityId entityId)
-    {
+    { // TODO - actually, we want EditorColliderComponent specifically, but the change can be applied only after moving to ECC
+        // TODO - which will happen when Cylinder shape is supported. Until then, we check for either ECC or ESCC.
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         return entity->FindComponent<PhysX::EditorColliderComponent>() != nullptr ||
             entity->FindComponent<PhysX::EditorShapeColliderComponent>() != nullptr;
@@ -119,5 +120,11 @@ namespace ROS2
             }
         }
         return colliderChildren;
+    }
+
+    AZStd::string PrefabMakerUtils::MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index)
+    {
+        const AZStd::string suffix = index == 0 ? AZStd::string("") : AZStd::string::format("_%zu", index);
+        return AZStd::string::format("%s_%s%s", rootName.c_str(), type.c_str(), suffix.c_str());
     }
 } // namespace ROS2

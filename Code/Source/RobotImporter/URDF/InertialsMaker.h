@@ -13,7 +13,7 @@
 
 namespace ROS2
 {
-    //! Populates a given entity with the contents of the <inertial> tag in robot description.
+    //! Populates the entity with contents of the <inertial> tag in robot description.
     class InertialsMaker
     {
     public:
