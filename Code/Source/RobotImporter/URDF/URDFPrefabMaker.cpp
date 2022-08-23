@@ -34,17 +34,7 @@ namespace ROS2
     AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF()
     { // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
 
-        // recursively add all entities
         AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", m_model->getName().c_str());
-        auto createEntityResult = AddEntitiesForLink(m_model->root_link_, AZ::EntityId());
-        if (!createEntityResult.IsSuccess())
-        {
-            return AZ::Failure(AZStd::string(createEntityResult.GetError()));
-        }
-
-        auto contentEntityId = createEntityResult.GetValue();
-        AddRobotControl(contentEntityId);
-
         auto prefabName = AZStd::string::format("%s.%s", m_model->getName().c_str(), "prefab");
         AZStd::string prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str());
 
@@ -53,12 +43,18 @@ namespace ROS2
 
         if (!prefabPath)
         {
-            auto outcome = PrefabMakerUtils::RemoveEntityWithDescendants(contentEntityId);
-            if (!outcome.IsSuccess()) {
-                return AZ::Failure(AZStd::string("Failed to cleanup the temporary entity"));
-            }
             return AZ::Failure(AZStd::string("User cancelled"));
         }
+
+        // recursively add all entities
+        auto createEntityResult = AddEntitiesForLink(m_model->root_link_, AZ::EntityId());
+        if (!createEntityResult.IsSuccess())
+        {
+            return AZ::Failure(AZStd::string(createEntityResult.GetError()));
+        }
+
+        auto contentEntityId = createEntityResult.GetValue();
+        AddRobotControl(contentEntityId);
 
         // Create prefab, save it to disk immediately
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
