@@ -22,7 +22,14 @@ namespace ROS2
         
         if (m_publishTransform)
         {
-            AZ_TracePrintf("ROS2FrameComponent", "Setting up %s transfrom between parent %s and child %s to be published %s", IsDynamic() ? "dynamic" : "static", GetParentFrameID().data(), GetFrameID().data(), IsDynamic() ? "continuously to /tf" : "once to /tf_static");
+            AZ_TracePrintf(
+                "ROS2FrameComponent",
+                "Setting up %s transfrom between parent %s and child %s to be published %s",
+                IsDynamic() ? "dynamic" : "static",
+                GetParentFrameID().data(),
+                GetFrameID().data(),
+                IsDynamic() ? "continuously to /tf" : "once to /tf_static");
+            
             m_ros2Transform = AZStd::make_unique<ROS2Transform>(GetParentFrameID(), GetFrameID(), IsDynamic());
             if (IsDynamic())
             {
