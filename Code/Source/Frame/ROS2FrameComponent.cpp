@@ -19,7 +19,7 @@ namespace ROS2
     void ROS2FrameComponent::Activate()
     {
         m_namespaceConfiguration.PopulateNamespace(IsTopLevel(), GetEntity()->GetName());
-        
+
         if (m_publishTransform)
         {
             AZ_TracePrintf(
@@ -29,7 +29,7 @@ namespace ROS2
                 GetParentFrameID().data(),
                 GetFrameID().data(),
                 IsDynamic() ? "continuously to /tf" : "once to /tf_static");
-            
+
             m_ros2Transform = AZStd::make_unique<ROS2Transform>(GetParentFrameID(), GetFrameID(), IsDynamic());
             if (IsDynamic())
             {
