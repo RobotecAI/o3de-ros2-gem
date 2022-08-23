@@ -91,9 +91,10 @@ namespace ROS2
         return createEntityResult;
     }
 
-    AzToolsFramework::Prefab::PrefabOperationResult PrefabMakerUtils::RemoveEntityWithDescendants(AZ::EntityId parentEntityId) {
+    AzToolsFramework::Prefab::PrefabOperationResult PrefabMakerUtils::RemoveEntityWithDescendants(AZ::EntityId parentEntityId)
+    {
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
-        return prefabInterface->DeleteEntitiesAndAllDescendantsInInstance({parentEntityId});
+        return prefabInterface->DeleteEntitiesAndAllDescendantsInInstance({ parentEntityId });
     }
 
     void PrefabMakerUtils::AddRequiredComponentsToEntity(AZ::EntityId entityId)

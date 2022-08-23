@@ -7,8 +7,8 @@
  */
 
 #include "RobotImporter/URDF/CollidersMaker.h"
-#include "RobotImporter/URDF/TypeConversions.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
+#include "RobotImporter/URDF/TypeConversions.h"
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>

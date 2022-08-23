@@ -18,7 +18,6 @@
 #include <AzCore/Utils/Utils.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 
-
 #include <regex> // TODO - we are currently replacing package:// with an absolute path
 
 namespace ROS2

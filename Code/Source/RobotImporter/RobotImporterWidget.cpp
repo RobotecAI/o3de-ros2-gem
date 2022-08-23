@@ -19,9 +19,7 @@ namespace ROS2
     namespace Internal
     {
         AZStd::optional<QString> GetPathWithExtension(
-            const AZStd::string& extensionDescription,
-            QFileDialog::FileMode mode,
-            QWidget* parent = nullptr)
+            const AZStd::string& extensionDescription, QFileDialog::FileMode mode, QWidget* parent = nullptr)
         {
             QFileDialog importFileDialog(parent);
             importFileDialog.setDirectory(AZ::Utils::GetProjectPath().c_str());
@@ -59,7 +57,7 @@ namespace ROS2
                 return ExistingPrefabAction::Cancel;
             }
         }
-    }
+    } // namespace Internal
 
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
@@ -103,7 +101,8 @@ namespace ROS2
 
     AZStd::optional<AZStd::string> RobotImporterWidget::GetURDFPath()
     {
-        std::optional<QString> path = Internal::GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+        std::optional<QString> path =
+            Internal::GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
         if (!path)
         {
             return AZStd::nullopt;
