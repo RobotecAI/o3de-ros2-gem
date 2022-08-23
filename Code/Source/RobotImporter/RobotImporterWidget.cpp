@@ -18,7 +18,7 @@ namespace ROS2
 {
     namespace Internal
     {
-        AZStd::optional<QString> GetPathWithExtension(
+        AZStd::optional<QString> QueryUserForPath(
             const AZStd::string& extensionDescription, QFileDialog::FileMode mode, QWidget* parent = nullptr)
         {
             QFileDialog importFileDialog(parent);
@@ -36,7 +36,7 @@ namespace ROS2
             return importFileDialog.selectedFiles().first();
         }
 
-        ExistingPrefabAction GetExistingPrefabAction(QWidget* parent = nullptr)
+        ExistingPrefabAction QueryUserForExistingPrefabAction(QWidget* parent = nullptr)
         {
             QMessageBox msgBox(parent);
             msgBox.setWindowTitle(QObject::tr("Prefab file exists"));
@@ -101,8 +101,7 @@ namespace ROS2
 
     AZStd::optional<AZStd::string> RobotImporterWidget::GetURDFPath()
     {
-        std::optional<QString> path =
-            Internal::GetPathWithExtension("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+        std::optional<QString> path = Internal::QueryUserForPath("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
         if (!path)
         {
             return AZStd::nullopt;
@@ -130,7 +129,7 @@ namespace ROS2
             return path;
         }
 
-        switch (Internal::GetExistingPrefabAction(this))
+        switch (Internal::QueryUserForExistingPrefabAction(this))
         {
         case ExistingPrefabAction::Cancel:
             return AZStd::nullopt;
@@ -140,7 +139,7 @@ namespace ROS2
             // I am aware that similar functionality might be available by QFileDialog::setAcceptMode
             // However, the prompt to confirm the overwrite showed up under the file selection dialog, which made a terrible UX
             // TODO: It should be fixed at some point in the future
-            AZStd::optional<QString> newPathCandidate = Internal::GetPathWithExtension("Prefab (*.prefab)", QFileDialog::AnyFile);
+            AZStd::optional<QString> newPathCandidate = Internal::QueryUserForPath("Prefab (*.prefab)", QFileDialog::AnyFile);
             if (!newPathCandidate || newPathCandidate->isEmpty())
             {
                 return AZStd::nullopt;

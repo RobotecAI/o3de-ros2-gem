@@ -33,9 +33,13 @@ namespace ROS2
         explicit RobotImporterWidget(QWidget* parent = nullptr);
 
         //! Report an error to the user.
+        //! Populates the log, sets status information in the status label and shows an error popup with the message
+        //! @param errorMessage error message to display to the user
         void ReportError(const AZStd::string& errorMessage);
 
         //! Report an information to the user.
+        //! Populates the log and sets status information in the status label
+        //! @param infoMessage info message to display to the user
         void ReportInfo(const AZStd::string& infoMessage);
 
         //! Get valid path to the existing URDF file from the user
