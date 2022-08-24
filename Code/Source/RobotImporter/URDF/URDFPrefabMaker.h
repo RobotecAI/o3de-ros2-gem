@@ -22,13 +22,14 @@ namespace ROS2
     class URDFPrefabMaker
     {
     public:
-        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model);
+        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath);
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF();
 
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
         void AddRobotControl(AZ::EntityId rootEntityId);
         urdf::ModelInterfaceSharedPtr m_model;
+        AZStd::string m_prefabPath;
         VisualsMaker m_visualsMaker;
         CollidersMaker m_collidersMaker;
         InertialsMaker m_inertialsMaker;

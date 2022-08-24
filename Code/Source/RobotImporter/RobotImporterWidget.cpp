@@ -6,18 +6,30 @@
  *
  */
 
+#include <AzCore/Utils/Utils.h>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
 #include "RobotImporter/RobotImporterWidget.h"
-#include "RobotImporter/URDF/URDFPrefabMaker.h"
+#include "RobotImporter/RobotImporterWidgetUtils.h"
+#include "RobotImporter/URDF/RobotImporter.h"
 
 namespace ROS2
 {
+    namespace Internal
+    {
+        AZStd::string GetBaseName(AZStd::string path)
+        {
+            QFileInfo fileInfo(path.c_str());
+            return fileInfo.baseName().toStdString().c_str();
+        }
+
+    } // namespace Internal
+
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
-        , m_robotFileNameLabel("", this)
-        , m_robotNameLabel("", this)
+        , m_statusLabel("", this)
     {
         setWindowTitle(QObject::tr("Robot definition file importer"));
         QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -27,12 +39,8 @@ namespace ROS2
         mainLayout->addWidget(captionLabel);
         QPushButton* selectFileButton = new QPushButton(QObject::tr("Load"), this);
         mainLayout->addWidget(selectFileButton);
-        mainLayout->addWidget(&m_robotFileNameLabel);
-        mainLayout->addWidget(&m_robotNameLabel);
-
-        m_importFileDialog.setFileMode(QFileDialog::ExistingFiles);
-        m_importFileDialog.setNameFilter(QObject::tr("Unified Robot Description Format (*.urdf)"));
-        m_importFileDialog.setViewMode(QFileDialog::Detail);
+        mainLayout->addWidget(&m_statusLabel);
+        mainLayout->addStretch();
 
         QObject::connect(
             selectFileButton,
@@ -40,32 +48,46 @@ namespace ROS2
             this,
             [this]()
             {
-                int result = m_importFileDialog.exec();
-                if (result != QDialog::DialogCode::Accepted)
+                AZStd::optional<AZStd::string> urdfPath = RobotImporterWidgetUtils::QueryUserForURDFPath(this);
+                if (!urdfPath)
                 {
                     return;
                 }
 
-                auto fileNameToImport = m_importFileDialog.selectedFiles().first();
-                m_robotFileNameLabel.setText(fileNameToImport);
-                auto fileNameToImportAZ(fileNameToImport.toUtf8().constData());
-                m_urdfModel = UrdfParser::ParseFromFile(fileNameToImportAZ);
-                OnModelLoaded();
+                auto prefabName = AZStd::string::format("%s.%s", Internal::GetBaseName(urdfPath.value()).c_str(), "prefab");
+                AZStd::string prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName);
+                auto prefabPath =
+                    RobotImporterWidgetUtils::ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(prefabDefaultPath, this);
+                if (!prefabPath)
+                {
+                    ReportError("User cancelled");
+                    return;
+                }
+                RobotImporter::Import(
+                    { urdfPath.value(), prefabPath.value() },
+                    [this](const AZStd::string& message)
+                    {
+                        ReportInfo(message);
+                    },
+                    [this](const AZStd::string& message)
+                    {
+                        ReportError(message);
+                    });
             });
-
-        mainLayout->addStretch();
         setLayout(mainLayout);
     }
 
-    void RobotImporterWidget::OnModelLoaded()
+    void RobotImporterWidget::ReportError(const AZStd::string& errorMessage)
     {
-        m_robotNameLabel.setText(m_urdfModel->getName().c_str());
-
-        URDFPrefabMaker prefabMaker(AZStd::string(m_robotFileNameLabel.text().toUtf8().constData()), m_urdfModel);
-        auto outcome = prefabMaker.CreatePrefabFromURDF();
-        if (!outcome)
-        { // TODO - handle, show
-            AZ_Error("RobotImporterWidget", false, "Importing robot definition failed with error: %s", outcome.GetError().c_str());
-        }
+        QMessageBox::critical(this, QObject::tr("Error"), QObject::tr(errorMessage.c_str()));
+        m_statusLabel.setText(errorMessage.c_str());
+        AZ_Error("RobotImporterWidget", false, errorMessage.c_str());
     }
+
+    void RobotImporterWidget::ReportInfo(const AZStd::string& infoMessage)
+    {
+        m_statusLabel.setText(QObject::tr(infoMessage.c_str()));
+        AZ_TracePrintf("RobotImporterWidget", infoMessage.c_str());
+    }
+
 } // namespace ROS2
