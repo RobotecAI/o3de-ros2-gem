@@ -1,18 +1,19 @@
 /*
-* Copyright (c) Contributors to the Open 3D Engine Project.
-* For complete copyright and license terms please see the LICENSE at the root of this distribution.
-*
-* SPDX-License-Identifier: Apache-2.0 OR MIT
-*
-*/
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #pragma once
 
-#include <optional>
 #include <AzCore/std/string/string.h>
 #include <QWidget>
+#include <optional>
 
-namespace ROS2::RobotImporterWidgetUtils {
+namespace ROS2::RobotImporterWidgetUtils
+{
     enum ExistingPrefabAction
     {
         Overwrite,
@@ -29,5 +30,6 @@ namespace ROS2::RobotImporterWidgetUtils {
     //! @param path - path to validate
     //! @param parent - parent widget for the widgets used inside this function
     //! @return Valid path or an empty optional if it was not possible or user cancelled.
-    AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(const AZStd::string& path, QWidget* parent = nullptr);
-}
+    AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(
+        const AZStd::string& path, QWidget* parent = nullptr);
+} // namespace ROS2::RobotImporterWidgetUtils

@@ -13,17 +13,14 @@
 #include <AzCore/Math/Quaternion.h>
 #include <AzCore/Math/Vector3.h>
 
-namespace ROS2
+namespace ROS2::URDF
 {
-    namespace URDF
+    //! Common types conversion between urdf and AZ formats
+    class TypeConversions
     {
-        //! Common types conversion between urdf and AZ formats
-        class TypeConversions
-        {
-        public:
-            static AZ::Vector3 ConvertVector3(const urdf::Vector3& urdfVector);
-            static AZ::Quaternion ConvertQuaternion(const urdf::Rotation& urdfQuaternion);
-            static AZ::Color ConvertColor(const urdf::Color& color);
-        };
-    } // namespace URDF
-} // namespace ROS2
+    public:
+        static AZ::Vector3 ConvertVector3(const urdf::Vector3& urdfVector);
+        static AZ::Quaternion ConvertQuaternion(const urdf::Rotation& urdfQuaternion);
+        static AZ::Color ConvertColor(const urdf::Color& color);
+    };
+} // namespace ROS2::URDF

@@ -19,10 +19,12 @@ namespace ROS2
         AZStd::string prefabFilePath;
     };
 
-    namespace RobotImporter {
-        void Import(const RobotImporterConfig& config,
-                    std::function<void(const AZStd::string&)> infoLogger,
-                    std::function<void(const AZStd::string&)> errorLogger);
+    namespace RobotImporter
+    {
+        void Import(
+            const RobotImporterConfig& config,
+            std::function<void(const AZStd::string&)> infoLogger,
+            std::function<void(const AZStd::string&)> errorLogger);
     }
 
 } // namespace ROS2
