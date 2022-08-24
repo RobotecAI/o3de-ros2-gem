@@ -18,13 +18,6 @@
 
 namespace ROS2
 {
-    enum ExistingPrefabAction
-    {
-        Overwrite,
-        CreateWithNewName,
-        Cancel
-    };
-
     //! Handles UI for the process of URDF importing
     class RobotImporterWidget : public QWidget
     {
@@ -32,6 +25,7 @@ namespace ROS2
     public:
         explicit RobotImporterWidget(QWidget* parent = nullptr);
 
+    private:
         //! Report an error to the user.
         //! Populates the log, sets status information in the status label and shows an error popup with the message
         //! @param errorMessage error message to display to the user
@@ -42,17 +36,7 @@ namespace ROS2
         //! @param infoMessage info message to display to the user
         void ReportInfo(const AZStd::string& infoMessage);
 
-        //! Get valid path to the existing URDF file from the user
-        //! @return valid path to the existing URDF file or empty optional if the user canceled the operation
-        AZStd::optional<AZStd::string> GetURDFPath();
-
-        //! Validate whether a path exists. If yes, ask user to take a proper action to provide correct path.
-        //! @param path - path to validate
-        //! @return Valid path or an empty optional if it was not possible or user cancelled.
-        AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndGetNewIfNecessary(const AZStd::string& path);
-
     private:
         QLabel m_statusLabel;
-        RobotImporter m_robotImporter;
     };
 } // namespace ROS2

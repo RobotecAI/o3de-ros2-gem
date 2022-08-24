@@ -12,37 +12,31 @@
 
 namespace ROS2
 {
-    RobotImporter::RobotImporter(RobotImporterWidget& robotImporterWidget)
-        : m_robotImporterWidget(robotImporterWidget)
+    namespace RobotImporter
     {
-    }
-
-    void RobotImporter::Import()
-    {
-        AZStd::optional<AZStd::string> fileNameToImportOpt = m_robotImporterWidget.GetURDFPath();
-        if (!fileNameToImportOpt)
+        void Import(
+            const RobotImporterConfig& config,
+            std::function<void(const AZStd::string&)> infoLogger,
+            std::function<void(const AZStd::string&)> errorLogger)
         {
-            return;
-        }
-        const AZStd::string& fileNameToImport = fileNameToImportOpt.value();
-        m_robotImporterWidget.ReportInfo("Importing robot definition file: " + fileNameToImport);
+            infoLogger("Importing robot definition file: " + config.urdfFilePath);
 
-        urdf::ModelInterfaceSharedPtr urdfModel = UrdfParser::ParseFromFile(fileNameToImport);
-        if (!urdfModel)
-        {
-            m_robotImporterWidget.ReportError("Failed to parse the robot definition file");
-            return;
-        }
-        m_robotImporterWidget.ReportInfo(AZStd::string::format("%s URDF file loaded", urdfModel->getName().c_str()));
+            urdf::ModelInterfaceSharedPtr urdfModel = UrdfParser::ParseFromFile(config.urdfFilePath);
+            if (!urdfModel)
+            {
+                errorLogger("Failed to parse the robot definition file");
+                return;
+            }
 
-        URDFPrefabMaker prefabMaker(fileNameToImport, urdfModel, m_robotImporterWidget);
-        auto outcome = prefabMaker.CreatePrefabFromURDF();
-        if (!outcome)
-        {
-            auto errorMessage = AZStd::string::format("Importing robot definition failed with error: %s", outcome.GetError().c_str());
-            m_robotImporterWidget.ReportError(errorMessage);
-            return;
+            URDFPrefabMaker prefabMaker(config.urdfFilePath, urdfModel, config.prefabFilePath);
+            auto outcome = prefabMaker.CreatePrefabFromURDF();
+            if (!outcome)
+            {
+                auto errorMessage = AZStd::string::format("Importing robot definition failed with error: %s", outcome.GetError().c_str());
+                errorLogger(errorMessage);
+                return;
+            }
+            infoLogger(AZStd::string::format("Imported %s", config.urdfFilePath.c_str()));
         }
-        m_robotImporterWidget.ReportInfo(AZStd::string::format("Imported %s", fileNameToImport.c_str()));
-    }
+    } // namespace RobotImporter
 } // namespace ROS2

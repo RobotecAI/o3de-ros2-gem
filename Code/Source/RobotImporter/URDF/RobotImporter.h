@@ -8,20 +8,21 @@
 
 #pragma once
 
+#include <AzCore/std/string/string.h>
+#include <functional>
+
 namespace ROS2
 {
-    class RobotImporterWidget;
-
-    class RobotImporter
+    struct RobotImporterConfig
     {
-    public:
-        explicit RobotImporter(RobotImporterWidget& robotImporterWidget);
-        void Import();
-
-    private:
-        // Has to be a reference since Qt is not very kin of smart pointers. It should be fixed
-        // For now, programmer must guarantee that this reference is valid for as long as the importer lives
-        RobotImporterWidget& m_robotImporterWidget;
+        AZStd::string urdfFilePath;
+        AZStd::string prefabFilePath;
     };
+
+    namespace RobotImporter {
+        void Import(const RobotImporterConfig& config,
+                    std::function<void(const AZStd::string&)> infoLogger,
+                    std::function<void(const AZStd::string&)> errorLogger);
+    }
 
 } // namespace ROS2

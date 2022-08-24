@@ -18,23 +18,21 @@
 
 namespace ROS2
 {
-    class RobotImporterWidget;
-
     //! Encapsulates constructive mapping of URDF elements to a complete prefab with entities and components
     class URDFPrefabMaker
     {
     public:
-        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterWidget& robotImpo);
+        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath);
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF();
 
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
         void AddRobotControl(AZ::EntityId rootEntityId);
         urdf::ModelInterfaceSharedPtr m_model;
+        AZStd::string m_prefabPath;
         VisualsMaker m_visualsMaker;
         CollidersMaker m_collidersMaker;
         InertialsMaker m_inertialsMaker;
         JointsMaker m_jointsMaker;
-        RobotImporterWidget& m_robotImporterWidget;
     };
 } // namespace ROS2

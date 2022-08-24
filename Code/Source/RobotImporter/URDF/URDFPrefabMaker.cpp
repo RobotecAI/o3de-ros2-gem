@@ -22,28 +22,17 @@
 
 namespace ROS2
 {
-    URDFPrefabMaker::URDFPrefabMaker(
-        const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, RobotImporterWidget& robotImporterWidget)
+    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath)
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
-        , m_robotImporterWidget(robotImporterWidget)
+        , m_prefabPath(std::move(prefabPath))
     {
+        AZ_Assert(!m_prefabPath.empty(), "Prefab path is empty");
+        AZ_Assert(m_model, "Model is nullptr");
     }
 
     AzToolsFramework::Prefab::CreatePrefabResult URDFPrefabMaker::CreatePrefabFromURDF()
     { // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
-
-        AZ_TracePrintf("CreatePrefabFromURDF", "Creating a prefab for URDF model with name %s", m_model->getName().c_str());
-        auto prefabName = AZStd::string::format("%s.%s", m_model->getName().c_str(), "prefab");
-        AZStd::string prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName.c_str());
-
-        AZStd::optional<AZStd::string> prefabPath =
-            m_robotImporterWidget.ValidatePrefabPathExistenceAndGetNewIfNecessary(prefabDefaultPath);
-
-        if (!prefabPath)
-        {
-            return AZ::Failure(AZStd::string("User cancelled"));
-        }
 
         // recursively add all entities
         auto createEntityResult = AddEntitiesForLink(m_model->root_link_, AZ::EntityId());
@@ -57,13 +46,13 @@ namespace ROS2
 
         // Create prefab, save it to disk immediately
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
-        auto outcome = prefabInterface->CreatePrefabInDisk(AzToolsFramework::EntityIdList{ contentEntityId }, prefabPath.value().c_str());
+        auto outcome = prefabInterface->CreatePrefabInDisk(AzToolsFramework::EntityIdList{ contentEntityId }, m_prefabPath.c_str());
         if (outcome.IsSuccess())
         {
             AZ::EntityId prefabContainerEntityId = outcome.GetValue();
             PrefabMakerUtils::AddRequiredComponentsToEntity(prefabContainerEntityId);
         }
-        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created %s prefab", prefabName.c_str());
+        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created %s prefab", m_prefabPath.c_str());
         return outcome;
     }
 
