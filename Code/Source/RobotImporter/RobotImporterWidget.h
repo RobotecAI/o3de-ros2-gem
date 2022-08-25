@@ -14,6 +14,8 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QWidget>
+#include <QPushButton>
+#include <QTimer>
 #endif
 
 namespace ROS2
@@ -38,8 +40,8 @@ namespace ROS2
         void ReportInfo(const AZStd::string& infoMessage);
 
         QLabel m_statusLabel;
-        QPushButton* m_selectFileButton;
-        QTimer * m_importerUpdateTimer;
+        QPushButton m_selectFileButton;
+        QTimer m_importerUpdateTimer;
 
         RobotImporter m_robotImporter;
 

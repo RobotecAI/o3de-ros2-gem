@@ -74,12 +74,12 @@ namespace ROS2
                         }
                         if (!m_collidersMaker->m_meshesToBuild.empty())
                         {
-                            AZStd::this_thread::sleep_for(AZStd::chrono::milliseconds(1000));
+                            AZStd::this_thread::sleep_for(AZStd::chrono::milliseconds(50));
                         }
                     }
 
                     AZ_Printf("CollisionMaker", "All URDF assets ready!");
-                    // Notify the parent widget that we can continue with constructing the prefab.
+                    // Notify the caller that we can continue with constructing the prefab.
                     m_notifyBuildReadyCb();
                 }
             });
