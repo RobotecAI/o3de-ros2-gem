@@ -132,7 +132,7 @@ namespace ROS2
                 modelPath += relativePathToMesh;
 
                 // Get asset path for a given model path
-                auto assetPath = PrefabMakerUtils::GetAssetPathFromModelPath(modelPath);
+                auto assetPath = PrefabMakerUtils::GetAzModelAssetPathFromModelPath(modelPath);
 
                 entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
 

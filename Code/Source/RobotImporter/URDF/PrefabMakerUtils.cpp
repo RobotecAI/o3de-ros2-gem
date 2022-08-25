@@ -19,7 +19,7 @@
 
 namespace ROS2
 {
-    AZStd::string PrefabMakerUtils::GetAssetPathFromModelPath(std::filesystem::path modelPath)
+    AZStd::string PrefabMakerUtils::GetAzModelAssetPathFromModelPath(std::filesystem::path modelPath)
     {
         bool assetFound = false;
         AZ::Data::AssetInfo assetInfo;

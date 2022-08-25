@@ -21,18 +21,34 @@ namespace ROS2
     //! Encapsulates constructive mapping of URDF elements to a complete prefab with entities and components
     class URDFPrefabMaker
     {
+        typedef std::function<void()> BuildReadyCallback;
+
     public:
         URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath);
+        ~URDFPrefabMaker();
+
+        //! Loads URDF file and builds all required meshes and colliders.
+        //! @param buildReadyCb Function to call when the build finishes.
+        void LoadURDF(BuildReadyCallback buildReadyCb);
+
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF();
+        const AZStd::string& GetPrefabPath() const;
 
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
+        void BuildAssetsForLink(urdf::LinkSharedPtr link);
         void AddRobotControl(AZ::EntityId rootEntityId);
+
         urdf::ModelInterfaceSharedPtr m_model;
         AZStd::string m_prefabPath;
         VisualsMaker m_visualsMaker;
-        CollidersMaker m_collidersMaker;
+        AZStd::shared_ptr<CollidersMaker> m_collidersMaker;
         InertialsMaker m_inertialsMaker;
         JointsMaker m_jointsMaker;
+
+        BuildReadyCallback m_notifyBuildReadyCb;
+
+        AZStd::atomic_bool m_stopBuildFlag;
+        AZStd::thread m_buildThread;
     };
 } // namespace ROS2

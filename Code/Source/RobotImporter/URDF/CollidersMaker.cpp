@@ -9,15 +9,170 @@
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
 #include "RobotImporter/URDF/TypeConversions.h"
+#include <AzCore/IO/Path/Path.h>
+#include <AzCore/Serialization/Json/JsonUtils.h>
+#include <AzCore/StringFunc/StringFunc.h>
+#include <AzToolsFramework/API/EditorAssetSystemAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <LmbrCentral/Shape/BoxShapeComponentBus.h>
 #include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
+#include <SceneAPI/SceneCore/Containers/Scene.h>
+#include <SceneAPI/SceneCore/Containers/SceneManifest.h>
+#include <SceneAPI/SceneCore/Containers/Utilities/Filters.h>
+#include <SceneAPI/SceneCore/DataTypes/Groups/ISceneNodeGroup.h>
+#include <SceneAPI/SceneCore/Events/AssetImportRequest.h>
+#include <SceneAPI/SceneCore/Events/SceneSerializationBus.h>
+#include <SceneAPI/SceneCore/Utilities/SceneGraphSelector.h>
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
 
 namespace ROS2
 {
+    CollidersMaker::CollidersMaker(const AZStd::string& modelPath)
+        : m_modelPath(modelPath)
+    {
+    }
+
+    CollidersMaker::~CollidersMaker()
+    {
+    }
+
+    void CollidersMaker::BuildColliders(urdf::LinkSharedPtr link)
+    {
+        for (auto collider : link->collision_array)
+        {
+            BuildCollider(collider);
+        }
+
+        if (link->collision_array.size() == 0)
+        {
+            BuildCollider(link->collision);
+        }
+    }
+
+    void CollidersMaker::BuildCollider(urdf::CollisionSharedPtr collision)
+    {
+        if (!collision)
+        { // it is ok not to have collision in a link
+            return;
+        }
+
+        auto geometry = collision->geometry;
+        bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
+        if (!isPrimitiveShape)
+        {
+            auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+            auto azMeshPath = GetFullURDFMeshPath(m_modelPath.c_str(), meshGeometry->filename.c_str());
+
+            AZStd::shared_ptr<AZ::SceneAPI::Containers::Scene> scene;
+            AZ::SceneAPI::Events::SceneSerializationBus::BroadcastResult(
+                scene, &AZ::SceneAPI::Events::SceneSerialization::LoadScene, azMeshPath.c_str(), AZ::Uuid::CreateNull());
+            if (!scene)
+            {
+                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid scene.");
+                return;
+            }
+
+            AZ::SceneAPI::Containers::SceneManifest& manifest = scene->GetManifest();
+            auto valueStorage = manifest.GetValueStorage();
+            if (valueStorage.empty())
+            {
+                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid value storage.");
+                return;
+            }
+
+            auto view = AZ::SceneAPI::Containers::MakeDerivedFilterView<AZ::SceneAPI::DataTypes::ISceneNodeGroup>(valueStorage);
+            if (view.empty())
+            {
+                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid node views.");
+                return;
+            }
+
+            // Select all nodes for both visual and collision nodes
+            for (AZ::SceneAPI::DataTypes::ISceneNodeGroup& mg : view)
+            {
+                AZ::SceneAPI::Utilities::SceneGraphSelector::SelectAll(scene->GetGraph(), mg.GetSceneNodeSelectionList());
+            }
+
+            // Update scene with all nodes selected
+            AZ::SceneAPI::Events::ProcessingResultCombiner result;
+            AZ::SceneAPI::Events::AssetImportRequestBus::BroadcastResult(
+                result,
+                &AZ::SceneAPI::Events::AssetImportRequest::UpdateManifest,
+                *scene,
+                AZ::SceneAPI::Events::AssetImportRequest::ManifestAction::Update,
+                AZ::SceneAPI::Events::AssetImportRequest::RequestingApplication::Editor);
+
+            if (result.GetResult() != AZ::SceneAPI::Events::ProcessingResult::Success)
+            {
+                AZ_Error("CollisionMaker", false, "Scene updated");
+                return;
+            }
+
+            auto assetInfoFilePath = azMeshPath;
+            assetInfoFilePath += ".assetinfo";
+            AZ_Printf("CollisionMaker", "Saving collider manifest to %s", assetInfoFilePath.c_str());
+            scene->GetManifest().SaveToFile(assetInfoFilePath.c_str());
+
+            bool assetFound = false;
+            AZ::Data::AssetInfo assetInfo;
+            AZStd::string watchDir;
+            AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
+                assetFound,
+                &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
+                azMeshPath.c_str(),
+                assetInfo,
+                watchDir);
+
+            // Set export method to convex mesh
+            auto readOutcome = AZ::JsonSerializationUtils::ReadJsonFile(assetInfoFilePath.c_str());
+            if (!readOutcome.IsSuccess())
+            {
+                AZ_Error("CollisionMaker", false, "Could not read %s", assetInfoFilePath.c_str());
+                return;
+            }
+            rapidjson::Document assetInfoJson = readOutcome.TakeValue();
+            auto manifestObject = assetInfoJson.GetObject();
+            auto valuesIterator = manifestObject.FindMember("values");
+            if (valuesIterator == manifestObject.MemberEnd())
+            {
+                AZ_Error("CollisionMaker", false, "Invalid json file: %s", assetInfoFilePath.c_str());
+                return;
+            }
+            auto valuesArray = valuesIterator->value.GetArray();
+            for (auto& value : valuesArray)
+            {
+                auto object = value.GetObject();
+
+                auto physXMeshGroupIterator = object.FindMember("$type");
+                AZStd::basic_string<char> physXMeshGroupType = "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup";
+
+                if (AZ::StringFunc::Equal(physXMeshGroupIterator->value.GetString(), physXMeshGroupType))
+                {
+                    value.AddMember(rapidjson::StringRef("export method"), rapidjson::StringRef("1"), assetInfoJson.GetAllocator());
+                }
+            }
+
+            auto saveOutcome = AZ::JsonSerializationUtils::WriteJsonFile(assetInfoJson, assetInfoFilePath.c_str());
+            if (!saveOutcome.IsSuccess())
+            {
+                AZ_Error("CollisionMaker", false, "Could not save %s", assetInfoFilePath.c_str());
+                return;
+            }
+
+            // Add asset to expected assets list
+            if (assetFound)
+            {
+                auto pxmeshAssetPath = AZStd::string(assetInfo.m_relativePath.c_str());
+                AzFramework::StringFunc::Path::ReplaceExtension(pxmeshAssetPath, ".pxmesh");
+
+                AZStd::lock_guard lock{ m_buildMutex };
+                m_meshesToBuild.push_back(AZStd::string(pxmeshAssetPath.c_str()));
+            }
+        }
+    }
+
     void CollidersMaker::AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
         AZStd::string typeString = "collider";
@@ -61,7 +216,39 @@ namespace ROS2
         auto geometry = collision->geometry;
         bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
         if (!isPrimitiveShape)
-        { // TODO - implement mesh colliders
+        {
+            entity->CreateComponent<PhysX::EditorColliderComponent>();
+            entity->Activate();
+
+            AZ_Warning("CollisionMaker", false, "Adding mesh collider");
+            auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+            auto azMeshPath = GetFullURDFMeshPath(m_modelPath.c_str(), meshGeometry->filename.c_str());
+
+            // Get asset path relative to watch folder
+            bool assetFound = false;
+            AZ::Data::AssetInfo assetInfo;
+            AZStd::string watchDir;
+            AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
+                assetFound,
+                &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
+                azMeshPath.c_str(),
+                assetInfo,
+                watchDir);
+
+            // We are expecting .pxmesh
+            auto pxmodelPath = AZStd::string(assetInfo.m_relativePath.c_str());
+            AzFramework::StringFunc::Path::ReplaceExtension(pxmodelPath, ".pxmesh");
+
+            // Get asset product id (pxmesh)
+            AZ::Data::AssetId assetId;
+            AZ::Data::AssetType assetType = AZ::AzTypeInfo<PhysX::Pipeline::MeshAsset>::Uuid();
+            AZ::Data::AssetCatalogRequestBus::BroadcastResult(
+                assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, pxmodelPath.c_str(), assetType, false);
+
+            // Insert pxmesh into the collider component
+            PhysX::MeshColliderComponentRequestsBus::Event(entityId, &PhysX::MeshColliderComponentRequests::SetMeshAsset, assetId);
+            entity->Deactivate();
+
             return;
         }
 
@@ -106,5 +293,17 @@ namespace ROS2
             AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
             break;
         }
+    }
+    AZStd::string CollidersMaker::GetFullURDFMeshPath(const AZStd::basic_string<char>& modelPath, const AZStd::basic_string<char>& meshPath)
+    {
+        AZStd::string azPath{ modelPath };
+        AZ::IO::BasicPath modelBasicPath(modelPath);
+        modelBasicPath = modelBasicPath.RemoveFilename();
+
+        AZStd::string azMeshPath{ meshPath };
+        AZ::StringFunc::Replace(azMeshPath, "package://", "", true, true);
+        modelBasicPath.Append(azMeshPath);
+
+        return modelBasicPath.String();
     }
 } // namespace ROS2

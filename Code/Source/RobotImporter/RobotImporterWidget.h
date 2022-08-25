@@ -14,10 +14,13 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QWidget>
+#include <QPushButton>
+#include <QTimer>
 #endif
 
 namespace ROS2
 {
+    class URDFPrefabMaker;
     //! Handles UI for the process of URDF importing
     class RobotImporterWidget : public QWidget
     {
@@ -36,7 +39,12 @@ namespace ROS2
         //! @param infoMessage info message to display to the user
         void ReportInfo(const AZStd::string& infoMessage);
 
-    private:
         QLabel m_statusLabel;
+        QPushButton m_selectFileButton;
+        QTimer m_importerUpdateTimer;
+
+        RobotImporter m_robotImporter;
+
+        void ImporterTimerUpdate();
     };
 } // namespace ROS2

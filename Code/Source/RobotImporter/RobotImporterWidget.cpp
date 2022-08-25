@@ -8,7 +8,6 @@
 
 #include <AzCore/Utils/Utils.h>
 #include <QMessageBox>
-#include <QPushButton>
 #include <QVBoxLayout>
 
 #include "RobotImporter/RobotImporterWidget.h"
@@ -30,6 +29,21 @@ namespace ROS2
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
         , m_statusLabel("", this)
+        , m_selectFileButton(QObject::tr("Load"), this)
+        , m_importerUpdateTimer(this)
+        , m_robotImporter(
+              [this](RobotImporter::LogLevel level, const AZStd::string& message)
+              {
+                  switch (level)
+                  {
+                  case RobotImporter::LogLevel::Info:
+                      ReportInfo(message);
+                      break;
+                  case RobotImporter::LogLevel::Error:
+                      ReportError(message);
+                      break;
+                  }
+              })
     {
         setWindowTitle(QObject::tr("Robot definition file importer"));
         QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -37,13 +51,25 @@ namespace ROS2
         QLabel* captionLabel = new QLabel(QObject::tr("Select a robot definition (URDF) file to import"), this);
         captionLabel->setWordWrap(true);
         mainLayout->addWidget(captionLabel);
-        QPushButton* selectFileButton = new QPushButton(QObject::tr("Load"), this);
-        mainLayout->addWidget(selectFileButton);
+        mainLayout->addWidget(&m_selectFileButton);
         mainLayout->addWidget(&m_statusLabel);
         mainLayout->addStretch();
 
+        connect(
+            &m_importerUpdateTimer,
+            &QTimer::timeout,
+            [this]
+            {
+                m_robotImporter.CheckIfAssetsWereLoadedAndCreatePrefab(
+                    [this]()
+                    {
+                        m_importerUpdateTimer.stop();
+                        m_selectFileButton.setEnabled(true);
+                    });
+            });
+
         QObject::connect(
-            selectFileButton,
+            &m_selectFileButton,
             &QPushButton::clicked,
             this,
             [this]()
@@ -63,16 +89,12 @@ namespace ROS2
                     ReportError("User cancelled");
                     return;
                 }
-                RobotImporter::Import(
-                    { urdfPath.value(), prefabPath.value() },
-                    [this](const AZStd::string& message)
-                    {
-                        ReportInfo(message);
-                    },
-                    [this](const AZStd::string& message)
-                    {
-                        ReportError(message);
-                    });
+                m_robotImporter.ParseURDFAndStartLoadingAssets({ urdfPath.value(), prefabPath.value() });
+
+                // Disable the button until the import is complete to prevent the user from clicking it again
+                m_selectFileButton.setEnabled(false);
+                // Check whether import is still in progress every 0.5 seconds
+                m_importerUpdateTimer.start(500);
             });
         setLayout(mainLayout);
     }
@@ -89,5 +111,4 @@ namespace ROS2
         m_statusLabel.setText(QObject::tr(infoMessage.c_str()));
         AZ_TracePrintf("RobotImporterWidget", infoMessage.c_str());
     }
-
 } // namespace ROS2
