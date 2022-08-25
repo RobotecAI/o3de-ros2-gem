@@ -15,6 +15,7 @@ namespace ROS2
         std::function<void(const AZStd::string&)> infoLogger, std::function<void(const AZStd::string&)> errorLogger)
         : m_infoLogger(std::move(infoLogger))
         , m_errorLogger(std::move(errorLogger))
+        , m_isProcessingAssets(false)
     {
     }
 
@@ -54,6 +55,7 @@ namespace ROS2
         {
             auto errorMessage = AZStd::string::format("Importing robot definition failed with error: %s", outcome.GetError().c_str());
             m_errorLogger(errorMessage);
+            importFinishedCb();
             return;
         }
         m_infoLogger(AZStd::string::format("Imported %s", m_prefabMaker->GetPrefabPath().c_str()));
