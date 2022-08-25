@@ -31,7 +31,7 @@ namespace ROS2
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
         , m_statusLabel("", this)
-        , m_selectFileButton(new QPushButton(this))
+        , m_selectFileButton(new QPushButton(QObject::tr("Load"), this))
         , m_importerUpdateTimer(new QTimer(this))
         , m_robotImporter(
               [this](const AZStd::string& message)
