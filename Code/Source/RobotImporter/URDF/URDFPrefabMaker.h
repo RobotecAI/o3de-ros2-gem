@@ -24,15 +24,15 @@ namespace ROS2
         typedef std::function<void()> BuildReadyCallback;
 
     public:
-        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model);
+        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath);
         ~URDFPrefabMaker();
 
         //! Loads URDF file and builds all required meshes and colliders.
         //! @param buildReadyCb Function to call when the build finishes.
         void LoadURDF(BuildReadyCallback buildReadyCb);
 
-        //! Constructs prefab from URDF, all meshes and colliders must be ready before calling this function.
         AzToolsFramework::Prefab::CreatePrefabResult CreatePrefabFromURDF();
+        const AZStd::string& GetPrefabPath() const;
 
     private:
         AzToolsFramework::Prefab::PrefabEntityResult AddEntitiesForLink(urdf::LinkSharedPtr link, AZ::EntityId parentEntityId);
@@ -40,6 +40,7 @@ namespace ROS2
         void AddRobotControl(AZ::EntityId rootEntityId);
 
         urdf::ModelInterfaceSharedPtr m_model;
+        AZStd::string m_prefabPath;
         VisualsMaker m_visualsMaker;
         AZStd::shared_ptr<CollidersMaker> m_collidersMaker;
         InertialsMaker m_inertialsMaker;

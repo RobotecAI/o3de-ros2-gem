@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "URDF/UrdfParser.h"
 #if !defined(Q_MOC_RUN)
+#include "RobotImporter/URDF/RobotImporter.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QFileDialog>
 #include <QLabel>
@@ -27,16 +27,8 @@ namespace ROS2
         explicit RobotImporterWidget(QWidget* parent = nullptr);
 
     private:
-        void OnModelLoaded();
         void AssetsBuildFinished();
-        urdf::ModelInterfaceSharedPtr m_urdfModel;
 
-        AZStd::shared_ptr<URDFPrefabMaker> m_urdfPrefabMaker;
-
-        QFileDialog m_importFileDialog;
-        QLabel m_robotFileNameLabel;
-        QLabel m_robotNameLabel;
-        QLabel m_loadingLabel;
         QPushButton* m_selectFileButton;
 
     private slots:
@@ -44,5 +36,22 @@ namespace ROS2
 
     signals:
         void CreateURDFPrefabSignal();
+
+        //! Report an error to the user.
+        //! Populates the log, sets status information in the status label and shows an error popup with the message
+        //! @param errorMessage error message to display to the user
+        void ReportError(const AZStd::string& errorMessage);
+
+        //! Report an information to the user.
+        //! Populates the log and sets status information in the status label
+        //! @param infoMessage info message to display to the user
+        void ReportInfo(const AZStd::string& infoMessage);
+
+    private:
+        QLabel m_statusLabel;
+        RobotImporter m_robotImporter;
+        QTimer * m_importerUpdateTimer;
+
+        void ImporterTimerUpdate();
     };
 } // namespace ROS2

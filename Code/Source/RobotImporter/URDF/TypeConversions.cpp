@@ -8,23 +8,20 @@
 
 #include "TypeConversions.h"
 
-namespace ROS2
+namespace ROS2::URDF
 {
-    namespace URDF
+    AZ::Vector3 TypeConversions::ConvertVector3(const urdf::Vector3& urdfVector)
     {
-        AZ::Vector3 TypeConversions::ConvertVector3(const urdf::Vector3& urdfVector)
-        {
-            return AZ::Vector3(urdfVector.x, urdfVector.y, urdfVector.z);
-        }
+        return AZ::Vector3(urdfVector.x, urdfVector.y, urdfVector.z);
+    }
 
-        AZ::Quaternion TypeConversions::ConvertQuaternion(const urdf::Rotation& urdfQuaternion)
-        {
-            return AZ::Quaternion(urdfQuaternion.x, urdfQuaternion.y, urdfQuaternion.z, urdfQuaternion.w);
-        }
+    AZ::Quaternion TypeConversions::ConvertQuaternion(const urdf::Rotation& urdfQuaternion)
+    {
+        return AZ::Quaternion(urdfQuaternion.x, urdfQuaternion.y, urdfQuaternion.z, urdfQuaternion.w);
+    }
 
-        AZ::Color TypeConversions::ConvertColor(const urdf::Color& color)
-        {
-            return AZ::Color(color.r, color.g, color.b, color.a);
-        }
-    } // namespace URDF
-} // namespace ROS2
+    AZ::Color TypeConversions::ConvertColor(const urdf::Color& color)
+    {
+        return AZ::Color(color.r, color.g, color.b, color.a);
+    }
+} // namespace ROS2::URDF
