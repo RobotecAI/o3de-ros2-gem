@@ -36,9 +36,8 @@ namespace ROS2
         void BuildCollider(urdf::CollisionSharedPtr collision);
         void AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZStd::string& generatedName);
         void AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId);
-
         AZStd::string GetFullURDFMeshPath(const AZStd::basic_string<char>& modelPath, const AZStd::basic_string<char>& meshPath);
 
-        AZStd::string m_modelPath; // TODO
+        AZStd::string m_modelPath;
     };
 } // namespace ROS2

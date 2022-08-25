@@ -13,9 +13,9 @@
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QFileDialog>
 #include <QLabel>
-#include <QWidget>
 #include <QPushButton>
 #include <QTimer>
+#include <QWidget>
 #endif
 
 namespace ROS2
