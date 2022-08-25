@@ -9,8 +9,8 @@
 #include <AzCore/Utils/Utils.h>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QVBoxLayout>
 #include <QTimer>
+#include <QVBoxLayout>
 
 #include "RobotImporter/RobotImporterWidget.h"
 #include "RobotImporter/RobotImporterWidgetUtils.h"
@@ -31,16 +31,17 @@ namespace ROS2
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
         , m_statusLabel("", this)
-        , m_robotImporter(
-            [this](const AZStd::string& message)
-            {
-              ReportInfo(message);
-            },
-            [this](const AZStd::string& message)
-            {
-              ReportError(message);
-            })
+        , m_selectFileButton(new QPushButton(this))
         , m_importerUpdateTimer(new QTimer(this))
+        , m_robotImporter(
+              [this](const AZStd::string& message)
+              {
+                  ReportInfo(message);
+              },
+              [this](const AZStd::string& message)
+              {
+                  ReportError(message);
+              })
     {
         setWindowTitle(QObject::tr("Robot definition file importer"));
         QVBoxLayout* mainLayout = new QVBoxLayout(this);
@@ -48,8 +49,7 @@ namespace ROS2
         QLabel* captionLabel = new QLabel(QObject::tr("Select a robot definition (URDF) file to import"), this);
         captionLabel->setWordWrap(true);
         mainLayout->addWidget(captionLabel);
-        QPushButton* selectFileButton = new QPushButton(QObject::tr("Load"), this);
-        mainLayout->addWidget(selectFileButton);
+        mainLayout->addWidget(m_selectFileButton);
         mainLayout->addWidget(&m_statusLabel);
         mainLayout->addStretch();
 
@@ -76,26 +76,28 @@ namespace ROS2
                     ReportError("User cancelled");
                     return;
                 }
-                m_robotImporter.Import({ urdfPath.value(), prefabPath.value()});
+                m_robotImporter.Import({ urdfPath.value(), prefabPath.value() });
                 m_selectFileButton->setEnabled(false);
                 m_importerUpdateTimer->start(500);
             });
         setLayout(mainLayout);
-
     }
 
-    void RobotImporterWidget::ImporterTimerUpdate() {
-        m_robotImporter.Update([this]() {
-                                    m_importerUpdateTimer->stop();
-                                    m_selectFileButton->setEnabled(true);
-                               });
+    void RobotImporterWidget::ImporterTimerUpdate()
+    {
+        m_robotImporter.Update(
+            [this]()
+            {
+                m_importerUpdateTimer->stop();
+                m_selectFileButton->setEnabled(true);
+            });
     }
 
     void RobotImporterWidget::ReportError(const AZStd::string& errorMessage)
     {
-         QMessageBox::critical(this, QObject::tr("Error"), QObject::tr(errorMessage.c_str()));
-         m_statusLabel.setText(errorMessage.c_str());
-         AZ_Error("RobotImporterWidget", false, errorMessage.c_str());
+        QMessageBox::critical(this, QObject::tr("Error"), QObject::tr(errorMessage.c_str()));
+        m_statusLabel.setText(errorMessage.c_str());
+        AZ_Error("RobotImporterWidget", false, errorMessage.c_str());
     }
 
     void RobotImporterWidget::ReportInfo(const AZStd::string& infoMessage)

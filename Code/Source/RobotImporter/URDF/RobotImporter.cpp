@@ -11,11 +11,12 @@
 
 namespace ROS2
 {
-    RobotImporter::RobotImporter(std::function<void(const AZStd::string&)> infoLogger,
-                  std::function<void(const AZStd::string&)> errorLogger)
-    : m_infoLogger(std::move(infoLogger))
-    , m_errorLogger(std::move(errorLogger))
-    { }
+    RobotImporter::RobotImporter(
+        std::function<void(const AZStd::string&)> infoLogger, std::function<void(const AZStd::string&)> errorLogger)
+        : m_infoLogger(std::move(infoLogger))
+        , m_errorLogger(std::move(errorLogger))
+    {
+    }
 
     void RobotImporter::Import(const RobotImporterConfig& config)
     {
@@ -33,10 +34,15 @@ namespace ROS2
         m_prefabMaker.emplace(config.urdfFilePath, urdfModel, config.prefabFilePath);
 
         m_isProcessingAssets = true;
-        m_prefabMaker->LoadURDF([this]{m_isProcessingAssets = false;});
+        m_prefabMaker->LoadURDF(
+            [this]
+            {
+                m_isProcessingAssets = false;
+            });
     }
 
-    void RobotImporter::Update(std::function<void()> importFinishedCb) {
+    void RobotImporter::Update(std::function<void()> importFinishedCb)
+    {
         AZ_Assert(m_prefabMaker, "Prefab maker is not initialized");
         if (m_isProcessingAssets)
         {

@@ -168,7 +168,8 @@ namespace ROS2
         AZ::Entity* rootEntity = AzToolsFramework::GetEntityById(rootEntityId);
         rootEntity->CreateComponent<ROS2RobotControlComponent>(controlConfiguration);
     }
-    const AZStd::string& URDFPrefabMaker::GetPrefabPath() const {
+    const AZStd::string& URDFPrefabMaker::GetPrefabPath() const
+    {
         return m_prefabPath;
     }
 } // namespace ROS2
