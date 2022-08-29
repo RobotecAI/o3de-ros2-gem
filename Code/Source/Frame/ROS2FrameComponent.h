@@ -28,7 +28,7 @@ namespace ROS2
         AZ_COMPONENT(ROS2FrameComponent, "{EE743472-3E25-41EA-961B-14096AC1D66F}");
 
         ROS2FrameComponent();
-        ROS2FrameComponent(const AZStd::string& frameId);
+        ROS2FrameComponent(AZStd::string frameId);
 
         void Activate() override;
         void Deactivate() override;

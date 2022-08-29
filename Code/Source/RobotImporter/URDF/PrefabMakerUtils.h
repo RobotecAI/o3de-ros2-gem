@@ -9,23 +9,18 @@
 #pragma once
 
 #include "UrdfParser.h"
+#include <AzCore/IO/Path/Path.h>
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
 
-#include <filesystem> // TODO - instead, use AZ API for filesystem
-
-namespace ROS2
+//! Common utils for Prefab Maker classes
+namespace ROS2::PrefabMakerUtils
 {
-    //! Common utils for Prefab Maker classes
-    class PrefabMakerUtils
-    {
-    public:
-        static void AddRequiredComponentsToEntity(AZ::EntityId entityId);
-        static AZStd::string GetAzModelAssetPathFromModelPath(std::filesystem::path modelPath);
-        static void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
-        static AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
-        static AzToolsFramework::Prefab::PrefabOperationResult RemoveEntityWithDescendants(AZ::EntityId parentEntityId);
-        static AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId);
-        static bool HasCollider(AZ::EntityId entityId);
-        static AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index = 0);
-    };
-} // namespace ROS2
+    void AddRequiredComponentsToEntity(AZ::EntityId entityId);
+    AZ::IO::Path GetAzModelAssetPathFromModelPath(AZ::IO::Path modelPath);
+    void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
+    AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
+    AzToolsFramework::Prefab::PrefabOperationResult RemoveEntityWithDescendants(AZ::EntityId parentEntityId);
+    AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId);
+    bool HasCollider(AZ::EntityId entityId);
+    AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index = 0);
+} // namespace ROS2::PrefabMakerUtils

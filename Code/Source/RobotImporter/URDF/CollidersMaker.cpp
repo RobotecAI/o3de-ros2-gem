@@ -9,7 +9,6 @@
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
 #include "RobotImporter/URDF/TypeConversions.h"
-#include <AzCore/IO/Path/Path.h>
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/StringFunc/StringFunc.h>
 #include <AzToolsFramework/API/EditorAssetSystemAPI.h>
@@ -29,14 +28,12 @@
 
 namespace ROS2
 {
-    CollidersMaker::CollidersMaker(const AZStd::string& modelPath)
-        : m_modelPath(modelPath)
+    CollidersMaker::CollidersMaker(AZStd::string modelPath)
+        : m_modelPath(AZStd::move(modelPath))
     {
     }
 
-    CollidersMaker::~CollidersMaker()
-    {
-    }
+    CollidersMaker::~CollidersMaker() = default;
 
     void CollidersMaker::BuildColliders(urdf::LinkSharedPtr link)
     {
@@ -45,7 +42,7 @@ namespace ROS2
             BuildCollider(collider);
         }
 
-        if (link->collision_array.size() == 0)
+        if (link->collision_array.empty())
         {
             BuildCollider(link->collision);
         }
@@ -63,7 +60,7 @@ namespace ROS2
         if (!isPrimitiveShape)
         {
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-            auto azMeshPath = GetFullURDFMeshPath(m_modelPath.c_str(), meshGeometry->filename.c_str());
+            auto azMeshPath = GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
 
             AZStd::shared_ptr<AZ::SceneAPI::Containers::Scene> scene;
             AZ::SceneAPI::Events::SceneSerializationBus::BroadcastResult(
@@ -111,7 +108,7 @@ namespace ROS2
             }
 
             auto assetInfoFilePath = azMeshPath;
-            assetInfoFilePath += ".assetinfo";
+            assetInfoFilePath.Native() += ".assetinfo";
             AZ_Printf("CollisionMaker", "Saving collider manifest to %s", assetInfoFilePath.c_str());
             scene->GetManifest().SaveToFile(assetInfoFilePath.c_str());
 
@@ -146,7 +143,7 @@ namespace ROS2
                 auto object = value.GetObject();
 
                 auto physXMeshGroupIterator = object.FindMember("$type");
-                AZStd::basic_string<char> physXMeshGroupType = "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup";
+                AZStd::string physXMeshGroupType = "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup";
 
                 if (AZ::StringFunc::Equal(physXMeshGroupIterator->value.GetString(), physXMeshGroupType))
                 {
@@ -164,11 +161,10 @@ namespace ROS2
             // Add asset to expected assets list
             if (assetFound)
             {
-                auto pxmeshAssetPath = AZStd::string(assetInfo.m_relativePath.c_str());
-                AzFramework::StringFunc::Path::ReplaceExtension(pxmeshAssetPath, ".pxmesh");
+                auto pxmeshAssetPath = AZ::IO::Path(assetInfo.m_relativePath).ReplaceExtension("pxmesh");
 
                 AZStd::lock_guard lock{ m_buildMutex };
-                m_meshesToBuild.push_back(AZStd::string(pxmeshAssetPath.c_str()));
+                m_meshesToBuild.push_back(pxmeshAssetPath);
             }
         }
     }
@@ -183,7 +179,7 @@ namespace ROS2
             nameSuffixIndex++;
         }
 
-        if (link->collision_array.size() == 0)
+        if (link->collision_array.empty())
         { // no colliders in the array - zero or one in total, the element member is used instead
             AddCollider(link->collision, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString));
         }
@@ -222,7 +218,7 @@ namespace ROS2
 
             AZ_Warning("CollisionMaker", false, "Adding mesh collider");
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-            auto azMeshPath = GetFullURDFMeshPath(m_modelPath.c_str(), meshGeometry->filename.c_str());
+            auto azMeshPath = GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
 
             // Get asset path relative to watch folder
             bool assetFound = false;
@@ -294,16 +290,12 @@ namespace ROS2
             break;
         }
     }
-    AZStd::string CollidersMaker::GetFullURDFMeshPath(const AZStd::basic_string<char>& modelPath, const AZStd::basic_string<char>& meshPath)
+    AZ::IO::Path CollidersMaker::GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath)
     {
-        AZStd::string azPath{ modelPath };
-        AZ::IO::BasicPath modelBasicPath(modelPath);
-        modelBasicPath = modelBasicPath.RemoveFilename();
+        modelPath.RemoveFilename();
+        AZ::StringFunc::Replace(meshPath.Native(), "package://", "", true, true);
+        modelPath /= meshPath;
 
-        AZStd::string azMeshPath{ meshPath };
-        AZ::StringFunc::Replace(azMeshPath, "package://", "", true, true);
-        modelBasicPath.Append(azMeshPath);
-
-        return modelBasicPath.String();
+        return modelPath;
     }
 } // namespace ROS2

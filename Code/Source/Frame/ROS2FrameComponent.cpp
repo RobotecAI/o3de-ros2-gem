@@ -174,12 +174,10 @@ namespace ROS2
         required.push_back(AZ_CRC("TransformService"));
     }
 
-    ROS2FrameComponent::ROS2FrameComponent()
-    {
-    }
+    ROS2FrameComponent::ROS2FrameComponent() = default;
 
-    ROS2FrameComponent::ROS2FrameComponent(const AZStd::string& frameId)
-        : m_frameName(frameId)
+    ROS2FrameComponent::ROS2FrameComponent(AZStd::string frameId)
+        : m_frameName(AZStd::move(frameId))
     {
     }
 } // namespace ROS2

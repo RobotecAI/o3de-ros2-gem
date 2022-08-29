@@ -25,7 +25,7 @@ namespace ROS2
         {
         }
         ROS2RobotControlComponent(ControlConfiguration controlConfiguration)
-            : m_controlConfiguration(controlConfiguration)
+            : m_controlConfiguration(AZStd::move(controlConfiguration))
         {
         }
 

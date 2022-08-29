@@ -89,7 +89,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             PUBLIC
                 AZ::AzToolsFramework
                 Gem::AtomLyIntegration_CommonFeatures.Editor.Static
-                Gem::LmbrCentral.Editor
+                Gem::LmbrCentral.API
                 Gem::PhysX.Editor.Static
                 Gem::ROS2.Static
     )

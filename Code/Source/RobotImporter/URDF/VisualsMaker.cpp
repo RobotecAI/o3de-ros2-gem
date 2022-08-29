@@ -23,8 +23,6 @@
 #include <LmbrCentral/Shape/EditorShapeComponentBus.h>
 #include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 
-#include <regex>
-
 namespace ROS2
 {
     VisualsMaker::VisualsMaker(const AZStd::string& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials)
@@ -126,10 +124,11 @@ namespace ROS2
                 auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
 
                 // TODO - a PoC solution for path, replace with something generic, robust, proper
-                std::filesystem::path modelPath(m_modelPath.c_str());
-                modelPath = modelPath.remove_filename();
-                auto relativePathToMesh = std::regex_replace(meshGeometry->filename, std::regex("package://"), "");
-                modelPath += relativePathToMesh;
+                AZ::IO::Path modelPath(m_modelPath);
+                modelPath.RemoveFilename();
+                AZ::IO::Path relativePathToMesh(AZStd::string_view(meshGeometry->filename.c_str(), meshGeometry->filename.size()));
+                AZ::StringFunc::Replace(relativePathToMesh.Native(), "package://", "", true, true);
+                modelPath /= relativePathToMesh;
 
                 // Get asset path for a given model path
                 auto assetPath = PrefabMakerUtils::GetAzModelAssetPathFromModelPath(modelPath);

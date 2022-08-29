@@ -17,35 +17,33 @@
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorShapeColliderComponent.h>
 
-namespace ROS2
+namespace ROS2::PrefabMakerUtils
 {
-    AZStd::string PrefabMakerUtils::GetAzModelAssetPathFromModelPath(std::filesystem::path modelPath)
+    AZ::IO::Path GetAzModelAssetPathFromModelPath(AZ::IO::Path modelPath)
     {
         bool assetFound = false;
         AZ::Data::AssetInfo assetInfo;
-        AZStd::string watchDir;
+        AZ::IO::Path watchDir;
         AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
             assetFound,
             &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
             modelPath.c_str(),
             assetInfo,
-            watchDir);
+            watchDir.Native());
 
         if (!assetFound)
         {
             AZ_Error("AddVisuals", false, "Could not find model asset for %s", modelPath.c_str());
-            return "";
+            return {};
         }
 
-        auto relativePath = std::filesystem::path(assetInfo.m_relativePath.c_str());
-        relativePath.replace_extension("azmodel");
-        auto assetPath = AZStd::string(relativePath.string().c_str());
-        AZStd::to_lower(assetPath.begin(), assetPath.end());
+        auto assetPath = AZ::IO::Path(assetInfo.m_relativePath).ReplaceExtension("azmodel");
+        AZStd::to_lower(assetPath.Native().begin(), assetPath.Native().end());
 
         return assetPath;
     }
 
-    void PrefabMakerUtils::SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId)
+    void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId)
     {
         urdf::Vector3 urdfPosition = origin.position;
         urdf::Rotation urdfRotation = origin.rotation;
@@ -67,7 +65,7 @@ namespace ROS2
         transformInterface->SetLocalTM(tf);
     }
 
-    AzToolsFramework::Prefab::PrefabEntityResult PrefabMakerUtils::CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name)
+    AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name)
     {
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
         auto createEntityResult = prefabInterface->CreateEntity(parentEntityId, AZ::Vector3());
@@ -91,20 +89,20 @@ namespace ROS2
         return createEntityResult;
     }
 
-    AzToolsFramework::Prefab::PrefabOperationResult PrefabMakerUtils::RemoveEntityWithDescendants(AZ::EntityId parentEntityId)
+    AzToolsFramework::Prefab::PrefabOperationResult RemoveEntityWithDescendants(AZ::EntityId parentEntityId)
     {
         auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
         return prefabInterface->DeleteEntitiesAndAllDescendantsInInstance({ parentEntityId });
     }
 
-    void PrefabMakerUtils::AddRequiredComponentsToEntity(AZ::EntityId entityId)
+    void AddRequiredComponentsToEntity(AZ::EntityId entityId)
     {
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         AzToolsFramework::EditorEntityContextRequestBus::Broadcast(
             &AzToolsFramework::EditorEntityContextRequests::AddRequiredComponents, *entity);
     }
 
-    bool PrefabMakerUtils::HasCollider(AZ::EntityId entityId)
+    bool HasCollider(AZ::EntityId entityId)
     { // TODO - actually, we want EditorColliderComponent specifically, but the change can be applied only after moving to ECC
         // TODO - which will happen when Cylinder shape is supported. Until then, we check for either ECC or ESCC.
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
@@ -112,7 +110,7 @@ namespace ROS2
             entity->FindComponent<PhysX::EditorShapeColliderComponent>() != nullptr;
     }
 
-    AzToolsFramework::EntityIdList PrefabMakerUtils::GetColliderChildren(AZ::EntityId parentEntityId)
+    AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId)
     {
         AzToolsFramework::EntityIdList colliderChildren;
         AzToolsFramework::EntityIdList allChildren = AzToolsFramework::GetEntityChildOrder(parentEntityId);
@@ -128,9 +126,9 @@ namespace ROS2
         return colliderChildren;
     }
 
-    AZStd::string PrefabMakerUtils::MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index)
+    AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index)
     {
         const AZStd::string suffix = index == 0 ? AZStd::string("") : AZStd::string::format("_%zu", index);
         return AZStd::string::format("%s_%s%s", rootName.c_str(), type.c_str(), suffix.c_str());
     }
-} // namespace ROS2
+} // namespace ROS2::PrefabMakerUtils

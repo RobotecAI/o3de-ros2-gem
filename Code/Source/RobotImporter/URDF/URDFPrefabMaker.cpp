@@ -64,10 +64,10 @@ namespace ROS2
                                 AZ::Data::AssetId assetId;
                                 AZ::Data::AssetType assetType = AZ::AzTypeInfo<PhysX::Pipeline::MeshAsset>::Uuid();
                                 AZ::Data::AssetCatalogRequestBus::BroadcastResult(
-                                    assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, iter->c_str(), assetType, false);
+                                    assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, iter->Native().c_str(), assetType, false);
                                 if (assetId.IsValid())
                                 {
-                                    AZ_Printf("CollisionMaker", "Asset %s found and valid...", iter->c_str());
+                                    AZ_Printf("CollisionMaker", "Asset %s found and valid...", iter->Native().c_str());
                                     m_collidersMaker->m_meshesToBuild.erase(iter--);
                                 }
                             }

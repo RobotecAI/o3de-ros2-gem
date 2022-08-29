@@ -10,6 +10,7 @@
 
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
+#include <AzCore/IO/Path/Path.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/parallel/mutex.h>
 
@@ -19,7 +20,7 @@ namespace ROS2
     class CollidersMaker
     {
     public:
-        CollidersMaker(const AZStd::string& modelPath);
+        CollidersMaker(AZStd::string modelPath);
         ~CollidersMaker();
 
         //! Builds .pxmeshes for every collider in link collider mesh.
@@ -29,14 +30,15 @@ namespace ROS2
         //! @param link A parsed URDF tree link node which could hold information about colliders.
         //! @param entityId A non-active entity which will be affected.
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
-        AZStd::vector<AZStd::string> m_meshesToBuild;
+
+        AZStd::vector<AZ::IO::Path> m_meshesToBuild;
         AZStd::mutex m_buildMutex;
 
     private:
         void BuildCollider(urdf::CollisionSharedPtr collision);
         void AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZStd::string& generatedName);
         void AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId);
-        AZStd::string GetFullURDFMeshPath(const AZStd::basic_string<char>& modelPath, const AZStd::basic_string<char>& meshPath);
+        AZ::IO::Path GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath);
 
         AZStd::string m_modelPath;
     };
