@@ -81,7 +81,7 @@ namespace ROS2::RobotImporterWidgetUtils
         return path->toStdString().c_str();
     }
 
-    AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(const AZStd::string& path, QWidget* parent)
+    AZStd::optional<AZ::IO::Path> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(const AZ::IO::Path& path, QWidget* parent)
     {
         if (!QFile::exists(path.c_str()))
         {

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <AzCore/std/string/string.h>
+#include <AzCore/IO/Path/Path.h>
 #include <QWidget>
 #include <optional>
 
@@ -30,6 +30,6 @@ namespace ROS2::RobotImporterWidgetUtils
     //! @param path - path to validate
     //! @param parent - parent widget for the widgets used inside this function
     //! @return Valid path or an empty optional if it was not possible or user cancelled.
-    AZStd::optional<AZStd::string> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(
-        const AZStd::string& path, QWidget* parent = nullptr);
+    AZStd::optional<AZ::IO::Path> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(
+        const AZ::IO::Path& path, QWidget* parent = nullptr);
 } // namespace ROS2::RobotImporterWidgetUtils

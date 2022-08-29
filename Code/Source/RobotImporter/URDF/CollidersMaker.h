@@ -13,9 +13,13 @@
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/parallel/mutex.h>
+#include <AzCore/std/parallel/thread.h>
+#include <AzCore/std/parallel/atomic.h>
 
 namespace ROS2
 {
+    typedef std::function<void()> BuildReadyCallback;
+
     //! Populates a given entity with all the contents of the <collider> tag in robot description.
     class CollidersMaker
     {
@@ -30,9 +34,9 @@ namespace ROS2
         //! @param link A parsed URDF tree link node which could hold information about colliders.
         //! @param entityId A non-active entity which will be affected.
         void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId);
-
-        AZStd::vector<AZ::IO::Path> m_meshesToBuild;
-        AZStd::mutex m_buildMutex;
+        //! Sends meshes required for colliders to asset processor.
+        //! @param buildReadyCb Function to call when the processing finishes.
+        void ProcessMeshes(BuildReadyCallback notifyBuildReadyCb);
 
     private:
         void BuildCollider(urdf::CollisionSharedPtr collision);
@@ -41,5 +45,10 @@ namespace ROS2
         AZ::IO::Path GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath);
 
         AZStd::string m_modelPath;
+
+        AZStd::thread m_buildThread;
+        AZStd::mutex m_buildMutex;
+        AZStd::vector<AZ::IO::Path> m_meshesToBuild;
+        AZStd::atomic_bool m_stopBuildFlag;
     };
 } // namespace ROS2

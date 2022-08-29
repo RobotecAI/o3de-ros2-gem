@@ -89,7 +89,7 @@ namespace ROS2
                     ReportError("User cancelled");
                     return;
                 }
-                m_robotImporter.ParseURDFAndStartLoadingAssets({ urdfPath.value(), prefabPath.value() });
+                m_robotImporter.ParseURDFAndStartLoadingAssets({ urdfPath.value(), prefabPath->c_str() });
 
                 // Disable the button until the import is complete to prevent the user from clicking it again
                 m_selectFileButton.setEnabled(false);

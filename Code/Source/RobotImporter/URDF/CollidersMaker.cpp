@@ -30,10 +30,15 @@ namespace ROS2
 {
     CollidersMaker::CollidersMaker(AZStd::string modelPath)
         : m_modelPath(AZStd::move(modelPath))
+        , m_stopBuildFlag(false)
     {
     }
 
-    CollidersMaker::~CollidersMaker() = default;
+    CollidersMaker::~CollidersMaker()
+    {
+        m_stopBuildFlag = true;
+        m_buildThread.join();
+    };
 
     void CollidersMaker::BuildColliders(urdf::LinkSharedPtr link)
     {
@@ -297,5 +302,40 @@ namespace ROS2
         modelPath /= meshPath;
 
         return modelPath;
+    }
+
+    void CollidersMaker::ProcessMeshes(BuildReadyCallback notifyBuildReadyCb)
+    {
+        m_buildThread = AZStd::thread(
+            [this, notifyBuildReadyCb]()
+            {
+                AZ_Printf("CollisionMaker", "Waiting for URDF assets...");
+                while (!m_meshesToBuild.empty() && !m_stopBuildFlag)
+                {
+                    {
+                        AZStd::lock_guard lock{ m_buildMutex };
+                        for (auto iter = m_meshesToBuild.begin(); iter != m_meshesToBuild.end(); iter++)
+                        {
+                            AZ::Data::AssetId assetId;
+                            AZ::Data::AssetType assetType = AZ::AzTypeInfo<PhysX::Pipeline::MeshAsset>::Uuid();
+                            AZ::Data::AssetCatalogRequestBus::BroadcastResult(
+                                assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, iter->Native().c_str(), assetType, false);
+                            if (assetId.IsValid())
+                            {
+                                AZ_Printf("CollisionMaker", "Asset %s found and valid...", iter->Native().c_str());
+                                m_meshesToBuild.erase(iter--);
+                            }
+                        }
+                    }
+                    if (!m_meshesToBuild.empty())
+                    {
+                        AZStd::this_thread::sleep_for(AZStd::chrono::milliseconds(50));
+                    }
+                }
+
+                AZ_Printf("CollisionMaker", "All URDF assets ready!");
+                // Notify the caller that we can continue with constructing the prefab.
+                notifyBuildReadyCb();
+            });
     }
 } // namespace ROS2

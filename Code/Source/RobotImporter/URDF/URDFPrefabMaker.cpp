@@ -28,17 +28,10 @@ namespace ROS2
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
         , m_collidersMaker(new CollidersMaker(modelFilePath))
-        , m_stopBuildFlag(false)
         , m_prefabPath(std::move(prefabPath))
     {
         AZ_Assert(!m_prefabPath.empty(), "Prefab path is empty");
         AZ_Assert(m_model, "Model is nullptr");
-    }
-
-    URDFPrefabMaker::~URDFPrefabMaker()
-    {
-        m_stopBuildFlag = true;
-        m_buildThread.join();
     }
 
     void URDFPrefabMaker::LoadURDF(BuildReadyCallback buildReadyCb)
@@ -49,40 +42,7 @@ namespace ROS2
         BuildAssetsForLink(m_model->root_link_);
 
         // Wait for all collider meshes to be ready
-        m_buildThread = AZStd::thread(
-            [&]()
-            {
-                {
-                    AZ_Printf("CollisionMaker", "Waiting for URDF assets...");
-                    while (!m_collidersMaker->m_meshesToBuild.empty() && !m_stopBuildFlag)
-                    {
-                        {
-                            AZStd::lock_guard lock{ m_collidersMaker->m_buildMutex };
-                            for (auto iter = m_collidersMaker->m_meshesToBuild.begin(); iter != m_collidersMaker->m_meshesToBuild.end();
-                                 iter++)
-                            {
-                                AZ::Data::AssetId assetId;
-                                AZ::Data::AssetType assetType = AZ::AzTypeInfo<PhysX::Pipeline::MeshAsset>::Uuid();
-                                AZ::Data::AssetCatalogRequestBus::BroadcastResult(
-                                    assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, iter->Native().c_str(), assetType, false);
-                                if (assetId.IsValid())
-                                {
-                                    AZ_Printf("CollisionMaker", "Asset %s found and valid...", iter->Native().c_str());
-                                    m_collidersMaker->m_meshesToBuild.erase(iter--);
-                                }
-                            }
-                        }
-                        if (!m_collidersMaker->m_meshesToBuild.empty())
-                        {
-                            AZStd::this_thread::sleep_for(AZStd::chrono::milliseconds(50));
-                        }
-                    }
-
-                    AZ_Printf("CollisionMaker", "All URDF assets ready!");
-                    // Notify the caller that we can continue with constructing the prefab.
-                    m_notifyBuildReadyCb();
-                }
-            });
+        m_collidersMaker->ProcessMeshes(buildReadyCb);
     }
 
     void URDFPrefabMaker::BuildAssetsForLink(urdf::LinkSharedPtr link)
@@ -168,6 +128,7 @@ namespace ROS2
         AZ::Entity* rootEntity = AzToolsFramework::GetEntityById(rootEntityId);
         rootEntity->CreateComponent<ROS2RobotControlComponent>(controlConfiguration);
     }
+
     const AZStd::string& URDFPrefabMaker::GetPrefabPath() const
     {
         return m_prefabPath;
