@@ -12,9 +12,9 @@
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/std/containers/vector.h>
+#include <AzCore/std/parallel/atomic.h>
 #include <AzCore/std/parallel/mutex.h>
 #include <AzCore/std/parallel/thread.h>
-#include <AzCore/std/parallel/atomic.h>
 
 namespace ROS2
 {
