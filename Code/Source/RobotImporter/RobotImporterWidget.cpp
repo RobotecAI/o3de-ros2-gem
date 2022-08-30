@@ -6,6 +6,7 @@
  *
  */
 
+#include <AzCore/IO/Path/Path.h>
 #include <AzCore/Utils/Utils.h>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -16,16 +17,6 @@
 
 namespace ROS2
 {
-    namespace Internal
-    {
-        AZStd::string GetBaseName(AZStd::string path)
-        {
-            QFileInfo fileInfo(path.c_str());
-            return fileInfo.baseName().toStdString().c_str();
-        }
-
-    } // namespace Internal
-
     RobotImporterWidget::RobotImporterWidget(QWidget* parent)
         : QWidget(parent)
         , m_statusLabel("", this)
@@ -48,7 +39,7 @@ namespace ROS2
         setWindowTitle(QObject::tr("Robot definition file importer"));
         QVBoxLayout* mainLayout = new QVBoxLayout(this);
         mainLayout->setSpacing(20);
-        QLabel* captionLabel = new QLabel(QObject::tr("Select a robot definition (URDF) file to import"), this);
+        QLabel* captionLabel = new QLabel(QObject::tr("Select a Unified Robot Description Format (URDF) file to import"), this);
         captionLabel->setWordWrap(true);
         mainLayout->addWidget(captionLabel);
         mainLayout->addWidget(&m_selectFileButton);
@@ -80,7 +71,8 @@ namespace ROS2
                     return;
                 }
 
-                auto prefabName = AZStd::string::format("%s.%s", Internal::GetBaseName(urdfPath.value()).c_str(), "prefab");
+                AZ::IO::Path prefabName(AZ::IO::PathView(urdfPath.value()).Filename());
+                prefabName.ReplaceExtension("prefab");
                 AZStd::string prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName);
                 auto prefabPath =
                     RobotImporterWidgetUtils::ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(prefabDefaultPath, this);

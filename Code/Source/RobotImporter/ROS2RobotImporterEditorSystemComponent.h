@@ -25,8 +25,8 @@ namespace ROS2
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
         static void GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible);
 
-        ROS2RobotImporterEditorSystemComponent();
-        ~ROS2RobotImporterEditorSystemComponent();
+        ROS2RobotImporterEditorSystemComponent() = default;
+        ~ROS2RobotImporterEditorSystemComponent() = default;
 
     private:
         void Activate() override;
