@@ -29,12 +29,13 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            AZ::AzToolsFramework
             Gem::Atom_RPI.Public
             Gem::Atom_Feature_Common.Static
             Gem::Atom_Component_DebugCamera.Static
 )
 
-target_depends_on_ros2_packages(ROS2.Static rclcpp builtin_interfaces std_msgs sensor_msgs urdfdom tf2_ros)
+target_depends_on_ros2_packages(ROS2.Static rclcpp builtin_interfaces std_msgs sensor_msgs urdfdom tf2_ros o3de_spawning_interface_srvs )
 
 ly_add_target(
     NAME ROS2.API HEADERONLY
