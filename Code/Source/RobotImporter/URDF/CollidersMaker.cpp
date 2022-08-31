@@ -142,14 +142,14 @@ namespace ROS2
                 AZ_Error("CollisionMaker", false, "Invalid json file: %s", assetInfoFilePath.c_str());
                 return;
             }
+
+            constexpr AZStd::string_view physXMeshGroupType = "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup";
             auto valuesArray = valuesIterator->value.GetArray();
             for (auto& value : valuesArray)
             {
                 auto object = value.GetObject();
 
                 auto physXMeshGroupIterator = object.FindMember("$type");
-                AZStd::string physXMeshGroupType = "{5B03C8E6-8CEE-4DA0-A7FA-CD88689DD45B} MeshGroup";
-
                 if (AZ::StringFunc::Equal(physXMeshGroupIterator->value.GetString(), physXMeshGroupType))
                 {
                     value.AddMember(rapidjson::StringRef("export method"), rapidjson::StringRef("1"), assetInfoJson.GetAllocator());
