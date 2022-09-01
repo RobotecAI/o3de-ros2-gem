@@ -30,6 +30,7 @@ namespace ROS2
         , cameraName(cameraName)
         , aspectRatio(static_cast<float>(width) / static_cast<float>(height))
         , viewToClipMatrix(MakeViewToClipMatrix())
+        , cameraIntrinsics(MakeCameraIntrinsics())
     {
         validateParameters();
     }
@@ -49,7 +50,18 @@ namespace ROS2
         AZ_Assert(!cameraName.empty(), "Camera name cannot be empty");
     }
 
+    std::array<double, 9> CameraSensorDescription::MakeCameraIntrinsics() const
+    {
+        const auto w = static_cast<double>(width);
+        const auto h = static_cast<double>(height);
+        const double horizontalFoV = 2.0 * AZStd::atan(AZStd::tan(verticalFieldOfViewDeg / 2.0) / aspectRatio);
+        const double focalLengthX = w / (2.0 * AZStd::tan(horizontalFoV / 2.0));
+        const double focalLengthY = h / (2.0 * AZStd::tan(verticalFieldOfViewDeg / 2.0));
+        return { focalLengthX, 0.0, w / 2.0, 0.0, focalLengthY, h / 2.0, 0.0, 0.0, 1.0 };
+    }
+
     CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription)
+        : m_cameraSensorDescription(cameraSensorDescription)
     {
         AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", cameraSensorDescription.cameraName.c_str());
 
@@ -119,5 +131,10 @@ namespace ROS2
             AZStd::string("Output"),
             callback,
             AZ::RPI::PassAttachmentReadbackOption::Output);
+    }
+
+    const CameraSensorDescription& CameraSensor::GetCameraSensorDescription() const
+    {
+        return m_cameraSensorDescription;
     }
 } // namespace ROS2

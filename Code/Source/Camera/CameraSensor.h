@@ -32,9 +32,12 @@ namespace ROS2
 
         const float aspectRatio; //!< camera image aspect ratio; equal to (width / height)
         const AZ::Matrix4x4 viewToClipMatrix; //!< camera view to clip space transform matrix; derived from other parameters
+        const std::array<double, 9> cameraIntrinsics; //!< camera intrinsics; derived from other parameters
 
     private:
         AZ::Matrix4x4 MakeViewToClipMatrix() const;
+        std::array<double, 9> MakeCameraIntrinsics() const;
+
         void validateParameters() const;
     };
 
@@ -57,7 +60,11 @@ namespace ROS2
         void RequestFrame(
             const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback);
 
+        //! Function to get camera sensor description
+        [[nodiscard]] const CameraSensorDescription& GetCameraSensorDescription() const;
+
     private:
+        CameraSensorDescription m_cameraSensorDescription;
         AZStd::vector<AZStd::string> m_passHierarchy;
         AZ::RPI::RenderPipelinePtr m_pipeline;
         AZ::RPI::ViewPtr m_view;
