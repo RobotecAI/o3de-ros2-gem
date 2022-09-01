@@ -8,8 +8,8 @@
 #pragma once
 
 #include <rclcpp/publisher.hpp>
-#include <sensor_msgs/msg/image.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
+#include <sensor_msgs/msg/image.hpp>
 
 #include "Sensor/ROS2SensorComponent.h"
 
