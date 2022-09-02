@@ -47,7 +47,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"struct_r_o_s2_1_1_namespace_configuration.html#a1b56d5215135a934b8441a1e7b0bbdb5"
+"struct_r_o_s2_1_1_lidar_template.html#af48cbd008ab1317287f29c51f39ccded"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
