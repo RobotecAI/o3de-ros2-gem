@@ -132,7 +132,7 @@ namespace ROS2
                 cameraInfo.width = descriptor.m_size.m_width;
                 cameraInfo.height = descriptor.m_size.m_height;
                 cameraInfo.distortion_model = sensor_msgs::distortion_models::PLUMB_BOB;
-                cameraInfo.k = m_cameraSensor->GetCameraSensorDescription().cameraIntrinsics;
+                cameraInfo.k = m_cameraSensor->GetCameraSensorDescription().m_cameraIntrinsics;
                 m_cameraInfoPublisher->publish(cameraInfo);
             });
     }
