@@ -57,10 +57,10 @@ namespace ROS2
                 jointComponent = followColliderEntity->CreateComponent<PhysX::EditorHingeJointComponent>();
                 followColliderEntity->Activate();
                 PhysX::EditorJointRequestBus::Event(
-                        AZ::EntityComponentIdPair(followColliderEntityId, jointComponent->GetId()),
-                        &PhysX::EditorJointRequests::SetLinearValuePair,
-                        PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
-                        PhysX::AngleLimitsFloatPair(AZ::RadToDeg(AZ::Constants::TwoPi), -AZ::RadToDeg(AZ::Constants::TwoPi)));
+                    AZ::EntityComponentIdPair(followColliderEntityId, jointComponent->GetId()),
+                    &PhysX::EditorJointRequests::SetLinearValuePair,
+                    PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
+                    PhysX::AngleLimitsFloatPair(AZ::RadToDeg(AZ::Constants::TwoPi), -AZ::RadToDeg(AZ::Constants::TwoPi)));
                 followColliderEntity->Deactivate();
             }
             break;
