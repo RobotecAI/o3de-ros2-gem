@@ -8,7 +8,9 @@
 
 #include "ROS2SpawnerComponent.h"
 #include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Math/Quaternion.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <AzFramework/Components/TransformComponent.h>
 
 namespace ROS2
 {
@@ -16,15 +18,15 @@ namespace ROS2
     {
         auto ros2Node = ROS2Interface::Get()->GetNode();
 
-        get_names_service = ros2Node->create_service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>(
+        m_get_names_service = ros2Node->create_service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>(
                 "get_available_spawnable_names",
                 std::bind( &ROS2SpawnerComponent::GetAvailableSpawnableNames, this, AZStd::placeholders::_1, AZStd::placeholders::_2 )
-                );
+        );
 
-        spawn_service = ros2Node->create_service<o3de_spawning_interface_srvs::srv::SpawnRobot>(
+        m_spawn_service = ros2Node->create_service<o3de_spawning_interface_srvs::srv::SpawnRobot>(
                 "spawn_robot",
                 std::bind( &ROS2SpawnerComponent::SpawnRobot, this, AZStd::placeholders::_1, AZStd::placeholders::_2 )
-                );
+        );
     }
 
     void ROS2SpawnerComponent::Deactivate()
@@ -75,10 +77,37 @@ namespace ROS2
             }
 
             auto spawner = AZ::Interface<AzFramework::SpawnableEntitiesDefinition>::Get();
-            spawner->SpawnAllEntities( m_tickets.at(key) );
+
+            AzFramework::SpawnAllEntitiesOptionalArgs optionalArgs;
+
+            optionalArgs.m_preInsertionCallback = [this, position = request->position](auto id, auto view){
+                this->pre_spawn(
+                        id,
+                        view,
+                        AZ::Transform(
+                            AZ::Vector3(position.position.x, position.position.y, position.position.z),
+                            AZ::Quaternion(position.orientation.x, position.orientation.y, position.orientation.z, position.orientation.w),
+                            1.0f
+                        )
+                );
+            };
+
+            spawner->SpawnAllEntities( m_tickets.at(key), optionalArgs );
+
             response->result = true;
+            return;
         }
 
         response->result = false;
     }
+
+    void ROS2SpawnerComponent::pre_spawn(AzFramework::EntitySpawnTicket::Id id, AzFramework::SpawnableEntityContainerView view, const AZ::Transform& transform)
+    {
+        AZ::Entity* root = *view.begin();
+
+        auto* transformInterface_ = root->FindComponent<AzFramework::TransformComponent>();
+
+        transformInterface_->SetWorldTM( transform );
+    }
+
 } // namespace ROS2

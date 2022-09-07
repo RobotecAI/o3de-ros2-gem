@@ -39,10 +39,12 @@ namespace ROS2
             std::map<AZStd::string, AzFramework::EntitySpawnTicket> m_tickets = {};
             AZStd::vector<AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables = {};
 
-            rclcpp::Service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>::SharedPtr get_names_service;
-            rclcpp::Service<o3de_spawning_interface_srvs::srv::SpawnRobot>::SharedPtr spawn_service;
+            rclcpp::Service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>::SharedPtr m_get_names_service;
+            rclcpp::Service<o3de_spawning_interface_srvs::srv::SpawnRobot>::SharedPtr m_spawn_service;
 
             void GetAvailableSpawnableNames(const std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request> request, std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response> response);
             void SpawnRobot(const std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request> request, std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response> response);
+
+            void pre_spawn(AzFramework::EntitySpawnTicket::Id, AzFramework::SpawnableEntityContainerView, const AZ::Transform&);
         };
 } // namespace ROS2
