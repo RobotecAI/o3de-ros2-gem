@@ -14,11 +14,6 @@
 
 namespace ROS2
 {
-    bool ControlConfiguration::IsBroadcastBusModeDisabled() const
-    {
-        return !m_broadcastBusMode;
-    }
-
     void ControlConfiguration::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
@@ -28,8 +23,6 @@ namespace ROS2
                 ->Field("Topic", &ControlConfiguration::m_topic)
                 ->Field("Qos", &ControlConfiguration::m_qos)
                 ->Field("Steering", &ControlConfiguration::m_steering)
-                ->Field("BroadcastBusMode", &ControlConfiguration::m_broadcastBusMode)
-                ->Field("RobotConfiguration", &ControlConfiguration::m_robotConfiguration);
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
@@ -46,22 +39,7 @@ namespace ROS2
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->EnumAttribute(ControlConfiguration::Steering::Twist, "Twist")
                     ->EnumAttribute(ControlConfiguration::Steering::Ackermann, "Ackermann")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::CheckBox,
-                        &ControlConfiguration::m_broadcastBusMode,
-                        "Broadcast bus mode",
-                        "Broadcast messages on a notification bus instead of running built-in solution.")
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &ControlConfiguration::m_robotConfiguration,
-                        "Robot configuration",
-                        "Description of the robot")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &ControlConfiguration::IsBroadcastBusModeDisabled);
             }
         }
-
-        // Enable twist control notification bus
-        TwistNotificationHandler::Reflect(context);
     }
 } // namespace ROS2

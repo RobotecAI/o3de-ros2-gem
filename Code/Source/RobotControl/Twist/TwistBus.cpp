@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
-#include "RobotControl/TwistControl/TwistBus.h"
+#include "RobotControl/Twist/TwistBus.h"
 
 namespace ROS2
 {
