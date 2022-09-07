@@ -122,5 +122,4 @@ namespace ROS2
 
         transformInterface_->SetWorldTM(transform);
     }
-
 } // namespace ROS2
