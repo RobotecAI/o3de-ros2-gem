@@ -53,8 +53,17 @@ namespace ROS2
             }
             break;
         case urdf::Joint::CONTINUOUS:
-            // TODO - disable limits for Continuous type. API for this seems to be missing.
-            [[fallthrough]];
+            { // Implemented as Hinge with limit set to -2*PI and 2*PI deg. Works fine in the Engine
+                jointComponent = followColliderEntity->CreateComponent<PhysX::EditorHingeJointComponent>();
+                followColliderEntity->Activate();
+                PhysX::EditorJointRequestBus::Event(
+                        AZ::EntityComponentIdPair(followColliderEntityId, jointComponent->GetId()),
+                        &PhysX::EditorJointRequests::SetLinearValuePair,
+                        PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
+                        PhysX::AngleLimitsFloatPair(AZ::RadToDeg(AZ::Constants::TwoPi), -AZ::RadToDeg(AZ::Constants::TwoPi)));
+                followColliderEntity->Deactivate();
+            }
+            break;
         case urdf::Joint::REVOLUTE:
             { // Hinge
                 jointComponent = followColliderEntity->CreateComponent<PhysX::EditorHingeJointComponent>();
@@ -63,7 +72,7 @@ namespace ROS2
                     AZ::EntityComponentIdPair(followColliderEntityId, jointComponent->GetId()),
                     &PhysX::EditorJointRequests::SetLinearValuePair,
                     PhysX::JointsComponentModeCommon::ParamaterNames::TwistLimits,
-                    PhysX::AngleLimitsFloatPair(AZ::RadToDeg(joint->limits->upper), AZ::RadToDeg(joint->limits->upper)));
+                    PhysX::AngleLimitsFloatPair(AZ::RadToDeg(joint->limits->upper), AZ::RadToDeg(joint->limits->lower)));
                 followColliderEntity->Deactivate();
             }
             break;
