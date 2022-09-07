@@ -31,12 +31,13 @@ namespace ROS2
         void Activate() override;
         void Deactivate() override;
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
+        static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
 
         // Required Reflect function.
         static void Reflect(AZ::ReflectContext* context);
 
     private:
-        AZStd::unique_ptr<IRobotControl> m_robotControl;
+        AZStd::unique_ptr<IControlSubscriptionHandlers> m_robotControl;
         ControlConfiguration m_controlConfiguration;
     };
 } // namespace ROS2

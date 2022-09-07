@@ -6,8 +6,8 @@
  *
  */
 
-#include "RobotControl/TwistControl/TwistControl.h"
 #include "RobotControl/TwistControl/TwistBus.h"
+#include "RobotControl/TwistControl/TwistControl.h"
 #include "Utilities/ROS2Conversions.h"
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Math/MathUtils.h>
@@ -15,34 +15,27 @@
 
 namespace ROS2
 {
-    void TwistControl::BroadcastBus(const geometry_msgs::msg::Twist& message)
+    void RigidBodyTwistControlComponent::Reflect(AZ::ReflectContext* context)
     {
-        TwistNotificationBus::Broadcast(
-            &TwistNotifications::TwistReceived,
-            ROS2Conversions::FromROS2Vector3(message.linear),
-            ROS2Conversions::FromROS2Vector3(message.angular));
+        if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
+        {
+            if (AZ::EditContext* ec = serialize->GetEditContext())
+            {
+                ec->Class<RigidBodyTwistControlComponent>("Rigid Body Twist Control", "Simple control through RigidBody")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
+            }
+        }
     }
 
-    void TwistControl::ApplyControl(const geometry_msgs::msg::Twist& message)
+    void RigidBodyTwistControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        /*
-        This is an example of control implementation which sets the desired velocity on a single body.
-        To imitate the steering, current linear and angular velocities of a single rigidbody are forcefully overwritten
-        with the desired control.
-        TODO: Control the robot with forces applied to the wheels instead of directly setting up body velocity.
-        */
+        required.push_back(AZ_CRC("ROS2RobotControl");
+        required.push_back(AZ_CRC("PhysicsRigidBodyService");
+    }
 
-        // Check the body entity id (it might be not set at all)
-        auto body = m_controlConfiguration.m_robotConfiguration.m_body;
-        if (!body.IsValid())
-        {
-            AZ_ErrorOnce("TwistControl", false, "Invalid body component for twist control.");
-        }
-
-        // Convert steering from ROS2 to O3DE coordinate system
-        const AZ::Vector3 linearVelocity = ROS2Conversions::FromROS2Vector3(message.linear);
-        const AZ::Vector3 angularVelocity = ROS2Conversions::FromROS2Vector3(message.angular);
-
+    void RigidBodyTwistControlComponent::TwistReceived(const AZ::Vector3& linear, const AZ::Vector3& angular)
+    {
         // Get current linear velocity
         AZ::Vector3 currentLinearVelocity;
         Physics::RigidBodyRequestBus::EventResult(currentLinearVelocity, body, &Physics::RigidBodyRequests::GetLinearVelocity);

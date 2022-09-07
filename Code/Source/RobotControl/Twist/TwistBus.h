@@ -18,7 +18,7 @@ namespace ROS2
     class TwistNotifications : public AZ::EBusTraits
     {
     public:
-        static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Multiple;
+        static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
 
         //! Handle control command
@@ -29,6 +29,7 @@ namespace ROS2
 
     using TwistNotificationBus = AZ::EBus<TwistNotifications>;
 
+    //! This simple handler can be used for prototyping using LUA scripting
     class TwistNotificationHandler
         : public TwistNotificationBus::Handler
         , public AZ::BehaviorEBusHandler

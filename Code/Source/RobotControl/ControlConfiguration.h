@@ -19,7 +19,7 @@ namespace ROS2
     //! Configuration for handling of robot control buses.
     //! Used through ROS2RobotControlComponent.
     struct ControlConfiguration
-    {
+    {   // TODO - this is two things - steering type and subscription configuration. Divide
     public:
         AZ_TYPE_INFO(ControlConfiguration, "{3D3E69EE-0F28-46D5-95F1-956550BA97B9}");
 
@@ -35,14 +35,7 @@ namespace ROS2
         static void Reflect(AZ::ReflectContext* context);
 
         QoS m_qos;
-        AZStd::string m_topic = "o3de_robot_control";
+        AZStd::string m_topic = "cmd_vel";
         Steering m_steering = Steering::Twist;
-        RobotConfiguration m_robotConfiguration;
-
-        //! Switch between two modes. If enabled, only notification bus is running and no control is handled withing the Component.
-        bool m_broadcastBusMode = true;
-
-    private:
-        [[nodiscard]] bool IsBroadcastBusModeDisabled() const;
     };
 } // namespace ROS2
