@@ -15,13 +15,11 @@ namespace VehicleDynamics::Utilities
     AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel)
     {
         ROS2::AxleConfiguration axleConfiguration;
-
     }
 
     AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel)
     {
         ROS2::AxleConfiguration axleConfiguration;
-
     }
 
     AZStd::vector<AZ::EntityId> GetAllSteeringEntities(const ChassisConfiguration& chassisConfig)
@@ -34,20 +32,20 @@ namespace VehicleDynamics::Utilities
                 for (const auto& wheel : axle.m_axleWheels)
                 {
                     if (!wheel.IsValid())
-                    {   // TODO - warn
+                    { // TODO - warn
                         continue;
                     }
 
                     AZ::Entity* wheelEntity = AzToolsFramework::GetEntityById(wheel);
                     auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
                     if (!controllerComponent)
-                    {   // TODO - warn
+                    { // TODO - warn
                         continue;
                     }
 
                     AZ::EntityId steeringEntity = controllerComponent->m_steeringEntity;
                     if (!steeringEntity.IsValid())
-                    {   // TODO - warn
+                    { // TODO - warn
                         continue;
                     }
                     steeringEntities.push_back(steeringEntity);
@@ -67,7 +65,7 @@ namespace VehicleDynamics::Utilities
                 for (const auto& wheel : axle.m_axleWheels)
                 {
                     if (!wheel.IsValid())
-                    {   // TODO - warn
+                    { // TODO - warn
                         continue;
                     }
 
