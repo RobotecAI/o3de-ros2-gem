@@ -16,10 +16,11 @@ To support developers of robotic use-cases in O3DE, a modular, extendable system
 
 ### Subsections
 
-- [Analysis](analisys.md)
+- [Analysis](analysis.md)
 - [Features](features.md)
 - [Architecture](architecture.md)
 
 ### Note
 
-In the first iteration, only support for car-like 4-wheeled robots will be targeted.
+| In the first iteration, only support for car-like 4-wheeled robots will be targeted. |
+|--------------------------------------------------------------------------------------|
