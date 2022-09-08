@@ -24,7 +24,7 @@ namespace ROS2
                 ->Field("Qos", &ControlConfiguration::m_qos)
                 ->Field("Steering", &ControlConfiguration::m_steering)
 
-            if (AZ::EditContext* ec = serializeContext->GetEditContext())
+                    if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
                 ec->Class<ControlConfiguration>("Robot control", "Handles robot control")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &ControlConfiguration::m_topic, "Topic", "ROS2 topic to subscribe to")

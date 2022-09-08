@@ -58,7 +58,7 @@ namespace VehicleDynamics
     {
         auto allDriveWheels = VehicleDynamics::Utilities::GetAllDriveWheelEntities(m_chassisConfiguration);
 
-        //TODO - placeholder implementation - replace with a selection of algorithms
+        // TODO - placeholder implementation - replace with a selection of algorithms
         for (auto driveWheelEntityId : allDriveWheels)
         {
             AZ::Entity* wheelEntity = AzToolsFramework::GetEntityById(driveWheelEntityId);
