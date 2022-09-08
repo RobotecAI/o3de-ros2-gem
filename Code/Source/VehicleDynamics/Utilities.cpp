@@ -5,9 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
-#pragma once
 
-#include "AxleConfiguration.h"
 #include <AzCore/std/string/string.h>
 
 namespace VehicleDynamics::Utilities

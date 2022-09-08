@@ -5,16 +5,48 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
-#pragma once
 
-#include <AzCore/Component/EntityId.h>
-#include <AzCore/std/containers/vector.h>
-#include <AzCore/std/string/string.h>
+#include "AxleConfiguration.h"
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/EditContextConstants.inl>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
 {
     void AxleConfiguration::Reflect(AZ::ReflectContext* context)
     {
+        if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
+        {
+            serialize->Class<AxleConfiguration, AZ::Component>()
+                ->Version(1)
+                ->Field("AxleTag", &AxleConfiguration::m_axleTag)
+                ->Field("AxleWheels", &AxleConfiguration::m_axleWheels);
+            ->Field("IsSteering", &AxleConfiguration::m_isSteering)->Field("IsDrive", &AxleConfiguration::m_isDrive);
+
+            if (AZ::EditContext* ec = serialize->GetEditContext())
+            {
+                ec->Class<AxleConfiguration>("Axle configuration", "Axles of the vehicle model")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default, &AxleConfiguration::m_axleTag, "Axle tag", "Helpful description of the axle")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &AxleConfiguration::m_isSteering,
+                        "Is it a steering axle",
+                        "Is this axle used for steering (all attached wheels)")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &AxleConfiguration::m_isDrive,
+                        "Is it a drive axle",
+                        "Is this axle used for drive (all attached wheels)")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &AxleConfiguration::m_axleWheels,
+                        "Axle wheels",
+                        "One or more wheels attached to this axle");
+            }
+        }
     }
 
     AZ::EntityId AxleConfiguration::GetLeftWheelEntityId() const

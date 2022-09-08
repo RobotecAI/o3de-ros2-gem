@@ -28,7 +28,7 @@ namespace VehicleDynamics
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<VehicleModelComponent, AZ::Component>()->Version(1)->Field(
-                "Chassis configuration", &VehicleModelComponent::m_chassisConfiguration)
+                "ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration)
 
                 if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -46,7 +46,7 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC("ROS2RobotControl"));
+        // TODO - determine required services
     }
 
     void VehicleModelComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)

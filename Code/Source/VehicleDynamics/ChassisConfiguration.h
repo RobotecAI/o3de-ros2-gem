@@ -9,7 +9,8 @@
 
 #include "AxleConfiguration.h"
 #include <AzCore/Component/Component.h>
-#include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <AzCore/Component/EntityId.h>
+#include <AzCore/std/collections/vector.h>
 #include <AzFramework/Physics/Material/PhysicsMaterial.h>
 
 namespace VehicleDynamics
@@ -23,11 +24,6 @@ namespace VehicleDynamics
 
         //! Axles of the vehicle, front to rear
         AZStd::vector<AxleConfiguration> m_axles;
-
-        //! Solver steps will apply to every wheel
-        uint8_t m_solverSteps;
-        uint8_t m_solverVelocitySteps;
-
         Physics::Material m_tireMaterial; //! Can be overwritten for each wheel
     };
 } // namespace VehicleDynamics
