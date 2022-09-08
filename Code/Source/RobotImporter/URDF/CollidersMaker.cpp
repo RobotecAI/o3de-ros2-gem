@@ -72,7 +72,12 @@ namespace ROS2
                 scene, &AZ::SceneAPI::Events::SceneSerialization::LoadScene, azMeshPath.c_str(), AZ::Uuid::CreateNull());
             if (!scene)
             {
-                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid scene.");
+                AZ_Error(
+                    "CollisionMaker",
+                    false,
+                    "Error loading collider. Invalid scene: %s, URDF path: %s",
+                    azMeshPath.c_str(),
+                    meshGeometry->filename.c_str());
                 return;
             }
 
@@ -80,14 +85,14 @@ namespace ROS2
             auto valueStorage = manifest.GetValueStorage();
             if (valueStorage.empty())
             {
-                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid value storage.");
+                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid value storage: %s", azMeshPath.c_str());
                 return;
             }
 
             auto view = AZ::SceneAPI::Containers::MakeDerivedFilterView<AZ::SceneAPI::DataTypes::ISceneNodeGroup>(valueStorage);
             if (view.empty())
             {
-                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid node views.");
+                AZ_Error("CollisionMaker", false, "Error loading collider. Invalid node views: %s", azMeshPath.c_str());
                 return;
             }
 
@@ -108,7 +113,7 @@ namespace ROS2
 
             if (result.GetResult() != AZ::SceneAPI::Events::ProcessingResult::Success)
             {
-                AZ_Error("CollisionMaker", false, "Scene updated");
+                AZ_TracePrintf("CollisionMaker", "Scene updated");
                 return;
             }
 
@@ -131,7 +136,7 @@ namespace ROS2
             auto readOutcome = AZ::JsonSerializationUtils::ReadJsonFile(assetInfoFilePath.c_str());
             if (!readOutcome.IsSuccess())
             {
-                AZ_Error("CollisionMaker", false, "Could not read %s", assetInfoFilePath.c_str());
+                AZ_Error("CollisionMaker", false, "Could not read %s with %s", assetInfoFilePath.c_str(), readOutcome.GetError().c_str());
                 return;
             }
             rapidjson::Document assetInfoJson = readOutcome.TakeValue();
@@ -139,7 +144,7 @@ namespace ROS2
             auto valuesIterator = manifestObject.FindMember("values");
             if (valuesIterator == manifestObject.MemberEnd())
             {
-                AZ_Error("CollisionMaker", false, "Invalid json file: %s", assetInfoFilePath.c_str());
+                AZ_Error("CollisionMaker", false, "Invalid json file: %s (Missing 'values' node)", assetInfoFilePath.c_str());
                 return;
             }
 
@@ -159,7 +164,7 @@ namespace ROS2
             auto saveOutcome = AZ::JsonSerializationUtils::WriteJsonFile(assetInfoJson, assetInfoFilePath.c_str());
             if (!saveOutcome.IsSuccess())
             {
-                AZ_Error("CollisionMaker", false, "Could not save %s", assetInfoFilePath.c_str());
+                AZ_Error("CollisionMaker", false, "Could not save %s with %s", assetInfoFilePath.c_str(), saveOutcome.GetError().c_str());
                 return;
             }
 
@@ -184,7 +189,7 @@ namespace ROS2
             nameSuffixIndex++;
         }
 
-        if (link->collision_array.empty())
+        if (nameSuffixIndex == 0)
         { // no colliders in the array - zero or one in total, the element member is used instead
             AddCollider(link->collision, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString));
         }
