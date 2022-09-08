@@ -22,7 +22,7 @@ namespace VehicleDynamics
 
         //! Helper functions for wheel entities. If there is only one wheel, same value is returned from both.
         //! If no wheels are set, this will return invalid EntityId (check with IsValid())
-        AZ::EntityId GetLeftWheelEntityId() const;  //! Return left-most wheel of the axis.
+        AZ::EntityId GetLeftWheelEntityId() const; //! Return left-most wheel of the axis.
         AZ::EntityId GetRightWheelEntityId() const; //! Return right-most wheel of the axis.
 
         AZStd::string m_axleTag; //! Useful to differentiate between axles, can be empty.

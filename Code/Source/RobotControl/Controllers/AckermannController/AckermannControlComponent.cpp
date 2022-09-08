@@ -6,8 +6,8 @@
  *
  */
 
-#include "RobotControl/TwistControl/TwistControl.h"
 #include "RobotControl/TwistControl/TwistBus.h"
+#include "RobotControl/TwistControl/TwistControl.h"
 #include "Utilities/ROS2Conversions.h"
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Math/MathUtils.h>

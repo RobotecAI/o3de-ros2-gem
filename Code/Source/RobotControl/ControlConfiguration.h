@@ -19,7 +19,7 @@ namespace ROS2
     //! Configuration for handling of robot control buses.
     //! Used through ROS2RobotControlComponent.
     struct ControlConfiguration
-    {   // TODO - this is two things - steering type and subscription configuration. Divide
+    { // TODO - this is two things - steering type and subscription configuration. Divide
     public:
         AZ_TYPE_INFO(ControlConfiguration, "{3D3E69EE-0F28-46D5-95F1-956550BA97B9}");
 
