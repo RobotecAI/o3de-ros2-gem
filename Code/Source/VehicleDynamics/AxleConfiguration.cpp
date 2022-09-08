@@ -15,7 +15,6 @@ namespace VehicleDynamics
 {
     void AxleConfiguration::Reflect(AZ::ReflectContext* context)
     {
-
     }
 
     AZ::EntityId AxleConfiguration::GetLeftWheelEntityId() const
