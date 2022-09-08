@@ -8,6 +8,8 @@
 #pragma once
 
 #include "AxleConfiguration.h"
+#include "ChassisConfiguration.h"
+#include <AzCore/Component/EntityId.h>
 #include <AzCore/std/collections/vector.h>
 #include <AzCore/std/string/string.h>
 

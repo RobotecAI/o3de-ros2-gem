@@ -8,7 +8,7 @@
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <AzCore/Component/EntityId.h>
 
 namespace VehicleDynamics
 {

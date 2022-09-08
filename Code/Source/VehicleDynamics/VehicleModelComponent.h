@@ -8,7 +8,7 @@
 #pragma once
 
 #include "InputControlBus.h"
-#include "
+#include "ChassisConfiguration.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 
