@@ -5,11 +5,12 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+
 #include "RobotControl/Ackermann/AckermannBus.h"
 
 namespace ROS2
 {
-    void AckermannNotificationHandler::(const AckermannCommandStruct& acs)
+    void AckermannNotificationHandler::AckermannReceived(const AckermannCommandStruct& acs)
     {
         Call(FN_AckermannReceived, acs);
     }

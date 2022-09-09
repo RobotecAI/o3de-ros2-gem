@@ -9,7 +9,6 @@
 #include "AxleConfiguration.h"
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
-#include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
 {
@@ -17,11 +16,12 @@ namespace VehicleDynamics
     {
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<AxleConfiguration, AZ::Component>()
+            serialize->Class<AxleConfiguration>()
                 ->Version(1)
                 ->Field("AxleTag", &AxleConfiguration::m_axleTag)
-                ->Field("AxleWheels", &AxleConfiguration::m_axleWheels);
-            ->Field("IsSteering", &AxleConfiguration::m_isSteering)->Field("IsDrive", &AxleConfiguration::m_isDrive);
+                ->Field("AxleWheels", &AxleConfiguration::m_axleWheels)
+                ->Field("IsSteering", &AxleConfiguration::m_isSteering)
+                ->Field("IsDrive", &AxleConfiguration::m_isDrive);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {

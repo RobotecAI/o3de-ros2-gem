@@ -23,17 +23,17 @@ namespace VehicleDynamics
 
         //! Set target for the vehicle linear speed. It should be realized over time according to drive model.
         //! @param speedMps is a linear speed in meters per second with the plus sign in the forward direction.
-        virtual void SetTargetLinearSpeed(float speedMps) const = 0;
+        virtual void SetTargetLinearSpeed(float speedMps) = 0;
 
         //! Accelerate without target speed.
         //! @param acceleration is relative to limits of possible acceleration.
         //! 1.0 - accelerate as much as possible, -1.0 - brake as much as possible.
-        virtual void SetTargetAcceleration(float acceleration) const = 0;
+        virtual void SetTargetAcceleration(float acceleration) = 0;
 
         //! Steer in a direction given in relative coordinate system (current direction is 0).
         //! @param steering is angle in radians, positive to the right and negative to the left.
         //! Note that the actual angle applied is subject to limits and implementation (e.g. smoothing).
-        virtual void SetTargetSteering(float steering) const = 0;
+        virtual void SetTargetSteering(float steering) = 0;
     };
 
     class InputBusTraits : public AZ::EBusTraits
