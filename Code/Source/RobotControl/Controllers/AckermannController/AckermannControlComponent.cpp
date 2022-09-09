@@ -6,11 +6,10 @@
  *
  */
 
-#include "RobotControl/TwistControl/TwistBus.h"
-#include "RobotControl/TwistControl/TwistControl.h"
-#include "Utilities/ROS2Conversions.h"
-#include <AzCore/Component/TransformBus.h>
-#include <AzCore/Math/MathUtils.h>
+#include "AckermannControlComponent.h"
+#include "VehicleDynamics/InputControlBus.h"
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzFramework/Physics/RigidBodyBus.h>
 
 namespace ROS2
@@ -23,21 +22,21 @@ namespace ROS2
             {
                 ec->Class<AckermannControlComponent>("Ackermann Control", "Relays Ackermann commands to vehicle inputs")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")); // TODO - "Simulation"?
             }
         }
     }
 
     void AckermannControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC("ROS2RobotControl");
-        required.push_back(AZ_CRC_CE("VehicleModel"));
+        required.push_back(AZ_CRC("ROS2RobotControl"));
+        required.push_back(AZ_CRC("VehicleModel"));
     }
 
-    void AckermannControlComponent::AckermannReceived(const AckermannCommandStruct& angular)
+    void AckermannControlComponent::AckermannReceived(const AckermannCommandStruct& acs)
     {
         // Notify input system for vehicle dynamics. Only speed and steering is currently supported.
-        VehicleDynamics::InputControlBus::Broadcast(&VehicleDynamics::InputControlRequests::SetTargetLinearSpeed, acs.m_speed);
-        VehicleDynamics::InputControlBus::Broadcast(&VehicleDynamics::InputControlRequests::SetTargetSteering, acs.m_steering);
+        VehicleDynamics::InputControlRequestBus::Broadcast(&VehicleDynamics::InputControlRequests::SetTargetLinearSpeed, acs.m_speed);
+        VehicleDynamics::InputControlRequestBus::Broadcast(&VehicleDynamics::InputControlRequests::SetTargetSteering, acs.m_steeringAngle);
     }
 } // namespace ROS2

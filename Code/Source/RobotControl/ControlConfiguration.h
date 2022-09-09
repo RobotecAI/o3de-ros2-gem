@@ -8,7 +8,6 @@
 #pragma once
 
 #include "QoS/QoS.h"
-#include "RobotControl/RobotConfiguration.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>

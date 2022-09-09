@@ -7,7 +7,6 @@
  */
 
 #include "RobotControl/ControlConfiguration.h"
-#include "RobotControl/TwistControl/TwistBus.h"
 #include "Utilities/ROS2Names.h"
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -22,9 +21,9 @@ namespace ROS2
                 ->Version(1)
                 ->Field("Topic", &ControlConfiguration::m_topic)
                 ->Field("Qos", &ControlConfiguration::m_qos)
-                ->Field("Steering", &ControlConfiguration::m_steering)
+                ->Field("Steering", &ControlConfiguration::m_steering);
 
-                    if (AZ::EditContext* ec = serializeContext->GetEditContext())
+            if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
                 ec->Class<ControlConfiguration>("Robot control", "Handles robot control")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &ControlConfiguration::m_topic, "Topic", "ROS2 topic to subscribe to")
@@ -38,7 +37,7 @@ namespace ROS2
                         "Determines how robot is controlled.")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->EnumAttribute(ControlConfiguration::Steering::Twist, "Twist")
-                    ->EnumAttribute(ControlConfiguration::Steering::Ackermann, "Ackermann")
+                    ->EnumAttribute(ControlConfiguration::Steering::Ackermann, "Ackermann");
             }
         }
     }

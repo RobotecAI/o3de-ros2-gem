@@ -10,6 +10,12 @@ This Gem enables users to develop robotic simulations through ROS2 tools and com
   * [ROS 2 Galactic](https://docs.ros.org/en/galactic/Installation.html) with Ubuntu 20.04.
   * [ROS 2 Humble](https://docs.ros.org/en/humble/Installation.html) with Ubuntu 22.04.
 
+#### Additional ros packages required
+
+Replace `<distro>` with ROS 2 distribution name (galactic, humble, ..).
+
+* Ackermann messages: `sudo apt install ros-<distro>-ackermann-msgs`
+
 ## Features
 
 * Direct and natural support of ROS2 ecosystem:

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <AzCore/Component/EntityId.h>
+#include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
@@ -17,6 +18,7 @@ namespace VehicleDynamics
     class AxleConfiguration
     {
     public:
+        AZ_TYPE_INFO(AxleConfiguration, "{75BD5FEA-EADE-4371-8B2C-96F05A886BEB}");
         AxleConfiguration();
         static void Reflect(AZ::ReflectContext* context);
 
