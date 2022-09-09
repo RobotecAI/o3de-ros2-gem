@@ -19,7 +19,7 @@ namespace ROS2
     URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath)
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
-        , m_collidersMaker(AZStd::make_unique<CollidersMaker>(CollidersMaker(modelFilePath)))
+        , m_collidersMaker(modelFilePath)
         , m_prefabPath(std::move(prefabPath))
     {
         AZ_Assert(!m_prefabPath.empty(), "Prefab path is empty");
@@ -34,12 +34,12 @@ namespace ROS2
         BuildAssetsForLink(m_model->root_link_);
 
         // Wait for all collider meshes to be ready
-        m_collidersMaker->ProcessMeshes(buildReadyCb);
+        m_collidersMaker.ProcessMeshes(buildReadyCb);
     }
 
     void URDFPrefabMaker::BuildAssetsForLink(urdf::LinkSharedPtr link)
     {
-        m_collidersMaker->BuildColliders(link);
+        m_collidersMaker.BuildColliders(link);
         for (auto childLink : link->child_links)
         {
             BuildAssetsForLink(childLink);
@@ -91,7 +91,7 @@ namespace ROS2
         entity->CreateComponent<ROS2FrameComponent>(link->name.c_str());
 
         m_visualsMaker.AddVisuals(link, entityId);
-        m_collidersMaker->AddColliders(link, entityId);
+        m_collidersMaker.AddColliders(link, entityId);
         m_inertialsMaker.AddInertial(link->inertial, entityId);
 
         for (auto childLink : link->child_links)

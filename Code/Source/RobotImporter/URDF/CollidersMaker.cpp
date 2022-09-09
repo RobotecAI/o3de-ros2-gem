@@ -34,14 +34,6 @@ namespace ROS2
     {
     }
 
-    CollidersMaker::CollidersMaker(CollidersMaker&& other)
-        : m_modelPath(AZStd::move(other.m_modelPath))
-        , m_buildThread(AZStd::move(other.m_buildThread))
-        , m_meshesToBuild(AZStd::move(other.m_meshesToBuild))
-        , m_stopBuildFlag(false)
-    {
-    }
-
     CollidersMaker::~CollidersMaker()
     {
         m_stopBuildFlag = true;

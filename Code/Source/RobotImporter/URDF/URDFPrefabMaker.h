@@ -40,7 +40,7 @@ namespace ROS2
         urdf::ModelInterfaceSharedPtr m_model;
         AZStd::string m_prefabPath;
         VisualsMaker m_visualsMaker;
-        AZStd::unique_ptr<CollidersMaker> m_collidersMaker;
+        CollidersMaker m_collidersMaker;
         InertialsMaker m_inertialsMaker;
         JointsMaker m_jointsMaker;
 

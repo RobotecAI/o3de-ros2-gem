@@ -26,7 +26,6 @@ namespace ROS2
     public:
         CollidersMaker(AZStd::string modelPath);
         CollidersMaker(const CollidersMaker& other) = delete;
-        CollidersMaker(CollidersMaker&& other);
 
         ~CollidersMaker();
 

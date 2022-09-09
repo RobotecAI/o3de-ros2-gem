@@ -96,6 +96,7 @@ namespace ROS2
         case urdf::Geometry::SPHERE:
             {
                 auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                AZ_Assert(sphereGeometry, "geometry is not Sphere");
                 entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
                 entity->Activate();
                 LmbrCentral::SphereShapeComponentRequestsBus::Event(
@@ -106,6 +107,7 @@ namespace ROS2
         case urdf::Geometry::CYLINDER:
             {
                 auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                AZ_Assert(cylinderGeometry, "geometry is not Cylinder");
                 entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
                 entity->Activate();
                 LmbrCentral::CylinderShapeComponentRequestsBus::Event(
@@ -118,6 +120,7 @@ namespace ROS2
         case urdf::Geometry::BOX:
             {
                 auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                AZ_Assert(boxGeometry, "geometry is not Box");
                 entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
                 AZ::Vector3 boxDimensions = URDF::TypeConversions::ConvertVector3(boxGeometry->dim);
                 entity->Activate();
@@ -129,7 +132,7 @@ namespace ROS2
         case urdf::Geometry::MESH:
             {
                 auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-
+                AZ_Assert(meshGeometry, "geometry is not Mesh");
                 // TODO - a PoC solution for path, replace with something generic, robust, proper
                 AZ::IO::Path modelPath(m_modelPath);
                 modelPath.RemoveFilename();
