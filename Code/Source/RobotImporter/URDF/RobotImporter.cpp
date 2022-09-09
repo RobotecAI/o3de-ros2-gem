@@ -11,7 +11,7 @@
 
 namespace ROS2
 {
-    RobotImporter::RobotImporter(std::function<void(LogLevel, const AZStd::string&)> logger)
+    RobotImporter::RobotImporter(LoggerFunction logger)
         : m_logger(std::move(logger))
         , m_isProcessingAssets(false)
     {

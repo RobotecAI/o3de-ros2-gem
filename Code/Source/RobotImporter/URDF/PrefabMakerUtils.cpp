@@ -19,7 +19,7 @@
 
 namespace ROS2::PrefabMakerUtils
 {
-    AZ::IO::Path GetAzModelAssetPathFromModelPath(AZ::IO::Path modelPath)
+    AZ::IO::Path GetAzModelAssetPathFromModelPath(const AZ::IO::Path& modelPath)
     {
         bool assetFound = false;
         AZ::Data::AssetInfo assetInfo;
@@ -33,7 +33,7 @@ namespace ROS2::PrefabMakerUtils
 
         if (!assetFound)
         {
-            AZ_Error("AddVisuals", false, "Could not find model asset for %s", modelPath.c_str());
+            AZ_Error("PrefabMakerUtils", false, "Could not find model asset for %s", modelPath.c_str());
             return {};
         }
 
@@ -80,10 +80,9 @@ namespace ROS2::PrefabMakerUtils
             return AZ::Failure(AZStd::string("Invalid id for created entity"));
         }
 
-        AZ_TracePrintf("CreateEntity", "Processing entity id:%s with name:%s", entityId.ToString().c_str(), name.c_str());
+        AZ_TracePrintf("CreateEntity", "Processing entity id:%s with name:%s\n", entityId.ToString().c_str(), name.c_str());
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        AZStd::string entityName(name.c_str());
-        entity->SetName(entityName);
+        entity->SetName(name);
         entity->Deactivate();
         AddRequiredComponentsToEntity(entityId);
         return createEntityResult;
@@ -98,6 +97,7 @@ namespace ROS2::PrefabMakerUtils
     void AddRequiredComponentsToEntity(AZ::EntityId entityId)
     {
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        AZ_Assert(entity, "Unknown entity %s", entityId.ToString().c_str());
         AzToolsFramework::EditorEntityContextRequestBus::Broadcast(
             &AzToolsFramework::EditorEntityContextRequests::AddRequiredComponents, *entity);
     }
@@ -106,6 +106,7 @@ namespace ROS2::PrefabMakerUtils
     { // TODO - actually, we want EditorColliderComponent specifically, but the change can be applied only after moving to ECC
         // TODO - which will happen when Cylinder shape is supported. Until then, we check for either ECC or ESCC.
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
+        AZ_Assert(entity, "Unknown entity %s", entityId.ToString().c_str());
         return entity->FindComponent<PhysX::EditorColliderComponent>() != nullptr ||
             entity->FindComponent<PhysX::EditorShapeColliderComponent>() != nullptr;
     }
@@ -116,10 +117,10 @@ namespace ROS2::PrefabMakerUtils
         AzToolsFramework::EntityIdList allChildren = AzToolsFramework::GetEntityChildOrder(parentEntityId);
         for (auto childId : allChildren)
         {
-            AZ_TracePrintf("GetColliderChildren", "Considering child %s", childId.ToString().c_str());
+            AZ_TracePrintf("GetColliderChildren", "Considering child %s\n", childId.ToString().c_str());
             if (HasCollider(childId))
             {
-                AZ_TracePrintf("GetColliderChildren", "Child %s has a collider", childId.ToString().c_str());
+                AZ_TracePrintf("GetColliderChildren", "Child %s has a collider\n", childId.ToString().c_str());
                 colliderChildren.push_back(childId);
             }
         }
@@ -128,7 +129,7 @@ namespace ROS2::PrefabMakerUtils
 
     AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index)
     {
-        const AZStd::string suffix = index == 0 ? AZStd::string("") : AZStd::string::format("_%zu", index);
+        const AZStd::string suffix = index == 0 ? AZStd::string() : AZStd::string::format("_%zu", index);
         return AZStd::string::format("%s_%s%s", rootName.c_str(), type.c_str(), suffix.c_str());
     }
 } // namespace ROS2::PrefabMakerUtils

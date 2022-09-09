@@ -25,22 +25,29 @@
 
 namespace ROS2
 {
-    VisualsMaker::VisualsMaker(const AZStd::string& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials)
+    VisualsMaker::VisualsMaker(const AZ::IO::Path& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials)
         : m_modelPath(modelPath)
-        , m_materials(materials)
     {
+        std::for_each(
+            std::begin(materials),
+            std::end(materials),
+            [&](const auto& p)
+            {
+                m_materials[AZStd::string(p.first.c_str())] = p.second;
+            });
+        AZ_Assert(!m_modelPath.empty(), "modelPath path is empty");
     }
 
     void VisualsMaker::AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
         const AZStd::string typeString = "visual";
-        if (link->visual_array.size() == 0)
+        if (link->visual_array.size() < 1)
         { // one or zero visuals - element is used
             AddVisual(link->visual, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString));
             return;
         }
-
         size_t nameSuffixIndex = 0; // For disambiguation when multiple unnamed visuals are present. The order does not matter here
+
         for (auto visual : link->visual_array)
         { // one or more visuals - array is used
             AddVisual(visual, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString, nameSuffixIndex));
@@ -61,7 +68,7 @@ namespace ROS2
             return;
         }
 
-        AZ_TracePrintf("AddVisual", "Processing visual for entity id:%s", entityId.ToString().c_str());
+        AZ_TracePrintf("AddVisual", "Processing visual for entity id:%s\n", entityId.ToString().c_str());
 
         // Use a name generated from the link unless specific name is defined for this visual
         const char* subEntityName = visual->name.empty() ? generatedName.c_str() : visual->name.c_str();
@@ -69,7 +76,7 @@ namespace ROS2
         auto createEntityResult = PrefabMakerUtils::CreateEntity(entityId, subEntityName);
         if (!createEntityResult.IsSuccess())
         {
-            AZ_Error("AddVisual", false, "Unable to create a sub-entity for visual element %s", subEntityName);
+            AZ_Error("AddVisual", false, "Unable to create a sub-entity for visual element %s\n", subEntityName);
             return;
         }
         auto visualEntityId = createEntityResult.GetValue();
@@ -176,12 +183,12 @@ namespace ROS2
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
 
-        // If present in map, take map color definition as priority, otherwise apply local node definition
-        urdf::Color materialColorUrdf = m_materials.find(visual->material->name) == m_materials.end()
-            ? visual->material->color
-            : m_materials[visual->material->name]->color;
+        const AZStd::string material_name{ visual->material->name.c_str() };
 
-        AZ::Color materialColor = URDF::TypeConversions::ConvertColor(materialColorUrdf);
+        // If present in map, take map color definition as priority, otherwise apply local node definition
+        const auto materialColorUrdf = m_materials.contains(material_name) ? m_materials[material_name]->color : visual->material->color;
+
+        const AZ::Color materialColor = URDF::TypeConversions::ConvertColor(materialColorUrdf);
         bool isPrimitive = visual->geometry->type != urdf::Geometry::MESH;
         if (isPrimitive)
         { // For primitives, set the color in the shape component
@@ -195,7 +202,7 @@ namespace ROS2
         // Mesh visual - we can have either filename or default material with a given color
         // TODO - handle texture_filename - file materials
         entity->CreateComponent(AZ::Render::EditorMaterialComponentTypeId);
-        AZ_Warning("AddVisual", false, "Setting color for material %s", visual->material->name.c_str());
+        AZ_Printf("AddVisual", "Setting color for material %s\n", visual->material->name.c_str());
         entity->Activate();
         AZ::Render::MaterialComponentRequestBus::Event(
             entityId,

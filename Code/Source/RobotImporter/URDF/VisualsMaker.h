@@ -10,14 +10,14 @@
 
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
-
+#include <AzCore/std/containers/unordered_map.h>
 namespace ROS2
 {
     //! Populates a given entity with all the contents of the <visual> tag in robot description
     class VisualsMaker
     {
     public:
-        VisualsMaker(const AZStd::string& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials);
+        VisualsMaker(const AZ::IO::Path& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials);
 
         //! Add zero, one or many visual elements to a given entity (depending on link content).
         //! Note that a sub-entity will be added to hold each visual (since they can have different transforms).
@@ -30,7 +30,7 @@ namespace ROS2
         void AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
         void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);
 
-        AZStd::string m_modelPath; // TODO - this should be handled on level of assets
-        std::map<std::string, urdf::MaterialSharedPtr> m_materials;
+        AZ::IO::Path m_modelPath; // TODO - this should be handled on level of assets
+        AZStd::unordered_map<AZStd::string, urdf::MaterialSharedPtr> m_materials;
     };
 } // namespace ROS2

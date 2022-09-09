@@ -16,7 +16,7 @@
 namespace ROS2::PrefabMakerUtils
 {
     void AddRequiredComponentsToEntity(AZ::EntityId entityId);
-    AZ::IO::Path GetAzModelAssetPathFromModelPath(AZ::IO::Path modelPath);
+    AZ::IO::Path GetAzModelAssetPathFromModelPath(const AZ::IO::Path& modelPath);
     void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId);
     AzToolsFramework::Prefab::PrefabEntityResult CreateEntity(AZ::EntityId parentEntityId, const AZStd::string& name);
     AzToolsFramework::Prefab::PrefabOperationResult RemoveEntityWithDescendants(AZ::EntityId parentEntityId);

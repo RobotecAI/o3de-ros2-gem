@@ -32,9 +32,11 @@ namespace ROS2
             Info,
             Error
         };
+        using LoggerFunction = AZStd::function<void(LogLevel, AZStd::string_view)>;
+
         //! Constructs robot importer
         //! @param infoLogger Function that is called to log some information
-        RobotImporter(std::function<void(LogLevel, const AZStd::string&)> logger);
+        RobotImporter(RobotImporter::LoggerFunction logger);
 
         //! Parses URDF file and starts asset import process
         //! This function starts a thread that initializes and waits for the asset import process to finish
@@ -52,7 +54,7 @@ namespace ROS2
     private:
         std::atomic_bool m_isProcessingAssets;
         std::optional<URDFPrefabMaker> m_prefabMaker;
-        std::function<void(LogLevel, const AZStd::string&)> m_logger;
+        LoggerFunction m_logger;
     };
 
 } // namespace ROS2

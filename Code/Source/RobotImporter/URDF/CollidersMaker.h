@@ -18,13 +18,16 @@
 
 namespace ROS2
 {
-    typedef std::function<void()> BuildReadyCallback;
+    using BuildReadyCallback = std::function<void()>;
 
     //! Populates a given entity with all the contents of the <collider> tag in robot description.
     class CollidersMaker
     {
     public:
         CollidersMaker(AZStd::string modelPath);
+        CollidersMaker(const CollidersMaker& other) = delete;
+        CollidersMaker(CollidersMaker&& other);
+
         ~CollidersMaker();
 
         //! Builds .pxmeshes for every collider in link collider mesh.

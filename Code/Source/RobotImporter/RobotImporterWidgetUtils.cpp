@@ -60,7 +60,7 @@ namespace ROS2::RobotImporterWidgetUtils
 
     AZStd::optional<AZStd::string> QueryUserForURDFPath(QWidget* parent)
     {
-        std::optional<QString> path = Internal::QueryUserForPath("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
+        const auto path = Internal::QueryUserForPath("Unified Robot Description Format (*.urdf)", QFileDialog::ExistingFiles);
         if (!path)
         {
             return AZStd::nullopt;
@@ -78,7 +78,7 @@ namespace ROS2::RobotImporterWidgetUtils
             return QueryUserForURDFPath();
         }
 
-        return path->toStdString().c_str();
+        return path->toUtf8().constData();
     }
 
     AZStd::optional<AZ::IO::Path> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(const AZ::IO::Path& path, QWidget* parent)

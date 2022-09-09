@@ -73,7 +73,7 @@ namespace ROS2
 
                 AZ::IO::Path prefabName(AZ::IO::PathView(urdfPath.value()).Filename());
                 prefabName.ReplaceExtension("prefab");
-                AZStd::string prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName);
+                const AZ::IO::Path prefabDefaultPath(AZ::IO::Path(AZ::Utils::GetProjectPath()) / "Assets" / "Importer" / prefabName);
                 auto prefabPath =
                     RobotImporterWidgetUtils::ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(prefabDefaultPath, this);
                 if (!prefabPath)
@@ -101,6 +101,6 @@ namespace ROS2
     void RobotImporterWidget::ReportInfo(const AZStd::string& infoMessage)
     {
         m_statusLabel.setText(QObject::tr(infoMessage.c_str()));
-        AZ_TracePrintf("RobotImporterWidget", infoMessage.c_str());
+        AZ::Debug::Trace::Instance().Output("RobotImporterWidget", infoMessage.c_str());
     }
 } // namespace ROS2

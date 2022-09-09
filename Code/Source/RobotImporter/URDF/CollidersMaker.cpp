@@ -34,6 +34,14 @@ namespace ROS2
     {
     }
 
+    CollidersMaker::CollidersMaker(CollidersMaker&& other)
+        : m_modelPath(AZStd::move(other.m_modelPath))
+        , m_buildThread(AZStd::move(other.m_buildThread))
+        , m_meshesToBuild(AZStd::move(other.m_meshesToBuild))
+        , m_stopBuildFlag(false)
+    {
+    }
+
     CollidersMaker::~CollidersMaker()
     {
         m_stopBuildFlag = true;
@@ -113,7 +121,7 @@ namespace ROS2
 
             if (result.GetResult() != AZ::SceneAPI::Events::ProcessingResult::Success)
             {
-                AZ_TracePrintf("CollisionMaker", "Scene updated");
+                AZ_TracePrintf("CollisionMaker", "Scene updated\n");
                 return;
             }
 
@@ -201,7 +209,7 @@ namespace ROS2
         { // it is ok not to have collision in a link
             return;
         }
-        AZ_TracePrintf("AddCollider", "Processing collisions for entity id:%s", entityId.ToString().c_str());
+        AZ_TracePrintf("AddCollider", "Processing collisions for entity id:%s\n", entityId.ToString().c_str());
 
         auto geometry = collision->geometry;
         if (!geometry)
@@ -226,8 +234,9 @@ namespace ROS2
             entity->CreateComponent<PhysX::EditorColliderComponent>();
             entity->Activate();
 
-            AZ_Warning("CollisionMaker", false, "Adding mesh collider");
+            AZ_Printf("CollisionMaker", "Adding mesh collider to %s\n", entityId.ToString().c_str());
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
+            AZ_Assert(meshGeometry, "geometry is not meshGeometry");
             auto azMeshPath = GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
 
             // Get asset path relative to watch folder
@@ -265,6 +274,7 @@ namespace ROS2
             {
                 entity->CreateComponent(LmbrCentral::EditorSphereShapeComponentTypeId);
                 auto sphereGeometry = std::dynamic_pointer_cast<urdf::Sphere>(geometry);
+                AZ_Assert(sphereGeometry, "geometry is not sphereGeometry");
                 entity->Activate();
                 LmbrCentral::SphereShapeComponentRequestsBus::Event(
                     entityId, &LmbrCentral::SphereShapeComponentRequests::SetRadius, sphereGeometry->radius);
@@ -275,6 +285,7 @@ namespace ROS2
             {
                 entity->CreateComponent(LmbrCentral::EditorBoxShapeComponentTypeId);
                 auto boxGeometry = std::dynamic_pointer_cast<urdf::Box>(geometry);
+                AZ_Assert(boxGeometry, "geometry is not boxGeometry");
                 entity->Activate();
                 LmbrCentral::BoxShapeComponentRequestsBus::Event(
                     entityId,
@@ -287,6 +298,7 @@ namespace ROS2
             {
                 entity->CreateComponent(LmbrCentral::EditorCylinderShapeComponentTypeId);
                 auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
+                AZ_Assert(cylinderGeometry, "geometry is not cylinderGeometry");
                 entity->Activate();
                 LmbrCentral::CylinderShapeComponentRequestsBus::Event(
                     entityId, &LmbrCentral::CylinderShapeComponentRequests::SetHeight, cylinderGeometry->length);
@@ -314,23 +326,27 @@ namespace ROS2
         m_buildThread = AZStd::thread(
             [this, notifyBuildReadyCb]()
             {
-                AZ_Printf("CollisionMaker", "Waiting for URDF assets...");
+                AZ_Printf("CollisionMaker", "Waiting for URDF assets\n");
+
                 while (!m_meshesToBuild.empty() && !m_stopBuildFlag)
                 {
                     {
                         AZStd::lock_guard lock{ m_buildMutex };
-                        for (auto iter = m_meshesToBuild.begin(); iter != m_meshesToBuild.end(); iter++)
+                        auto eraseFoundMesh = [](const AZ::IO::Path& meshPath)
                         {
                             AZ::Data::AssetId assetId;
                             AZ::Data::AssetType assetType = AZ::AzTypeInfo<PhysX::Pipeline::MeshAsset>::Uuid();
                             AZ::Data::AssetCatalogRequestBus::BroadcastResult(
-                                assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, iter->Native().c_str(), assetType, false);
+                                assetId, &AZ::Data::AssetCatalogRequests::GetAssetIdByPath, meshPath.c_str(), assetType, false);
                             if (assetId.IsValid())
                             {
-                                AZ_Printf("CollisionMaker", "Asset %s found and valid...", iter->Native().c_str());
-                                m_meshesToBuild.erase(iter--);
+                                AZ_Printf("CollisionMaker", "Asset %s found and valid...\n", meshPath.c_str());
+                                return true; // return true to erase the mesh path
                             }
-                        }
+
+                            return false;
+                        };
+                        AZStd::erase_if(m_meshesToBuild, AZStd::move(eraseFoundMesh));
                     }
                     if (!m_meshesToBuild.empty())
                     {
@@ -338,7 +354,7 @@ namespace ROS2
                     }
                 }
 
-                AZ_Printf("CollisionMaker", "All URDF assets ready!");
+                AZ_Printf("CollisionMaker", "All URDF assets ready!\n");
                 // Notify the caller that we can continue with constructing the prefab.
                 notifyBuildReadyCb();
             });

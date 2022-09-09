@@ -11,23 +11,15 @@
 #include "RobotControl/ROS2RobotControlComponent.h"
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
-
-#include "RobotImporter/RobotImporterWidget.h"
-
 #include <AzCore/IO/FileIO.h>
-#include <AzCore/Utils/Utils.h>
-#include <AzToolsFramework/API/EditorAssetSystemAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
-#include <PhysX/MeshAsset.h>
-
-#include <regex> // TODO - we are currently replacing package:// with an absolute path
 
 namespace ROS2
 {
     URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath)
         : m_model(model)
         , m_visualsMaker(modelFilePath, model->materials_)
-        , m_collidersMaker(new CollidersMaker(modelFilePath))
+        , m_collidersMaker(AZStd::make_unique<CollidersMaker>(CollidersMaker(modelFilePath)))
         , m_prefabPath(std::move(prefabPath))
     {
         AZ_Assert(!m_prefabPath.empty(), "Prefab path is empty");
@@ -75,7 +67,7 @@ namespace ROS2
             AZ::EntityId prefabContainerEntityId = outcome.GetValue();
             PrefabMakerUtils::AddRequiredComponentsToEntity(prefabContainerEntityId);
         }
-        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created %s prefab", m_prefabPath.c_str());
+        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created %s prefab\n", m_prefabPath.c_str());
         return outcome;
     }
 
