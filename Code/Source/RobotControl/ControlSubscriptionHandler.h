@@ -10,15 +10,13 @@
 #include "Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
 #include "RobotControl/ControlConfiguration.h"
-#include "RobotControl/RobotConfiguration.h"
 #include "Utilities/ROS2Names.h"
-#include <memory>
 #include <rclcpp/rclcpp.hpp>
 
 namespace ROS2
 {
     //! Component extension enabling polymorphic use of generics.
-    class IControlSubscriptionHandlers
+    class IControlSubscriptionHandler
     {
     public:
         //! Interface handling component activation
@@ -27,13 +25,13 @@ namespace ROS2
         //! @param controlConfiguration configuration with topic and qos
         virtual void Activate(const AZ::Entity* entity, const ControlConfiguration& controlConfiguration) = 0;
         virtual void Deactivate() = 0;
-        virtual ~IComponentActivationHandler() = default;
+        virtual ~IControlSubscriptionHandler() = default;
     };
 
     //! The generic class for handling subscriptions to ROS2 control messages of different types.
     //! @see ControlConfiguration::Steering.
     template<typename T>
-    class ControlSubscriptionHandler : public IControlConfigurationActivationHandler
+    class ControlSubscriptionHandler : public IControlSubscriptionHandler
     {
     public:
         void Activate(const AZ::Entity* entity, const ControlConfiguration& controlConfiguration) final
@@ -60,6 +58,8 @@ namespace ROS2
             m_active = false;
             m_controlSubscription.reset(); // Note: topic and qos can change, need to re-subscribe
         };
+
+        virtual ~ControlSubscriptionHandler() = default;
 
     private:
         void OnControlMessage(const T& message)

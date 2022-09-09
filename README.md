@@ -14,7 +14,8 @@ This Gem enables users to develop robotic simulations through ROS2 tools and com
 
 Replace `<distro>` with ROS 2 distribution name (galactic, humble, ..).
 
-* gazebo_msgs ( sudo apt install ros-${ROS_DISTRO}-gazebo-msgs)
+* gazebo_msgs: `sudo apt install ros-<distro>-gazebo-msgs
+* Ackermann messages: `sudo apt install ros-<distro>-ackermann-msgs`
 
 ## Features
 

@@ -37,7 +37,7 @@ namespace ROS2
         AZ_EBUS_BEHAVIOR_BINDER(
             AckermannNotificationHandler, "{A6A2011B-8A76-4ACE-B5EF-6DD6F8F1E5DF}", AZ::SystemAllocator, AckermannReceived);
 
-        void AckermannReceived(const AZ::Vector3& v, const AZ::Vector3& a) override;
+        void AckermannReceived(const AckermannCommandStruct& angular) override;
         static void Reflect(AZ::ReflectContext* context);
     };
 } // namespace ROS2

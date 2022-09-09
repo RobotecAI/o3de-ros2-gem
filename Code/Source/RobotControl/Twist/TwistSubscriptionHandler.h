@@ -12,7 +12,7 @@
 
 namespace ROS2
 {
-    class TwistSubscriptionHandler : private ControlSubscriptionHandler<geometry_msgs::msg::Twist>
+    class TwistSubscriptionHandler : public ControlSubscriptionHandler<geometry_msgs::msg::Twist>
     {
     private:
         void BroadcastBus(const geometry_msgs::msg::Twist& message) override;

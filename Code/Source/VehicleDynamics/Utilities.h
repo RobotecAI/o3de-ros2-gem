@@ -10,11 +10,12 @@
 #include "AxleConfiguration.h"
 #include "ChassisConfiguration.h"
 #include <AzCore/Component/EntityId.h>
-#include <AzCore/std/collections/vector.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
 namespace VehicleDynamics::Utilities
 {
+    AxleConfiguration Create2WheelAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, bool steering, bool drive);
     AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel);
     AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel);
 

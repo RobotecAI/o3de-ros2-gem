@@ -8,7 +8,7 @@
 #pragma once
 
 #include "ControlConfiguration.h"
-#include "RobotControl/RobotControl.h"
+#include "ControlSubscriptionHandler.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 
@@ -37,7 +37,7 @@ namespace ROS2
         static void Reflect(AZ::ReflectContext* context);
 
     private:
-        AZStd::unique_ptr<IControlSubscriptionHandlers> m_robotControl;
+        AZStd::unique_ptr<IControlSubscriptionHandler> m_subscriptionHandler;
         ControlConfiguration m_controlConfiguration;
     };
 } // namespace ROS2

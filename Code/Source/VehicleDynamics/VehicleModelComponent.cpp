@@ -12,6 +12,7 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzFramework/Physics/RigidBodyBus.h>
 
 namespace VehicleDynamics
 {
@@ -28,9 +29,9 @@ namespace VehicleDynamics
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<VehicleModelComponent, AZ::Component>()->Version(1)->Field(
-                "ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration)
+                "ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration);
 
-                if (AZ::EditContext* ec = serialize->GetEditContext())
+            if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<VehicleModelComponent>("Vehicle Model", "Customizable vehicle model component")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
@@ -61,12 +62,13 @@ namespace VehicleDynamics
         // TODO - placeholder implementation - replace with a selection of algorithms
         for (auto driveWheelEntityId : allDriveWheels)
         {
-            AZ::Entity* wheelEntity = AzToolsFramework::GetEntityById(driveWheelEntityId);
-            auto* rigidBodyComponent = wheelEntity->FindComponent<RigidBodyComponent>();
-            if (rigidBodyComponent)
+            if (!driveWheelEntityId.IsValid())
             {
-                rigidBodyComponent->SetLinearVelocity(AZ::Vector3(speedMps, 0, 0));
+                continue;
             }
+
+            Physics::RigidBodyRequestBus::Event(
+                driveWheelEntityId, &Physics::RigidBodyRequests::SetLinearVelocity, AZ::Vector3(speedMps, 0, 0));
         }
     }
 
