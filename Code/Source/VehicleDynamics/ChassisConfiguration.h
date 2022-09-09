@@ -8,9 +8,8 @@
 #pragma once
 
 #include "AxleConfiguration.h"
-#include <AzCore/Component/Component.h>
-#include <AzCore/Component/EntityId.h>
-#include <AzCore/std/collections/vector.h>
+#include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzFramework/Physics/Material/PhysicsMaterial.h>
 
 namespace VehicleDynamics
@@ -19,11 +18,11 @@ namespace VehicleDynamics
     class ChassisConfiguration
     {
     public:
+        AZ_TYPE_INFO(ChassisConfiguration, "{C616E333-E618-4E37-8CE6-1E8A28182D00}");
         ChassisConfiguration() = default;
         static void Reflect(AZ::ReflectContext* context);
 
         //! Axles of the vehicle, front to rear
         AZStd::vector<AxleConfiguration> m_axles;
-        Physics::Material m_tireMaterial; //! Can be overwritten for each wheel
     };
 } // namespace VehicleDynamics

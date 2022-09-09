@@ -20,10 +20,9 @@ namespace VehicleDynamics
         AxleConfiguration::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<ChassisConfiguration, AZ::Component>()
+            serialize->Class<ChassisConfiguration>()
                 ->Version(1)
-                ->Field("AxlesConfigurations", &ChassisConfiguration::m_axles)
-                ->Field("Tire material", &ChassisConfiguration::m_tireMaterial);
+                ->Field("AxlesConfigurations", &ChassisConfiguration::m_axles);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -31,12 +30,7 @@ namespace VehicleDynamics
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &ChassisConfiguration::m_axles, "Axles", "Configurations of axles for this chassis")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &ChassisConfiguration::m_tireMaterial,
-                        "Tire material",
-                        "Shared material for wheels");
+                        AZ::Edit::UIHandlers::Default, &ChassisConfiguration::m_axles, "Axles", "Configurations of axles for this chassis");
             }
         }
     }

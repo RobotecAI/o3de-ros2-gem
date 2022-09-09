@@ -12,7 +12,7 @@
 
 namespace ROS2
 {
-    class AckermannSubscriptionHandler : private ControlSubscriptionHandler<ackermann_msgs::msg::AckermannDrive>
+    class AckermannSubscriptionHandler : public ControlSubscriptionHandler<ackermann_msgs::msg::AckermannDrive>
     {
     private:
         void BroadcastBus(const ackermann_msgs::msg::AckermannDrive& message) override;

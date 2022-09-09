@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "RobotControl/ControlBuses/TwistBus.h"
+#include "RobotControl/Ackermann/AckermannBus.h"
 #include <AzCore/Component/Component.h>
 
 namespace ROS2
@@ -21,8 +21,13 @@ namespace ROS2
         AZ_COMPONENT(AckermannControlComponent, "{16EC2F18-F579-414C-8B3B-DB47078729BC}", AZ::Component);
         AckermannControlComponent() = default;
 
-        void Activate() override;
-        void Deactivate() override;
+        void Activate() override
+        {
+        }
+        void Deactivate() override
+        {
+        }
+
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void Reflect(AZ::ReflectContext* context);
 
