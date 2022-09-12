@@ -158,7 +158,8 @@ set(FILES
         Source/VehicleDynamics/AxleConfiguration.h
         Source/VehicleDynamics/ChassisConfiguration.cpp
         Source/VehicleDynamics/ChassisConfiguration.h
-        Source/VehicleDynamics/InputControlBus.h
+        Source/VehicleDynamics/ManualControlEventHandler.h
+        Source/VehicleDynamics/VehicleInputControlBus.h
         Source/VehicleDynamics/Utilities.cpp
         Source/VehicleDynamics/Utilities.h
         Source/VehicleDynamics/VehicleModelComponent.cpp

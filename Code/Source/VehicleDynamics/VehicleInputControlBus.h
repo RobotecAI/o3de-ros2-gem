@@ -15,11 +15,11 @@ namespace VehicleDynamics
     //! Inputs (speed, steering, acceleration etc.) for vehicle dynamics system
     //! Inputs are valid for a short time (configurable) and need to be repeated if continuous movement is needed.
     //! (Use cruise system to set cruise speed).
-    class InputControlRequests
+    class VehicleInputControlRequests
     {
     public:
-        AZ_RTTI(InputControlRequests, "{AB0F1D2A-3A73-41B6-B882-62316DE32010}");
-        virtual ~InputControlRequests() = default;
+        AZ_RTTI(VehicleInputControlRequests, "{AB0F1D2A-3A73-41B6-B882-62316DE32010}");
+        virtual ~VehicleInputControlRequests() = default;
 
         //! Set target for the vehicle linear speed. It should be realized over time according to drive model.
         //! @param speedMps is a linear speed in meters per second with the plus sign in the forward direction.
@@ -36,13 +36,12 @@ namespace VehicleDynamics
         virtual void SetTargetSteering(float steering) = 0;
     };
 
-    class InputBusTraits : public AZ::EBusTraits
+    class VehicleInputControlBusTraits : public AZ::EBusTraits
     {
     public:
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
     };
-
-    using InputControlRequestBus = AZ::EBus<InputControlRequests, InputBusTraits>;
-    using InputControlInterface = AZ::Interface<InputControlRequests>;
+    using VehicleInputControlRequestBus = AZ::EBus<VehicleInputControlRequests, VehicleInputControlBusTraits>;
+    using VehicleInputControlInterface = AZ::Interface<VehicleInputControlRequests>;
 } // namespace VehicleDynamics

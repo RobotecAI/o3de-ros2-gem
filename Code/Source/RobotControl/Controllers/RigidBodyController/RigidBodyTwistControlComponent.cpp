@@ -29,6 +29,16 @@ namespace ROS2
         }
     }
 
+    void RigidBodyTwistControlComponent::Activate()
+    {
+        TwistNotificationBus::Handler::BusConnect();
+    }
+
+    void RigidBodyTwistControlComponent::Deactivate()
+    {
+        TwistNotificationBus::Handler::BusDisconnect();
+    }
+
     void RigidBodyTwistControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         required.push_back(AZ_CRC("ROS2RobotControl"));
