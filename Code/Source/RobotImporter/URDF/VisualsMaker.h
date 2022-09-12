@@ -11,6 +11,8 @@
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/std/containers/unordered_map.h>
+#include <AzCore/IO/Path/Path.h>
+
 namespace ROS2
 {
     //! Populates a given entity with all the contents of the <visual> tag in robot description
