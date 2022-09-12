@@ -19,10 +19,14 @@ namespace VehicleDynamics
 {
     void VehicleModelComponent::Activate()
     {
+        VehicleInputControlRequestBus::Handler::BusConnect();
+        m_manualControlEventHandler.Activate();
     }
 
     void VehicleModelComponent::Deactivate()
     {
+        VehicleInputControlRequestBus::Handler::BusDisconnect();
+        m_manualControlEventHandler.Deactivate();
     }
 
     void VehicleModelComponent::Reflect(AZ::ReflectContext* context)

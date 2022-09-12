@@ -9,7 +9,6 @@
 #include "AckermannSubscriptionHandler.h"
 #include "AckermannBus.h"
 #include "AckermannCommandStruct.h"
-#include "VehicleDynamics/InputControlBus.h"
 
 namespace ROS2
 {

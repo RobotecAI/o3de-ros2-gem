@@ -7,7 +7,7 @@
  */
 
 #include "AckermannControlComponent.h"
-#include "VehicleDynamics/InputControlBus.h"
+#include "VehicleDynamics/VehicleInputControlBus.h"
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzFramework/Physics/RigidBodyBus.h>
@@ -28,16 +28,27 @@ namespace ROS2
         }
     }
 
+    void AckermannControlComponent::Activate()
+    {
+        AckermannNotificationBus::Handler::BusConnect();
+    }
+    void AckermannControlComponent::Deactivate()
+    {
+        AckermannNotificationBus::Handler::BusDisconnect();
+    }
+
     void AckermannControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         required.push_back(AZ_CRC("ROS2RobotControl"));
-        required.push_back(AZ_CRC("VehicleModel"));
+        required.push_back(AZ_CRC("VehicleModelService"));
     }
 
     void AckermannControlComponent::AckermannReceived(const AckermannCommandStruct& acs)
     {
         // Notify input system for vehicle dynamics. Only speed and steering is currently supported.
-        VehicleDynamics::InputControlRequestBus::Broadcast(&VehicleDynamics::InputControlRequests::SetTargetLinearSpeed, acs.m_speed);
-        VehicleDynamics::InputControlRequestBus::Broadcast(&VehicleDynamics::InputControlRequests::SetTargetSteering, acs.m_steeringAngle);
+        VehicleDynamics::VehicleInputControlRequestBus::Broadcast(
+            &VehicleDynamics::VehicleInputControlRequests::SetTargetLinearSpeed, acs.m_speed);
+        VehicleDynamics::VehicleInputControlRequestBus::Broadcast(
+            &VehicleDynamics::VehicleInputControlRequests::SetTargetSteering, acs.m_steeringAngle);
     }
 } // namespace ROS2
