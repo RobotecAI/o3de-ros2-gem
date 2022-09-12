@@ -18,6 +18,7 @@ namespace ROS2
     {
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
+            serialize->Class<AckermannControlComponent, AZ::Component>()->Version(1);
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<AckermannControlComponent>("Ackermann Control", "Relays Ackermann commands to vehicle inputs")
