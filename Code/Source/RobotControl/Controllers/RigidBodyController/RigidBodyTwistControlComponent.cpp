@@ -19,6 +19,7 @@ namespace ROS2
     {
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
+            serialize->Class<RigidBodyTwistControlComponent, AZ::Component>()->Version(1);
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<RigidBodyTwistControlComponent>("Rigid Body Twist Control", "Simple control through RigidBody")
@@ -31,7 +32,7 @@ namespace ROS2
     void RigidBodyTwistControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         required.push_back(AZ_CRC("ROS2RobotControl"));
-        required.push_back(AZ_CRC("PhysicsRigidBodyService"));
+        required.push_back(AZ_CRC_CE("PhysicsRigidBodyService"));
     }
 
     void RigidBodyTwistControlComponent::TwistReceived(const AZ::Vector3& linear, const AZ::Vector3& angular)

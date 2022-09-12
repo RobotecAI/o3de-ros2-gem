@@ -19,7 +19,7 @@ namespace VehicleDynamics
     {
     public:
         AZ_TYPE_INFO(AxleConfiguration, "{75BD5FEA-EADE-4371-8B2C-96F05A886BEB}");
-        AxleConfiguration();
+        AxleConfiguration() = default;
         static void Reflect(AZ::ReflectContext* context);
 
         //! Helper functions for wheel entities. If there is only one wheel, same value is returned from both.

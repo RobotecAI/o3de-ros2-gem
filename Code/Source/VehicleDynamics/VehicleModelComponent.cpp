@@ -6,6 +6,7 @@
  *
  */
 
+#include "VehicleDynamics/ChassisConfiguration.h"
 #include "VehicleDynamics/VehicleModelComponent.h"
 #include "VehicleDynamics/Utilities.h"
 #include <AzCore/Debug/Trace.h>
@@ -26,6 +27,7 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::Reflect(AZ::ReflectContext* context)
     {
+        ChassisConfiguration::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<VehicleModelComponent, AZ::Component>()->Version(1)->Field(
@@ -52,7 +54,7 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
-        provided.push_back(AZ_CRC_CE("VehicleModel"));
+        provided.push_back(AZ_CRC_CE("VehicleModelService"));
     }
 
     void VehicleModelComponent::SetTargetLinearSpeed(float speedMps)

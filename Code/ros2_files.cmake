@@ -114,8 +114,8 @@ set(FILES
         Source/RobotControl/Ackermann/AckermannSubscriptionHandler.h
         Source/RobotControl/Controllers/AckermannController/AckermannControlComponent.cpp
         Source/RobotControl/Controllers/AckermannController/AckermannControlComponent.h
-        Source/RobotControl/Controllers/RigidBodyControlComponent/RigidBodyTwistControlComponent.cpp
-        Source/RobotControl/Controllers/RigidBodyControlComponent/RigidBodyTwistControlComponent.h
+        Source/RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.cpp
+        Source/RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h
         Source/RobotControl/Twist/TwistBus.cpp
         Source/RobotControl/Twist/TwistBus.h
         Source/RobotControl/Twist/TwistSubscriptionHandler.cpp
@@ -156,12 +156,14 @@ set(FILES
         Source/URDF/UrdfToFbxConverter.h
         Source/VehicleDynamics/AxleConfiguration.cpp
         Source/VehicleDynamics/AxleConfiguration.h
+        Source/VehicleDynamics/ChassisConfiguration.cpp
         Source/VehicleDynamics/ChassisConfiguration.h
         Source/VehicleDynamics/InputControlBus.h
         Source/VehicleDynamics/Utilities.cpp
         Source/VehicleDynamics/Utilities.h
         Source/VehicleDynamics/VehicleModelComponent.cpp
         Source/VehicleDynamics/VehicleModelComponent.h
+        Source/VehicleDynamics/WheelControllerComponent.cpp
         Source/VehicleDynamics/WheelControllerComponent.h
         )
 >>>>>>> added reflections, headers
