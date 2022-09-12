@@ -7,8 +7,9 @@
  */
 #pragma once
 
-#include "InputControlBus.h"
 #include "ChassisConfiguration.h"
+#include "ManualControlEventHandler.h"
+#include "VehicleInputControlBus.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 
@@ -17,7 +18,7 @@ namespace VehicleDynamics
     //! A central vehicle and robot) dynamics component, which can be extended with additional modules.
     class VehicleModelComponent
         : public AZ::Component
-        , private InputControlRequestBus::Handler
+        , private VehicleInputControlRequestBus::Handler
     {
     public:
         AZ_COMPONENT(VehicleModelComponent, "{7093AE7A-9F64-4C77-8189-02C6B7802C1A}", AZ::Component);
@@ -37,6 +38,7 @@ namespace VehicleDynamics
         void SetTargetAcceleration(float acceleration) override;
         void SetTargetSteering(float steering) override;
 
+        ManualControlEventHandler m_manualControlEventHandler;
         ChassisConfiguration m_chassisConfiguration;
         // TODO - Engine, Transmission, Lights, etc.
     };

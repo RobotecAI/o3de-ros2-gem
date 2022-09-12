@@ -22,12 +22,8 @@ namespace ROS2
         AZ_COMPONENT(RigidBodyTwistControlComponent, "{D994FE1A-AA6A-42B9-8B8E-B3B375891F5B}", AZ::Component);
         RigidBodyTwistControlComponent() = default;
 
-        void Activate() override
-        {
-        }
-        void Deactivate() override
-        {
-        }
+        void Activate() override;
+        void Deactivate() override;
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void Reflect(AZ::ReflectContext* context);
 
