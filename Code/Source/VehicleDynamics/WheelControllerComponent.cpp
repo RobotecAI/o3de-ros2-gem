@@ -24,18 +24,18 @@ namespace VehicleDynamics
 
     void WheelControllerComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC("RigidBody"));
+        required.push_back(AZ_CRC_CE("PhysicsRigidBodyService"));
     }
 
-    void WheelControllerComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
+    void WheelControllerComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
-        provided.push_back(AZ_CRC("WheelController"));
+        provided.push_back(AZ_CRC("WheelControllerService"));
     }
 
-    void WheelControllerComponent::GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible);
+    void WheelControllerComponent::GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible)
     {
         // Only one per entity
-        incompatible.push_back(AZ_CRC("WheelController"));
+        incompatible.push_back(AZ_CRC("WheelControllerService"));
     }
 
     void WheelControllerComponent::Reflect(AZ::ReflectContext* context)
