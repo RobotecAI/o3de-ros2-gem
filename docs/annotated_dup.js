@@ -9,10 +9,16 @@ var annotated_dup =
         [ "NodeWithId", "struct_r_o_s2_1_1_fbx_1_1_node_with_id.html", "struct_r_o_s2_1_1_fbx_1_1_node_with_id" ],
         [ "RawString", "struct_r_o_s2_1_1_fbx_1_1_raw_string.html", "struct_r_o_s2_1_1_fbx_1_1_raw_string" ]
       ] ],
+      [ "URDF", null, [
+        [ "TypeConversions", "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html", null ]
+      ] ],
       [ "CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", "class_r_o_s2_1_1_camera_sensor" ],
       [ "CameraSensorDescription", "struct_r_o_s2_1_1_camera_sensor_description.html", "struct_r_o_s2_1_1_camera_sensor_description" ],
+      [ "CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", "class_r_o_s2_1_1_colliders_maker" ],
       [ "ControlConfiguration", "struct_r_o_s2_1_1_control_configuration.html", "struct_r_o_s2_1_1_control_configuration" ],
+      [ "InertialsMaker", "class_r_o_s2_1_1_inertials_maker.html", "class_r_o_s2_1_1_inertials_maker" ],
       [ "IRobotControl", "class_r_o_s2_1_1_i_robot_control.html", "class_r_o_s2_1_1_i_robot_control" ],
+      [ "JointsMaker", "class_r_o_s2_1_1_joints_maker.html", "class_r_o_s2_1_1_joints_maker" ],
       [ "LidarRaycaster", "class_r_o_s2_1_1_lidar_raycaster.html", "class_r_o_s2_1_1_lidar_raycaster" ],
       [ "LidarTemplate", "struct_r_o_s2_1_1_lidar_template.html", "struct_r_o_s2_1_1_lidar_template" ],
       [ "LidarTemplateUtils", "class_r_o_s2_1_1_lidar_template_utils.html", null ],
@@ -21,6 +27,9 @@ var annotated_dup =
       [ "QoS", "struct_r_o_s2_1_1_qo_s.html", "struct_r_o_s2_1_1_qo_s" ],
       [ "RobotConfiguration", "struct_r_o_s2_1_1_robot_configuration.html", "struct_r_o_s2_1_1_robot_configuration" ],
       [ "RobotControl", "class_r_o_s2_1_1_robot_control.html", "class_r_o_s2_1_1_robot_control" ],
+      [ "RobotImporter", "class_r_o_s2_1_1_robot_importer.html", "class_r_o_s2_1_1_robot_importer" ],
+      [ "RobotImporterConfig", "struct_r_o_s2_1_1_robot_importer_config.html", "struct_r_o_s2_1_1_robot_importer_config" ],
+      [ "RobotImporterWidget", "class_r_o_s2_1_1_robot_importer_widget.html", "class_r_o_s2_1_1_robot_importer_widget" ],
       [ "ROS2BusTraits", "class_r_o_s2_1_1_r_o_s2_bus_traits.html", null ],
       [ "ROS2CameraSensorComponent", "class_r_o_s2_1_1_r_o_s2_camera_sensor_component.html", "class_r_o_s2_1_1_r_o_s2_camera_sensor_component" ],
       [ "ROS2Conversions", "class_r_o_s2_1_1_r_o_s2_conversions.html", null ],
@@ -33,6 +42,8 @@ var annotated_dup =
       [ "ROS2Names", "class_r_o_s2_1_1_r_o_s2_names.html", null ],
       [ "ROS2Requests", "class_r_o_s2_1_1_r_o_s2_requests.html", "class_r_o_s2_1_1_r_o_s2_requests" ],
       [ "ROS2RobotControlComponent", "class_r_o_s2_1_1_r_o_s2_robot_control_component.html", "class_r_o_s2_1_1_r_o_s2_robot_control_component" ],
+      [ "ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component" ],
+      [ "ROS2RobotImporterSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_system_component.html", "class_r_o_s2_1_1_r_o_s2_robot_importer_system_component" ],
       [ "ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", "class_r_o_s2_1_1_r_o_s2_sensor_component" ],
       [ "ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", "class_r_o_s2_1_1_r_o_s2_system_component" ],
       [ "ROS2Transform", "class_r_o_s2_1_1_r_o_s2_transform.html", "class_r_o_s2_1_1_r_o_s2_transform" ],
@@ -43,6 +54,8 @@ var annotated_dup =
       [ "TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", "class_r_o_s2_1_1_twist_notifications" ],
       [ "UniqueIdGenerator", "class_r_o_s2_1_1_unique_id_generator.html", null ],
       [ "UrdfParser", "class_r_o_s2_1_1_urdf_parser.html", null ],
-      [ "UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", "class_r_o_s2_1_1_urdf_to_fbx_converter" ]
+      [ "URDFPrefabMaker", "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html", "class_r_o_s2_1_1_u_r_d_f_prefab_maker" ],
+      [ "UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", "class_r_o_s2_1_1_urdf_to_fbx_converter" ],
+      [ "VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", "class_r_o_s2_1_1_visuals_maker" ]
     ] ]
 ];

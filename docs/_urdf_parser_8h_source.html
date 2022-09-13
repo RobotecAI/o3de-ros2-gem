@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>O3DE ROS2 Gem: o3de-ros2-gem/Code/Source/URDF/UrdfParser.h Source File</title>
+<title>O3DE ROS2 Gem: o3de-ros2-gem/Code/Source/RobotImporter/URDF/UrdfParser.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,30 +96,28 @@ $(document).ready(function(){initNavTree('_urdf_parser_8h_source.html',''); init
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/string/string.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;urdf_parser/urdf_parser.h&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>ROS2</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_urdf_parser.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_urdf_parser.html">UrdfParser</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;urdf_parser/urdf_parser.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>ROS2</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_urdf_parser.html">   17</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_urdf_parser.html">UrdfParser</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">static</span> urdf::ModelInterfaceSharedPtr <a class="code" href="class_r_o_s2_1_1_urdf_parser.html#a32099baa2841ad31f9e1e1c3cf9b4dd3">Parse</a>(<span class="keyword">const</span> AZStd::string&amp; xmlString);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">static</span> urdf::ModelInterfaceSharedPtr <a class="code" href="class_r_o_s2_1_1_urdf_parser.html#a57a63cb877db7301080e28a03b00fd7b">ParseFromFile</a>(<span class="keyword">const</span> AZStd::string&amp; filePath);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">static</span> urdf::ModelInterfaceSharedPtr <a class="code" href="class_r_o_s2_1_1_urdf_parser.html#a57a63cb877db7301080e28a03b00fd7b">ParseFromFile</a>(<span class="keyword">const</span> AZStd::string&amp; filePath);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    };</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_r_o_s2_1_1_urdf_parser_html_a57a63cb877db7301080e28a03b00fd7b"><div class="ttname"><a href="class_r_o_s2_1_1_urdf_parser.html#a57a63cb877db7301080e28a03b00fd7b">ROS2::UrdfParser::ParseFromFile</a></div><div class="ttdeci">static urdf::ModelInterfaceSharedPtr ParseFromFile(const AZStd::string &amp;filePath)</div><div class="ttdef"><b>Definition:</b> UrdfParser.cpp:25</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_urdf_parser_html"><div class="ttname"><a href="class_r_o_s2_1_1_urdf_parser.html">ROS2::UrdfParser</a></div><div class="ttdoc">Class for parsing URDF data.</div><div class="ttdef"><b>Definition:</b> UrdfParser.h:18</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_urdf_parser_html"><div class="ttname"><a href="class_r_o_s2_1_1_urdf_parser.html">ROS2::UrdfParser</a></div><div class="ttdoc">Class for parsing URDF data.</div><div class="ttdef"><b>Definition:</b> UrdfParser.h:17</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_urdf_parser_html_a32099baa2841ad31f9e1e1c3cf9b4dd3"><div class="ttname"><a href="class_r_o_s2_1_1_urdf_parser.html#a32099baa2841ad31f9e1e1c3cf9b4dd3">ROS2::UrdfParser::Parse</a></div><div class="ttdeci">static urdf::ModelInterfaceSharedPtr Parse(const AZStd::string &amp;xmlString)</div><div class="ttdef"><b>Definition:</b> UrdfParser.cpp:20</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_f5da07628129bf16cd5ca04cb8870698.html">URDF</a></li><li class="navelem"><b>UrdfParser.h</b></li>
-    <li class="footer">Generated on Fri Sep 2 2022 10:02:23 for O3DE ROS2 Gem by
+    <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_eae6b30a964938d522f79c58154155f0.html">RobotImporter</a></li><li class="navelem"><a class="el" href="dir_a83c0b79dd9a152995ca99aacead9b19.html">URDF</a></li><li class="navelem"><b>UrdfParser.h</b></li>
+    <li class="footer">Generated on Tue Sep 13 2022 10:50:31 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

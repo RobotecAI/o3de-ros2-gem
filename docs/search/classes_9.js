@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qos_128',['QoS',['../struct_r_o_s2_1_1_qo_s.html',1,'ROS2']]]
+  ['publisherconfiguration_153',['PublisherConfiguration',['../struct_r_o_s2_1_1_publisher_configuration.html',1,'ROS2']]]
 ];

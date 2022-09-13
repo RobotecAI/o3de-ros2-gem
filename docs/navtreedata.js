@@ -26,6 +26,9 @@ var NAVTREE =
     [ "O3DE Ros 2 Gem documentation", "index.html", [
       [ "Diagram of classes", "index.html#autotoc_md1", null ]
     ] ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -47,7 +50,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"struct_r_o_s2_1_1_lidar_template.html#af48cbd008ab1317287f29c51f39ccded"
+"dir_c81890b56aa7c1e822748797d2a9f1ff.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

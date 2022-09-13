@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['namespaceconfiguration_123',['NamespaceConfiguration',['../struct_r_o_s2_1_1_namespace_configuration.html',1,'ROS2']]],
-  ['node_124',['Node',['../class_r_o_s2_1_1_fbx_1_1_node.html',1,'ROS2::Fbx']]],
-  ['nodewithid_125',['NodeWithId',['../struct_r_o_s2_1_1_fbx_1_1_node_with_id.html',1,'ROS2::Fbx']]]
+  ['material_148',['Material',['../struct_r_o_s2_1_1_fbx_1_1_constants_1_1_material.html',1,'ROS2::Fbx::Constants']]]
 ];

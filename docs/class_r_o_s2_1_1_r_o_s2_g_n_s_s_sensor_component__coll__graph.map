@@ -1,7 +1,7 @@
 <map id="ROS2::ROS2GNSSSensorComponent" name="ROS2::ROS2GNSSSensorComponent">
-<area shape="rect" id="node1" title=" " alt="" coords="105,171,359,197"/>
-<area shape="rect" id="node2" href="$class_r_o_s2_1_1_r_o_s2_sensor_component.html" title=" " alt="" coords="123,95,341,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,128,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="153,5,311,32"/>
-<area shape="rect" id="node5" href="$struct_r_o_s2_1_1_sensor_configuration.html" title=" " alt="" coords="335,5,531,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="36,171,291,197"/>
+<area shape="rect" id="node2" href="$class_r_o_s2_1_1_r_o_s2_sensor_component.html" title=" " alt="" coords="54,95,273,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,103,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="127,5,200,32"/>
+<area shape="rect" id="node5" href="$struct_r_o_s2_1_1_sensor_configuration.html" title=" " alt="" coords="224,5,420,32"/>
 </map>

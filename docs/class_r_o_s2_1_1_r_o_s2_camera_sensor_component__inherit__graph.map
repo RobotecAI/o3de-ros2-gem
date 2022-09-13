@@ -1,6 +1,6 @@
 <map id="ROS2::ROS2CameraSensorComponent" name="ROS2::ROS2CameraSensorComponent">
-<area shape="rect" id="node1" title=" " alt="" coords="14,155,285,181"/>
-<area shape="rect" id="node2" href="$class_r_o_s2_1_1_r_o_s2_sensor_component.html" title=" " alt="" coords="40,80,259,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,128,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="153,5,311,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,155,276,181"/>
+<area shape="rect" id="node2" href="$class_r_o_s2_1_1_r_o_s2_sensor_component.html" title=" " alt="" coords="31,80,250,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="37,5,135,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="159,5,232,32"/>
 </map>

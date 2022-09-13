@@ -5,10 +5,14 @@ var hierarchy =
     ] ],
     [ "ROS2::CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", null ],
     [ "ROS2::CameraSensorDescription", "struct_r_o_s2_1_1_camera_sensor_description.html", null ],
+    [ "ROS2::CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", null ],
     [ "ROS2::Fbx::Color", "struct_r_o_s2_1_1_fbx_1_1_color.html", null ],
     [ "Component", null, [
       [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
       [ "ROS2::ROS2RobotControlComponent", "class_r_o_s2_1_1_r_o_s2_robot_control_component.html", null ],
+      [ "ROS2::ROS2RobotImporterSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_system_component.html", [
+        [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
+      ] ],
       [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", [
         [ "ROS2::ROS2CameraSensorComponent", "class_r_o_s2_1_1_r_o_s2_camera_sensor_component.html", null ],
         [ "ROS2::ROS2GNSSSensorComponent", "class_r_o_s2_1_1_r_o_s2_g_n_s_s_sensor_component.html", null ],
@@ -29,22 +33,27 @@ var hierarchy =
     [ "ROS2::Fbx::Constants::FbxHeader", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_fbx_header.html", null ],
     [ "ROS2::Fbx::Constants::GlobalSettings", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_global_settings.html", null ],
     [ "Handler", null, [
-      [ "ROS2::TwistNotificationHandler", "class_r_o_s2_1_1_twist_notification_handler.html", null ]
-    ] ],
-    [ "Handler", null, [
       [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
       [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "Handler", null, [
+      [ "ROS2::TwistNotificationHandler", "class_r_o_s2_1_1_twist_notification_handler.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
+    ] ],
+    [ "Handler", null, [
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
+    [ "ROS2::InertialsMaker", "class_r_o_s2_1_1_inertials_maker.html", null ],
     [ "ROS2::IRobotControl", "class_r_o_s2_1_1_i_robot_control.html", [
       [ "ROS2::RobotControl< geometry_msgs::msg::Twist >", "class_r_o_s2_1_1_robot_control.html", [
         [ "ROS2::TwistControl", "class_r_o_s2_1_1_twist_control.html", null ]
       ] ],
       [ "ROS2::RobotControl< T >", "class_r_o_s2_1_1_robot_control.html", null ]
     ] ],
+    [ "ROS2::JointsMaker", "class_r_o_s2_1_1_joints_maker.html", null ],
     [ "ROS2::LidarRaycaster", "class_r_o_s2_1_1_lidar_raycaster.html", null ],
     [ "ROS2::LidarTemplate", "struct_r_o_s2_1_1_lidar_template.html", null ],
     [ "ROS2::LidarTemplateUtils", "class_r_o_s2_1_1_lidar_template_utils.html", null ],
@@ -58,15 +67,23 @@ var hierarchy =
     [ "ROS2::Fbx::Constants::Object", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_object.html", null ],
     [ "ROS2::PublisherConfiguration", "struct_r_o_s2_1_1_publisher_configuration.html", null ],
     [ "ROS2::QoS", "struct_r_o_s2_1_1_qo_s.html", null ],
+    [ "QWidget", null, [
+      [ "ROS2::RobotImporterWidget", "class_r_o_s2_1_1_robot_importer_widget.html", null ]
+    ] ],
     [ "ROS2::Fbx::RawString", "struct_r_o_s2_1_1_fbx_1_1_raw_string.html", null ],
     [ "ROS2::RobotConfiguration", "struct_r_o_s2_1_1_robot_configuration.html", null ],
+    [ "ROS2::RobotImporter", "class_r_o_s2_1_1_robot_importer.html", null ],
+    [ "ROS2::RobotImporterConfig", "struct_r_o_s2_1_1_robot_importer_config.html", null ],
     [ "ROS2::ROS2Conversions", "class_r_o_s2_1_1_r_o_s2_conversions.html", null ],
     [ "ROS2::ROS2Names", "class_r_o_s2_1_1_r_o_s2_names.html", null ],
     [ "ROS2::ROS2Requests", "class_r_o_s2_1_1_r_o_s2_requests.html", null ],
     [ "ROS2::ROS2Transform", "class_r_o_s2_1_1_r_o_s2_transform.html", null ],
     [ "ROS2::SensorConfiguration", "struct_r_o_s2_1_1_sensor_configuration.html", null ],
     [ "ROS2::SimulationClock", "class_r_o_s2_1_1_simulation_clock.html", null ],
+    [ "ROS2::URDF::TypeConversions", "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html", null ],
     [ "ROS2::UniqueIdGenerator", "class_r_o_s2_1_1_unique_id_generator.html", null ],
     [ "ROS2::UrdfParser", "class_r_o_s2_1_1_urdf_parser.html", null ],
-    [ "ROS2::UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", null ]
+    [ "ROS2::URDFPrefabMaker", "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html", null ],
+    [ "ROS2::UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", null ],
+    [ "ROS2::VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", null ]
 ];
