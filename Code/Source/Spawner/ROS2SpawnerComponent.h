@@ -8,9 +8,8 @@
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <AzFramework/Spawnable/SpawnableEntitiesInterface.h>
 #include <AzFramework/Spawnable/Spawnable.h>
-#include <Sensor/ROS2SensorComponent.h>
+#include <AzFramework/Spawnable/SpawnableEntitiesInterface.h>
 #include <ROS2SystemComponent.h>
 
 #include <o3de_spawning_interface_srvs/srv/get_available_spawnable_names.hpp>
@@ -20,31 +19,37 @@ namespace ROS2
 {
     //! TODO: doc
     class ROS2SpawnerComponent : public AZ::Component
-        {
-        public:
+    {
+    public:
+        AZ_COMPONENT(ROS2SpawnerComponent, "{5950AC6B-75F3-4E0F-BA5C-17C877013710}", AZ::Component);
 
-            AZ_COMPONENT(ROS2SpawnerComponent, "{5950AC6B-75F3-4E0F-BA5C-17C877013710}", AZ::Component);
+        // AZ::Component interface implementation.
+        ROS2SpawnerComponent() = default;
 
-            // AZ::Component interface implementation.
-            ROS2SpawnerComponent() = default;
-            ~ROS2SpawnerComponent() = default;
+        ~ROS2SpawnerComponent() = default;
 
-            void Activate() override;
-            void Deactivate() override;
+        void Activate() override;
 
-            // Required Reflect function.
-            static void Reflect(AZ::ReflectContext* context);
+        void Deactivate() override;
 
-        private:
-            std::map<AZStd::string, AzFramework::EntitySpawnTicket> m_tickets = {};
-            AZStd::vector<AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables = {};
+        // Required Reflect function.
+        static void Reflect(AZ::ReflectContext* context);
 
-            rclcpp::Service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>::SharedPtr m_get_names_service;
-            rclcpp::Service<o3de_spawning_interface_srvs::srv::SpawnRobot>::SharedPtr m_spawn_service;
+    private:
+        std::map<AZStd::string, AzFramework::EntitySpawnTicket> m_tickets = {};
+        AZStd::vector<AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables = {};
 
-            void GetAvailableSpawnableNames(const std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request> request, std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response> response);
-            void SpawnRobot(const std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request> request, std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response> response);
+        rclcpp::Service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>::SharedPtr m_get_names_service;
+        rclcpp::Service<o3de_spawning_interface_srvs::srv::SpawnRobot>::SharedPtr m_spawn_service;
 
-            void pre_spawn(AzFramework::EntitySpawnTicket::Id, AzFramework::SpawnableEntityContainerView, const AZ::Transform&);
-        };
+        void GetAvailableSpawnableNames(
+            const std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request> request,
+            std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response> response);
+
+        void SpawnRobot(
+            const std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request> request,
+            std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response> response);
+
+        void pre_spawn(AzFramework::EntitySpawnTicket::Id, AzFramework::SpawnableEntityContainerView, const AZ::Transform&);
+    };
 } // namespace ROS2

@@ -16,6 +16,7 @@
 #include "ROS2SystemComponent.h"
 #include "RobotControl/ROS2RobotControlComponent.h"
 #include "RobotImporter/ROS2RobotImporterSystemComponent.h"
+#include "Spawner/ROS2SpawnerComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 
