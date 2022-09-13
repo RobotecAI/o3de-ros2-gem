@@ -28,12 +28,11 @@ namespace ROS2
     VisualsMaker::VisualsMaker(const AZ::IO::Path& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials)
         : m_modelPath(modelPath)
     {
-        std::for_each(
-            std::begin(materials),
-            std::end(materials),
+        AZStd::ranges::for_each(
+            materials,
             [&](const auto& p)
             {
-                m_materials[AZStd::string(p.first.c_str())] = p.second;
+                m_materials[AZStd::string(p.first.c_str(), p.first.size())] = p.second;
             });
         AZ_Assert(!m_modelPath.empty(), "modelPath path is empty");
     }
