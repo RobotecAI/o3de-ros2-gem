@@ -15,8 +15,8 @@
 #include <AzCore/std/parallel/atomic.h>
 #include <AzCore/std/parallel/mutex.h>
 #include <AzCore/std/parallel/thread.h>
-#include <AzFramework/Physics/Material/PhysicsMaterialManager.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialId.h>
+#include <AzFramework/Physics/Material/PhysicsMaterialManager.h>
 
 namespace ROS2
 {
@@ -56,6 +56,6 @@ namespace ROS2
         AZStd::atomic_bool m_stopBuildFlag;
         AZ::Data::Asset<Physics::MaterialAsset> m_wheelMaterial;
 
-        bool GuessIsWheel(const AZStd::string &entityName);
+        bool GuessIsWheel(const AZStd::string& entityName);
     };
 } // namespace ROS2

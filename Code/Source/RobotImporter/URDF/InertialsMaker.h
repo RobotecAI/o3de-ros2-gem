@@ -13,6 +13,8 @@
 
 namespace ROS2
 {
+    constexpr AZ::u8 kMinimalNumPosSolv = 100;
+    constexpr AZ::u8 kMinimalNumVelSolv = 100;
     //! Populates the entity with contents of the <inertial> tag in robot description.
     class InertialsMaker
     {

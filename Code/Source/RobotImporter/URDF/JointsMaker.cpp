@@ -31,10 +31,10 @@ namespace ROS2
     void JointsMaker::AddJoint(urdf::JointSharedPtr joint, AZ::EntityId linkChildId, AZ::EntityId linkParentId)
     {
         if (joint->type == urdf::Joint::FIXED)
-        {   // In URDF, we can have joints between links that have no colliders (for fixed joints).
+        { // In URDF, we can have joints between links that have no colliders (for fixed joints).
             // In O3DE physics, colliders are necessary for joints, in both lead and follower entities.
             // We will add unconfigured (asset-less) collider components to support this case.
-            for (auto entityId : {linkParentId, linkChildId})
+            for (auto entityId : { linkParentId, linkChildId })
             {
                 if (!PrefabMakerUtils::HasCollider(entityId))
                 {
@@ -43,16 +43,15 @@ namespace ROS2
             }
         }
         if (!PrefabMakerUtils::HasCollider(linkChildId) || !PrefabMakerUtils::HasCollider(linkParentId))
-        {   // This check should always pass unless adding colliders earlier failed for some reason or URDF is ill-defined
+        { // This check should always pass unless adding colliders earlier failed for some reason or URDF is ill-defined
             AZ_Error("AddJoint", false, "Unable to add a joint %s without lead and follow colliders", joint->name.c_str());
             return;
         }
         AddJointComponent(joint, linkChildId, linkParentId);
     }
 
-
     void JointsMaker::AddColliderForFixedJoint(urdf::JointSharedPtr joint, AZ::EntityId entityId)
-    {   // Both Collider and RigidBody are required, provide kinematic, not simulated
+    { // Both Collider and RigidBody are required, provide kinematic, not simulated
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
 
         Physics::ColliderConfiguration colliderConfig;

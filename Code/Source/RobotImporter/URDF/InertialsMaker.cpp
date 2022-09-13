@@ -26,6 +26,9 @@ namespace ROS2
         PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
         rigidBodyConfiguration.m_mass = inertial->mass;
 
+        PhysX::RigidBodyConfiguration physxSpecificConfiguration;
+        physxSpecificConfiguration.m_solverPositionIterations = kMinimalNumPosSolv;
+        physxSpecificConfiguration.m_solverVelocityIterations = kMinimalNumVelSolv;
         // TODO - Check whether this is a correct offset for every case (consider entity transform and collider origin)
         rigidBodyConfiguration.m_centerOfMassOffset = URDF::TypeConversions::ConvertVector3(inertial->origin.position);
         if (!URDF::TypeConversions::ConvertQuaternion(inertial->origin.rotation).IsIdentity())
@@ -40,6 +43,6 @@ namespace ROS2
             AZ::Vector3(inertial->ixy, inertial->iyy, inertial->iyz),
             AZ::Vector3(inertial->ixz, inertial->iyz, inertial->izz));
         rigidBodyConfiguration.m_inertiaTensor = inertiaMatrix;
-        entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration);
+        entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration, physxSpecificConfiguration);
     }
 } // namespace ROS2
