@@ -70,4 +70,6 @@ set(FILES
     Source/Spawner/ROS2SpawnPointsProviderComponent.cpp
     Source/Spawner/ROS2SpawnPointsProviderComponent.h
     Source/Spawner/SpawnPointsBus.h
+    Source/Spawner/SpawnPointComponent.cpp
+    Source/Spawner/SpawnPointComponent.h
 )

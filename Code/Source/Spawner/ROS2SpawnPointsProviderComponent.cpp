@@ -8,6 +8,9 @@
 
 #include "ROS2SpawnPointsProviderComponent.h"
 #include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Component/TransformBus.h>
+#include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <Spawner/SpawnPointComponent.h>
 
 #include <geometry_msgs/msg/point.hpp>
 
@@ -59,26 +62,30 @@ namespace ROS2 {
         std::vector<AZ::Vector3> bounding_box( request->bounding_box.size(), {0, 0, 0});
         std::transform(request->bounding_box.begin(), request->bounding_box.end(), bounding_box.begin(), [](auto point){ return AZ::Vector3(point.x, point.y, point.z); });
 
-        auto points = GetSpawnPoints( bounding_box );
+        auto points = GetSpawnPoints(bounding_box);
 
-        response->available_points.insert( response->available_points.end(), points.size(), geometry_msgs::msg::Point() );
+        for( const auto& spawn_point_info : points )
+        {
+            auto spawn_point = o3de_spawning_interface_srvs::msg::SpawnPoint();
 
-        std::transform( points.begin(), points.end(), response->available_points.begin(), []( const auto& point )
-            {
-                auto p = geometry_msgs::msg::Point();
-                p.x = point.GetX();
-                p.y = point.GetY();
-                p.z = point.GetZ();
-                return p;
-            }
-        );
+            spawn_point.name = std::string(spawn_point_info.name.c_str(), spawn_point_info.name.size());
+            spawn_point.desctiption = std::string(spawn_point_info.description.c_str(), spawn_point_info.description.size());
+            spawn_point.position.x = spawn_point_info.position.GetX();
+            spawn_point.position.y = spawn_point_info.position.GetY();
+            spawn_point.position.z = spawn_point_info.position.GetZ();
+
+            response->available_points.emplace_back( spawn_point );
+        }
     }
 
     void ROS2SpawnPointsProviderComponent::IsSpawnPointSuitableSrv(const std::shared_ptr<o3de_spawning_interface_srvs::srv::IsSpawnPointSuitable::Request> request, std::shared_ptr<o3de_spawning_interface_srvs::srv::IsSpawnPointSuitable::Response> response)
     {
-        std::vector<AZ::Vector3> bounding_box( request->bounding_box.size(), {0, 0, 0});
+        std::vector<AZ::Vector3> bounding_box = {};
 
-        std::transform(request->bounding_box.begin(), request->bounding_box.end(), bounding_box.begin(), [](auto point){ return AZ::Vector3(point.x, point.y, point.z); });
+        for( const auto& bounding_box_point : request->bounding_box )
+        {
+            bounding_box.emplace_back( AZ::Vector3( bounding_box_point.x, bounding_box_point.y, bounding_box_point.z));
+        }
 
         response->result = IsSpawnPointSuitable( AZ::Vector3( request->center.x, request->center.y, request->center.z ), bounding_box );
     }
@@ -89,9 +96,30 @@ namespace ROS2 {
         return true;
     }
 
-    std::vector<AZ::Vector3> ROS2SpawnPointsProviderComponent::GetSpawnPoints(const std::vector<AZ::Vector3> &bounding_box) const
+    std::vector<SpawnPointInfo> ROS2SpawnPointsProviderComponent::GetSpawnPoints(const std::vector<AZ::Vector3> &bounding_box) const
     {
-        //todo: implementation
-        return std::vector<AZ::Vector3>{ {2,2,0.5} };
+        std::vector<SpawnPointInfo> result = {};
+        AZStd::vector<AZ::EntityId> children;
+        AZ::TransformBus::EventResult(children, GetEntityId(), &AZ::TransformBus::Events::GetChildren);
+
+        for( auto child : children )
+        {
+            auto child_entity = AzToolsFramework::GetEntityById(child );
+
+            auto spawn_point_component = child_entity->FindComponent<SpawnPointComponent>();
+            if( spawn_point_component == nullptr )
+            {
+                continue;
+            }
+
+            auto spawn_point_position = child_entity->GetTransform()->GetWorldTM().GetTranslation();
+
+            if(IsSpawnPointSuitable(spawn_point_position, bounding_box) )
+            {
+                result.emplace_back( SpawnPointInfo{ spawn_point_component->GetName(), spawn_point_component->GetDescription(), spawn_point_position } );
+            }
+        }
+
+        return result;
     }
 }

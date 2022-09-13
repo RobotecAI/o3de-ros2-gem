@@ -10,6 +10,7 @@
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Math/Vector3.h>
 #include <AzCore/RTTI/BehaviorContext.h>
+#include <Spawner/SpawnPointComponent.h>
 
 namespace ROS2
 {
@@ -24,7 +25,7 @@ namespace ROS2
         virtual bool IsSpawnPointSuitable(const AZ::Vector3& point, const std::vector<AZ::Vector3>& bounding_box) const = 0;
 
         // todo: doc
-        virtual std::vector<AZ::Vector3> GetSpawnPoints(const std::vector<AZ::Vector3>& bounding_box) const = 0;
+        virtual std::vector<SpawnPointInfo> GetSpawnPoints(const std::vector<AZ::Vector3>& bounding_box) const = 0;
     };
 
     class SpawnPointsBusTraits : public AZ::EBusTraits
