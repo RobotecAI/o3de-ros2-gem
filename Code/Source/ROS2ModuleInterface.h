@@ -12,9 +12,9 @@
 #include "GNSS/ROS2GNSSSensorComponent.h"
 #include "Imu/ROS2ImuSensorComponent.h"
 #include "Lidar/ROS2LidarSensorComponent.h"
-#include "Spawner/ROS2SpawnerComponent.h"
 #include "ROS2SystemComponent.h"
 #include "RobotControl/ROS2RobotControlComponent.h"
+#include "Spawner/ROS2SpawnerComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 
