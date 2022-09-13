@@ -15,6 +15,7 @@
 #include "ROS2SystemComponent.h"
 #include "RobotControl/ROS2RobotControlComponent.h"
 #include "Spawner/ROS2SpawnerComponent.h"
+#include "Spawner/ROS2SpawnPointsProviderComponent.h"
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/Module/Module.h>
 
@@ -42,7 +43,8 @@ namespace ROS2
                   ROS2FrameComponent::CreateDescriptor(),
                   ROS2RobotControlComponent::CreateDescriptor(),
                   ROS2CameraSensorComponent::CreateDescriptor(),
-                  ROS2SpawnerComponent::CreateDescriptor() });
+                  ROS2SpawnerComponent::CreateDescriptor(),
+                  ROS2SpawnPointsProviderComponent::CreateDescriptor() });
         }
 
         //! Add required SystemComponents to the SystemEntity.

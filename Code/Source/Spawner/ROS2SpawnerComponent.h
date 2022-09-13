@@ -11,6 +11,7 @@
 #include <AzFramework/Spawnable/Spawnable.h>
 #include <AzFramework/Spawnable/SpawnableEntitiesInterface.h>
 #include <ROS2SystemComponent.h>
+#include <Spawner/SpawnPointsBus.h>
 
 #include <o3de_spawning_interface_srvs/srv/get_available_spawnable_names.hpp>
 #include <o3de_spawning_interface_srvs/srv/spawn_robot.hpp>

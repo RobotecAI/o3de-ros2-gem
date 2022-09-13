@@ -70,6 +70,15 @@ namespace ROS2
                 return spwn.GetHint() == key;
             });
 
+        auto interface = SpawnPointsInterface::Get();
+        auto available = interface->IsSpawnPointSuitable( AZ::Vector3(request->position.position.x, request->position.position.y, request->position.position.z ), {} );
+
+        if( !available )
+        {
+            response->result = false;
+            response->info = "Entity does not fit in the specified place";
+        }
+
         if (spawnable != m_spawnables.end())
         {
             if (m_tickets.find(key) == m_tickets.end())
