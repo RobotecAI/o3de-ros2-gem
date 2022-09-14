@@ -71,6 +71,7 @@ namespace VehicleDynamics
         // TODO - add a timeout to set to zero on no inputs. Determine best place.
         m_inputsState.m_speed = speedMps;
         m_accumulatedTimeoutSpeed = 0;
+        AZ_TracePrintf("SetTargetLinearSpeed", "Setting speed to %f\n", speedMps);
     }
 
     void VehicleModelComponent::SetTargetAcceleration([[maybe_unused]] float acceleration)
@@ -83,6 +84,7 @@ namespace VehicleDynamics
         // TODO - add a timeout to set to zero on no inputs. Determine best place.
         m_inputsState.m_steering = steering;
         m_accumulatedTimeoutSteering = 0;
+        AZ_TracePrintf("SetTargetSteering", "Setting steering to %f\n", steering);
     }
 
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
