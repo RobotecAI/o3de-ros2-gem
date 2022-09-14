@@ -5,14 +5,14 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:20: warning: Compound ROS2::Fbx::Constants::FbxHeader is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/ROS2Bus.h:56: warning: Compound ROS2::ROS2BusTraits is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:36: warning: Compound ROS2::Fbx::Constants::GlobalSettings is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:23: warning: Unsupported xml/html tag <collider> found
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/InertialsMaker.h:16: warning: Unsupported xml/html tag <inertial> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/VisualsMaker.h:18: warning: Unsupported xml/html tag <visual> found
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:23: warning: Unsupported xml/html tag <collider> found
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:27: warning: Member CollidersMaker(AZStd::string modelPath) (function) of class ROS2::CollidersMaker is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:23: warning: Unsupported xml/html tag <collider> found
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:39: warning: argument 'buildReadyCb' of command @param is not found in the argument list of ROS2::CollidersMaker::ProcessMeshes(BuildReadyCallback notifyBuildReadyCb)
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:41: warning: The following parameter of ROS2::CollidersMaker::ProcessMeshes(BuildReadyCallback notifyBuildReadyCb) is not documented:
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:29: warning: Member CollidersMaker(AZStd::string modelPath) (function) of class ROS2::CollidersMaker is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:41: warning: argument 'buildReadyCb' of command @param is not found in the argument list of ROS2::CollidersMaker::ProcessMeshes(BuildReadyCallback notifyBuildReadyCb)
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:43: warning: The following parameter of ROS2::CollidersMaker::ProcessMeshes(BuildReadyCallback notifyBuildReadyCb) is not documented:
   parameter 'notifyBuildReadyCb'
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/ControlConfiguration.h:24: warning: Member AZ_TYPE_INFO(ControlConfiguration, "{3D3E69EE-0F28-46D5-95F1-956550BA97B9}") (function) of class ROS2::ControlConfiguration is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/ControlConfiguration.h:35: warning: Member Reflect(AZ::ReflectContext *context) (function) of class ROS2::ControlConfiguration is not documented.
@@ -274,12 +274,12 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/TypeConversions.h:22: warning: Member ConvertVector3(const urdf::Vector3 &urdfVector) (function) of class ROS2::URDF::TypeConversions is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/TypeConversions.h:23: warning: Member ConvertQuaternion(const urdf::Rotation &urdfQuaternion) (function) of class ROS2::URDF::TypeConversions is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/TypeConversions.h:24: warning: Member ConvertColor(const urdf::Color &color) (function) of class ROS2::URDF::TypeConversions is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:23: warning: Unsupported xml/html tag <collider> found
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/InertialsMaker.h:16: warning: Unsupported xml/html tag <inertial> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/VisualsMaker.h:18: warning: Unsupported xml/html tag <visual> found
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:23: warning: Unsupported xml/html tag <collider> found
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/InertialsMaker.h:16: warning: Unsupported xml/html tag <inertial> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/VisualsMaker.h:18: warning: Unsupported xml/html tag <visual> found
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:23: warning: Unsupported xml/html tag <collider> found
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/InertialsMaker.h:16: warning: Unsupported xml/html tag <inertial> found
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/VisualsMaker.h:18: warning: Unsupported xml/html tag <visual> found
