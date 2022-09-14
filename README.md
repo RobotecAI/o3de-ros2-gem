@@ -15,6 +15,7 @@ This Gem enables users to develop robotic simulations through ROS2 tools and com
 Replace `<distro>` with ROS 2 distribution name (galactic, humble, ..).
 
 * Ackermann messages: `sudo apt install ros-<distro>-ackermann-msgs`
+* Control toolbox `sudo apt install ros-<distro>-control-toolbox`
 
 ## Features
 

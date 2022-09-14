@@ -6,8 +6,9 @@
  *
  */
 
-#include "VehicleDynamics/ChassisConfiguration.h"
 #include "VehicleDynamics/VehicleModelComponent.h"
+#include "VehicleDynamics/ChassisConfiguration.h"
+#include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "VehicleDynamics/Utilities.h"
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -19,14 +20,18 @@ namespace VehicleDynamics
 {
     void VehicleModelComponent::Activate()
     {
+        m_driveModel = AZStd::make_unique<SimplifiedDriveModel>();
         VehicleInputControlRequestBus::Handler::BusConnect();
         m_manualControlEventHandler.Activate();
+        AZ::TickBus::Handler::BusConnect();
     }
 
     void VehicleModelComponent::Deactivate()
     {
-        VehicleInputControlRequestBus::Handler::BusDisconnect();
+        AZ::TickBus::Handler::BusDisconnect();
         m_manualControlEventHandler.Deactivate();
+        VehicleInputControlRequestBus::Handler::BusDisconnect();
+        m_driveModel.reset();
     }
 
     void VehicleModelComponent::Reflect(AZ::ReflectContext* context)
@@ -63,19 +68,9 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::SetTargetLinearSpeed(float speedMps)
     {
-        auto allDriveWheels = VehicleDynamics::Utilities::GetAllDriveWheelEntities(m_chassisConfiguration);
-
-        // TODO - placeholder implementation - replace with a selection of algorithms
-        for (auto driveWheelEntityId : allDriveWheels)
-        {
-            if (!driveWheelEntityId.IsValid())
-            {
-                continue;
-            }
-
-            Physics::RigidBodyRequestBus::Event(
-                driveWheelEntityId, &Physics::RigidBodyRequests::SetLinearVelocity, AZ::Vector3(speedMps, 0, 0));
-        }
+        // TODO - add a timeout to set to zero on no inputs. Determine best place.
+        m_inputsState.m_speed = speedMps;
+        m_accumulatedTimeoutSpeed = 0;
     }
 
     void VehicleModelComponent::SetTargetAcceleration([[maybe_unused]] float acceleration)
@@ -83,8 +78,32 @@ namespace VehicleDynamics
         AZ_Error("SetTargetAcceleration", false, "Not implemented");
     }
 
-    void VehicleModelComponent::SetTargetSteering([[maybe_unused]] float steering)
+    void VehicleModelComponent::SetTargetSteering(float steering)
     {
-        AZ_Error("SetTargetSteering", false, "Not implemented");
+        // TODO - add a timeout to set to zero on no inputs. Determine best place.
+        m_inputsState.m_steering = steering;
+        m_accumulatedTimeoutSteering = 0;
     }
+
+    void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
+    {
+        // TODO - expose the const for timeouts and handle them in generic way for each input (no repetitions)
+        m_accumulatedTimeoutSpeed += deltaTime;
+        m_accumulatedTimeoutSteering += deltaTime;
+        const float zeroOutInputsThreshold = 0.5f; // 0.5 second without fresh input is considered loss of control, stop.
+        if (m_accumulatedTimeoutSpeed > zeroOutInputsThreshold)
+        {
+            m_inputsState.m_speed = 0.0f;
+            m_accumulatedTimeoutSpeed = zeroOutInputsThreshold;
+        }
+        if (m_accumulatedTimeoutSteering > zeroOutInputsThreshold)
+        {
+            m_inputsState.m_steering = 0.0f;
+            m_accumulatedTimeoutSteering = zeroOutInputsThreshold;
+        }
+
+        uint64_t deltaTimeNs = deltaTime * 1000000000;
+        m_driveModel->ApplyInputState(m_inputsState, m_chassisConfiguration, deltaTimeNs);
+    }
+
 } // namespace VehicleDynamics
