@@ -16,8 +16,8 @@ namespace VehicleDynamics
     SimplifiedDriveModel::SimplifiedDriveModel()
     {
         // TODO - make this a part of exposed configuration
-        m_speedPid.initPid(500.0, 0.0, 0.0, 1000.0, -1000.0);
-        m_steeringPid.initPid(500.0, 10.0, 100.0, 1000.0, -1000.0);
+        m_speedPid.initPid(50.0, 0.0, 0.0, 100.0, -100.0);
+        m_steeringPid.initPid(50.0, 0.0, 0.0, 100.0, -100.0);
     }
 
     void SimplifiedDriveModel::ApplyInputState(const VehicleInputsState& inputs, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
@@ -26,6 +26,7 @@ namespace VehicleDynamics
         ApplySpeed(inputs.m_speed, vehicleChassis, nsDt);
     }
 
+    // TODO - speed and steering handling is quite similar, possible to refactor?
     void SimplifiedDriveModel::ApplySteering(float steering, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
     {
         auto steeringEntities = VehicleDynamics::Utilities::GetAllSteeringEntities(vehicleChassis);
@@ -35,6 +36,14 @@ namespace VehicleDynamics
             AZ::TransformBus::EventResult(currentSteeringElementRotation, steeringEntity, &AZ::TransformBus::Events::GetLocalRotation);
             auto currentSteeringAngle = currentSteeringElementRotation.GetZ(); // TODO - axis could be different
             double pidCommand = m_steeringPid.computeCommand(steering - currentSteeringAngle, nsDt);
+            AZ_TracePrintf(
+                "SimplifiedDriveModel",
+                "Applying steering to entity %s with values: desired %f, current %f, impulse %lf\n",
+                steeringEntity.ToString().c_str(),
+                steering,
+                currentSteeringAngle,
+                pidCommand);
+
             if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
             {
                 continue;
@@ -67,6 +76,14 @@ namespace VehicleDynamics
             auto desiredAngularSpeedX = speed / wheelRadius;
 
             double pidCommand = m_speedPid.computeCommand(desiredAngularSpeedX - currentAngularSpeedX, nsDt);
+            AZ_TracePrintf(
+                "SimplifiedDriveModel",
+                "Applying angular speed to wheel entity %s with values: desired %f, current %f, impulse %lf\n",
+                wheelEntity.ToString().c_str(),
+                desiredAngularSpeedX,
+                currentAngularSpeedX,
+                pidCommand);
+
             if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
             {
                 continue;

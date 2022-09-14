@@ -31,7 +31,7 @@ namespace VehicleDynamics
 
         void Deactivate()
         {
-            StartingPointInput::InputEventNotificationBus::Handler::BusConnect(
+            StartingPointInput::InputEventNotificationBus::Handler::BusDisconnect(
                 StartingPointInput::InputEventNotificationId(m_eventName.c_str()));
         }
 
@@ -54,16 +54,17 @@ namespace VehicleDynamics
             m_eventHandlers.push_back(ManualControlSingleEventHandler(
                 "steering",
                 [](float inputValue)
-                {
+                {   // TODO handle steer
                     const float steeringLimit = 1; // Radians
                     VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteering, inputValue * steeringLimit);
                 }));
 
             m_eventHandlers.push_back(ManualControlSingleEventHandler(
-                "acceleration",
+                "accelerate",
                 [](float inputValue)
-                { // keep -1 to 1
-                    VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteering, inputValue);
+                { // TODO handle speed limits.
+                    const float speedLimit = 15; // Meters per second
+                    VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetLinearSpeed, inputValue * speedLimit);
                 }));
         }
 
