@@ -27,8 +27,6 @@ namespace ROS2
         rigidBodyConfiguration.m_mass = inertial->mass;
 
         PhysX::RigidBodyConfiguration physxSpecificConfiguration;
-        physxSpecificConfiguration.m_solverPositionIterations = kMinimalNumPosSolv;
-        physxSpecificConfiguration.m_solverVelocityIterations = kMinimalNumVelSolv;
         // TODO - Check whether this is a correct offset for every case (consider entity transform and collider origin)
         rigidBodyConfiguration.m_centerOfMassOffset = URDF::TypeConversions::ConvertVector3(inertial->origin.position);
         if (!URDF::TypeConversions::ConvertQuaternion(inertial->origin.rotation).IsIdentity())

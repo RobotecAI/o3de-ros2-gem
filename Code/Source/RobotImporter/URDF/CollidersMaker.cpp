@@ -9,38 +9,21 @@
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
 #include "RobotImporter/URDF/TypeConversions.h"
+#include "RobotImporter/Utils/RobotImporterUtils.h"
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/StringFunc/StringFunc.h>
-#include <AzCore/std/string/regex.h>
 #include <AzToolsFramework/API/EditorAssetSystemAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
-#include <LmbrCentral/Shape/BoxShapeComponentBus.h>
-#include <LmbrCentral/Shape/CylinderShapeComponentBus.h>
-#include <LmbrCentral/Shape/SphereShapeComponentBus.h>
 #include <SceneAPI/SceneCore/Containers/Scene.h>
-#include <SceneAPI/SceneCore/Containers/SceneManifest.h>
 #include <SceneAPI/SceneCore/Containers/Utilities/Filters.h>
 #include <SceneAPI/SceneCore/DataTypes/Groups/ISceneNodeGroup.h>
 #include <SceneAPI/SceneCore/Events/AssetImportRequest.h>
 #include <SceneAPI/SceneCore/Events/SceneSerializationBus.h>
 #include <SceneAPI/SceneCore/Utilities/SceneGraphSelector.h>
 #include <Source/EditorColliderComponent.h>
-#include <Source/EditorShapeColliderComponent.h>
 
 namespace ROS2
 {
-    bool CollidersMaker::GuessIsWheel(const AZStd::string& entityName)
-    {
-        AZStd::regex wheel_regex("(?i)wheel|(?i)wh_|(?i)(_wh)");
-        AZStd::smatch match;
-        if (AZStd::regex_search(entityName, match, wheel_regex))
-        {
-            AZ_Printf("WheelMaterial", "%s is a wheel\n", entityName.c_str());
-            return true;
-        }
-        AZ_Printf("WheelMaterial", "%s is NOT a wheel\n", entityName.c_str());
-        return false;
-    }
 
     CollidersMaker::CollidersMaker(AZStd::string modelPath)
         : m_modelPath(AZStd::move(modelPath))
@@ -53,7 +36,7 @@ namespace ROS2
         AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
             assetFound,
             &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
-            "Prefabs/Materials/wheel_material.physxmaterial",
+            "Materials/wheel_material.physxmaterial",
             assetInfo,
             watchDir);
 
@@ -223,20 +206,32 @@ namespace ROS2
     void CollidersMaker::AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)
     {
         AZStd::string typeString = "collider";
+        const bool isWheelEntity = Utils::IsWheelURDFHeuristics(link);
+        if (isWheelEntity)
+        {
+            AZ_Printf("AddColliders", "%s is wheel", link->name.c_str());
+        }
+        const AZ::Data::Asset<Physics::MaterialAsset> materialAsset =
+            isWheelEntity ? m_wheelMaterial : AZ::Data::Asset<Physics::MaterialAsset>();
         size_t nameSuffixIndex = 0; // For disambiguation when multiple unnamed colliders are present. The order does not matter here
         for (auto collider : link->collision_array)
         { // one or more colliders - the array is used
-            AddCollider(collider, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString, nameSuffixIndex));
+            AddCollider(
+                collider, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString, nameSuffixIndex), materialAsset);
             nameSuffixIndex++;
         }
 
         if (nameSuffixIndex == 0)
         { // no colliders in the array - zero or one in total, the element member is used instead
-            AddCollider(link->collision, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString));
+            AddCollider(link->collision, entityId, PrefabMakerUtils::MakeEntityName(link->name.c_str(), typeString), materialAsset);
         }
     }
 
-    void CollidersMaker::AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZStd::string& generatedName)
+    void CollidersMaker::AddCollider(
+        urdf::CollisionSharedPtr collision,
+        AZ::EntityId entityId,
+        const AZStd::string& generatedName,
+        const AZ::Data::Asset<Physics::MaterialAsset>& materialAsset)
     {
         if (!collision)
         { // it is ok not to have collision in a link
@@ -251,33 +246,30 @@ namespace ROS2
             return;
         }
 
-        AddColliderToEntity(collision, entityId);
+        AddColliderToEntity(collision, entityId, materialAsset);
     }
 
-    void CollidersMaker::AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId)
+    void CollidersMaker::AddColliderToEntity(
+        urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZ::Data::Asset<Physics::MaterialAsset>& materialAsset)
     {
         // TODO - we are unable to set collider origin. Sub-entities don't work since they would need to parent visuals etc.
         // TODO - solution: once Collider Component supports Cylinder Shape, switch to it from Shape Collider Component.
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        AZ_Assert(entity, "entity not exists");
+        AZ_Assert(entity, "AddColliderToEntity called with invalid entityId");
         auto geometry = collision->geometry;
         bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
 
         Physics::ColliderConfiguration colliderConfig;
-        const bool is_wheel = GuessIsWheel(entity->GetName());
-        if (is_wheel)
-        {
-            colliderConfig.m_materialSlots.SetMaterialAsset(0, m_wheelMaterial);
-        }
-        colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
-        if (!isPrimitiveShape)
-            colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
 
+        colliderConfig.m_materialSlots.SetMaterialAsset(0, materialAsset);
+        colliderConfig.m_position = URDF::TypeConversions::ConvertVector3(collision->origin.position);
+        colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
         if (!isPrimitiveShape)
         {
             // TODO move setting mesh with ebus here - othervise material is not assigned
-            Physics::ConvexHullShapeConfiguration shapeConfiguration;
+            Physics::PhysicsAssetShapeConfiguration shapeConfiguration;
+            shapeConfiguration.m_useMaterialsFromAsset = false;
             entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, shapeConfiguration);
             entity->Activate();
 
@@ -309,14 +301,7 @@ namespace ROS2
             // Insert pxmesh into the collider component
             PhysX::MeshColliderComponentRequestsBus::Event(entityId, &PhysX::MeshColliderComponentRequests::SetMeshAsset, assetId);
             entity->Deactivate();
-            if (is_wheel)
-            {
-                AZ_Warning(
-                    "CollisionMaker",
-                    false,
-                    "MeshColliderComponentRequests to %s overridden (probably) the material",
-                    entityId.ToString().c_str())
-            }
+
             return;
         }
 

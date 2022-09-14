@@ -44,8 +44,13 @@ namespace ROS2
 
     private:
         void BuildCollider(urdf::CollisionSharedPtr collision);
-        void AddCollider(urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZStd::string& generatedName);
-        void AddColliderToEntity(urdf::CollisionSharedPtr collision, AZ::EntityId entityId);
+        void AddCollider(
+            urdf::CollisionSharedPtr collision,
+            AZ::EntityId entityId,
+            const AZStd::string& generatedName,
+            const AZ::Data::Asset<Physics::MaterialAsset>& materialAsset);
+        void AddColliderToEntity(
+            urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZ::Data::Asset<Physics::MaterialAsset>& materialAsset);
         AZ::IO::Path GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath);
 
         AZStd::string m_modelPath;
@@ -55,7 +60,5 @@ namespace ROS2
         AZStd::vector<AZ::IO::Path> m_meshesToBuild;
         AZStd::atomic_bool m_stopBuildFlag;
         AZ::Data::Asset<Physics::MaterialAsset> m_wheelMaterial;
-
-        bool GuessIsWheel(const AZStd::string& entityName);
     };
 } // namespace ROS2

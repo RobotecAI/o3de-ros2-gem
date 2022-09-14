@@ -30,18 +30,17 @@ namespace ROS2
 
     void JointsMaker::AddJoint(urdf::JointSharedPtr joint, AZ::EntityId linkChildId, AZ::EntityId linkParentId)
     {
-        if (joint->type == urdf::Joint::FIXED)
-        { // In URDF, we can have joints between links that have no colliders (for fixed joints).
-            // In O3DE physics, colliders are necessary for joints, in both lead and follower entities.
-            // We will add unconfigured (asset-less) collider components to support this case.
-            for (auto entityId : { linkParentId, linkChildId })
+        // In URDF, we can have joints between links that have no colliders (for fixed joints).
+        // In O3DE physics, colliders are necessary for joints, in both lead and follower entities.
+        // We will add unconfigured (asset-less) collider components to support this case.
+        for (auto entityId : { linkParentId, linkChildId })
+        {
+            if (!PrefabMakerUtils::HasCollider(entityId))
             {
-                if (!PrefabMakerUtils::HasCollider(entityId))
-                {
-                    AddColliderForFixedJoint(joint, entityId);
-                }
+                AddColliderForFixedJoint(joint, entityId);
             }
         }
+
         if (!PrefabMakerUtils::HasCollider(linkChildId) || !PrefabMakerUtils::HasCollider(linkParentId))
         { // This check should always pass unless adding colliders earlier failed for some reason or URDF is ill-defined
             AZ_Error("AddJoint", false, "Unable to add a joint %s without lead and follow colliders", joint->name.c_str());
