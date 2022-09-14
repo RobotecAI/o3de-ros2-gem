@@ -29,7 +29,17 @@ namespace ROS2
         : m_modelPath(AZStd::move(modelPath))
         , m_stopBuildFlag(false)
     {
-        // get Wheel material from assets
+        FindWheelMaterial();
+    }
+
+    CollidersMaker::~CollidersMaker()
+    {
+        m_stopBuildFlag = true;
+        m_buildThread.join();
+    };
+
+    void CollidersMaker::FindWheelMaterial()
+    {
         bool assetFound = false;
         AZ::Data::AssetInfo assetInfo;
         AZStd::string watchDir;
@@ -57,12 +67,6 @@ namespace ROS2
             AZ_Warning("Wheel Material", false, "Cannot load wheel material");
         }
     }
-
-    CollidersMaker::~CollidersMaker()
-    {
-        m_stopBuildFlag = true;
-        m_buildThread.join();
-    };
 
     void CollidersMaker::BuildColliders(urdf::LinkSharedPtr link)
     {

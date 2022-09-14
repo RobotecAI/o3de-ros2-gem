@@ -43,6 +43,7 @@ namespace ROS2
         void ProcessMeshes(BuildReadyCallback notifyBuildReadyCb);
 
     private:
+        void FindWheelMaterial();
         void BuildCollider(urdf::CollisionSharedPtr collision);
         void AddCollider(
             urdf::CollisionSharedPtr collision,
