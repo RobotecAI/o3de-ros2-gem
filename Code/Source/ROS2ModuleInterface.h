@@ -17,6 +17,8 @@
 #include "RobotImporter/ROS2RobotImporterSystemComponent.h"s
 #include "RobotControl/Controllers/AckermannController/AckermannControlComponent.h"
 #include "RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h"
+#include "RobotControl/ROS2RobotControlComponent.h"
+#include "RobotImporter/ROS2RobotImporterSystemComponent.h"
 #include "Spawner/ROS2SpawnerComponent.h"
 #include "VehicleDynamics/VehicleModelComponent.h" // TODO - separate out
 #include "VehicleDynamics/WheelControllerComponent.h" // TODO - separate out
@@ -47,8 +49,9 @@ namespace ROS2
                   ROS2LidarSensorComponent::CreateDescriptor(),
                   ROS2FrameComponent::CreateDescriptor(),
                   ROS2RobotControlComponent::CreateDescriptor(),
+                  ROS2CameraSensorComponent::CreateDescriptor(),
                   AckermannControlComponent::CreateDescriptor(),
-                  RigidBodyTwistControlComponent::CreateDescriptor(),                  
+                  RigidBodyTwistControlComponent::CreateDescriptor(),
                   ROS2CameraSensorComponent::CreateDescriptor(),
                   ROS2SpawnerComponent::CreateDescriptor(),
                   VehicleDynamics::VehicleModelComponent::CreateDescriptor(),
