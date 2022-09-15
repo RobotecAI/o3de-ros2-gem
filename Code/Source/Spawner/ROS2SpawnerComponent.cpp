@@ -47,28 +47,19 @@ namespace ROS2
     }
 
     void ROS2SpawnerComponent::GetAvailableSpawnableNames(
-        const std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request> request,
-        std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response> response)
+        const GetAvailableSpawnableNamesRequest request, GetAvailableSpawnableNamesResponse response)
     {
         for (const auto& spawnable : m_spawnables)
         {
-            response->names.emplace_back(spawnable.GetHint().c_str());
+            response->names.emplace_back(spawnable.first.c_str());
         }
     }
 
-    void ROS2SpawnerComponent::SpawnRobot(
-        const std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request> request,
-        std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response> response)
+    void ROS2SpawnerComponent::SpawnRobot(const SpawnRobotRequest request, SpawnRobotResponse response)
     {
-        auto key = AZStd::string(request->robot_name.c_str(), request->robot_name.size());
+        const AZStd::string key(request->robot_name.c_str(), request->robot_name.size());
 
-        auto spawnable = std::find_if(
-            m_spawnables.begin(),
-            m_spawnables.end(),
-            [key](auto spwn)
-            {
-                return spwn.GetHint() == key;
-            });
+        auto spawnable = m_spawnables.find(key);
 
         if (spawnable != m_spawnables.end())
         {
@@ -76,7 +67,7 @@ namespace ROS2
             {
                 // if a ticket for this spawnable was not created but the spawnable name is correct, create the ticket and then use it to
                 // spawn an entity
-                m_tickets.insert({ spawnable->GetHint(), AzFramework::EntitySpawnTicket(*spawnable) });
+                m_tickets.emplace(spawnable->first, AzFramework::EntitySpawnTicket(spawnable->second));
             }
 
             auto spawner = AZ::Interface<AzFramework::SpawnableEntitiesDefinition>::Get();

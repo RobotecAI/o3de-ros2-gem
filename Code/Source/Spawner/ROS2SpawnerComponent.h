@@ -17,6 +17,11 @@
 
 namespace ROS2
 {
+    using GetAvailableSpawnableNamesRequest = std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request>;
+    using GetAvailableSpawnableNamesResponse = std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response>;
+    using SpawnRobotRequest = std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request>;
+    using SpawnRobotResponse = std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response>;
+
     //! TODO: doc
     class ROS2SpawnerComponent : public AZ::Component
     {
@@ -36,19 +41,15 @@ namespace ROS2
         static void Reflect(AZ::ReflectContext* context);
 
     private:
-        std::map<AZStd::string, AzFramework::EntitySpawnTicket> m_tickets = {};
-        AZStd::vector<AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables = {};
+        AZStd::unordered_map<AZStd::string, AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables;
+        AZStd::unordered_map<AZStd::string, AzFramework::EntitySpawnTicket> m_tickets;
 
         rclcpp::Service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>::SharedPtr m_get_names_service;
         rclcpp::Service<o3de_spawning_interface_srvs::srv::SpawnRobot>::SharedPtr m_spawn_service;
 
-        void GetAvailableSpawnableNames(
-            const std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request> request,
-            std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response> response);
+        void GetAvailableSpawnableNames(const GetAvailableSpawnableNamesRequest request, GetAvailableSpawnableNamesResponse response);
 
-        void SpawnRobot(
-            const std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request> request,
-            std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response> response);
+        void SpawnRobot(const SpawnRobotRequest request, SpawnRobotResponse response);
 
         void pre_spawn(AzFramework::EntitySpawnTicket::Id, AzFramework::SpawnableEntityContainerView, const AZ::Transform&);
     };
