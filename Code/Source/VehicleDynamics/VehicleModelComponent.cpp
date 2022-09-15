@@ -20,10 +20,10 @@ namespace VehicleDynamics
 {
     void VehicleModelComponent::Activate()
     {
-        m_driveModel = AZStd::make_unique<SimplifiedDriveModel>();
         VehicleInputControlRequestBus::Handler::BusConnect();
         m_manualControlEventHandler.Activate();
         AZ::TickBus::Handler::BusConnect();
+        m_driveModel.Activate();
     }
 
     void VehicleModelComponent::Deactivate()
@@ -31,16 +31,18 @@ namespace VehicleDynamics
         AZ::TickBus::Handler::BusDisconnect();
         m_manualControlEventHandler.Deactivate();
         VehicleInputControlRequestBus::Handler::BusDisconnect();
-        m_driveModel.reset();
     }
 
     void VehicleModelComponent::Reflect(AZ::ReflectContext* context)
     {
         ChassisConfiguration::Reflect(context);
+        DriveModel::Reflect(context);
+        SimplifiedDriveModel::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<VehicleModelComponent, AZ::Component>()->Version(1)->Field(
-                "ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration);
+            serialize->Class<VehicleModelComponent, AZ::Component>()->Version(2)
+                ->Field("ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration)
+                ->Field("DriveModel", &VehicleModelComponent::m_driveModel);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -51,7 +53,12 @@ namespace VehicleDynamics
                         AZ::Edit::UIHandlers::Default,
                         &VehicleModelComponent::m_chassisConfiguration,
                         "Chassis settings",
-                        "Chassis settings including axles and common wheel parameters");
+                        "Chassis settings including axles and common wheel parameters")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &VehicleModelComponent::m_driveModel,
+                        "Drive model",
+                        "Settings of the selected drive model");
             }
         }
     }
@@ -105,7 +112,7 @@ namespace VehicleDynamics
         }
 
         uint64_t deltaTimeNs = deltaTime * 1000000000;
-        m_driveModel->ApplyInputState(m_inputsState, m_chassisConfiguration, deltaTimeNs);
+        m_driveModel.ApplyInputState(m_inputsState, m_chassisConfiguration, deltaTimeNs);
     }
 
 } // namespace VehicleDynamics

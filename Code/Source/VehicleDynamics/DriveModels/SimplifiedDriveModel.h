@@ -9,8 +9,9 @@
 
 #include "VehicleDynamics/ChassisConfiguration.h"
 #include "VehicleDynamics/DriveModel.h"
+#include "VehicleDynamics/DriveModels/PidConfiguration.h"
 #include "VehicleDynamics/VehicleInputsState.h"
-#include <control_toolbox/pid.hpp>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
 {
@@ -18,18 +19,21 @@ namespace VehicleDynamics
     class SimplifiedDriveModel : public DriveModel
     {
     public:
-        SimplifiedDriveModel();
+        AZ_RTTI(SimplifiedDriveModel, "{104AC31D-E30B-4454-BF42-4FB37B8CFD9B}", DriveModel);
         DriveModel::DriveModelType DriveType() override
         {
             return DriveModel::SimplifiedDriveModelType;
         }
+        void Activate() override;
         void ApplyInputState(const VehicleInputsState& inputs, const ChassisConfiguration& vehicleChassis, uint64_t deltaTimeNs) override;
+
+        static void Reflect(AZ::ReflectContext* context);
 
     private:
         void ApplySteering(float steering, const ChassisConfiguration& vehicleChassis, uint64_t deltaTimeNs);
         void ApplySpeed(float speed, const ChassisConfiguration& vehicleChassis, uint64_t deltaTimeNs);
 
-        control_toolbox::Pid m_steeringPid;
-        control_toolbox::Pid m_speedPid;
+        PidConfiguration m_steeringPid;
+        PidConfiguration m_speedPid;
     };
 } // namespace VehicleDynamics
