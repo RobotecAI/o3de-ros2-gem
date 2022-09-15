@@ -53,7 +53,7 @@ namespace ROS2
 
     private:
         std::atomic_bool m_isProcessingAssets;
-        std::atomic_bool m_LoadingURDFFailed;
+        std::atomic_bool m_loadingURDFFailed;
         std::optional<URDFPrefabMaker> m_prefabMaker;
         LoggerFunction m_logger;
     };

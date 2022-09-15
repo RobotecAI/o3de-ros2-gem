@@ -14,19 +14,20 @@ namespace ROS2
     RobotImporter::RobotImporter(LoggerFunction logger)
         : m_logger(std::move(logger))
         , m_isProcessingAssets(false)
-        , m_LoadingURDFFailed(false)
+        , m_loadingURDFFailed(false)
     {
     }
 
     void RobotImporter::ParseURDFAndStartLoadingAssets(const RobotImporterConfig& config)
     {
         m_prefabMaker.reset();
+        m_loadingURDFFailed.store(false);
         m_logger(LogLevel::Info, "Importing robot definition file: " + config.urdfFilePath);
 
         urdf::ModelInterfaceSharedPtr urdfModel = UrdfParser::ParseFromFile(config.urdfFilePath);
         if (!urdfModel)
         {
-            m_LoadingURDFFailed.store(true);
+            m_loadingURDFFailed.store(true);
             m_logger(LogLevel::Error, "Failed to parse the robot definition file");
             return;
         }
@@ -45,6 +46,12 @@ namespace ROS2
 
     void RobotImporter::CheckIfAssetsWereLoadedAndCreatePrefab(std::function<void()> importFinishedCb)
     {
+        if (m_loadingURDFFailed)
+        {
+            importFinishedCb();
+            return;
+        }
+        AZ_Assert(m_prefabMaker, "Prefab maker is not initialized");
         if (m_prefabMaker)
         {
             if (m_isProcessingAssets)
@@ -62,11 +69,5 @@ namespace ROS2
             m_logger(LogLevel::Info, AZStd::string::format("Imported %s", m_prefabMaker->GetPrefabPath().c_str()));
             importFinishedCb();
         }
-        else if (m_LoadingURDFFailed)
-        {
-            importFinishedCb();
-            return;
-        }
-        AZ_Assert(m_prefabMaker, "Prefab maker is not initialized");
     }
 } // namespace ROS2
