@@ -18,12 +18,12 @@ namespace ROS2
     {
         auto ros2Node = ROS2Interface::Get()->GetNode();
 
-        m_get_names_service = ros2Node->create_service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>(
+        m_get_names_service = ros2Node->create_service<gazebo_msgs::srv::GetWorldProperties>(
             "get_available_spawnable_names",
             std::bind(&ROS2SpawnerComponent::GetAvailableSpawnableNames, this, AZStd::placeholders::_1, AZStd::placeholders::_2));
 
-        m_spawn_service = ros2Node->create_service<o3de_spawning_interface_srvs::srv::SpawnRobot>(
-            "spawn_robot", std::bind(&ROS2SpawnerComponent::SpawnRobot, this, AZStd::placeholders::_1, AZStd::placeholders::_2));
+        m_spawn_service = ros2Node->create_service<gazebo_msgs::srv::SpawnEntity>(
+            "spawn_entity", std::bind(&ROS2SpawnerComponent::SpawnRobot, this, AZStd::placeholders::_1, AZStd::placeholders::_2));
     }
 
     void ROS2SpawnerComponent::Deactivate()
@@ -51,13 +51,13 @@ namespace ROS2
     {
         for (const auto& spawnable : m_spawnables)
         {
-            response->names.emplace_back(spawnable.first.c_str());
+            response->model_names.emplace_back(spawnable.first.c_str());
         }
     }
 
-    void ROS2SpawnerComponent::SpawnRobot(const SpawnRobotRequest request, SpawnRobotResponse response)
+    void ROS2SpawnerComponent::SpawnRobot(const SpawnEntityRequest request, SpawnEntityResponse response)
     {
-        const AZStd::string key(request->robot_name.c_str(), request->robot_name.size());
+        const AZStd::string key(request->name.c_str(), request->name.size());
 
         auto spawnable = m_spawnables.find(key);
 
@@ -74,7 +74,7 @@ namespace ROS2
 
             AzFramework::SpawnAllEntitiesOptionalArgs optionalArgs;
 
-            optionalArgs.m_preInsertionCallback = [this, position = request->position](auto id, auto view)
+            optionalArgs.m_preInsertionCallback = [this, position = request->initial_pose](auto id, auto view)
             {
                 this->pre_spawn(
                     id,
@@ -87,11 +87,11 @@ namespace ROS2
 
             spawner->SpawnAllEntities(m_tickets.at(key), optionalArgs);
 
-            response->result = true;
+            response->success = true;
             return;
         }
 
-        response->result = false;
+        response->success = false;
     }
 
     void ROS2SpawnerComponent::pre_spawn(

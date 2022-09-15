@@ -12,15 +12,15 @@
 #include <AzFramework/Spawnable/SpawnableEntitiesInterface.h>
 #include <ROS2SystemComponent.h>
 
-#include <o3de_spawning_interface_srvs/srv/get_available_spawnable_names.hpp>
-#include <o3de_spawning_interface_srvs/srv/spawn_robot.hpp>
+#include <gazebo_msgs/srv/get_world_properties.hpp>
+#include <gazebo_msgs/srv/spawn_entity.hpp>
 
 namespace ROS2
 {
-    using GetAvailableSpawnableNamesRequest = std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Request>;
-    using GetAvailableSpawnableNamesResponse = std::shared_ptr<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames::Response>;
-    using SpawnRobotRequest = std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Request>;
-    using SpawnRobotResponse = std::shared_ptr<o3de_spawning_interface_srvs::srv::SpawnRobot::Response>;
+    using GetAvailableSpawnableNamesRequest = std::shared_ptr<gazebo_msgs::srv::GetWorldProperties::Request>;
+    using GetAvailableSpawnableNamesResponse = std::shared_ptr<gazebo_msgs::srv::GetWorldProperties::Response>;
+    using SpawnEntityRequest = std::shared_ptr<gazebo_msgs::srv::SpawnEntity::Request>;
+    using SpawnEntityResponse = std::shared_ptr<gazebo_msgs::srv::SpawnEntity::Response>;
 
     //! TODO: doc
     class ROS2SpawnerComponent : public AZ::Component
@@ -44,12 +44,12 @@ namespace ROS2
         AZStd::unordered_map<AZStd::string, AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables;
         AZStd::unordered_map<AZStd::string, AzFramework::EntitySpawnTicket> m_tickets;
 
-        rclcpp::Service<o3de_spawning_interface_srvs::srv::GetAvailableSpawnableNames>::SharedPtr m_get_names_service;
-        rclcpp::Service<o3de_spawning_interface_srvs::srv::SpawnRobot>::SharedPtr m_spawn_service;
+        rclcpp::Service<gazebo_msgs::srv::GetWorldProperties>::SharedPtr m_get_names_service;
+        rclcpp::Service<gazebo_msgs::srv::SpawnEntity>::SharedPtr m_spawn_service;
 
         void GetAvailableSpawnableNames(const GetAvailableSpawnableNamesRequest request, GetAvailableSpawnableNamesResponse response);
 
-        void SpawnRobot(const SpawnRobotRequest request, SpawnRobotResponse response);
+        void SpawnRobot(const SpawnEntityRequest request, SpawnEntityResponse response);
 
         void pre_spawn(AzFramework::EntitySpawnTicket::Id, AzFramework::SpawnableEntityContainerView, const AZ::Transform&);
     };
