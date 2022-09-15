@@ -55,7 +55,7 @@ namespace VehicleDynamics
                 "steering",
                 [](float inputValue)
                 {   // TODO handle steer
-                    const float steeringLimit = 1; // Radians
+                    const float steeringLimit = 0.5f; // Radians
                     VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteering, inputValue * steeringLimit);
                 }));
 
@@ -63,7 +63,7 @@ namespace VehicleDynamics
                 "accelerate",
                 [](float inputValue)
                 { // TODO handle speed limits.
-                    const float speedLimit = 15; // Meters per second
+                    const float speedLimit = 15.f; // Meters per second
                     VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetLinearSpeed, inputValue * speedLimit);
                 }));
         }
