@@ -20,14 +20,12 @@ namespace VehicleDynamics
         WheelControllerComponent() = default;
         ~WheelControllerComponent() = default;
 
-        // AZ::Component interface implementation.
         void Activate() override;
         void Deactivate() override;
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
         static void GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible);
 
-        // Required Reflect function.
         static void Reflect(AZ::ReflectContext* context);
 
         AZ::EntityId m_steeringEntity; //! Rigid body to apply torque to. TODO - parent, this entity or custom.

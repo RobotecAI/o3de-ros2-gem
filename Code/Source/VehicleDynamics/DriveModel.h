@@ -9,6 +9,7 @@
 
 #include "ChassisConfiguration.h"
 #include "VehicleInputsState.h"
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
 {
@@ -16,13 +17,16 @@ namespace VehicleDynamics
     class DriveModel
     {
     public:
+        AZ_RTTI(DriveModel, "{1B57E83D-19BF-4403-8712-1AE98A12F0CD}");
         enum DriveModelType
         {
             SimplifiedDriveModelType
         };
 
+        static void Reflect(AZ::ReflectContext* context);
         virtual ~DriveModel() = default;
         virtual DriveModel::DriveModelType DriveType() = 0;
+        virtual void Activate() = 0;
         virtual void ApplyInputState(
             const VehicleInputsState& inputs, const ChassisConfiguration& vehicleChassis, uint64_t deltaTimeNs) = 0;
     };
