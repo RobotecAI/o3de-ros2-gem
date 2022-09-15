@@ -12,6 +12,7 @@
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorFixedJointComponent.h>
 #include <Source/EditorHingeJointComponent.h>
+#include <Source/EditorRigidBodyComponent.h>
 
 namespace ROS2
 {
