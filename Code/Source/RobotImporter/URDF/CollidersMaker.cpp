@@ -21,9 +21,85 @@
 #include <SceneAPI/SceneCore/Events/SceneSerializationBus.h>
 #include <SceneAPI/SceneCore/Utilities/SceneGraphSelector.h>
 #include <Source/EditorColliderComponent.h>
+#include <AzCore/Asset/AssetManagerBus.h>
+
 
 namespace ROS2
 {
+    namespace Internal
+    {
+        AZ::IO::Path GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath)
+        {
+            modelPath.RemoveFilename();
+            AZ::StringFunc::Replace(meshPath.Native(), "package://", "", true, true);
+            modelPath /= meshPath;
+
+            return modelPath;
+        }
+
+        AZ::IO::Path GetMeshProductPathFromSourcePath(const AZ::IO::Path& sourcePath)
+        {
+            AZ_TracePrintf("RobotImporter", "GetMeshProductPathFromSourcePath: %s", sourcePath.c_str());
+            AZ::Data::AssetInfo assetInfo;
+
+            AZStd::string watchDir;
+            bool assetFound = false;
+            AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
+                assetFound,
+                &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
+                sourcePath.c_str(),
+                assetInfo,
+                watchDir);
+
+            if (!assetFound)
+            {
+                AZ_Error("ROS2", false, "Could not find asset %s", sourcePath.c_str());
+                return {};
+            }
+
+            AZStd::vector<AZ::Data::AssetInfo> productsAssetInfo;
+
+            bool productsFound = false;
+            AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
+                productsFound,
+                &AzToolsFramework::AssetSystem::AssetSystemRequest::GetAssetsProducedBySourceUUID,
+                assetInfo.m_assetId.m_guid,
+                productsAssetInfo);
+
+            if (!productsFound)
+            {
+                AZ_Error("ROS2", false, "Could not find products for asset %s", sourcePath.c_str());
+                return {};
+            }
+
+            AZStd::vector<AZ::IO::Path> productsPaths;
+            AZStd::transform(
+                productsAssetInfo.cbegin(),
+                productsAssetInfo.cend(),
+                AZStd::back_inserter(productsPaths),
+                [](const AZ::Data::AssetInfo& assetInfo)
+                {
+                    AZStd::string assetPath;
+                    AZ::Data::AssetCatalogRequestBus::BroadcastResult(
+                        assetPath, &AZ::Data::AssetCatalogRequestBus::Events::GetAssetPathById, assetInfo.m_assetId);
+                    return AZ::IO::Path(assetPath);
+                });
+
+            AZStd::vector<AZ::IO::Path> pxMeshesPaths;
+            AZStd::remove_copy_if(
+                productsPaths.cbegin(),
+                productsPaths.cend(),
+                AZStd::back_inserter(pxMeshesPaths),
+                [](const AZ::IO::Path& path)
+                {
+                    return !(path.Extension() == ".pxmesh");
+                });
+
+            AZ_Assert(pxMeshesPaths.size() == 1, "Currently only one pxmesh for each model source is supported by robot importer");
+
+            return pxMeshesPaths.front();
+        }
+    }
 
     CollidersMaker::CollidersMaker(AZStd::string modelPath)
         : m_modelPath(AZStd::move(modelPath))
@@ -93,7 +169,7 @@ namespace ROS2
         if (!isPrimitiveShape)
         {
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-            auto azMeshPath = GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
+            auto azMeshPath = Internal::GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
 
             AZStd::shared_ptr<AZ::SceneAPI::Containers::Scene> scene;
             AZ::SceneAPI::Events::SceneSerializationBus::BroadcastResult(
@@ -280,22 +356,8 @@ namespace ROS2
             AZ_Printf("CollisionMaker", "Adding mesh collider to %s\n", entityId.ToString().c_str());
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
             AZ_Assert(meshGeometry, "geometry is not meshGeometry");
-            auto azMeshPath = GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
-
-            // Get asset path relative to watch folder
-            bool assetFound = false;
-            AZ::Data::AssetInfo assetInfo;
-            AZStd::string watchDir;
-            AzToolsFramework::AssetSystemRequestBus::BroadcastResult(
-                assetFound,
-                &AzToolsFramework::AssetSystem::AssetSystemRequest::GetSourceInfoBySourcePath,
-                azMeshPath.c_str(),
-                assetInfo,
-                watchDir);
-
-            // We are expecting .pxmesh
-            auto pxmodelPath = AZStd::string(assetInfo.m_relativePath.c_str());
-            AzFramework::StringFunc::Path::ReplaceExtension(pxmodelPath, ".pxmesh");
+            auto azMeshPath = Internal::GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
+            AZ::IO::Path pxmodelPath = Internal::GetMeshProductPathFromSourcePath(azMeshPath);
 
             // Get asset product id (pxmesh)
             AZ::Data::AssetId assetId;
@@ -355,14 +417,6 @@ namespace ROS2
             AZ_Warning("AddCollider", false, "Unsupported collider geometry type, %d", geometry->type);
             break;
         }
-    }
-    AZ::IO::Path CollidersMaker::GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath)
-    {
-        modelPath.RemoveFilename();
-        AZ::StringFunc::Replace(meshPath.Native(), "package://", "", true, true);
-        modelPath /= meshPath;
-
-        return modelPath;
     }
 
     void CollidersMaker::ProcessMeshes(BuildReadyCallback notifyBuildReadyCb)
