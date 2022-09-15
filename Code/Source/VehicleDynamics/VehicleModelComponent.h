@@ -8,7 +8,7 @@
 #pragma once
 
 #include "ChassisConfiguration.h"
-#include "DriveModel.h"
+#include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "ManualControlEventHandler.h"
 #include "VehicleInputControlBus.h"
 #include "VehicleInputsState.h"
@@ -47,7 +47,7 @@ namespace VehicleDynamics
         ManualControlEventHandler m_manualControlEventHandler;
         ChassisConfiguration m_chassisConfiguration;
         VehicleInputsState m_inputsState;
-        AZStd::unique_ptr<DriveModel> m_driveModel;
+        SimplifiedDriveModel m_driveModel; // TODO - use abstraction here (DriveModel)
 
         float m_accumulatedTimeoutSpeed = 0; // TODO - separate out into inputs timeout handler
         float m_accumulatedTimeoutSteering = 0;

@@ -74,12 +74,15 @@ set(FILES
         Source/Converters/URDF/ToFBX/UniqueIdGenerator.h
         Source/Converters/URDF/ToFBX/UrdfToFbxConverter.cpp
         Source/Converters/URDF/ToFBX/UrdfToFbxConverter.h
+        Source/VehicleDynamics/DriveModels/PidConfiguration.cpp
+        Source/VehicleDynamics/DriveModels/PidConfiguration.h
         Source/VehicleDynamics/DriveModels/SimplifiedDriveModel.cpp
         Source/VehicleDynamics/DriveModels/SimplifiedDriveModel.h
         Source/VehicleDynamics/AxleConfiguration.cpp
         Source/VehicleDynamics/AxleConfiguration.h
         Source/VehicleDynamics/ChassisConfiguration.cpp
         Source/VehicleDynamics/ChassisConfiguration.h
+        Source/VehicleDynamics/DriveModel.cpp
         Source/VehicleDynamics/DriveModel.h
         Source/VehicleDynamics/ManualControlEventHandler.h
         Source/VehicleDynamics/VehicleInputControlBus.h
