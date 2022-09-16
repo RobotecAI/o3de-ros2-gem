@@ -35,9 +35,9 @@ namespace VehicleDynamics::Utilities
         return Create2WheelAxle(leftWheel, rightWheel, "Rear", false, true);
     }
 
-    AZStd::vector<AZ::EntityId> GetAllSteeringEntities(const ChassisConfiguration& chassisConfig)
+    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllSteeringEntitiesAndAxes(const ChassisConfiguration& chassisConfig)
     {
-        AZStd::vector<AZ::EntityId> steeringEntities;
+        AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> steeringEntitiesAndAxis;
         for (const auto& axle : chassisConfig.m_axles)
         {
             if (axle.m_isSteering)
@@ -57,32 +57,38 @@ namespace VehicleDynamics::Utilities
                     }
 
                     AZ::EntityId steeringEntity = controllerComponent->m_steeringEntity;
+                    AZ::Vector3 steering_dir = controllerComponent->m_steering_dir;
+                    steering_dir.Normalize();
                     if (!steeringEntity.IsValid())
                     { // TODO - warn
                         continue;
                     }
-                    steeringEntities.push_back(steeringEntity);
+                    steeringEntitiesAndAxis.push_back(AZStd::make_pair(steeringEntity, steering_dir));
                 }
             }
         }
-        return steeringEntities;
+        return steeringEntitiesAndAxis;
     }
 
-    AZStd::vector<AZ::EntityId> GetAllDriveWheelEntities(const ChassisConfiguration& chassisConfig)
+    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllDriveWheelEntitiesAndAxes(const ChassisConfiguration& chassisConfig)
     {
-        AZStd::vector<AZ::EntityId> driveWheelEntities;
+        AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> driveWheelEntities;
         for (const auto& axle : chassisConfig.m_axles)
         {
             if (axle.m_isDrive)
             {
                 for (const auto& wheel : axle.m_axleWheels)
                 {
-                    if (!wheel.IsValid())
+                    AZ::Entity* wheelEntity = nullptr;
+                    AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
+                    auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
+                    if (!wheel.IsValid() || !controllerComponent)
                     { // TODO - warn
                         continue;
                     }
-
-                    driveWheelEntities.push_back(wheel);
+                    AZ::Vector3 drive_dir = controllerComponent->m_drive_dir;
+                    drive_dir.Normalize();
+                    driveWheelEntities.push_back(AZStd::make_pair(wheel, drive_dir));
                 }
             }
         }

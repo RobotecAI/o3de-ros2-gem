@@ -45,7 +45,9 @@ namespace VehicleDynamics
             serialize->Class<WheelControllerComponent, AZ::Component>()
                 ->Version(1)
                 ->Field("SteeringEntity", &WheelControllerComponent::m_steeringEntity)
-                ->Field("VisualEntity", &WheelControllerComponent::m_visualEntity);
+                ->Field("VisualEntity", &WheelControllerComponent::m_visualEntity)
+                ->Field("DriveDir", &WheelControllerComponent::m_drive_dir)
+                ->Field("SteeringDir", &WheelControllerComponent::m_steering_dir);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -61,7 +63,17 @@ namespace VehicleDynamics
                         AZ::Edit::UIHandlers::Default,
                         &WheelControllerComponent::m_visualEntity,
                         "Visual entity",
-                        "Entity which holds wheel visual (mesh) - typically a child entity");
+                        "Entity which holds wheel visual (mesh) - typically a child entity")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &WheelControllerComponent::m_drive_dir,
+                        "Direction of drive axis",
+                        "The direction of torque applied to the wheel entity")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &WheelControllerComponent::m_steering_dir,
+                        "Direction of steering axis",
+                        "The direction of torque applied to the steering entity");
             }
         }
     }
