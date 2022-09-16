@@ -20,6 +20,6 @@ namespace VehicleDynamics::Utilities
     AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel);
 
     // TODO - run and cache on Activate
-    AZStd::vector<AZ::EntityId> GetAllSteeringEntities(const ChassisConfiguration& chassisConfig);
-    AZStd::vector<AZ::EntityId> GetAllDriveWheelEntities(const ChassisConfiguration& chassisConfig);
+    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllSteeringEntitiesAndAxes(const ChassisConfiguration& chassisConfig);
+    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllDriveWheelEntitiesAndAxes(const ChassisConfiguration& chassisConfig);
 } // namespace VehicleDynamics::Utilities
