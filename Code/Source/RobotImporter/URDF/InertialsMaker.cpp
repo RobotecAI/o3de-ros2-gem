@@ -14,6 +14,9 @@
 
 namespace ROS2
 {
+    constexpr AZ::u8 kMinimalNumPosSolv = 40;
+    constexpr AZ::u8 kMinimalNumVelSolv = 10;
+
     void InertialsMaker::AddInertial(urdf::InertialSharedPtr inertial, AZ::EntityId entityId)
     {
         if (!inertial)
@@ -24,6 +27,10 @@ namespace ROS2
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
+        PhysX::RigidBodyConfiguration physxSpecificConfiguration;
+        physxSpecificConfiguration.m_solverPositionIterations = kMinimalNumPosSolv;
+        physxSpecificConfiguration.m_solverVelocityIterations = kMinimalNumVelSolv;
+
         rigidBodyConfiguration.m_mass = inertial->mass;
         rigidBodyConfiguration.m_computeMass = false;
 
@@ -45,6 +52,6 @@ namespace ROS2
         rigidBodyConfiguration.m_inertiaTensor = inertiaMatrix;
         rigidBodyConfiguration.m_computeInertiaTensor = false;
 
-        entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration);
+        entity->CreateComponent<PhysX::EditorRigidBodyComponent>(rigidBodyConfiguration, physxSpecificConfiguration);
     }
 } // namespace ROS2
