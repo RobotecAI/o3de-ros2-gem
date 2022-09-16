@@ -59,7 +59,7 @@ namespace VehicleDynamics
     // TODO - speed and steering handling is quite similar, possible to refactor?
     void SimplifiedDriveModel::ApplySteering(float steering, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
     {
-        //const double nsDtSec = double(nsDt)/1e9;
+        // const double nsDtSec = double(nsDt)/1e9;
         auto steeringEntities = VehicleDynamics::Utilities::GetAllSteeringEntities(vehicleChassis);
         for (auto& steeringEntity : steeringEntities)
         {
@@ -91,7 +91,7 @@ namespace VehicleDynamics
 
     void SimplifiedDriveModel::ApplySpeed(float speed, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
     {
-        const double nsDtSec = double(nsDt)/1e9;
+        const double nsDtSec = double(nsDt) / 1e9;
         auto wheelEntities = VehicleDynamics::Utilities::GetAllDriveWheelEntities(vehicleChassis);
         for (auto& wheelEntity : wheelEntities)
         {
@@ -121,7 +121,7 @@ namespace VehicleDynamics
                 continue;
             }
 
-            auto impulse = pidCommand*nsDtSec;
+            auto impulse = pidCommand * nsDtSec;
 
             auto transformedTorqueVector = wheelTransform.TransformVector(AZ::Vector3(0, 0, impulse));
             Physics::RigidBodyRequestBus::Event(wheelEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);

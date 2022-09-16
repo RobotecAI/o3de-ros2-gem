@@ -54,7 +54,7 @@ namespace VehicleDynamics
             m_eventHandlers.push_back(ManualControlSingleEventHandler(
                 "steering",
                 [](float inputValue)
-                {   // TODO handle steer
+                { // TODO handle steer
                     const float steeringLimit = 0.5f; // Radians
                     VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteering, inputValue * steeringLimit);
                 }));
