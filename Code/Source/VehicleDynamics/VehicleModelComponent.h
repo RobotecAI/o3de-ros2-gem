@@ -8,8 +8,8 @@
 #pragma once
 
 #include "ChassisConfiguration.h"
-#include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "ManualControlEventHandler.h"
+#include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "VehicleInputControlBus.h"
 #include "VehicleInputsState.h"
 #include <AzCore/Component/Component.h>

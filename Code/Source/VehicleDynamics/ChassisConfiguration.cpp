@@ -20,9 +20,7 @@ namespace VehicleDynamics
         AxleConfiguration::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<ChassisConfiguration>()
-                ->Version(1)
-                ->Field("AxlesConfigurations", &ChassisConfiguration::m_axles);
+            serialize->Class<ChassisConfiguration>()->Version(1)->Field("AxlesConfigurations", &ChassisConfiguration::m_axles);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {

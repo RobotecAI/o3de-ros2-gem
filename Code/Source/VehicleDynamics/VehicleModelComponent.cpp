@@ -40,7 +40,8 @@ namespace VehicleDynamics
         SimplifiedDriveModel::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<VehicleModelComponent, AZ::Component>()->Version(2)
+            serialize->Class<VehicleModelComponent, AZ::Component>()
+                ->Version(2)
                 ->Field("ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration)
                 ->Field("DriveModel", &VehicleModelComponent::m_driveModel);
 
