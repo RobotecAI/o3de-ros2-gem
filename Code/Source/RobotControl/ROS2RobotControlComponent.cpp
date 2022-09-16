@@ -7,8 +7,8 @@
  */
 
 #include "RobotControl/ROS2RobotControlComponent.h"
-#include "RobotControl/Twist/TwistSubscriptionHandler.h"
 #include "RobotControl/Ackermann/AckermannSubscriptionHandler.h"
+#include "RobotControl/Twist/TwistSubscriptionHandler.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
