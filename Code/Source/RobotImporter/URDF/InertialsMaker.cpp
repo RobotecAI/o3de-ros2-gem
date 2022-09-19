@@ -14,6 +14,8 @@
 
 namespace ROS2
 {
+    // Here is the recommended, minimal number of iterations for position and velocity solver.
+    // It is needed since currently o3de default values are optimized for the gaming experience, not a simulation.
     constexpr AZ::u8 kMinimalNumPosSolv = 40;
     constexpr AZ::u8 kMinimalNumVelSolv = 10;
 
@@ -28,8 +30,10 @@ namespace ROS2
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         PhysX::EditorRigidBodyConfiguration rigidBodyConfiguration;
         PhysX::RigidBodyConfiguration physxSpecificConfiguration;
-        physxSpecificConfiguration.m_solverPositionIterations = kMinimalNumPosSolv;
-        physxSpecificConfiguration.m_solverVelocityIterations = kMinimalNumVelSolv;
+        physxSpecificConfiguration.m_solverPositionIterations =
+            AZStd::max(physxSpecificConfiguration.m_solverPositionIterations, kMinimalNumPosSolv);
+        physxSpecificConfiguration.m_solverVelocityIterations =
+            AZStd::max(physxSpecificConfiguration.m_solverVelocityIterations, kMinimalNumVelSolv);
 
         rigidBodyConfiguration.m_mass = inertial->mass;
         rigidBodyConfiguration.m_computeMass = false;
