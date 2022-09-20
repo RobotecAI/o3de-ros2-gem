@@ -23,6 +23,8 @@ You can browse Doxygen-generated documentation on [Gem's GitHub page](https://ro
   - ROS2LidarComponent
 - __Robot control__
   - ROS2RobotControlComponent
+- __Spawner__
+  - ROS2SpawnerComponent
   
 ## The Gem and ROS 2 ecosystem
 
@@ -88,6 +90,15 @@ You can use tools such as [rqt_robot_steering](https://index.ros.org/p/rqt_robot
 
 It is possible to implement your own control mechanisms with this Component.
 
+#### Spawner
+
+`ROS2SpawnerComponent` handles spawning entities during simulation.
+Available spawnables have to be set up as the component's field before the simulation.
+
+During the simulation user can access names of available spawnables and request spawning using ros2 services. GetWorldProperties.srv and SpawnEntity.srv types from gazebo_msgs are used to handle these features.
+
+- Spawning: spawnable name should be passed in request.name and the position of entity in request.initial_pose
+- Available spawnable names access: names of available spawnables are sent in response.model_names
 ### Handling custom ROS 2 dependencies
 
 The ROS 2 Gem will respect your choice of [__sourced__](https://docs.ros.org/en/galactic/Tutorials/Workspace/Creating-A-Workspace.html#source-the-overlay) ROS 2 environment.
