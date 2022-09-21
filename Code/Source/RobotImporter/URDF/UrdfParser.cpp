@@ -19,11 +19,7 @@ namespace ROS2
 {
     urdf::ModelInterfaceSharedPtr UrdfParser::Parse(const AZStd::string& xmlString)
     {
-        auto currentLocale = std::setlocale(LC_NUMERIC, nullptr);
-        std::setlocale(LC_NUMERIC, "en_US.UTF-8");
-        urdf::ModelInterfaceSharedPtr urdfModel = urdf::parseURDF(xmlString.c_str());
-        std::setlocale(LC_NUMERIC, currentLocale);
-        return urdfModel;
+        return urdf::parseURDF(xmlString.c_str());
     }
 
     urdf::ModelInterfaceSharedPtr UrdfParser::ParseFromFile(const AZStd::string& filePath)
