@@ -61,6 +61,12 @@ namespace VehicleDynamics
     // TODO - speed and steering handling is quite similar, possible to refactor?
     void SimplifiedDriveModel::ApplySteering(float steering, uint64_t nsDt)
     {
+        if (m_steeringData.empty())
+        {
+            AZ_Warning("ApplySteering", false, "Cannot apply steering since no steering elements are defined in the model");
+            return;
+        }
+
         const double nsDtSec = double(nsDt) / 1e9;
         for (const auto& steeringElementData : m_steeringData)
         {
@@ -92,6 +98,12 @@ namespace VehicleDynamics
 
     void SimplifiedDriveModel::ApplySpeed(float speed, uint64_t nsDt)
     {
+        if (m_driveWheelsData.empty())
+        {
+            AZ_Warning("ApplySpeed", false, "Cannot apply speed since no diving wheels are defined in the model");
+            return;
+        }
+
         const double nsDtSec = double(nsDt) / 1e9;
         for (const auto& wheelData : m_driveWheelsData)
         {
