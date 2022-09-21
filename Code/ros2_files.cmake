@@ -93,6 +93,8 @@ set(FILES
         Source/VehicleDynamics/Utilities.h
         Source/VehicleDynamics/VehicleModelComponent.cpp
         Source/VehicleDynamics/VehicleModelComponent.h
+        Source/VehicleDynamics/VehicleModelLimits.cpp
+        Source/VehicleDynamics/VehicleModelLimits.h
         Source/VehicleDynamics/WheelControllerComponent.cpp
         Source/VehicleDynamics/WheelControllerComponent.h
         )

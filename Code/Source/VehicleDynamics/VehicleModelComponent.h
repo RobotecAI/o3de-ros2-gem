@@ -12,6 +12,7 @@
 #include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "VehicleInputControlBus.h"
 #include "VehicleInputsState.h"
+#include "VehicleModelLimits.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
@@ -48,6 +49,7 @@ namespace VehicleDynamics
         ChassisConfiguration m_chassisConfiguration;
         VehicleInputsState m_inputsState;
         SimplifiedDriveModel m_driveModel; // TODO - use abstraction here (DriveModel)
+        VehicleModelLimits m_vehicleLimits;
 
         float m_accumulatedTimeoutSpeed = 0; // TODO - separate out into inputs timeout handler
         float m_accumulatedTimeoutSteering = 0;
