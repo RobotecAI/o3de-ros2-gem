@@ -9,18 +9,18 @@
 
 #include "ControlConfiguration.h"
 #include "RobotControl/RobotControl.h"
-#include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace ROS2
 {
     //! A Component responsible for controlling a robot movement.
     //! Uses IRobotControl implementation depending on type of ROS2 control message.
     //! Depends on ROS2FrameComponent. Can be configured through ControlConfiguration.
-    class ROS2RobotControlComponent : public AZ::Component
+    class ROS2RobotControlComponent : public AzToolsFramework::Components::EditorComponentBase
     {
     public:
-        AZ_COMPONENT(ROS2RobotControlComponent, "{CBFB0764-99F9-40EE-9FEE-F5F5A66E59D2}", AZ::Component);
+        AZ_EDITOR_COMPONENT(ROS2RobotControlComponent, "{CBFB0764-99F9-40EE-9FEE-F5F5A66E59D2}");
         ROS2RobotControlComponent() = default;
         ROS2RobotControlComponent(ControlConfiguration controlConfiguration)
             : m_controlConfiguration(AZStd::move(controlConfiguration))

@@ -8,9 +8,9 @@
 #pragma once
 
 #include "SensorConfiguration.h"
-#include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace ROS2
 {
@@ -18,13 +18,13 @@ namespace ROS2
     //! Sensors acquire data from the simulation engine and publish it to ROS2 ecosystem.
     //! Derive this Component to implement a new ROS2 sensor. Each sensor Component requires ROS2FrameComponent.
     class ROS2SensorComponent
-        : public AZ::Component
+        : public AzToolsFramework::Components::EditorComponentBase
         , public AZ::TickBus::Handler // TODO - high resolution tick source?
     {
     public:
         ROS2SensorComponent() = default;
         virtual ~ROS2SensorComponent() = default;
-        AZ_COMPONENT(ROS2SensorComponent, "{91BCC1E9-6D93-4466-9CDB-E73D497C6B5E}");
+        AZ_EDITOR_COMPONENT(ROS2SensorComponent, "{91BCC1E9-6D93-4466-9CDB-E73D497C6B5E}");
 
         void Activate() override;
         void Deactivate() override;

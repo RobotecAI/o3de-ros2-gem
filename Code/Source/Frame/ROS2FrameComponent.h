@@ -9,9 +9,9 @@
 
 #include "Frame/NamespaceConfiguration.h"
 #include "Frame/ROS2Transform.h"
-#include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 #include <AzFramework/Components/TransformComponent.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace ROS2
 {
@@ -21,11 +21,11 @@ namespace ROS2
     //! An entity can only have a single ROS2Frame on each level. Many ROS2 Components require this component.
     //! @note A robot should have this component on every level of entity hierarchy (for each joint, fixed or dynamic)
     class ROS2FrameComponent
-        : public AZ::Component
+        : public AzToolsFramework::Components::EditorComponentBase
         , public AZ::TickBus::Handler
     {
     public:
-        AZ_COMPONENT(ROS2FrameComponent, "{EE743472-3E25-41EA-961B-14096AC1D66F}");
+        AZ_EDITOR_COMPONENT(ROS2FrameComponent, "{EE743472-3E25-41EA-961B-14096AC1D66F}");
 
         ROS2FrameComponent();
         ROS2FrameComponent(AZStd::string frameId);

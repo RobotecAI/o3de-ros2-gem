@@ -8,16 +8,16 @@
 
 #pragma once
 
-#include <AzCore/Component/Component.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace ROS2
 {
     //! A Component for importing robot definition from standard formats such as URDF.
     //! Sometimes, user decisions will be involved in the process.
-    class ROS2RobotImporterSystemComponent : public AZ::Component
+    class ROS2RobotImporterSystemComponent : public AzToolsFramework::Components::EditorComponentBase
     {
     public:
-        AZ_COMPONENT(ROS2RobotImporterSystemComponent, "{f2566021-450a-4eae-896f-b268492a58eb}");
+        AZ_EDITOR_COMPONENT(ROS2RobotImporterSystemComponent, "{f2566021-450a-4eae-896f-b268492a58eb}");
         static void Reflect(AZ::ReflectContext* context);
 
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
