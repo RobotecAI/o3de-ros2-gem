@@ -26,7 +26,13 @@ namespace VehicleDynamics
         static void Reflect(AZ::ReflectContext* context);
         virtual ~DriveModel() = default;
         virtual DriveModel::DriveModelType DriveType() = 0;
+
+        //! Activate the model. Chassis configuration is to remain the same until another Activate is called.
         virtual void Activate(const ChassisConfiguration& vehicleChassis) = 0;
+
+        //! Applies inputs to the drive. This model will calculate and apply physical forces.
+        //! @param inputs captured state of inputs to use
+        //! @param deltaTimeNs nanoseconds passed since last call of this function.
         virtual void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) = 0;
     };
 } // namespace VehicleDynamics

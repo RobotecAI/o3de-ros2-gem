@@ -13,10 +13,15 @@
 // TODO - plenty of boilerplate code, seems somewhat redundant since it would be better to be able to map inputs directly
 namespace VehicleDynamics
 {
+    //! A handler for a single input event.
     class ManualControlSingleEventHandler : private StartingPointInput::InputEventNotificationBus::Handler
     {
     public:
         using OnHeldHandlerFunction = std::function<void(float)>;
+
+        //! Construct the event handler.
+        //! @param eventName which event to handle (e.g. "steering", "accelerate")
+        //! @param handler a function which handles the input, typically through re-publishing it to a vehicle input bus.
         ManualControlSingleEventHandler(AZStd::string eventName, OnHeldHandlerFunction handler)
             : m_eventName(std::move(eventName))
             , m_handler(handler)
@@ -54,16 +59,14 @@ namespace VehicleDynamics
             m_eventHandlers.push_back(ManualControlSingleEventHandler(
                 "steering",
                 [](float inputValue)
-                { // TODO handle steer
-                    const float steeringLimit = 0.5f; // Radians
+                {
                     VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteering, inputValue * steeringLimit);
                 }));
 
             m_eventHandlers.push_back(ManualControlSingleEventHandler(
                 "accelerate",
                 [](float inputValue)
-                { // TODO handle speed limits.
-                    const float speedLimit = 15.f; // Meters per second
+                {
                     VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetLinearSpeed, inputValue * speedLimit);
                 }));
         }
