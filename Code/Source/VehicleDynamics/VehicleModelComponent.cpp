@@ -87,6 +87,11 @@ namespace VehicleDynamics
         m_inputsState.m_speed.UpdateValue(limitedSpeed);
     }
 
+    void VehicleModelComponent::SetTargetLinearSpeedFraction(float speedFraction)
+    {
+        m_inputsState.m_speed.UpdateValue(speedFraction * m_vehicleLimits.m_speedLimitMps);
+    }
+
     void VehicleModelComponent::SetTargetAcceleration([[maybe_unused]] float acceleration)
     {
         AZ_Error("SetTargetAcceleration", false, "Not implemented");
@@ -97,6 +102,12 @@ namespace VehicleDynamics
         auto limitedSteering = VehicleModelLimits::LimitValue(steering, m_vehicleLimits.m_steeringLimitRads);
         m_inputsState.m_steering.UpdateValue(limitedSteering);
     }
+
+    void VehicleModelComponent::SetTargetSteeringFraction(float steeringFraction)
+    {
+        m_inputsState.m_steering.UpdateValue(steeringFraction * m_vehicleLimits.m_steeringLimitRads);
+    }
+
 
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {

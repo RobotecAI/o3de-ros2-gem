@@ -60,14 +60,14 @@ namespace VehicleDynamics
                 "steering",
                 [](float inputValue)
                 {
-                    VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteering, inputValue * steeringLimit);
+                    VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetSteeringFraction, inputValue);
                 }));
 
             m_eventHandlers.push_back(ManualControlSingleEventHandler(
                 "accelerate",
                 [](float inputValue)
                 {
-                    VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetLinearSpeed, inputValue * speedLimit);
+                    VehicleInputControlRequestBus::Broadcast(&VehicleInputControlRequests::SetTargetLinearSpeedFraction, inputValue);
                 }));
         }
 
