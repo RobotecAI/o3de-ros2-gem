@@ -12,7 +12,6 @@ namespace VehicleDynamics
     //! Data structure to pass wheel dynamics data for a single wheel
     struct WheelDynamicsData
     {
-    public:
         AZ::EntityId m_wheelEntity;
         AZ::Vector3 m_driveAxis;
         float m_wheelRadius;
