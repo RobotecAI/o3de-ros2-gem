@@ -30,6 +30,7 @@ namespace VehicleDynamics
         AZStd::string m_axleTag; //! Useful to differentiate between axles, can be empty.
         AZStd::vector<AZ::EntityId> m_axleWheels; //! One or more wheels attached to this axle (typically 2), sorted left to right.
 
+        float m_wheelRadius = 0.35f; // TODO - this could be deduced from a model for a better default
         bool m_isSteering = false;
         bool m_isDrive = false;
     };
