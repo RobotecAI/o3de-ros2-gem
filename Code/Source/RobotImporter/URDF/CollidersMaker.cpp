@@ -29,26 +29,6 @@ namespace ROS2
     {
         static const char* collidersMakerLoggingTag = "CollidersMaker";
 
-        void verifyTheGeometry(const urdf::Cylinder& cylinderGeometry)
-        {
-            // Due to the fact that URDF parser takes into account the locale information, incompatibility between URDF file locale and
-            // system locale might lead to incorrect URDF parsing. Mainly it affects floating point numbers, and its decimal separator. When
-            // locales are set to system with comma as decimal separator and URDF file is created with dot as decimal separator, URDF parser
-            // will trim the floating point number after comma. For example, if cylinder radius is 0.1, URDF parser will parse it as 0. At
-            // the moment of writing this code, O3DE colliders components does not deal correctly with zero radius/length, which leads to
-            // crashes. To at least point user to where the issue might be coming from, we check if the radius/length is zero, and if
-            // it is, the warning is printed
-
-            if (std::fabs(cylinderGeometry.length) < std::numeric_limits<double>::epsilon())
-            {
-                AZ_Warning(collidersMakerLoggingTag, false, "Cylinder length is 0; this might be caused by the locale settings");
-            }
-            if (std::fabs(cylinderGeometry.radius) < std::numeric_limits<double>::epsilon())
-            {
-                AZ_Warning(collidersMakerLoggingTag, false, "Cylinder radius is 0; this might be caused by the locale settings");
-            }
-        }
-
         AZ::IO::Path GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath)
         {
             modelPath.RemoveFilename();
@@ -432,7 +412,6 @@ namespace ROS2
             {
                 auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
                 AZ_Assert(cylinderGeometry, "geometry is not cylinderGeometry");
-                Internal::verifyTheGeometry(*cylinderGeometry);
                 // TODO HACK Underlying API of O3DE  does not have Physic::CylinderShapeConfiguration implementation
                 Physics::BoxShapeConfiguration cfg;
                 auto* component = entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, cfg);
