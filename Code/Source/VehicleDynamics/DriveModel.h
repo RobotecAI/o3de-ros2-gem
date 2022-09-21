@@ -26,8 +26,7 @@ namespace VehicleDynamics
         static void Reflect(AZ::ReflectContext* context);
         virtual ~DriveModel() = default;
         virtual DriveModel::DriveModelType DriveType() = 0;
-        virtual void Activate() = 0;
-        virtual void ApplyInputState(
-            const VehicleInputsState& inputs, const ChassisConfiguration& vehicleChassis, uint64_t deltaTimeNs) = 0;
+        virtual void Activate(const ChassisConfiguration& vehicleChassis) = 0;
+        virtual void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) = 0;
     };
 } // namespace VehicleDynamics

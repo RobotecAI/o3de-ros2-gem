@@ -97,4 +97,5 @@ set(FILES
         Source/VehicleDynamics/VehicleModelLimits.h
         Source/VehicleDynamics/WheelControllerComponent.cpp
         Source/VehicleDynamics/WheelControllerComponent.h
+        Source/VehicleDynamics/WheelDynamicsData.h
         )

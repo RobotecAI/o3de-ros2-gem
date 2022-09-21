@@ -50,9 +50,6 @@ namespace VehicleDynamics
         VehicleInputsState m_inputsState;
         SimplifiedDriveModel m_driveModel; // TODO - use abstraction here (DriveModel)
         VehicleModelLimits m_vehicleLimits;
-
-        float m_accumulatedTimeoutSpeed = 0; // TODO - separate out into inputs timeout handler
-        float m_accumulatedTimeoutSteering = 0;
         // TODO - Engine, Transmission, Lights, etc.
     };
 } // namespace VehicleDynamics

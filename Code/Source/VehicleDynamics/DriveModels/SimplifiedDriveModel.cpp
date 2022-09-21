@@ -44,28 +44,30 @@ namespace VehicleDynamics
         }
     }
 
-    void SimplifiedDriveModel::Activate()
+    void SimplifiedDriveModel::Activate(const ChassisConfiguration& vehicleChassis)
     {
+        m_driveWheelsData = VehicleDynamics::Utilities::GetAllDriveWheelsData(vehicleChassis);
+        m_steeringData = VehicleDynamics::Utilities::GetAllSteeringEntitiesData(vehicleChassis);
         m_speedPid.InitializePid();
         m_steeringPid.InitializePid();
     }
 
-    void SimplifiedDriveModel::ApplyInputState(const VehicleInputsState& inputs, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
+    void SimplifiedDriveModel::ApplyInputState(const VehicleInputsState& inputs, uint64_t nsDt)
     {
-        ApplySteering(-inputs.m_steering.GetValue(), vehicleChassis, nsDt);
-        ApplySpeed(-inputs.m_speed.GetValue(), vehicleChassis, nsDt);
+        ApplySteering(inputs.m_steering.GetValue(), nsDt);
+        ApplySpeed(inputs.m_speed.GetValue(), nsDt);
     }
 
     // TODO - speed and steering handling is quite similar, possible to refactor?
-    void SimplifiedDriveModel::ApplySteering(float steering, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
+    void SimplifiedDriveModel::ApplySteering(float steering, uint64_t nsDt)
     {
         const double nsDtSec = double(nsDt) / 1e9;
-        auto steeringEntities = VehicleDynamics::Utilities::GetAllSteeringEntitiesAndAxes(vehicleChassis);
-        for (auto& [steeringEntity, dir] : steeringEntities)
+        for (const auto& steeringElementData : m_steeringData)
         {
+            auto steeringEntity = steeringElementData.m_steeringEntity;
             AZ::Vector3 currentSteeringElementRotation;
             AZ::TransformBus::EventResult(currentSteeringElementRotation, steeringEntity, &AZ::TransformBus::Events::GetLocalRotation);
-            auto currentSteeringAngle = currentSteeringElementRotation.Dot(dir); // TODO - axis could be different
+            auto currentSteeringAngle = currentSteeringElementRotation.Dot(steeringElementData.m_turnAxis);
             double pidCommand = m_steeringPid.ComputeCommand(steering - currentSteeringAngle, nsDt);
             AZ_TracePrintf(
                 "SimplifiedDriveModel",
@@ -83,19 +85,17 @@ namespace VehicleDynamics
             auto torque = pidCommand * nsDtSec;
             AZ::Transform steeringElementTransform;
             AZ::TransformBus::EventResult(steeringElementTransform, steeringEntity, &AZ::TransformBus::Events::GetWorldTM);
-            auto transformedTorqueVector = steeringElementTransform.TransformVector(dir * torque);
+            auto transformedTorqueVector = steeringElementTransform.TransformVector(steeringElementData.m_turnAxis * torque);
             Physics::RigidBodyRequestBus::Event(steeringEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
         }
     }
 
-    void SimplifiedDriveModel::ApplySpeed(float speed, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
+    void SimplifiedDriveModel::ApplySpeed(float speed, uint64_t nsDt)
     {
-        //
-        //        AZ_TracePrintf( "SimplifiedDriveModel", "speed dir : %.f %.f %.f\n", dir.GetX(),dir.GetY(),dir.GetZ());
         const double nsDtSec = double(nsDt) / 1e9;
-        auto wheelEntities = VehicleDynamics::Utilities::GetAllDriveWheelEntitiesAndAxes(vehicleChassis);
-        for (auto& [wheelEntity, dir] : wheelEntities)
+        for (const auto& wheelData : m_driveWheelsData)
         {
+            auto wheelEntity = wheelData.m_wheelEntity;
             AZ::Transform wheelTransform;
             AZ::TransformBus::EventResult(wheelTransform, wheelEntity, &AZ::TransformBus::Events::GetWorldTM);
 
@@ -103,9 +103,15 @@ namespace VehicleDynamics
             AZ::Vector3 currentAngularVelocity;
             Physics::RigidBodyRequestBus::EventResult(currentAngularVelocity, wheelEntity, &Physics::RigidBodyRequests::GetAngularVelocity);
             currentAngularVelocity = inverseWheelTransform.TransformVector(currentAngularVelocity);
-            auto currentAngularSpeedX = currentAngularVelocity.Dot(dir);
+            auto currentAngularSpeedX = currentAngularVelocity.Dot(wheelData.m_driveAxis);
+            float wheelRadius = wheelData.m_wheelRadius;
+            if (AZ::IsClose(wheelRadius, 0.0f))
+            {
+                const float defaultFloatRadius = 0.35f;
+                AZ_Warning("ApplySpeed", false, "Wheel radius is zero (or too close to zero), resetting to default %f", defaultFloatRadius);
+                wheelRadius = defaultFloatRadius;
+            }
 
-            const double wheelRadius = 0.325f; // TODO - get from the actual wheel
             auto desiredAngularSpeedX = speed / wheelRadius;
 
             double pidCommand = m_speedPid.ComputeCommand(desiredAngularSpeedX - currentAngularSpeedX, nsDt);
@@ -124,7 +130,7 @@ namespace VehicleDynamics
 
             auto impulse = pidCommand * nsDtSec;
 
-            auto transformedTorqueVector = wheelTransform.TransformVector(dir * impulse);
+            auto transformedTorqueVector = wheelTransform.TransformVector(wheelData.m_driveAxis * impulse);
             Physics::RigidBodyRequestBus::Event(wheelEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
         }
     }

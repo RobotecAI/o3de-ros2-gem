@@ -23,7 +23,7 @@ namespace VehicleDynamics
         VehicleInputControlRequestBus::Handler::BusConnect();
         m_manualControlEventHandler.Activate();
         AZ::TickBus::Handler::BusConnect();
-        m_driveModel.Activate();
+        m_driveModel.Activate(m_chassisConfiguration);
     }
 
     void VehicleModelComponent::Deactivate()
@@ -101,6 +101,6 @@ namespace VehicleDynamics
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
         uint64_t deltaTimeNs = deltaTime * 1000000000;
-        m_driveModel.ApplyInputState(m_inputsState, m_chassisConfiguration, deltaTimeNs);
+        m_driveModel.ApplyInputState(m_inputsState, deltaTimeNs);
     }
 } // namespace VehicleDynamics
