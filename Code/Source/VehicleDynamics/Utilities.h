@@ -9,17 +9,17 @@
 
 #include "AxleConfiguration.h"
 #include "ChassisConfiguration.h"
+#include "WheelDynamicsData.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
 namespace VehicleDynamics::Utilities
 {
-    AxleConfiguration Create2WheelAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, bool steering, bool drive);
-    AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel);
-    AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel);
-
-    // TODO - run and cache on Activate
-    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllSteeringEntitiesAndAxes(const ChassisConfiguration& chassisConfig);
-    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllDriveWheelEntitiesAndAxes(const ChassisConfiguration& chassisConfig);
+    AxleConfiguration Create2WheelAxle(
+        AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, float wheelRadius, bool steering, bool drive);
+    AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, float wheelRadius);
+    AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, float wheelRadius);
+    AZStd::vector<VehicleDynamics::SteeringDynamicsData> GetAllSteeringEntitiesData(const ChassisConfiguration& chassisConfig);
+    AZStd::vector<VehicleDynamics::WheelDynamicsData> GetAllDriveWheelsData(const ChassisConfiguration& chassisConfig);
 } // namespace VehicleDynamics::Utilities

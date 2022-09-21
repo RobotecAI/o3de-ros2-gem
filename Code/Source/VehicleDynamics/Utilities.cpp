@@ -14,7 +14,8 @@
 
 namespace VehicleDynamics::Utilities
 {
-    AxleConfiguration Create2WheelAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, bool steering, bool drive)
+    AxleConfiguration Create2WheelAxle(
+        AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, float wheelRadius, bool steering, bool drive)
     {
         VehicleDynamics::AxleConfiguration axleConfiguration;
         axleConfiguration.m_axleWheels.push_back(leftWheel);
@@ -22,22 +23,23 @@ namespace VehicleDynamics::Utilities
         axleConfiguration.m_axleTag = AZStd::move(tag);
         axleConfiguration.m_isSteering = steering;
         axleConfiguration.m_isDrive = drive;
+        axleConfiguration.m_wheelRadius = wheelRadius;
         return axleConfiguration;
     }
 
-    AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel)
+    AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, float wheelRadius)
     {
-        return Create2WheelAxle(leftWheel, rightWheel, "Front", true, true);
+        return Create2WheelAxle(leftWheel, rightWheel, "Front", wheelRadius, true, true);
     }
 
-    AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel)
+    AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, float wheelRadius)
     {
-        return Create2WheelAxle(leftWheel, rightWheel, "Rear", false, true);
+        return Create2WheelAxle(leftWheel, rightWheel, "Rear", wheelRadius, false, true);
     }
 
-    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllSteeringEntitiesAndAxes(const ChassisConfiguration& chassisConfig)
+    AZStd::vector<VehicleDynamics::SteeringDynamicsData> GetAllSteeringEntitiesData(const ChassisConfiguration& chassisConfig)
     {
-        AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> steeringEntitiesAndAxis;
+        AZStd::vector<VehicleDynamics::SteeringDynamicsData> steeringEntitiesAndAxis;
         for (const auto& axle : chassisConfig.m_axles)
         {
             if (axle.m_isSteering)
@@ -57,22 +59,26 @@ namespace VehicleDynamics::Utilities
                     }
 
                     AZ::EntityId steeringEntity = controllerComponent->m_steeringEntity;
-                    AZ::Vector3 steering_dir = controllerComponent->m_steering_dir;
-                    steering_dir.Normalize();
+                    AZ::Vector3 steeringDir = controllerComponent->m_steeringDir;
+                    steeringDir.Normalize();
                     if (!steeringEntity.IsValid())
                     { // TODO - warn
                         continue;
                     }
-                    steeringEntitiesAndAxis.push_back(AZStd::make_pair(steeringEntity, steering_dir));
+
+                    VehicleDynamics::SteeringDynamicsData steeringData;
+                    steeringData.m_steeringEntity = steeringEntity;
+                    steeringData.m_turnAxis = steeringDir;
+                    steeringEntitiesAndAxis.push_back(steeringData);
                 }
             }
         }
         return steeringEntitiesAndAxis;
     }
 
-    AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> GetAllDriveWheelEntitiesAndAxes(const ChassisConfiguration& chassisConfig)
+    AZStd::vector<VehicleDynamics::WheelDynamicsData> GetAllDriveWheelsData(const ChassisConfiguration& chassisConfig)
     {
-        AZStd::vector<AZStd::pair<AZ::EntityId, AZ::Vector3>> driveWheelEntities;
+        AZStd::vector<VehicleDynamics::WheelDynamicsData> driveWheelEntities;
         for (const auto& axle : chassisConfig.m_axles)
         {
             if (axle.m_isDrive)
@@ -86,9 +92,14 @@ namespace VehicleDynamics::Utilities
                     { // TODO - warn
                         continue;
                     }
-                    AZ::Vector3 drive_dir = controllerComponent->m_drive_dir;
-                    drive_dir.Normalize();
-                    driveWheelEntities.push_back(AZStd::make_pair(wheel, drive_dir));
+                    AZ::Vector3 driveDir = controllerComponent->m_driveDir;
+                    driveDir.Normalize();
+
+                    VehicleDynamics::WheelDynamicsData wheelData;
+                    wheelData.m_wheelEntity = wheel;
+                    wheelData.m_driveAxis = driveDir;
+                    wheelData.m_wheelRadius = axle.m_wheelRadius;
+                    driveWheelEntities.push_back(wheelData);
                 }
             }
         }

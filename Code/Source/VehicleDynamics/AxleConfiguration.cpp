@@ -17,9 +17,10 @@ namespace VehicleDynamics
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<AxleConfiguration>()
-                ->Version(1)
+                ->Version(2)
                 ->Field("AxleTag", &AxleConfiguration::m_axleTag)
                 ->Field("AxleWheels", &AxleConfiguration::m_axleWheels)
+                ->Field("WheelRadius", &AxleConfiguration::m_wheelRadius)
                 ->Field("IsSteering", &AxleConfiguration::m_isSteering)
                 ->Field("IsDrive", &AxleConfiguration::m_isDrive);
 
@@ -40,6 +41,11 @@ namespace VehicleDynamics
                         &AxleConfiguration::m_isDrive,
                         "Is it a drive axle",
                         "Is this axle used for drive (all attached wheels)")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &AxleConfiguration::m_wheelRadius,
+                        "Wheel radius",
+                        "Radius of each wheel attached to axle")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &AxleConfiguration::m_axleWheels,
