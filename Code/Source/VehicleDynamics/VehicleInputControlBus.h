@@ -34,6 +34,15 @@ namespace VehicleDynamics
         //! @param steering is angle in radians, positive to the right and negative to the left.
         //! Note that the actual angle applied is subject to limits and implementation (e.g. smoothing).
         virtual void SetTargetSteering(float steering) = 0;
+
+        //! Steer input version which is relative to limits.
+        //! @param steering is -1 to 1, which applies as a fraction of vehicle model steering limits.
+        //! Note that the actual angle applied is subject to limits and implementation (e.g. smoothing).
+        virtual void SetTargetSteeringFraction(float steeringFraction) = 0;
+
+        //! Speed input version which is relative to limits.
+        //! @param speedMps is -1 to 1, which applies as a fraction of vehicle model speed limits.
+        virtual void SetTargetLinearSpeedFraction(float speedFraction) = 0;
     };
 
     class VehicleInputControlBusTraits : public AZ::EBusTraits

@@ -44,6 +44,8 @@ namespace VehicleDynamics
         void SetTargetLinearSpeed(float speedMps) override;
         void SetTargetAcceleration(float acceleration) override;
         void SetTargetSteering(float steering) override;
+        void SetTargetSteeringFraction(float steeringFraction) override;
+        void SetTargetLinearSpeedFraction(float speedFraction) override;
 
         ManualControlEventHandler m_manualControlEventHandler;
         ChassisConfiguration m_chassisConfiguration;
