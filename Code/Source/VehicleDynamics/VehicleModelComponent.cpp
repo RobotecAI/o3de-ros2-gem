@@ -38,12 +38,14 @@ namespace VehicleDynamics
         ChassisConfiguration::Reflect(context);
         DriveModel::Reflect(context);
         SimplifiedDriveModel::Reflect(context);
+        VehicleModelLimits::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<VehicleModelComponent, AZ::Component>()
                 ->Version(2)
                 ->Field("ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration)
-                ->Field("DriveModel", &VehicleModelComponent::m_driveModel);
+                ->Field("DriveModel", &VehicleModelComponent::m_driveModel)
+                ->Field("VehicleModelLimits", &VehicleModelComponent::m_vehicleLimits);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -59,7 +61,12 @@ namespace VehicleDynamics
                         AZ::Edit::UIHandlers::Default,
                         &VehicleModelComponent::m_driveModel,
                         "Drive model",
-                        "Settings of the selected drive model");
+                        "Settings of the selected drive model")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &VehicleModelComponent::m_vehicleLimits,
+                        "Vehicle limits",
+                        "Limits for parameters such as speed and steering angle");
             }
         }
     }
@@ -76,10 +83,8 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::SetTargetLinearSpeed(float speedMps)
     {
-        // TODO - add a timeout to set to zero on no inputs. Determine best place.
-        m_inputsState.m_speed = speedMps;
-        m_accumulatedTimeoutSpeed = 0;
-        AZ_TracePrintf("SetTargetLinearSpeed", "Setting speed to %f\n", speedMps);
+        auto limitedSpeed = VehicleModelLimits::LimitValue(speedMps, m_vehicleLimits.m_speedLimitMps);
+        m_inputsState.m_speed.UpdateValue(limitedSpeed);
     }
 
     void VehicleModelComponent::SetTargetAcceleration([[maybe_unused]] float acceleration)
@@ -89,31 +94,13 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::SetTargetSteering(float steering)
     {
-        // TODO - add a timeout to set to zero on no inputs. Determine best place.
-        m_inputsState.m_steering = steering;
-        m_accumulatedTimeoutSteering = 0;
-        AZ_TracePrintf("SetTargetSteering", "Setting steering to %f\n", steering);
+        auto limitedSteering = VehicleModelLimits::LimitValue(steering, m_vehicleLimits.m_steeringLimitRads);
+        m_inputsState.m_steering.UpdateValue(limitedSteering);
     }
 
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
-        // TODO - expose the const for timeouts and handle them in generic way for each input (no repetitions)
-        m_accumulatedTimeoutSpeed += deltaTime;
-        m_accumulatedTimeoutSteering += deltaTime;
-        const float zeroOutInputsThreshold = 0.5f; // 0.5 second without fresh input is considered loss of control, stop.
-        if (m_accumulatedTimeoutSpeed > zeroOutInputsThreshold)
-        {
-            m_inputsState.m_speed = 0.0f;
-            m_accumulatedTimeoutSpeed = zeroOutInputsThreshold;
-        }
-        if (m_accumulatedTimeoutSteering > zeroOutInputsThreshold)
-        {
-            m_inputsState.m_steering = 0.0f;
-            m_accumulatedTimeoutSteering = zeroOutInputsThreshold;
-        }
-
         uint64_t deltaTimeNs = deltaTime * 1000000000;
         m_driveModel.ApplyInputState(m_inputsState, m_chassisConfiguration, deltaTimeNs);
     }
-
 } // namespace VehicleDynamics

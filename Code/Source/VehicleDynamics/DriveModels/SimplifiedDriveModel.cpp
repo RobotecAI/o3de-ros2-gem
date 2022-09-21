@@ -52,8 +52,8 @@ namespace VehicleDynamics
 
     void SimplifiedDriveModel::ApplyInputState(const VehicleInputsState& inputs, const ChassisConfiguration& vehicleChassis, uint64_t nsDt)
     {
-        ApplySteering(-inputs.m_steering, vehicleChassis, nsDt);
-        ApplySpeed(-inputs.m_speed, vehicleChassis, nsDt);
+        ApplySteering(-inputs.m_steering.GetValue(), vehicleChassis, nsDt);
+        ApplySpeed(-inputs.m_speed.GetValue(), vehicleChassis, nsDt);
     }
 
     // TODO - speed and steering handling is quite similar, possible to refactor?
