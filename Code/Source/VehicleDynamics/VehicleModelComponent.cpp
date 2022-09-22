@@ -78,13 +78,13 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::SetTargetLinearSpeed(float speedMps)
     {
-        auto limitedSpeed = VehicleModelLimits::LimitValue(speedMps, m_vehicleLimits.m_speedLimitMps);
+        auto limitedSpeed = VehicleModelLimits::LimitValue(speedMps, m_vehicleLimits.m_speedLimit);
         m_inputsState.m_speed.UpdateValue(limitedSpeed);
     }
 
     void VehicleModelComponent::SetTargetLinearSpeedFraction(float speedFraction)
     {
-        m_inputsState.m_speed.UpdateValue(speedFraction * m_vehicleLimits.m_speedLimitMps);
+        m_inputsState.m_speed.UpdateValue(speedFraction * m_vehicleLimits.m_speedLimit);
     }
 
     void VehicleModelComponent::SetTargetAcceleration([[maybe_unused]] float acceleration)
@@ -94,13 +94,13 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::SetTargetSteering(float steering)
     {
-        auto limitedSteering = VehicleModelLimits::LimitValue(steering, m_vehicleLimits.m_steeringLimitRads);
+        auto limitedSteering = VehicleModelLimits::LimitValue(steering, m_vehicleLimits.m_steeringLimit);
         m_inputsState.m_steering.UpdateValue(limitedSteering);
     }
 
     void VehicleModelComponent::SetTargetSteeringFraction(float steeringFraction)
     {
-        m_inputsState.m_steering.UpdateValue(steeringFraction * m_vehicleLimits.m_steeringLimitRads);
+        m_inputsState.m_steering.UpdateValue(steeringFraction * m_vehicleLimits.m_steeringLimit);
     }
 
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)

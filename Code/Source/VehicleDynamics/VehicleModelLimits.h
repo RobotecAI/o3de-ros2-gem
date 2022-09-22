@@ -22,7 +22,7 @@ namespace VehicleDynamics
 
         static float LimitValue(float value, float absoluteLimit);
 
-        float m_speedLimitMps = 10.0f; //! Applies to absolute value
-        float m_steeringLimitRads = 0.7f; //! Applies to absolute value
+        float m_speedLimit = 10.0f; //! [Mps] Applies to absolute value
+        float m_steeringLimit = 0.7f; //! [rad] Applies to absolute value
     };
 } // namespace VehicleDynamics

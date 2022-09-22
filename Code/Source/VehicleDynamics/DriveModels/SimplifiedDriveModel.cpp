@@ -75,14 +75,6 @@ namespace VehicleDynamics
             AZ::TransformBus::EventResult(currentSteeringElementRotation, steeringEntity, &AZ::TransformBus::Events::GetLocalRotation);
             auto currentSteeringAngle = currentSteeringElementRotation.Dot(steeringElementData.m_turnAxis);
             double pidCommand = m_steeringPid.ComputeCommand(steering - currentSteeringAngle, nsDt);
-            AZ_TracePrintf(
-                "SimplifiedDriveModel",
-                "Applying steering to entity %s with values: desired %f, current %f, impulse %lf\n",
-                steeringEntity.ToString().c_str(),
-                steering,
-                currentSteeringAngle,
-                pidCommand);
-
             if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
             {
                 continue;
@@ -125,16 +117,7 @@ namespace VehicleDynamics
             }
 
             auto desiredAngularSpeedX = speed / wheelRadius;
-
             double pidCommand = m_speedPid.ComputeCommand(desiredAngularSpeedX - currentAngularSpeedX, nsDt);
-            AZ_TracePrintf(
-                "SimplifiedDriveModel",
-                "Applying angular speed to wheel entity %s with values: desired %f, current %f, impulse %lf\n",
-                wheelEntity.ToString().c_str(),
-                desiredAngularSpeedX,
-                currentAngularSpeedX,
-                pidCommand);
-
             if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
             {
                 continue;

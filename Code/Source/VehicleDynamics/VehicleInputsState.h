@@ -61,6 +61,6 @@ namespace VehicleDynamics
     struct VehicleInputsState
     {
         InputZeroedOnTimeout<float> m_speed; // Mps
-        InputZeroedOnTimeout<float> m_steering; // Radians, right is +, left is -
+        InputZeroedOnTimeout<float> m_steering; // Radians, right is -, left is +
     };
 } // namespace VehicleDynamics
