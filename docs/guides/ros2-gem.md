@@ -117,13 +117,13 @@ These events will be handled by a [`VehicleModelComponent`](#vehicle-model) if i
 
 You can use tools such as [rqt_robot_steering](https://index.ros.org/p/rqt_robot_steering/#rolling) to move your robot
 with Twist messages.
-`RobotControl` is meant to be used with [ROS 2 navigation stack](https://navigation.ros.org/).
+`RobotControl` is suitable to use with [ROS 2 navigation stack](https://navigation.ros.org/).
 
 It is possible to implement your own control mechanisms with this Component.
 
 #### Vehicle Model
 
-`VehicleModelComponent` serves the purpose of converting inputs such as target speed, steering or acceleration to
+`VehicleModelComponent` serves the purpose of converting inputs such as target velocity, steering or acceleration to
 physical forces on parts of a vehicle (robot).
 `VehicleModel` has a `ChassisConfiguration` which is used to define axles, parametrize and assign wheels.
 
