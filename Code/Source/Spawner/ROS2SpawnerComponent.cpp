@@ -15,6 +15,16 @@
 
 namespace ROS2
 {
+    ROS2SpawnerComponent::ROS2SpawnerComponent()
+    {
+        SpawnerInterface::Register(this);
+    }
+
+    ROS2SpawnerComponent::~ROS2SpawnerComponent()
+    {
+        SpawnerInterface::Unregister(this);
+    }
+
     void ROS2SpawnerComponent::Activate()
     {
         auto ros2Node = ROS2Interface::Get()->GetNode();
@@ -44,14 +54,22 @@ namespace ROS2
     {
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<ROS2SpawnerComponent, AZ::Component>()->Version(1)->Field("Spawnables", &ROS2SpawnerComponent::m_spawnables);
+            serialize->Class<ROS2SpawnerComponent, AZ::Component>()
+                ->Version(1)
+                ->Field("Spawnables", &ROS2SpawnerComponent::m_spawnables)
+                ->Field("Default spawn point", &ROS2SpawnerComponent::m_defaultSpawnPoint);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<ROS2SpawnerComponent>("ROS2 Spawner", "Spawner component")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "Manages spawning of robots in configurable locations")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
-                    ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2SpawnerComponent::m_spawnables, "Spawnables", "Spawnables");
+                    ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2SpawnerComponent::m_spawnables, "Spawnables", "Spawnables")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::EntityId,
+                        &ROS2SpawnerComponent::m_defaultSpawnPoint,
+                        "Default spawn point",
+                        "Default spawn point");
             }
         }
     }
@@ -121,5 +139,10 @@ namespace ROS2
         auto* transformInterface_ = root->FindComponent<AzFramework::TransformComponent>();
 
         transformInterface_->SetWorldTM(transform);
+    }
+
+    const AZ::Vector3& ROS2SpawnerComponent::GetDefaultSpawnPoint() const
+    {
+        return m_defaultSpawnPoint;
     }
 } // namespace ROS2
