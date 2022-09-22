@@ -28,7 +28,7 @@ You can browse Doxygen-generated documentation on [Gem's GitHub page](https://ro
     - VehicleModelComponent
     - WheelControllerComponent
 - __Robot Import (URDF) system component__
-    - ROS2RobotImporterSystemComponent 
+    - ROS2RobotImporterSystemComponent
 
 ## The Gem and ROS 2 ecosystem
 
@@ -115,8 +115,8 @@ commands.
 Unless scripting is used, control components should translate ROS 2 commands to events on `VehicleInputControlBus`.
 These events will be handled by a [`VehicleModelComponent`](#vehicle-model) if it is present.
 
-You can use tools such as [rqt_robot_steering](https://index.ros.org/p/rqt_robot_steering/#rolling) to move your robot
-with Twist messages.
+You can use tools such as [rqt_robot_steering](https://index.ros.org/p/rqt_robot_steering/) to move your robot with
+Twist messages.
 `RobotControl` is suitable to use with [ROS 2 navigation stack](https://navigation.ros.org/).
 
 It is possible to implement your own control mechanisms with this Component.
@@ -146,8 +146,8 @@ define an input map for your input devices (such as keyboard or a game pad) to c
 
 **Design document**
 
-To understand how vehicle dynamics works, please refer to the 
-[design document](../design/vehicle_dynamics/design.md) and 
+To understand how vehicle dynamics works, please refer to the
+[design document](../design/vehicle_dynamics/design.md) and
 [class diagram](../design/vehicle_dynamics/diagrams/ROSVehicleDynamics_planned.png)
 
 ### Handling custom ROS 2 dependencies
@@ -183,6 +183,7 @@ visibility of ROS 2 package paths.
 
 Some classes with relationships and functions are presented on this diagram. Specific sensor classes (e.g. Lidar) are
 not included. Some classes are presented in sub-diagrams:
+
 - [Vehicle Dynamics](../design/vehicle_dynamics/diagrams/ROSVehicleDynamics_planned.png)
 
 ![classes diagram](static/diagrams/diagram_ros2_gem.png)
