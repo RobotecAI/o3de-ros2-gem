@@ -108,7 +108,6 @@ namespace VehicleDynamics
         m_inputsState.m_steering.UpdateValue(steeringFraction * m_vehicleLimits.m_steeringLimitRads);
     }
 
-
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
         uint64_t deltaTimeNs = deltaTime * 1000000000;
