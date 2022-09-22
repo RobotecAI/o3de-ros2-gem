@@ -51,7 +51,8 @@ namespace VehicleDynamics
             {
                 ec->Class<VehicleModelComponent>("Vehicle Model", "Customizable vehicle model component")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                    ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &VehicleModelComponent::m_chassisConfiguration,
