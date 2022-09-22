@@ -19,21 +19,17 @@ namespace VehicleDynamics
         {
             serialize->Class<VehicleModelLimits>()
                 ->Version(1)
-                ->Field("SpeedLimitMps", &VehicleModelLimits::m_speedLimitMps)
-                ->Field("SteeringLimitRads", &VehicleModelLimits::m_steeringLimitRads);
+                ->Field("SpeedLimit", &VehicleModelLimits::m_speedLimit)
+                ->Field("SteeringLimit", &VehicleModelLimits::m_steeringLimit);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<VehicleModelLimits>("Vehicle Model Limits", "Limitations of speed, steering angles and other values")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &VehicleModelLimits::m_speedLimit, "Speed Limit", "Max linear speed (mps)")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &VehicleModelLimits::m_speedLimitMps, "Speed Limit", "Max linear speed (mps)")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &VehicleModelLimits::m_steeringLimitRads,
-                        "Speed Limit",
-                        "Max steering angle (rads)");
+                        AZ::Edit::UIHandlers::Default, &VehicleModelLimits::m_steeringLimit, "Speed Limit", "Max steering angle (rad)");
             }
         }
     }

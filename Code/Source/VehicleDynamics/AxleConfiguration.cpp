@@ -50,7 +50,7 @@ namespace VehicleDynamics
                         AZ::Edit::UIHandlers::Default,
                         &AxleConfiguration::m_axleWheels,
                         "Axle wheels",
-                        "One or more wheels attached to this axle");
+                        "One or more wheels attached to this axle. First wheel is the leftmost, last is the rightmost");
             }
         }
     }
