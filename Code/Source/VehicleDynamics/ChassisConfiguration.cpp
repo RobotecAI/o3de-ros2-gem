@@ -26,7 +26,8 @@ namespace VehicleDynamics
             {
                 ec->Class<ChassisConfiguration>("Chassis configuration", "Configuration of vehicle chassis")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game")) // TODO - "Simulation"?
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                    ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default, &ChassisConfiguration::m_axles, "Axles", "Configurations of axles for this chassis");
             }
