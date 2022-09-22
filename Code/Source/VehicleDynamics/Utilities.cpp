@@ -54,6 +54,13 @@ namespace VehicleDynamics::Utilities
                     }
                     AZ::Entity* wheelEntity = nullptr;
                     AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
+                    if (!wheelEntity)
+                    {
+                        AZ_Warning(
+                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is null, ignoring", axle.m_axleTag.c_str());
+                        continue;
+                    }
+
                     auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
                     if (!controllerComponent)
                     {
@@ -97,15 +104,27 @@ namespace VehicleDynamics::Utilities
             {
                 for (const auto& wheel : axle.m_axleWheels)
                 {
+                    if (!wheel.IsValid())
+                    {
+                        AZ_Warning(
+                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is invalid, ignoring", axle.m_axleTag.c_str());
+                        continue;
+                    }
                     AZ::Entity* wheelEntity = nullptr;
                     AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
+                    if (!wheelEntity)
+                    {
+                        AZ_Warning(
+                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is null, ignoring", axle.m_axleTag.c_str());
+                        continue;
+                    }
                     auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
-                    if (!wheel.IsValid() || !controllerComponent)
+                    if (!controllerComponent)
                     {
                         AZ_Warning(
                             "GetAllDriveWheelsData",
                             false,
-                            "Wheel entity for axle %s is invalid or is missing a WheelController component, ignoring",
+                            "Wheel entity for axle %s is missing a WheelController component, ignoring",
                             axle.m_axleTag.c_str());
                         continue;
                     }
