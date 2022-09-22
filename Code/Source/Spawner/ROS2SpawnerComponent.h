@@ -43,7 +43,7 @@ namespace ROS2
         // Required Reflect function.
         static void Reflect(AZ::ReflectContext* context);
 
-        const AZ::Vector3& GetDefaultSpawnPoint() const override;
+        const AZ::Transform& GetDefaultSpawnPose() const override;
 
     private:
         AZStd::unordered_map<AZStd::string, AZ::Data::Asset<AzFramework::Spawnable>> m_spawnables;
@@ -52,7 +52,7 @@ namespace ROS2
         rclcpp::Service<gazebo_msgs::srv::GetWorldProperties>::SharedPtr m_getNamesService;
         rclcpp::Service<gazebo_msgs::srv::SpawnEntity>::SharedPtr m_spawnService;
 
-        AZ::Vector3 m_defaultSpawnPoint = { 0, 0, 0 };
+        AZ::Transform m_defaultSpawnPose = { AZ::Vector3{ 0, 0, 0 }, AZ::Quaternion{ 0, 0, 0, 1 }, 1.0 };
 
         void GetAvailableSpawnableNames(const GetAvailableSpawnableNamesRequest request, GetAvailableSpawnableNamesResponse response);
 

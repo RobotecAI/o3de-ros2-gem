@@ -57,7 +57,7 @@ namespace ROS2
             serialize->Class<ROS2SpawnerComponent, AZ::Component>()
                 ->Version(1)
                 ->Field("Spawnables", &ROS2SpawnerComponent::m_spawnables)
-                ->Field("Default spawn point", &ROS2SpawnerComponent::m_defaultSpawnPoint);
+                ->Field("Default spawn point", &ROS2SpawnerComponent::m_defaultSpawnPose);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -67,9 +67,9 @@ namespace ROS2
                     ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2SpawnerComponent::m_spawnables, "Spawnables", "Spawnables")
                     ->DataElement(
                         AZ::Edit::UIHandlers::EntityId,
-                        &ROS2SpawnerComponent::m_defaultSpawnPoint,
-                        "Default spawn point",
-                        "Default spawn point");
+                        &ROS2SpawnerComponent::m_defaultSpawnPose,
+                        "Default spawn pose",
+                        "Default spawn pose");
             }
         }
     }
@@ -87,9 +87,7 @@ namespace ROS2
     {
         AZStd::string_view key(request->name.c_str(), request->name.size());
 
-        auto spawnable = m_spawnables.find(key);
-
-        if (spawnable == m_spawnables.end())
+        if (!m_spawnables.contains(key))
         {
             response->success = false;
             response->status_message = "Requested spawnable name not found";
@@ -100,6 +98,7 @@ namespace ROS2
         {
             // if a ticket for this spawnable was not created but the spawnable name is correct, create the ticket and then use it to
             // spawn an entity
+            auto spawnable = m_spawnables.find(key);
             m_tickets.emplace(spawnable->first, AzFramework::EntitySpawnTicket(spawnable->second));
         }
 
@@ -141,8 +140,8 @@ namespace ROS2
         transformInterface_->SetWorldTM(transform);
     }
 
-    const AZ::Vector3& ROS2SpawnerComponent::GetDefaultSpawnPoint() const
+    const AZ::Transform& ROS2SpawnerComponent::GetDefaultSpawnPose() const
     {
-        return m_defaultSpawnPoint;
+        return m_defaultSpawnPose;
     }
 } // namespace ROS2

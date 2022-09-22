@@ -169,10 +169,8 @@ namespace ROS2
             AZ_TracePrintf("URDF Importer", "TransformComponent not found in created entity") return;
         }
 
-        AZ::Vector3 pos = spawner->GetDefaultSpawnPoint();
+        auto pose = spawner->GetDefaultSpawnPose();
 
-        auto transform = AZ::Transform(pos, AZ::Quaternion(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
-
-        transformInterface_->SetWorldTM(transform);
+        transformInterface_->SetWorldTM(pose);
     }
 } // namespace ROS2

@@ -9,7 +9,7 @@
 
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
-#include <AzCore/Math/Vector3.h>
+#include <AzCore/Math/Transform.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 
 namespace ROS2
@@ -24,9 +24,10 @@ namespace ROS2
 
         virtual ~SpawnerRequests() = default;
 
-        //! Default spawn point getter
-        //! @return default spawn point coordinates set by user in Editor (by default: {0, 0, 0})
-        virtual const AZ::Vector3& GetDefaultSpawnPoint() const = 0;
+        //! Default spawn pose getter
+        //! @return default spawn point coordinates set by user in Editor (by default: translation: {0, 0, 0}, rotation: {0, 0, 0, 1},
+        //! scale: 1.0)
+        virtual const AZ::Transform& GetDefaultSpawnPose() const = 0;
     };
 
     using SpawnerRequestsBus = AZ::EBus<SpawnerRequests>;
