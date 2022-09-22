@@ -47,25 +47,37 @@ namespace VehicleDynamics::Utilities
                 for (const auto& wheel : axle.m_axleWheels)
                 {
                     if (!wheel.IsValid())
-                    { // TODO - warn
+                    {
+                        AZ_Warning(
+                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is invalid, ignoring", axle.m_axleTag.c_str());
                         continue;
                     }
                     AZ::Entity* wheelEntity = nullptr;
                     AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
                     auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
                     if (!controllerComponent)
-                    { // TODO - warn
+                    {
+                        AZ_Warning(
+                            "GetAllSteeringEntitiesData",
+                            false,
+                            "Missing a WheelController in wheel entity %s, ignoring",
+                            wheel.ToString().c_str());
                         continue;
                     }
 
                     AZ::EntityId steeringEntity = controllerComponent->m_steeringEntity;
-                    AZ::Vector3 steeringDir = controllerComponent->m_steeringDir;
-                    steeringDir.Normalize();
                     if (!steeringEntity.IsValid())
-                    { // TODO - warn
+                    {
+                        AZ_Warning(
+                            "GetAllSteeringEntitiesData",
+                            false,
+                            "Steering entity specified for WheelController in entity %s is invalid, ignoring",
+                            wheel.ToString().c_str());
                         continue;
                     }
 
+                    AZ::Vector3 steeringDir = controllerComponent->m_steeringDir;
+                    steeringDir.Normalize();
                     VehicleDynamics::SteeringDynamicsData steeringData;
                     steeringData.m_steeringEntity = steeringEntity;
                     steeringData.m_turnAxis = steeringDir;
@@ -89,7 +101,12 @@ namespace VehicleDynamics::Utilities
                     AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
                     auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
                     if (!wheel.IsValid() || !controllerComponent)
-                    { // TODO - warn
+                    {
+                        AZ_Warning(
+                            "GetAllDriveWheelsData",
+                            false,
+                            "Wheel entity for axle %s is invalid or is missing a WheelController component, ignoring",
+                            axle.m_axleTag.c_str());
                         continue;
                     }
                     AZ::Vector3 driveDir = controllerComponent->m_driveDir;

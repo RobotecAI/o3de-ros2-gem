@@ -71,11 +71,6 @@ namespace VehicleDynamics
         }
     }
 
-    void VehicleModelComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
-    {
-        // TODO - determine required services
-    }
-
     void VehicleModelComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
         provided.push_back(AZ_CRC_CE("VehicleModelService"));

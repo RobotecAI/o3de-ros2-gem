@@ -40,6 +40,6 @@ namespace VehicleDynamics
 
     float VehicleModelLimits::LimitValue(float value, float absoluteLimit)
     {
-        return value >= 0 ? AZStd::min(value, absoluteLimit) : AZStd::max(value, -absoluteLimit);
+        return AZStd::clamp(value, -absoluteLimit, absoluteLimit);
     }
 } // namespace VehicleDynamics

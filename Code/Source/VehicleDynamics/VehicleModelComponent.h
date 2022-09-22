@@ -19,7 +19,7 @@
 
 namespace VehicleDynamics
 {
-    //! A central vehicle and robot) dynamics component, which can be extended with additional modules.
+    //! A central vehicle (and robot) dynamics component, which can be extended with additional modules.
     class VehicleModelComponent
         : public AZ::Component
         , private VehicleInputControlRequestBus::Handler
@@ -29,13 +29,9 @@ namespace VehicleDynamics
         AZ_COMPONENT(VehicleModelComponent, "{7093AE7A-9F64-4C77-8189-02C6B7802C1A}", AZ::Component);
         VehicleModelComponent() = default;
 
-        // AZ::Component interface implementation.
         void Activate() override;
         void Deactivate() override;
-        static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
-
-        // Required Reflect function.
         static void Reflect(AZ::ReflectContext* context);
 
     private:
