@@ -76,10 +76,22 @@ namespace ROS2
     {
         // TODO - also, dependent on current/selected RobotControl implementation for what components are required
         required.push_back(AZ_CRC("ROS2Frame"));
+        required.push_back(AZ_CRC("PhysicsRigidBodyService"));
+    }
+
+    const ControlConfiguration& ROS2RobotControlComponent::GetControlConfiguration() const
+    {
+        return m_controlConfiguration;
     }
 
     void ROS2RobotControlComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
         provided.push_back(AZ_CRC_CE("ROS2RobotControl"));
     }
+
+    void ROS2RobotControlComponent::SetControlConfiguration(const ControlConfiguration& controlConfiguration)
+    {
+        m_controlConfiguration = controlConfiguration;
+    }
+
 } // namespace ROS2
