@@ -17,8 +17,8 @@
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <AzToolsFramework/Prefab/PrefabLoaderInterface.h>
 #include <AzToolsFramework/Prefab/PrefabSystemComponentInterface.h>
-#include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 #include <AzToolsFramework/ToolsComponents/GenericComponentWrapper.h>
+#include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 
 #include <Spawner/SpawnerBus.h>
 
