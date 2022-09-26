@@ -34,6 +34,7 @@ namespace VehicleDynamics
         void ApplySteering(float steering, uint64_t deltaTimeNs);
         void ApplySpeed(float speed, uint64_t deltaTimeNs);
 
+        ChassisConfiguration m_vehicleConfiguration;
         AZStd::vector<WheelDynamicsData> m_driveWheelsData;
         AZStd::vector<SteeringDynamicsData> m_steeringData;
         PidConfiguration m_steeringPid;
