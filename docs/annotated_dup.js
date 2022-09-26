@@ -45,6 +45,7 @@ var annotated_dup =
       [ "ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component" ],
       [ "ROS2RobotImporterSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_system_component.html", "class_r_o_s2_1_1_r_o_s2_robot_importer_system_component" ],
       [ "ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", "class_r_o_s2_1_1_r_o_s2_sensor_component" ],
+      [ "ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", "class_r_o_s2_1_1_r_o_s2_spawner_component" ],
       [ "ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", "class_r_o_s2_1_1_r_o_s2_system_component" ],
       [ "ROS2Transform", "class_r_o_s2_1_1_r_o_s2_transform.html", "class_r_o_s2_1_1_r_o_s2_transform" ],
       [ "SensorConfiguration", "struct_r_o_s2_1_1_sensor_configuration.html", "struct_r_o_s2_1_1_sensor_configuration" ],

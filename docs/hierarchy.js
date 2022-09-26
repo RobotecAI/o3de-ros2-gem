@@ -19,6 +19,7 @@ var hierarchy =
         [ "ROS2::ROS2ImuSensorComponent", "class_r_o_s2_1_1_r_o_s2_imu_sensor_component.html", null ],
         [ "ROS2::ROS2LidarSensorComponent", "class_r_o_s2_1_1_r_o_s2_lidar_sensor_component.html", null ]
       ] ],
+      [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ],
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", [
         [ "ROS2::ROS2EditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_editor_system_component.html", null ]
       ] ]
@@ -33,18 +34,18 @@ var hierarchy =
     [ "ROS2::Fbx::Constants::FbxHeader", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_fbx_header.html", null ],
     [ "ROS2::Fbx::Constants::GlobalSettings", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_global_settings.html", null ],
     [ "Handler", null, [
-      [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
-      [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::TwistNotificationHandler", "class_r_o_s2_1_1_twist_notification_handler.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
+      [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
+      [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
+      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
+      [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
     ] ],
     [ "ROS2::InertialsMaker", "class_r_o_s2_1_1_inertials_maker.html", null ],
     [ "ROS2::IRobotControl", "class_r_o_s2_1_1_i_robot_control.html", [
