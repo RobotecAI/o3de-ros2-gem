@@ -7,6 +7,7 @@
  */
 #pragma once
 
+#include "AzCore/Component/ComponentBus.h"
 #include "AzCore/std/string/string.h"
 #include "RobotImporter/URDF/UrdfParser.h"
 namespace ROS2
@@ -15,10 +16,10 @@ namespace ROS2
     {
         bool IsWheelURDFHeuristics(const urdf::LinkConstSharedPtr& link);
 
-        /// Create component for given entity in safe way.
+        /// Create component for a given entity in safe way.
         /// \param entityId entity that will own component
         /// \param componentType Uuid of component to create
-        /// \return created componentId, if fails returns invalid id
+        /// \return created componentId, if it fails, it returns invalid id
         AZ::ComponentId CreateComponent(const AZ::EntityId entityId, const AZ::Uuid componentType);
 
     } // namespace Utils
