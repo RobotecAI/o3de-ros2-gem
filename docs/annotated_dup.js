@@ -50,6 +50,7 @@ var annotated_dup =
       [ "ROS2Transform", "class_r_o_s2_1_1_r_o_s2_transform.html", "class_r_o_s2_1_1_r_o_s2_transform" ],
       [ "SensorConfiguration", "struct_r_o_s2_1_1_sensor_configuration.html", "struct_r_o_s2_1_1_sensor_configuration" ],
       [ "SimulationClock", "class_r_o_s2_1_1_simulation_clock.html", "class_r_o_s2_1_1_simulation_clock" ],
+      [ "SpawnerRequests", "class_r_o_s2_1_1_spawner_requests.html", "class_r_o_s2_1_1_spawner_requests" ],
       [ "TwistControl", "class_r_o_s2_1_1_twist_control.html", "class_r_o_s2_1_1_twist_control" ],
       [ "TwistNotificationHandler", "class_r_o_s2_1_1_twist_notification_handler.html", "class_r_o_s2_1_1_twist_notification_handler" ],
       [ "TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", "class_r_o_s2_1_1_twist_notifications" ],
