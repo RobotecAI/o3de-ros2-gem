@@ -98,4 +98,7 @@ set(FILES
         Source/VehicleDynamics/WheelControllerComponent.cpp
         Source/VehicleDynamics/WheelControllerComponent.h
         Source/VehicleDynamics/WheelDynamicsData.h
+        Source/Spawner/ROS2SpawnerComponent.h
+        Source/Spawner/ROS2SpawnerComponent.cpp
+        Source/Spawner/SpawnerBus.h
         )
