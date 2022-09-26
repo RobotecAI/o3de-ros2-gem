@@ -31,12 +31,12 @@ namespace VehicleDynamics
         double ComputeCommand(double error, uint64_t deltaTimeNanoseconds);
 
     private:
-        double m_p = 1.0;
-        double m_i = 0.0;
-        double m_d = 0.0;
-        double m_iMax = 10.0;
-        double m_iMin = -10.0;
-        bool m_antiWindup = false;
+        double m_p = 1.0; //!< proportional gain
+        double m_i = 0.0; //!< integral gain
+        double m_d = 0.0; //!< derivative gain
+        double m_iMax = 10.0; //!< maximal allowable integral term
+        double m_iMin = -10.0; //!< minimal allowable integral term
+        bool m_antiWindup = false; //!< prevents condition of integrator overflow in integral action
 
         control_toolbox::Pid m_pid;
     };

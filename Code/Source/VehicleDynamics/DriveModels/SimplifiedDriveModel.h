@@ -7,9 +7,9 @@
  */
 #pragma once
 
-#include "VehicleDynamics/ChassisConfiguration.h"
 #include "VehicleDynamics/DriveModel.h"
 #include "VehicleDynamics/DriveModels/PidConfiguration.h"
+#include "VehicleDynamics/VehicleConfiguration.h"
 #include "VehicleDynamics/VehicleInputsState.h"
 #include "VehicleDynamics/WheelDynamicsData.h"
 #include <AzCore/Serialization/SerializeContext.h>
@@ -25,7 +25,7 @@ namespace VehicleDynamics
         {
             return DriveModel::SimplifiedDriveModelType;
         }
-        void Activate(const ChassisConfiguration& vehicleChassis) override;
+        void Activate(const VehicleConfiguration& vehicleConfig) override;
         void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) override;
 
         static void Reflect(AZ::ReflectContext* context);
@@ -34,7 +34,7 @@ namespace VehicleDynamics
         void ApplySteering(float steering, uint64_t deltaTimeNs);
         void ApplySpeed(float speed, uint64_t deltaTimeNs);
 
-        ChassisConfiguration m_vehicleConfiguration;
+        VehicleConfiguration m_vehicleConfiguration;
         AZStd::vector<WheelDynamicsData> m_driveWheelsData;
         AZStd::vector<SteeringDynamicsData> m_steeringData;
         PidConfiguration m_steeringPid;

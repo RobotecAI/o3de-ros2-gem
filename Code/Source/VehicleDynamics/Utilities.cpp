@@ -37,106 +37,106 @@ namespace VehicleDynamics::Utilities
         return Create2WheelAxle(leftWheel, rightWheel, "Rear", wheelRadius, false, true);
     }
 
-    AZStd::vector<VehicleDynamics::SteeringDynamicsData> GetAllSteeringEntitiesData(const ChassisConfiguration& chassisConfig)
+    AZStd::vector<VehicleDynamics::SteeringDynamicsData> GetAllSteeringEntitiesData(const VehicleConfiguration& vehicleConfig)
     {
         AZStd::vector<VehicleDynamics::SteeringDynamicsData> steeringEntitiesAndAxis;
-        for (const auto& axle : chassisConfig.m_axles)
+        for (const auto& axle : vehicleConfig.m_axles)
         {
-            if (axle.m_isSteering)
+            if (!axle.m_isSteering)
+            { // Only steering axles will have steering entities
+                continue;
+            }
+
+            for (const auto& wheel : axle.m_axleWheels)
             {
-                for (const auto& wheel : axle.m_axleWheels)
+                if (!wheel.IsValid())
                 {
-                    if (!wheel.IsValid())
-                    {
-                        AZ_Warning(
-                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is invalid, ignoring", axle.m_axleTag.c_str());
-                        continue;
-                    }
-                    AZ::Entity* wheelEntity = nullptr;
-                    AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
-                    if (!wheelEntity)
-                    {
-                        AZ_Warning(
-                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is null, ignoring", axle.m_axleTag.c_str());
-                        continue;
-                    }
-
-                    auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
-                    if (!controllerComponent)
-                    {
-                        AZ_Warning(
-                            "GetAllSteeringEntitiesData",
-                            false,
-                            "Missing a WheelController in wheel entity %s, ignoring",
-                            wheel.ToString().c_str());
-                        continue;
-                    }
-
-                    AZ::EntityId steeringEntity = controllerComponent->m_steeringEntity;
-                    if (!steeringEntity.IsValid())
-                    {
-                        AZ_Warning(
-                            "GetAllSteeringEntitiesData",
-                            false,
-                            "Steering entity specified for WheelController in entity %s is invalid, ignoring",
-                            wheel.ToString().c_str());
-                        continue;
-                    }
-
-                    AZ::Vector3 steeringDir = controllerComponent->m_steeringDir;
-                    steeringDir.Normalize();
-                    VehicleDynamics::SteeringDynamicsData steeringData;
-                    steeringData.m_steeringEntity = steeringEntity;
-                    steeringData.m_turnAxis = steeringDir;
-                    steeringEntitiesAndAxis.push_back(steeringData);
+                    AZ_Warning("GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is invalid, ignoring", axle.m_axleTag.c_str());
+                    continue;
                 }
+                AZ::Entity* wheelEntity = nullptr;
+                AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
+                if (!wheelEntity)
+                {
+                    AZ_Warning("GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is null, ignoring", axle.m_axleTag.c_str());
+                    continue;
+                }
+
+                auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
+                if (!controllerComponent)
+                {
+                    AZ_Warning(
+                        "GetAllSteeringEntitiesData",
+                        false,
+                        "Missing a WheelController in wheel entity %s, ignoring",
+                        wheel.ToString().c_str());
+                    continue;
+                }
+
+                AZ::EntityId steeringEntity = controllerComponent->m_steeringEntity;
+                if (!steeringEntity.IsValid())
+                {
+                    AZ_Warning(
+                        "GetAllSteeringEntitiesData",
+                        false,
+                        "Steering entity specified for WheelController in entity %s is invalid, ignoring",
+                        wheel.ToString().c_str());
+                    continue;
+                }
+
+                AZ::Vector3 steeringDir = controllerComponent->m_steeringDir;
+                steeringDir.Normalize();
+                VehicleDynamics::SteeringDynamicsData steeringData;
+                steeringData.m_steeringEntity = steeringEntity;
+                steeringData.m_turnAxis = steeringDir;
+                steeringEntitiesAndAxis.push_back(steeringData);
             }
         }
         return steeringEntitiesAndAxis;
     }
 
-    AZStd::vector<VehicleDynamics::WheelDynamicsData> GetAllDriveWheelsData(const ChassisConfiguration& chassisConfig)
+    AZStd::vector<VehicleDynamics::WheelDynamicsData> GetAllDriveWheelsData(const VehicleConfiguration& vehicleConfig)
     {
         AZStd::vector<VehicleDynamics::WheelDynamicsData> driveWheelEntities;
-        for (const auto& axle : chassisConfig.m_axles)
+        for (const auto& axle : vehicleConfig.m_axles)
         {
-            if (axle.m_isDrive)
-            {
-                for (const auto& wheel : axle.m_axleWheels)
-                {
-                    if (!wheel.IsValid())
-                    {
-                        AZ_Warning(
-                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is invalid, ignoring", axle.m_axleTag.c_str());
-                        continue;
-                    }
-                    AZ::Entity* wheelEntity = nullptr;
-                    AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
-                    if (!wheelEntity)
-                    {
-                        AZ_Warning(
-                            "GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is null, ignoring", axle.m_axleTag.c_str());
-                        continue;
-                    }
-                    auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
-                    if (!controllerComponent)
-                    {
-                        AZ_Warning(
-                            "GetAllDriveWheelsData",
-                            false,
-                            "Wheel entity for axle %s is missing a WheelController component, ignoring",
-                            axle.m_axleTag.c_str());
-                        continue;
-                    }
-                    AZ::Vector3 driveDir = controllerComponent->m_driveDir;
-                    driveDir.Normalize();
+            if (!axle.m_isDrive)
+            { // Get only drive wheels, which are attached to a drive axle
+                continue;
+            }
 
-                    VehicleDynamics::WheelDynamicsData wheelData;
-                    wheelData.m_wheelEntity = wheel;
-                    wheelData.m_driveAxis = driveDir;
-                    wheelData.m_wheelRadius = axle.m_wheelRadius;
-                    driveWheelEntities.push_back(wheelData);
+            for (const auto& wheel : axle.m_axleWheels)
+            {
+                if (!wheel.IsValid())
+                {
+                    AZ_Warning("GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is invalid, ignoring", axle.m_axleTag.c_str());
+                    continue;
                 }
+                AZ::Entity* wheelEntity = nullptr;
+                AZ::ComponentApplicationBus::BroadcastResult(wheelEntity, &AZ::ComponentApplicationRequests::FindEntity, wheel);
+                if (!wheelEntity)
+                {
+                    AZ_Warning("GetAllSteeringEntitiesData", false, "Wheel entity in axle %s is null, ignoring", axle.m_axleTag.c_str());
+                    continue;
+                }
+                auto* controllerComponent = wheelEntity->FindComponent<WheelControllerComponent>();
+                if (!controllerComponent)
+                {
+                    AZ_Warning(
+                        "GetAllDriveWheelsData",
+                        false,
+                        "Wheel entity for axle %s is missing a WheelController component, ignoring",
+                        axle.m_axleTag.c_str());
+                    continue;
+                }
+                AZ::Vector3 driveDir = controllerComponent->m_driveDir;
+                driveDir.Normalize();
+
+                VehicleDynamics::WheelDynamicsData wheelData;
+                wheelData.m_wheelEntity = wheel;
+                wheelData.m_driveAxis = driveDir;
+                wheelData.m_wheelRadius = axle.m_wheelRadius;
+                driveWheelEntities.push_back(wheelData);
             }
         }
         return driveWheelEntities;

@@ -6,7 +6,7 @@
  *
  */
 
-#include "VehicleDynamics/ChassisConfiguration.h"
+#include "VehicleDynamics/VehicleConfiguration.h"
 #include "VehicleDynamics/Utilities.h"
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -15,21 +15,20 @@
 
 namespace VehicleDynamics
 {
-    void ChassisConfiguration::Reflect(AZ::ReflectContext* context)
+    void VehicleConfiguration::Reflect(AZ::ReflectContext* context)
     {
         AxleConfiguration::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serialize->Class<ChassisConfiguration>()->Version(1)->Field("AxlesConfigurations", &ChassisConfiguration::m_axles);
+            serialize->Class<VehicleConfiguration>()->Version(1)->Field("AxlesConfigurations", &VehicleConfiguration::m_axles);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
-                ec->Class<ChassisConfiguration>("Chassis configuration", "Configuration of vehicle chassis")
+                ec->Class<VehicleConfiguration>("Vehicle configuration", "Configuration of vehicle")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &ChassisConfiguration::m_axles, "Axles", "Configurations of axles for this chassis");
+                        AZ::Edit::UIHandlers::Default, &VehicleConfiguration::m_axles, "Axles", "Configurations of axles for this vehicle");
             }
         }
     }

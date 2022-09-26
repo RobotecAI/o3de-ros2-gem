@@ -29,9 +29,9 @@ namespace VehicleDynamics
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AZ::EntityId m_steeringEntity; //! Rigid body to apply torque to. TODO - parent, this entity or custom.
-        AZ::EntityId m_visualEntity; //! Primary visual mesh or primitive for the wheel. It will be rotated according to the motion.
-        AZ::Vector3 m_driveDir{ 0.0, 0.0, 1.0 }; //! The direction of torque applied to wheel entity when speed is applied
-        AZ::Vector3 m_steeringDir{ 0.0, 0.0, 1.0 }; //! The direction of torque applied to steering entity when steering is applied
+        AZ::EntityId m_steeringEntity; //!< Rigid body to apply torque to. TODO - parent, this entity or custom.
+        AZ::EntityId m_visualEntity; //!< Primary visual mesh or primitive for the wheel. It will be rotated according to the motion.
+        AZ::Vector3 m_driveDir{ 0.0, 0.0, 1.0 }; //!< The direction of torque applied to wheel entity when speed is applied
+        AZ::Vector3 m_steeringDir{ 0.0, 0.0, 1.0 }; //!< The direction of torque applied to steering entity when steering is applied
     };
 } // namespace VehicleDynamics

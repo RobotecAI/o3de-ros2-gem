@@ -22,8 +22,8 @@ namespace VehicleDynamics
         //! Construct the event handler.
         //! @param eventName which event to handle (e.g. "steering", "accelerate")
         //! @param handler a function which handles the input, typically through re-publishing it to a vehicle input bus.
-        ManualControlSingleEventHandler(AZStd::string eventName, OnHeldHandlerFunction handler)
-            : m_eventName(std::move(eventName))
+        ManualControlSingleEventHandler(const AZStd::string& eventName, OnHeldHandlerFunction handler)
+            : m_eventName(eventName)
             , m_handler(handler)
         {
         }

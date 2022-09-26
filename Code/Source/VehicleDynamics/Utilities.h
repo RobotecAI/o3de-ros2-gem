@@ -8,7 +8,7 @@
 #pragma once
 
 #include "AxleConfiguration.h"
-#include "ChassisConfiguration.h"
+#include "VehicleConfiguration.h"
 #include "WheelDynamicsData.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/std/containers/vector.h>
@@ -20,6 +20,6 @@ namespace VehicleDynamics::Utilities
         AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, float wheelRadius, bool steering, bool drive);
     AxleConfiguration CreateFrontSteerAndDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, float wheelRadius);
     AxleConfiguration CreateRearDriveAxle(AZ::EntityId leftWheel, AZ::EntityId rightWheel, float wheelRadius);
-    AZStd::vector<VehicleDynamics::SteeringDynamicsData> GetAllSteeringEntitiesData(const ChassisConfiguration& chassisConfig);
-    AZStd::vector<VehicleDynamics::WheelDynamicsData> GetAllDriveWheelsData(const ChassisConfiguration& chassisConfig);
+    AZStd::vector<VehicleDynamics::SteeringDynamicsData> GetAllSteeringEntitiesData(const VehicleConfiguration& vehicleConfig);
+    AZStd::vector<VehicleDynamics::WheelDynamicsData> GetAllDriveWheelsData(const VehicleConfiguration& vehicleConfig);
 } // namespace VehicleDynamics::Utilities

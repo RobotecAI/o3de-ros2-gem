@@ -28,7 +28,6 @@ namespace VehicleDynamics
             {
                 ec->Class<AxleConfiguration>("Axle configuration", "Axles of the vehicle model")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default, &AxleConfiguration::m_axleTag, "Axle tag", "Helpful description of the axle")

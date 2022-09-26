@@ -127,7 +127,7 @@ It is possible to implement your own control mechanisms with this Component.
 
 `VehicleModelComponent` serves the purpose of converting inputs such as target velocity, steering or acceleration to
 physical forces on parts of a vehicle (robot).
-`VehicleModel` has a `ChassisConfiguration` which is used to define axles, parametrize and assign wheels.
+`VehicleModel` has a `VehicleConfiguration` which is used to define axles, parametrize and assign wheels.
 
 The model requires a `WheelControllerComponent` present in each wheel entity. It also uses an implementation
 of `DriveModel`, which converts vehicle inputs to forces acting on steering elements and wheels.

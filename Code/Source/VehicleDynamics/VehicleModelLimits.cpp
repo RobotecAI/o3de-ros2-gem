@@ -26,17 +26,17 @@ namespace VehicleDynamics
             {
                 ec->Class<VehicleModelLimits>("Vehicle Model Limits", "Limitations of speed, steering angles and other values")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &VehicleModelLimits::m_speedLimit, "Speed Limit", "Max linear speed (mps)")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &VehicleModelLimits::m_steeringLimit, "Speed Limit", "Max steering angle (rad)");
+                        AZ::Edit::UIHandlers::Default, &VehicleModelLimits::m_steeringLimit, "Steering Limit", "Max steering angle (rad)");
             }
         }
     }
 
     float VehicleModelLimits::LimitValue(float value, float absoluteLimit)
     {
+        absoluteLimit = std::fabs(absoluteLimit);
         return AZStd::clamp(value, -absoluteLimit, absoluteLimit);
     }
 } // namespace VehicleDynamics

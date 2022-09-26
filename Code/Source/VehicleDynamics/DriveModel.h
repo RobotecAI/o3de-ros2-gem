@@ -7,13 +7,13 @@
  */
 #pragma once
 
-#include "ChassisConfiguration.h"
+#include "VehicleConfiguration.h"
 #include "VehicleInputsState.h"
 #include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
 {
-    //! Abstract class for turning vehicle inputs into behavior of chassis elements (wheels, steering elements)
+    //! Abstract class for turning vehicle inputs into behavior of wheels and steering elements
     class DriveModel
     {
     public:
@@ -27,8 +27,8 @@ namespace VehicleDynamics
         virtual ~DriveModel() = default;
         virtual DriveModel::DriveModelType DriveType() = 0;
 
-        //! Activate the model. Chassis configuration is to remain the same until another Activate is called.
-        virtual void Activate(const ChassisConfiguration& vehicleChassis) = 0;
+        //! Activate the model. Vehicle configuration is to remain the same until another Activate is called.
+        virtual void Activate(const VehicleConfiguration& vehicleConfig) = 0;
 
         //! Applies inputs to the drive. This model will calculate and apply physical forces.
         //! @param inputs captured state of inputs to use

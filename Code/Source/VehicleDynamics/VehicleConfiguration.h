@@ -15,14 +15,13 @@
 namespace VehicleDynamics
 {
     //! Drive and steering configuration for a vehicle
-    class ChassisConfiguration
+    class VehicleConfiguration
     {
     public:
-        AZ_TYPE_INFO(ChassisConfiguration, "{C616E333-E618-4E37-8CE6-1E8A28182D00}");
-        ChassisConfiguration() = default;
+        AZ_TYPE_INFO(VehicleConfiguration, "{C616E333-E618-4E37-8CE6-1E8A28182D00}");
+        VehicleConfiguration() = default;
         static void Reflect(AZ::ReflectContext* context);
 
-        //! Axles of the vehicle, front to rear
-        AZStd::vector<AxleConfiguration> m_axles;
+        AZStd::vector<AxleConfiguration> m_axles; //!> Axles of the vehicle, front to rear
     };
 } // namespace VehicleDynamics

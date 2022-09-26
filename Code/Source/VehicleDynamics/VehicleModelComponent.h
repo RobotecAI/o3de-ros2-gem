@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include "ChassisConfiguration.h"
 #include "ManualControlEventHandler.h"
+#include "VehicleConfiguration.h"
 #include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "VehicleInputControlBus.h"
 #include "VehicleInputsState.h"
@@ -44,7 +44,7 @@ namespace VehicleDynamics
         void SetTargetLinearSpeedFraction(float speedFraction) override;
 
         ManualControlEventHandler m_manualControlEventHandler;
-        ChassisConfiguration m_chassisConfiguration;
+        VehicleConfiguration m_vehicleConfiguration;
         VehicleInputsState m_inputsState;
         SimplifiedDriveModel m_driveModel; // TODO - use abstraction here (DriveModel)
         VehicleModelLimits m_vehicleLimits;

@@ -20,9 +20,13 @@ namespace VehicleDynamics
         VehicleModelLimits() = default;
         static void Reflect(AZ::ReflectContext* context);
 
+        //! Limit value with a symmetrical range.
+        //! @param value Input value.
+        //! @param absoluteLimit Limits for value (between -absoluteLimit and absoluteLimit).
+        //! @returns A limited value. Always returns either value, -absoluteLimit or absoluteLimit.
         static float LimitValue(float value, float absoluteLimit);
 
-        float m_speedLimit = 10.0f; //! [Mps] Applies to absolute value
-        float m_steeringLimit = 0.7f; //! [rad] Applies to absolute value
+        float m_speedLimit = 10.0f; //!< [Mps] Applies to absolute value
+        float m_steeringLimit = 0.7f; //!< [rad] Applies to absolute value
     };
 } // namespace VehicleDynamics

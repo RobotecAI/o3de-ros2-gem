@@ -13,7 +13,7 @@
 
 namespace ROS2
 {
-    //! Interface class for handling Ackermann commands through EBus notifications.
+    //! Interface class for handling Ackermann kinematics steering commands through EBus notifications.
     //! The interface serves to enable control through AckermannDrive (and AckermannDriveStamped) messages.
     class AckermannNotifications : public AZ::EBusTraits
     {

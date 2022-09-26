@@ -7,9 +7,9 @@
  */
 
 #include "VehicleDynamics/VehicleModelComponent.h"
-#include "VehicleDynamics/ChassisConfiguration.h"
 #include "VehicleDynamics/DriveModels/SimplifiedDriveModel.h"
 #include "VehicleDynamics/Utilities.h"
+#include "VehicleDynamics/VehicleConfiguration.h"
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -23,7 +23,7 @@ namespace VehicleDynamics
         VehicleInputControlRequestBus::Handler::BusConnect();
         m_manualControlEventHandler.Activate();
         AZ::TickBus::Handler::BusConnect();
-        m_driveModel.Activate(m_chassisConfiguration);
+        m_driveModel.Activate(m_vehicleConfiguration);
     }
 
     void VehicleModelComponent::Deactivate()
@@ -35,15 +35,15 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::Reflect(AZ::ReflectContext* context)
     {
-        ChassisConfiguration::Reflect(context);
+        VehicleConfiguration::Reflect(context);
         DriveModel::Reflect(context);
         SimplifiedDriveModel::Reflect(context);
         VehicleModelLimits::Reflect(context);
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<VehicleModelComponent, AZ::Component>()
-                ->Version(2)
-                ->Field("ChassisConfiguration", &VehicleModelComponent::m_chassisConfiguration)
+                ->Version(3)
+                ->Field("VehicleConfiguration", &VehicleModelComponent::m_vehicleConfiguration)
                 ->Field("DriveModel", &VehicleModelComponent::m_driveModel)
                 ->Field("VehicleModelLimits", &VehicleModelComponent::m_vehicleLimits);
 
@@ -55,9 +55,9 @@ namespace VehicleDynamics
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &VehicleModelComponent::m_chassisConfiguration,
-                        "Chassis settings",
-                        "Chassis settings including axles and common wheel parameters")
+                        &VehicleModelComponent::m_vehicleConfiguration,
+                        "Vehicle settings",
+                        "Vehicle settings including axles and common wheel parameters")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &VehicleModelComponent::m_driveModel,
@@ -106,7 +106,7 @@ namespace VehicleDynamics
 
     void VehicleModelComponent::OnTick(float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
-        uint64_t deltaTimeNs = deltaTime * 1000000000;
+        uint64_t deltaTimeNs = deltaTime * 1'000'000'000;
         m_driveModel.ApplyInputState(m_inputsState, deltaTimeNs);
     }
 } // namespace VehicleDynamics

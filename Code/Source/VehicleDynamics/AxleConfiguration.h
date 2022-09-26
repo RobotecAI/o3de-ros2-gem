@@ -24,13 +24,13 @@ namespace VehicleDynamics
 
         //! Helper functions for wheel entities. If there is only one wheel, same value is returned from both.
         //! If no wheels are set, this will return invalid EntityId (check with IsValid())
-        AZ::EntityId GetLeftWheelEntityId() const; //! Return left-most wheel of the axis.
-        AZ::EntityId GetRightWheelEntityId() const; //! Return right-most wheel of the axis.
+        AZ::EntityId GetLeftWheelEntityId() const; //!< Return left-most wheel of the axis.
+        AZ::EntityId GetRightWheelEntityId() const; //!< Return right-most wheel of the axis.
 
-        AZStd::string m_axleTag; //! Useful to differentiate between axles, can be empty.
-        AZStd::vector<AZ::EntityId> m_axleWheels; //! One or more wheels attached to this axle (typically 2), sorted left to right.
+        AZStd::string m_axleTag; //!< Useful to differentiate between axles, can be empty.
+        AZStd::vector<AZ::EntityId> m_axleWheels; //!< One or more wheels attached to this axle (typically 2), sorted left to right.
 
-        float m_wheelRadius = 0.35f; // TODO - this could be deduced from a model for a better default
+        float m_wheelRadius = 0.35f; //!< A wheel radius for all attached wheels, in meters.
         bool m_isSteering = false;
         bool m_isDrive = false;
     };

@@ -82,8 +82,8 @@ set(FILES
         Source/VehicleDynamics/DriveModels/SimplifiedDriveModel.h
         Source/VehicleDynamics/AxleConfiguration.cpp
         Source/VehicleDynamics/AxleConfiguration.h
-        Source/VehicleDynamics/ChassisConfiguration.cpp
-        Source/VehicleDynamics/ChassisConfiguration.h
+        Source/VehicleDynamics/VehicleConfiguration.cpp
+        Source/VehicleDynamics/VehicleConfiguration.h
         Source/VehicleDynamics/DriveModel.cpp
         Source/VehicleDynamics/DriveModel.h
         Source/VehicleDynamics/ManualControlEventHandler.h
