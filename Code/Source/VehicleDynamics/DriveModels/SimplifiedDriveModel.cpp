@@ -46,14 +46,25 @@ namespace VehicleDynamics
 
     void SimplifiedDriveModel::Activate(const ChassisConfiguration& vehicleChassis)
     {
-        m_driveWheelsData = VehicleDynamics::Utilities::GetAllDriveWheelsData(vehicleChassis);
-        m_steeringData = VehicleDynamics::Utilities::GetAllSteeringEntitiesData(vehicleChassis);
+        m_driveWheelsData.clear();
+        m_steeringData.clear();
+        m_vehicleConfiguration = vehicleChassis;
         m_speedPid.InitializePid();
         m_steeringPid.InitializePid();
     }
 
     void SimplifiedDriveModel::ApplyInputState(const VehicleInputsState& inputs, uint64_t nsDt)
     {
+        if (m_driveWheelsData.empty())
+        {
+            m_driveWheelsData = VehicleDynamics::Utilities::GetAllDriveWheelsData(m_vehicleConfiguration);
+        }
+
+        if (m_steeringData.empty())
+        {
+            m_steeringData = VehicleDynamics::Utilities::GetAllSteeringEntitiesData(m_vehicleConfiguration);
+        }
+
         ApplySteering(inputs.m_steering.GetValue(), nsDt);
         ApplySpeed(inputs.m_speed.GetValue(), nsDt);
     }
