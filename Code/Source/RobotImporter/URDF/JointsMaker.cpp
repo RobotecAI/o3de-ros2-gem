@@ -100,7 +100,7 @@ namespace ROS2
             }
             break;
         case urdf::Joint::PRISMATIC:
-            { // Implemented as Hinge with limit set to -2*PI and 2*PI deg. Works fine in the Engine
+            {
                 jointComponent = followColliderEntity->CreateComponent<PhysX::EditorPrismaticJointComponent>();
                 followColliderEntity->Activate();
 
