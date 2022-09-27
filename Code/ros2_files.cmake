@@ -38,6 +38,10 @@ set(FILES
         Source/RobotControl/Twist/TwistBus.h
         Source/RobotControl/Twist/TwistSubscriptionHandler.cpp
         Source/RobotControl/Twist/TwistSubscriptionHandler.h
+        Source/RobotControl/ROS2JoySubscriberComponent.h
+        Source/RobotControl/ROS2JoySubscriberComponent.cpp
+        Source/RobotControl/Joy/JoyBus.cpp
+        Source/RobotControl/Joy/JoyBus.h
         Source/ROS2ModuleInterface.h
         Source/ROS2SystemComponent.cpp
         Source/ROS2SystemComponent.h

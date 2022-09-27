@@ -14,6 +14,8 @@ function SimpleTwistControl:OnActivate()
 end
 
 function SimpleTwistControl:TwistReceived(linear, angular)
+    Debug.Log("["..string.format("%1.4f",linear.x).."]")
+
     -- Get current linear velocity
     local currentLinearVelocity = RigidBodyRequestBus.Event.GetLinearVelocity(self.entityId)
 
