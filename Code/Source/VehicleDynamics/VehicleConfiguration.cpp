@@ -28,7 +28,8 @@ namespace VehicleDynamics
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &VehicleConfiguration::m_axles, "Axles", "Configurations of axles for this vehicle");
+                        AZ::Edit::UIHandlers::Default, &VehicleConfiguration::m_axles, "Axles", "Configurations of axles for this vehicle")
+                    ->Attribute(AZ::Edit::Attributes::AutoExpand, true);
             }
         }
     }

@@ -30,10 +30,15 @@ namespace VehicleDynamics
             {
                 ec->Class<PidConfiguration>("PID configuration", "Configures a PID controller")
                     ->DataElement(1, &PidConfiguration::m_p, "P", "Proportional gain")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PidConfiguration::m_i, "I", "Integral gain")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PidConfiguration::m_d, "D", "Derivative gain")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PidConfiguration::m_iMin, "IMin", "Minimum allowable integral term")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PidConfiguration::m_iMax, "IMax", "Maximum allowable integral term")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PidConfiguration::m_antiWindup, "AntiWindup", "Anti windup");
             }
         }

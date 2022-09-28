@@ -43,9 +43,8 @@ namespace VehicleDynamics
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<WheelControllerComponent, AZ::Component>()
-                ->Version(1)
+                ->Version(2)
                 ->Field("SteeringEntity", &WheelControllerComponent::m_steeringEntity)
-                ->Field("VisualEntity", &WheelControllerComponent::m_visualEntity)
                 ->Field("DriveDir", &WheelControllerComponent::m_driveDir)
                 ->Field("SteeringDir", &WheelControllerComponent::m_steeringDir);
 
@@ -60,11 +59,6 @@ namespace VehicleDynamics
                         &WheelControllerComponent::m_steeringEntity,
                         "Steering entity",
                         "Entity which steers the wheel - typically a parent entity")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &WheelControllerComponent::m_visualEntity,
-                        "Visual entity",
-                        "Entity which holds wheel visual (mesh) - typically a child entity")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &WheelControllerComponent::m_driveDir,
