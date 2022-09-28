@@ -40,7 +40,7 @@ namespace VehicleDynamics
         PidConfiguration m_steeringPid;
         PidConfiguration m_speedPid;
 
-        float maxSpeedImpulse = 0.0f;
+        float maxSpeedImpulse = 0.0f; // Zero means, the imuplse limit is disabled
 
         bool showSteeringDebugInfo = false;
         bool showSpeedDebugInfo = false;        

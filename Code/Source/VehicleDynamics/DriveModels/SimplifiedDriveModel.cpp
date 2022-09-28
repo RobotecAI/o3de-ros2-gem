@@ -46,7 +46,9 @@ namespace VehicleDynamics
                         "Configuration of speed PID controller")
                     ->DataElement(AZ::Edit::UIHandlers::Default, 
                         &SimplifiedDriveModel::maxSpeedImpulse, 
-                        "Max speed impulse", "Speed torque impulse limit [0, INF]. Set to 0.0 to disable.")
+                        "Maximum wheel torque", "Maximum torque force that can be applied to wheels regardless of controller output [0, INF]."
+                        " Set to 0.0 to disable this limit.")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0f)
                     ->DataElement(AZ::Edit::UIHandlers::Default, 
                         &SimplifiedDriveModel::showSteeringDebugInfo, "Show steering debug messages", "")
                     ->DataElement(AZ::Edit::UIHandlers::Default, 
@@ -110,7 +112,7 @@ namespace VehicleDynamics
 
             if (showSteeringDebugInfo)
             {
-                AZ_Warning("ApplySteering", false, "Steering target: %f current: %f impulse: %f", steering, currentSteeringAngle, pidCommand);
+                AZ_TracePrintf("ApplySteering", false, "Steering target: %f current: %f impulse: %f", steering, currentSteeringAngle, pidCommand);
             }            
         }
     }
@@ -150,13 +152,13 @@ namespace VehicleDynamics
                 continue;
             }
 
-            if (maxSpeedImpulse>0.0)
+            if (maxSpeedImpulse > 0.0)
             {
-                if (pidCommand>maxSpeedImpulse)
+                if (pidCommand > maxSpeedImpulse)
                 {
                     pidCommand = maxSpeedImpulse;
                 }
-                if (pidCommand<-maxSpeedImpulse)
+                if (pidCommand < -maxSpeedImpulse)
                 {
                     pidCommand = -maxSpeedImpulse;
                 }
@@ -169,7 +171,7 @@ namespace VehicleDynamics
 
             if (showSpeedDebugInfo)
             {
-                AZ_Warning("ApplySpeed", false, "Speed target: %f current: %f impulse: %f", desiredAngularSpeedX, currentAngularSpeedX, pidCommand);
+                AZ_TracePrintf("ApplySpeed", false, "Speed target: %f current: %f impulse: %f", desiredAngularSpeedX, currentAngularSpeedX, pidCommand);
             }            
         }
     }
