@@ -27,7 +27,6 @@ namespace VehicleDynamics
                 ->Field("SpeedPID", &SimplifiedDriveModel::m_speedPid)
                 ->Field("MaxSpeedImpulse", &SimplifiedDriveModel::maxSpeedImpulse);
 
-
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<SimplifiedDriveModel>("Simplified Drive Model", "Configuration of a simplified vehicle dynamics drive model")
@@ -42,9 +41,10 @@ namespace VehicleDynamics
                         &SimplifiedDriveModel::m_speedPid,
                         "Speed PID",
                         "Configuration of speed PID controller")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, 
-                        &SimplifiedDriveModel::maxSpeedImpulse, 
-                        "Maximum wheel torque", 
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &SimplifiedDriveModel::maxSpeedImpulse,
+                        "Maximum wheel torque",
                         "Maximum torque force (per 1 second) that can be applied to wheels regardless of controller "
                         "output [0, INF]. Set to 0.0 to disable this limit.")
                     ->Attribute(AZ::Edit::Attributes::Min, 0.0f);
