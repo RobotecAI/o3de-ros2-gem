@@ -25,9 +25,7 @@ namespace VehicleDynamics
                 ->Version(1)
                 ->Field("SteeringPID", &SimplifiedDriveModel::m_steeringPid)
                 ->Field("SpeedPID", &SimplifiedDriveModel::m_speedPid)
-                ->Field("MaxSpeedImpulse", &SimplifiedDriveModel::maxSpeedImpulse)
-                ->Field("ShowSteeringDebugInfo", &SimplifiedDriveModel::showSteeringDebugInfo)
-                ->Field("ShowSpeedDebugInfo", &SimplifiedDriveModel::showSpeedDebugInfo);
+                ->Field("MaxSpeedImpulse", &SimplifiedDriveModel::maxSpeedImpulse);
 
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
@@ -46,13 +44,10 @@ namespace VehicleDynamics
                         "Configuration of speed PID controller")
                     ->DataElement(AZ::Edit::UIHandlers::Default, 
                         &SimplifiedDriveModel::maxSpeedImpulse, 
-                        "Maximum wheel torque", "Maximum torque force that can be applied to wheels regardless of controller output [0, INF]."
-                        " Set to 0.0 to disable this limit.")
-                    ->Attribute(AZ::Edit::Attributes::Min, 0.0f)
-                    ->DataElement(AZ::Edit::UIHandlers::Default, 
-                        &SimplifiedDriveModel::showSteeringDebugInfo, "Show steering debug messages", "")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, 
-                        &SimplifiedDriveModel::showSpeedDebugInfo, "Show speed debug messages", "");
+                        "Maximum wheel torque", 
+                        "Maximum torque force (per 1 second) that can be applied to wheels regardless of controller "
+                        "output [0, INF]. Set to 0.0 to disable this limit.")
+                    ->Attribute(AZ::Edit::Attributes::Min, 0.0f);
             }
         }
     }
@@ -109,11 +104,6 @@ namespace VehicleDynamics
             AZ::TransformBus::EventResult(steeringElementTransform, steeringEntity, &AZ::TransformBus::Events::GetWorldTM);
             auto transformedTorqueVector = steeringElementTransform.TransformVector(steeringElementData.m_turnAxis * torque);
             Physics::RigidBodyRequestBus::Event(steeringEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
-
-            if (showSteeringDebugInfo)
-            {
-                AZ_TracePrintf("ApplySteering", false, "Steering target: %f current: %f impulse: %f", steering, currentSteeringAngle, pidCommand);
-            }            
         }
     }
 
@@ -168,11 +158,6 @@ namespace VehicleDynamics
 
             auto transformedTorqueVector = wheelTransform.TransformVector(wheelData.m_driveAxis * impulse);
             Physics::RigidBodyRequestBus::Event(wheelEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
-
-            if (showSpeedDebugInfo)
-            {
-                AZ_TracePrintf("ApplySpeed", false, "Speed target: %f current: %f impulse: %f", desiredAngularSpeedX, currentAngularSpeedX, pidCommand);
-            }            
         }
     }
 } // namespace VehicleDynamics
