@@ -98,44 +98,49 @@ $(document).ready(function(){initNavTree('_r_o_s2_robot_control_component_8h_sou
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;ControlSubscriptionHandler.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/Component.h&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/smart_ptr/unique_ptr.h&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>ROS2</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">   20</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a> : <span class="keyword">public</span> AZ::Component</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        AZ_COMPONENT(<a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a>, <span class="stringliteral">&quot;{CBFB0764-99F9-40EE-9FEE-F5F5A66E59D2}&quot;</span>, AZ::Component);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a>(<a class="code" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> controlConfiguration)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            : m_controlConfiguration(AZStd::move(controlConfiguration))</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="comment">// AZ::Component interface implementation.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordtype">void</span> Activate() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">void</span> Deactivate() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType&amp; required);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType&amp; provided);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="comment">// Required Reflect function.</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> Reflect(AZ::ReflectContext* context);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        AZStd::unique_ptr&lt;IControlSubscriptionHandler&gt; m_subscriptionHandler;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> m_controlConfiguration;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzToolsFramework/ToolsComponents/GenericComponentWrapper.h&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>ROS2</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">   21</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a> : <span class="keyword">public</span> AZ::Component</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        AZ_COMPONENT(<a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a>, <span class="stringliteral">&quot;{CBFB0764-99F9-40EE-9FEE-F5F5A66E59D2}&quot;</span>, AZ::Component);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2RobotControlComponent</a>(<a class="code" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> controlConfiguration)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            : m_controlConfiguration(AZStd::move(controlConfiguration))</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">const</span> <a class="code" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a>&amp; GetControlConfiguration() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">void</span> SetControlConfiguration(<span class="keyword">const</span> <a class="code" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a>&amp; controlConfiguration);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="comment">// AZ::Component interface implementation.</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">void</span> Activate() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">void</span> Deactivate() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType&amp; required);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType&amp; provided);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="comment">// Required Reflect function.</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> Reflect(AZ::ReflectContext* context);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        AZStd::unique_ptr&lt;IControlSubscriptionHandler&gt; m_subscriptionHandler;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> m_controlConfiguration;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    };</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astruct_r_o_s2_1_1_control_configuration_html_ae3765105e5e796cb2aa7c282d91d1d67a52f5fb963da8222e1d055d4e458fd1e6"><div class="ttname"><a href="struct_r_o_s2_1_1_control_configuration.html#ae3765105e5e796cb2aa7c282d91d1d67a52f5fb963da8222e1d055d4e458fd1e6">ROS2::ControlConfiguration::Twist</a></div><div class="ttdeci">@ Twist</div><div class="ttdef"><b>Definition:</b> ControlConfiguration.h:30</div></div>
 <div class="ttc" id="astruct_r_o_s2_1_1_control_configuration_html_ae3765105e5e796cb2aa7c282d91d1d67a83bc58c37b479645631cf9cd0196cf12"><div class="ttname"><a href="struct_r_o_s2_1_1_control_configuration.html#ae3765105e5e796cb2aa7c282d91d1d67a83bc58c37b479645631cf9cd0196cf12">ROS2::ControlConfiguration::Ackermann</a></div><div class="ttdeci">@ Ackermann</div><div class="ttdef"><b>Definition:</b> ControlConfiguration.h:31</div></div>
 <div class="ttc" id="astruct_r_o_s2_1_1_control_configuration_html"><div class="ttname"><a href="struct_r_o_s2_1_1_control_configuration.html">ROS2::ControlConfiguration</a></div><div class="ttdef"><b>Definition:</b> ControlConfiguration.h:20</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_robot_control_component_html"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2::ROS2RobotControlComponent</a></div><div class="ttdef"><b>Definition:</b> ROS2RobotControlComponent.h:20</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_robot_control_component_html"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_robot_control_component.html">ROS2::ROS2RobotControlComponent</a></div><div class="ttdef"><b>Definition:</b> ROS2RobotControlComponent.h:21</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_adc3ae9cdfb5b11809552fed381dcb1e.html">RobotControl</a></li><li class="navelem"><b>ROS2RobotControlComponent.h</b></li>
-    <li class="footer">Generated on Wed Sep 28 2022 12:06:08 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Sep 28 2022 13:11:25 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

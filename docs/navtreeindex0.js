@@ -146,6 +146,7 @@ var NAVTREEINDEX0 =
 "class_r_o_s2_1_1_r_o_s2_frame_component.html":[2,0,0,27],
 "class_r_o_s2_1_1_r_o_s2_frame_component.html#a204bbb4318c2ef955f5cd8d3af7f4c43":[2,0,0,27,2],
 "class_r_o_s2_1_1_r_o_s2_frame_component.html#a441ba3a7459624f2fe59ee4e1c1ff912":[2,0,0,27,3],
+"class_r_o_s2_1_1_r_o_s2_frame_component.html#a47c4ea3509935ddb083faf0bb965a2c8":[2,0,0,27,8],
 "class_r_o_s2_1_1_r_o_s2_frame_component.html#a4d2c293ae2260c0c9a97116e7efa06a5":[2,0,0,27,4],
 "class_r_o_s2_1_1_r_o_s2_frame_component.html#a634aa142324096228faccd6eb023d14c":[2,0,0,27,5],
 "class_r_o_s2_1_1_r_o_s2_frame_component.html#a7f58dd67b9ef65e445bd58cd300e3c6b":[2,0,0,27,0],
@@ -184,6 +185,8 @@ var NAVTREEINDEX0 =
 "class_r_o_s2_1_1_r_o_s2_requests.html#af7464f5f983184655215cef4c7e709f0":[2,0,0,33,2],
 "class_r_o_s2_1_1_r_o_s2_robot_control_component.html":[2,0,0,34],
 "class_r_o_s2_1_1_r_o_s2_robot_control_component.html#a07f86166f7158b22209d6f471dc47d0a":[2,0,0,34,2],
+"class_r_o_s2_1_1_r_o_s2_robot_control_component.html#a1496279c89e1de6acd35575f9ebe49a2":[2,0,0,34,5],
+"class_r_o_s2_1_1_r_o_s2_robot_control_component.html#a22daf88f4c244a162dafacefc37cff40":[2,0,0,34,6],
 "class_r_o_s2_1_1_r_o_s2_robot_control_component.html#a3db0a82ef404e04f2906c5e2f7c47a07":[2,0,0,34,4],
 "class_r_o_s2_1_1_r_o_s2_robot_control_component.html#a735bc37565a0a83efecf4cb6491838f9":[2,0,0,34,3],
 "class_r_o_s2_1_1_r_o_s2_robot_control_component.html#a8106835441acbf0f3bb9f1a7a84dea2f":[2,0,0,34,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "class_r_o_s2_1_1_robot_importer_widget.html":[2,0,0,22],
 "class_r_o_s2_1_1_robot_importer_widget.html#a695d4ae1e9a7e0291fdf1d1cd6806d6e":[2,0,0,22,0],
 "class_r_o_s2_1_1_simulation_clock.html":[2,0,0,42],
-"class_r_o_s2_1_1_simulation_clock.html#a76a2f092d84d50953267556a53e396eb":[2,0,0,42,1],
-"class_r_o_s2_1_1_simulation_clock.html#ae435ff4424b3eb63be30c0b564e90b8e":[2,0,0,42,0],
-"class_r_o_s2_1_1_spawner_requests.html":[2,0,0,43],
-"class_r_o_s2_1_1_spawner_requests.html#a0b7b06a187f288f80dc3184677b431c5":[2,0,0,43,2]
+"class_r_o_s2_1_1_simulation_clock.html#a76a2f092d84d50953267556a53e396eb":[2,0,0,42,1]
 };
