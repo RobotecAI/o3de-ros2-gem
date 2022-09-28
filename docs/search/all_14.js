@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_7ecamerasensor_135',['~CameraSensor',['../class_r_o_s2_1_1_camera_sensor.html#ad63a5e451b277e8e8b1e9f20776e42cc',1,'ROS2::CameraSensor']]]
+  ['wheelcontrollercomponent_180',['WheelControllerComponent',['../class_vehicle_dynamics_1_1_wheel_controller_component.html',1,'VehicleDynamics']]],
+  ['wheeldynamicsdata_181',['WheelDynamicsData',['../struct_vehicle_dynamics_1_1_wheel_dynamics_data.html',1,'VehicleDynamics']]]
 ];

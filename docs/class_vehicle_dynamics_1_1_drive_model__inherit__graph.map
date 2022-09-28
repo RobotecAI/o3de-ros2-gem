@@ -1,0 +1,4 @@
+<map id="VehicleDynamics::DriveModel" name="VehicleDynamics::DriveModel">
+<area shape="rect" id="node1" title="Abstract class for turning vehicle inputs into behavior of wheels and steering elements." alt="" coords="5,5,223,32"/>
+<area shape="rect" id="node2" href="$class_vehicle_dynamics_1_1_simplified_drive_model.html" title="A simple implementation converting speed and steering inputs into wheel impulse and steering element ..." alt="" coords="11,80,217,121"/>
+</map>

@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_r_o_s2_1_1_joints_maker.html" title=" " alt="" coords="5,5,147,32"/>
+<area shape="rect" id="node1" href="$class_r_o_s2_1_1_i_control_subscription_handler.html" title="Component extension enabling polymorphic use of generics." alt="" coords="5,93,201,134"/>
+<area shape="rect" id="node2" href="$class_r_o_s2_1_1_control_subscription_handler.html" title=" " alt="" coords="249,5,452,61"/>
+<area shape="rect" id="node4" href="$class_r_o_s2_1_1_control_subscription_handler.html" title=" " alt="" coords="254,85,447,141"/>
+<area shape="rect" id="node6" href="$class_r_o_s2_1_1_control_subscription_handler.html" title=" " alt="" coords="255,166,447,207"/>
+<area shape="rect" id="node3" href="$class_r_o_s2_1_1_ackermann_subscription_handler.html" title=" " alt="" coords="505,13,724,54"/>
+<area shape="rect" id="node5" href="$class_r_o_s2_1_1_twist_subscription_handler.html" title=" " alt="" coords="500,100,729,127"/>
 </map>

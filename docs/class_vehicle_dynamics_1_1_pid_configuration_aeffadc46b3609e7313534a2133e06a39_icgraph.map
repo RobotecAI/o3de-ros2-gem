@@ -1,0 +1,4 @@
+<map id="VehicleDynamics::PidConfiguration::InitializePid" name="VehicleDynamics::PidConfiguration::InitializePid">
+<area shape="rect" id="node1" title=" " alt="" coords="260,5,509,47"/>
+<area shape="rect" id="node2" href="$class_vehicle_dynamics_1_1_simplified_drive_model.html#a15f0b5bf92f6422b6cffbe5be6ef0694" title="Activate the model. Vehicle configuration is to remain the same until another Activate is called." alt="" coords="5,5,212,47"/>
+</map>

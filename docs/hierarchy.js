@@ -1,13 +1,14 @@
 var hierarchy =
 [
-    [ "BehaviorEBusHandler", null, [
-      [ "ROS2::TwistNotificationHandler", "class_r_o_s2_1_1_twist_notification_handler.html", null ]
-    ] ],
+    [ "AckermannCommandStruct", "struct_ackermann_command_struct.html", null ],
+    [ "VehicleDynamics::AxleConfiguration", "class_vehicle_dynamics_1_1_axle_configuration.html", null ],
     [ "ROS2::CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", null ],
     [ "ROS2::CameraSensorDescription", "struct_r_o_s2_1_1_camera_sensor_description.html", null ],
     [ "ROS2::CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", null ],
     [ "ROS2::Fbx::Color", "struct_r_o_s2_1_1_fbx_1_1_color.html", null ],
     [ "Component", null, [
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ],
+      [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ],
       [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
       [ "ROS2::ROS2RobotControlComponent", "class_r_o_s2_1_1_r_o_s2_robot_control_component.html", null ],
       [ "ROS2::ROS2RobotImporterSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_system_component.html", [
@@ -22,30 +23,47 @@ var hierarchy =
       [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ],
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", [
         [ "ROS2::ROS2EditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_editor_system_component.html", null ]
-      ] ]
+      ] ],
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ],
+      [ "VehicleDynamics::WheelControllerComponent", "class_vehicle_dynamics_1_1_wheel_controller_component.html", null ]
     ] ],
     [ "ComponentBus", null, [
       [ "ROS2::SpawnerRequests", "class_r_o_s2_1_1_spawner_requests.html", null ]
     ] ],
     [ "ROS2::Fbx::Constants", "struct_r_o_s2_1_1_fbx_1_1_constants.html", null ],
     [ "ROS2::ControlConfiguration", "struct_r_o_s2_1_1_control_configuration.html", null ],
+    [ "VehicleDynamics::DriveModel", "class_vehicle_dynamics_1_1_drive_model.html", [
+      [ "VehicleDynamics::SimplifiedDriveModel", "class_vehicle_dynamics_1_1_simplified_drive_model.html", null ]
+    ] ],
     [ "EBusTraits", null, [
+      [ "ROS2::AckermannNotifications", "class_r_o_s2_1_1_ackermann_notifications.html", null ],
       [ "ROS2::ROS2BusTraits", "class_r_o_s2_1_1_r_o_s2_bus_traits.html", null ],
-      [ "ROS2::TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", null ]
+      [ "ROS2::TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", null ],
+      [ "VehicleDynamics::VehicleInputControlBusTraits", "class_vehicle_dynamics_1_1_vehicle_input_control_bus_traits.html", null ]
     ] ],
     [ "ROS2::Fbx::FbxGenerator", "class_r_o_s2_1_1_fbx_1_1_fbx_generator.html", null ],
     [ "ROS2::Fbx::Constants::FbxHeader", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_fbx_header.html", null ],
     [ "ROS2::Fbx::Constants::GlobalSettings", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_global_settings.html", null ],
     [ "Handler", null, [
-      [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
-      [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
-      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::TwistNotificationHandler", "class_r_o_s2_1_1_twist_notification_handler.html", null ]
+      [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
+      [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
+      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ],
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
@@ -53,17 +71,23 @@ var hierarchy =
     [ "Handler", null, [
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
-    [ "ROS2::InertialsMaker", "class_r_o_s2_1_1_inertials_maker.html", null ],
-    [ "ROS2::IRobotControl", "class_r_o_s2_1_1_i_robot_control.html", [
-      [ "ROS2::RobotControl< geometry_msgs::msg::Twist >", "class_r_o_s2_1_1_robot_control.html", [
-        [ "ROS2::TwistControl", "class_r_o_s2_1_1_twist_control.html", null ]
+    [ "ROS2::IControlSubscriptionHandler", "class_r_o_s2_1_1_i_control_subscription_handler.html", [
+      [ "ROS2::ControlSubscriptionHandler< ackermann_msgs::msg::AckermannDrive >", "class_r_o_s2_1_1_control_subscription_handler.html", [
+        [ "ROS2::AckermannSubscriptionHandler", "class_r_o_s2_1_1_ackermann_subscription_handler.html", null ]
       ] ],
-      [ "ROS2::RobotControl< T >", "class_r_o_s2_1_1_robot_control.html", null ]
+      [ "ROS2::ControlSubscriptionHandler< geometry_msgs::msg::Twist >", "class_r_o_s2_1_1_control_subscription_handler.html", [
+        [ "ROS2::TwistSubscriptionHandler", "class_r_o_s2_1_1_twist_subscription_handler.html", null ]
+      ] ],
+      [ "ROS2::ControlSubscriptionHandler< T >", "class_r_o_s2_1_1_control_subscription_handler.html", null ]
     ] ],
+    [ "ROS2::InertialsMaker", "class_r_o_s2_1_1_inertials_maker.html", null ],
+    [ "VehicleDynamics::InputZeroedOnTimeout< T, typename >", "class_vehicle_dynamics_1_1_input_zeroed_on_timeout.html", null ],
+    [ "VehicleDynamics::InputZeroedOnTimeout< float >", "class_vehicle_dynamics_1_1_input_zeroed_on_timeout.html", null ],
     [ "ROS2::JointsMaker", "class_r_o_s2_1_1_joints_maker.html", null ],
     [ "ROS2::LidarRaycaster", "class_r_o_s2_1_1_lidar_raycaster.html", null ],
     [ "ROS2::LidarTemplate", "struct_r_o_s2_1_1_lidar_template.html", null ],
     [ "ROS2::LidarTemplateUtils", "class_r_o_s2_1_1_lidar_template_utils.html", null ],
+    [ "VehicleDynamics::ManualControlEventHandler", "class_vehicle_dynamics_1_1_manual_control_event_handler.html", null ],
     [ "ROS2::Fbx::Constants::Material", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_material.html", null ],
     [ "Module", null, [
       [ "ROS2::ROS2ModuleInterface", "class_r_o_s2_1_1_r_o_s2_module_interface.html", null ]
@@ -72,13 +96,13 @@ var hierarchy =
     [ "ROS2::Fbx::Node", "class_r_o_s2_1_1_fbx_1_1_node.html", null ],
     [ "ROS2::Fbx::NodeWithId", "struct_r_o_s2_1_1_fbx_1_1_node_with_id.html", null ],
     [ "ROS2::Fbx::Constants::Object", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_object.html", null ],
+    [ "VehicleDynamics::PidConfiguration", "class_vehicle_dynamics_1_1_pid_configuration.html", null ],
     [ "ROS2::PublisherConfiguration", "struct_r_o_s2_1_1_publisher_configuration.html", null ],
     [ "ROS2::QoS", "struct_r_o_s2_1_1_qo_s.html", null ],
     [ "QWidget", null, [
       [ "ROS2::RobotImporterWidget", "class_r_o_s2_1_1_robot_importer_widget.html", null ]
     ] ],
     [ "ROS2::Fbx::RawString", "struct_r_o_s2_1_1_fbx_1_1_raw_string.html", null ],
-    [ "ROS2::RobotConfiguration", "struct_r_o_s2_1_1_robot_configuration.html", null ],
     [ "ROS2::RobotImporter", "class_r_o_s2_1_1_robot_importer.html", null ],
     [ "ROS2::RobotImporterConfig", "struct_r_o_s2_1_1_robot_importer_config.html", null ],
     [ "ROS2::ROS2Conversions", "class_r_o_s2_1_1_r_o_s2_conversions.html", null ],
@@ -87,10 +111,16 @@ var hierarchy =
     [ "ROS2::ROS2Transform", "class_r_o_s2_1_1_r_o_s2_transform.html", null ],
     [ "ROS2::SensorConfiguration", "struct_r_o_s2_1_1_sensor_configuration.html", null ],
     [ "ROS2::SimulationClock", "class_r_o_s2_1_1_simulation_clock.html", null ],
+    [ "VehicleDynamics::SteeringDynamicsData", "struct_vehicle_dynamics_1_1_steering_dynamics_data.html", null ],
     [ "ROS2::URDF::TypeConversions", "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html", null ],
     [ "ROS2::UniqueIdGenerator", "class_r_o_s2_1_1_unique_id_generator.html", null ],
     [ "ROS2::UrdfParser", "class_r_o_s2_1_1_urdf_parser.html", null ],
     [ "ROS2::URDFPrefabMaker", "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html", null ],
     [ "ROS2::UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", null ],
-    [ "ROS2::VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", null ]
+    [ "VehicleDynamics::VehicleConfiguration", "class_vehicle_dynamics_1_1_vehicle_configuration.html", null ],
+    [ "VehicleDynamics::VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", null ],
+    [ "VehicleDynamics::VehicleInputsState", "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html", null ],
+    [ "VehicleDynamics::VehicleModelLimits", "struct_vehicle_dynamics_1_1_vehicle_model_limits.html", null ],
+    [ "ROS2::VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", null ],
+    [ "VehicleDynamics::WheelDynamicsData", "struct_vehicle_dynamics_1_1_wheel_dynamics_data.html", null ]
 ];

@@ -84,12 +84,17 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 &#160;
 
 <h3><a id="index_a"></a>- a -</h3><ul>
+<li>AckermannReceived()
+: <a class="el" href="class_r_o_s2_1_1_ackermann_notifications.html#a683c5fd45e6614e6a60d594e9cd2694b">ROS2::AckermannNotifications</a>
+</li>
 <li>Activate()
-: <a class="el" href="class_r_o_s2_1_1_i_robot_control.html#af60fe90c4bf8820c4e345625064e04fc">ROS2::IRobotControl</a>
-, <a class="el" href="class_r_o_s2_1_1_robot_control.html#aa74b643dd0b99c701101b3dce40fcc25">ROS2::RobotControl&lt; T &gt;</a>
+: <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">ROS2::ControlSubscriptionHandler&lt; T &gt;</a>
+, <a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a85b9485d0d6d7e6ba605ee3ed2f9518d">ROS2::IControlSubscriptionHandler</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#ad475df4aa5d9c3e0b2660f5bb367a7b9">VehicleDynamics::DriveModel</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_simplified_drive_model.html#a15f0b5bf92f6422b6cffbe5be6ef0694">VehicleDynamics::SimplifiedDriveModel</a>
 </li>
 <li>AddChild()
-: <a class="el" href="class_r_o_s2_1_1_fbx_1_1_node.html#a440d0a85cca01647b9878c1c9a1dac23">ROS2::Fbx::Node</a>
+: <a class="el" href="class_r_o_s2_1_1_fbx_1_1_node.html#a09ba68d1c214c5c74a3f80eb522c62ba">ROS2::Fbx::Node</a>
 </li>
 <li>AddColliders()
 : <a class="el" href="class_r_o_s2_1_1_colliders_maker.html#a37e67ee4f4a81312f5a57b52b94e9a40">ROS2::CollidersMaker</a>
@@ -111,6 +116,10 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 </li>
 <li>AddVisuals()
 : <a class="el" href="class_r_o_s2_1_1_visuals_maker.html#abce50c2076fd7dd4a800c304a6c179d7">ROS2::VisualsMaker</a>
+</li>
+<li>ApplyInputState()
+: <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#a00d01aea453a9e0e38964f14419058f8">VehicleDynamics::DriveModel</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_simplified_drive_model.html#ad61523b2fc668f13f06d4f6fa6d16212">VehicleDynamics::SimplifiedDriveModel</a>
 </li>
 </ul>
 
@@ -134,6 +143,9 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 </li>
 <li>CheckIfAssetsWereLoadedAndCreatePrefab()
 : <a class="el" href="class_r_o_s2_1_1_robot_importer.html#aad2694e5a679426aba4530fe8134b283">ROS2::RobotImporter</a>
+</li>
+<li>ComputeCommand()
+: <a class="el" href="class_vehicle_dynamics_1_1_pid_configuration.html#acf5bd597696e94600a948fe5aa52e472">VehicleDynamics::PidConfiguration</a>
 </li>
 </ul>
 
@@ -161,6 +173,9 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 <li>GetGlobalFrameName()
 : <a class="el" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#a7a948f9c915c8c372c4175eb1f4e2b24">ROS2::ROS2FrameComponent</a>
 </li>
+<li>GetLeftWheelEntityId()
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#ac154defd4bb715b61a851a00698d7c27">VehicleDynamics::AxleConfiguration</a>
+</li>
 <li>GetName()
 : <a class="el" href="class_r_o_s2_1_1_fbx_1_1_node.html#a2e53d495265e41511618f9828e694f03">ROS2::Fbx::Node</a>
 </li>
@@ -185,6 +200,9 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 <li>GetRequiredSystemComponents()
 : <a class="el" href="class_r_o_s2_1_1_r_o_s2_module_interface.html#a5d55e867188f56a24fe3fce06325ce08">ROS2::ROS2ModuleInterface</a>
 </li>
+<li>GetRightWheelEntityId()
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#ad0d1b359799f48f3405e33f39caf4126">VehicleDynamics::AxleConfiguration</a>
+</li>
 <li>GetROSTimestamp()
 : <a class="el" href="class_r_o_s2_1_1_r_o_s2_requests.html#a4d48369f6056cd2da8e01d3225c16853">ROS2::ROS2Requests</a>
 , <a class="el" href="class_r_o_s2_1_1_r_o_s2_system_component.html#ae4540647aaaf316f407d31437c01c433">ROS2::ROS2SystemComponent</a>
@@ -203,9 +221,26 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 </ul>
 
 
+<h3><a id="index_i"></a>- i -</h3><ul>
+<li>InitializePid()
+: <a class="el" href="class_vehicle_dynamics_1_1_pid_configuration.html#aeffadc46b3609e7313534a2133e06a39">VehicleDynamics::PidConfiguration</a>
+</li>
+</ul>
+
+
 <h3><a id="index_l"></a>- l -</h3><ul>
+<li>LimitValue()
+: <a class="el" href="struct_vehicle_dynamics_1_1_vehicle_model_limits.html#ac3335a5b61b8c959555cda7c21e9f5ae">VehicleDynamics::VehicleModelLimits</a>
+</li>
 <li>LoadURDF()
 : <a class="el" href="class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a61251c2ee8574c2bbb0d87b116db0ab9">ROS2::URDFPrefabMaker</a>
+</li>
+</ul>
+
+
+<h3><a id="index_m"></a>- m -</h3><ul>
+<li>ManualControlSingleEventHandler()
+: <a class="el" href="class_vehicle_dynamics_1_1_manual_control_single_event_handler.html#a1673e7d02cfb0b5748b572a9a558370a">VehicleDynamics::ManualControlSingleEventHandler</a>
 </li>
 </ul>
 
@@ -267,6 +302,21 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 <li>SetRelationBetweenObjects()
 : <a class="el" href="class_r_o_s2_1_1_fbx_1_1_fbx_generator.html#a24cd247dd13c80527e43a275260f0b99">ROS2::Fbx::FbxGenerator</a>
 </li>
+<li>SetTargetAccelerationFraction()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#a5b20a48991a9f07031eb5d825995140c">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetLinearSpeed()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abe45b237292f8df914426a345f4abdd8">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetLinearSpeedFraction()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#acaa76bb082a10ee35c0779d5012cbedb">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetSteering()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abdbe597062b81b169fdfa5bd51819713">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetSteeringFraction()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#af941fc68b42c49ab1cf64abaed3ebc0e">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
 </ul>
 
 
@@ -306,7 +356,7 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Sep 26 2022 14:36:16 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Sep 28 2022 12:06:08 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

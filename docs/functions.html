@@ -87,9 +87,14 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>Ackermann
 : <a class="el" href="struct_r_o_s2_1_1_control_configuration.html#ae3765105e5e796cb2aa7c282d91d1d67a83bc58c37b479645631cf9cd0196cf12">ROS2::ControlConfiguration</a>
 </li>
+<li>AckermannReceived()
+: <a class="el" href="class_r_o_s2_1_1_ackermann_notifications.html#a683c5fd45e6614e6a60d594e9cd2694b">ROS2::AckermannNotifications</a>
+</li>
 <li>Activate()
-: <a class="el" href="class_r_o_s2_1_1_i_robot_control.html#af60fe90c4bf8820c4e345625064e04fc">ROS2::IRobotControl</a>
-, <a class="el" href="class_r_o_s2_1_1_robot_control.html#aa74b643dd0b99c701101b3dce40fcc25">ROS2::RobotControl&lt; T &gt;</a>
+: <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">ROS2::ControlSubscriptionHandler&lt; T &gt;</a>
+, <a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a85b9485d0d6d7e6ba605ee3ed2f9518d">ROS2::IControlSubscriptionHandler</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#ad475df4aa5d9c3e0b2660f5bb367a7b9">VehicleDynamics::DriveModel</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_simplified_drive_model.html#a15f0b5bf92f6422b6cffbe5be6ef0694">VehicleDynamics::SimplifiedDriveModel</a>
 </li>
 <li>AddChild()
 : <a class="el" href="class_r_o_s2_1_1_fbx_1_1_node.html#a440d0a85cca01647b9878c1c9a1dac23">ROS2::Fbx::Node</a>
@@ -115,6 +120,10 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>AddVisuals()
 : <a class="el" href="class_r_o_s2_1_1_visuals_maker.html#abce50c2076fd7dd4a800c304a6c179d7">ROS2::VisualsMaker</a>
 </li>
+<li>ApplyInputState()
+: <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#a00d01aea453a9e0e38964f14419058f8">VehicleDynamics::DriveModel</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_simplified_drive_model.html#ad61523b2fc668f13f06d4f6fa6d16212">VehicleDynamics::SimplifiedDriveModel</a>
+</li>
 </ul>
 
 
@@ -137,6 +146,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>CheckIfAssetsWereLoadedAndCreatePrefab()
 : <a class="el" href="class_r_o_s2_1_1_robot_importer.html#aad2694e5a679426aba4530fe8134b283">ROS2::RobotImporter</a>
+</li>
+<li>ComputeCommand()
+: <a class="el" href="class_vehicle_dynamics_1_1_pid_configuration.html#acf5bd597696e94600a948fe5aa52e472">VehicleDynamics::PidConfiguration</a>
 </li>
 <li>Custom
 : <a class="el" href="struct_r_o_s2_1_1_namespace_configuration.html#a1b56d5215135a934b8441a1e7b0bbdb5a6884d69042ed28ea7e1721bc3b0684ce">ROS2::NamespaceConfiguration</a>
@@ -181,6 +193,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>GetGlobalFrameName()
 : <a class="el" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#a7a948f9c915c8c372c4175eb1f4e2b24">ROS2::ROS2FrameComponent</a>
 </li>
+<li>GetLeftWheelEntityId()
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#ac154defd4bb715b61a851a00698d7c27">VehicleDynamics::AxleConfiguration</a>
+</li>
 <li>GetName()
 : <a class="el" href="class_r_o_s2_1_1_fbx_1_1_node.html#a2e53d495265e41511618f9828e694f03">ROS2::Fbx::Node</a>
 </li>
@@ -205,6 +220,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>GetRequiredSystemComponents()
 : <a class="el" href="class_r_o_s2_1_1_r_o_s2_module_interface.html#a5d55e867188f56a24fe3fce06325ce08">ROS2::ROS2ModuleInterface</a>
 </li>
+<li>GetRightWheelEntityId()
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#ad0d1b359799f48f3405e33f39caf4126">VehicleDynamics::AxleConfiguration</a>
+</li>
 <li>GetROSTimestamp()
 : <a class="el" href="class_r_o_s2_1_1_r_o_s2_requests.html#a4d48369f6056cd2da8e01d3225c16853">ROS2::ROS2Requests</a>
 , <a class="el" href="class_r_o_s2_1_1_r_o_s2_system_component.html#ae4540647aaaf316f407d31437c01c433">ROS2::ROS2SystemComponent</a>
@@ -223,7 +241,17 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </ul>
 
 
+<h3><a id="index_i"></a>- i -</h3><ul>
+<li>InitializePid()
+: <a class="el" href="class_vehicle_dynamics_1_1_pid_configuration.html#aeffadc46b3609e7313534a2133e06a39">VehicleDynamics::PidConfiguration</a>
+</li>
+</ul>
+
+
 <h3><a id="index_l"></a>- l -</h3><ul>
+<li>LimitValue()
+: <a class="el" href="struct_vehicle_dynamics_1_1_vehicle_model_limits.html#ac3335a5b61b8c959555cda7c21e9f5ae">VehicleDynamics::VehicleModelLimits</a>
+</li>
 <li>LoadURDF()
 : <a class="el" href="class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a61251c2ee8574c2bbb0d87b116db0ab9">ROS2::URDFPrefabMaker</a>
 </li>
@@ -231,14 +259,17 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 
 
 <h3><a id="index_m"></a>- m -</h3><ul>
+<li>m_acceleration
+: <a class="el" href="struct_ackermann_command_struct.html#afc713141a2e1483520b530d9a0ded87f">AckermannCommandStruct</a>
+</li>
 <li>m_aspectRatio
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#a6f82c185ac62875db8f5bdc245e4580c">ROS2::CameraSensorDescription</a>
 </li>
-<li>m_body
-: <a class="el" href="struct_r_o_s2_1_1_robot_configuration.html#a5525417d81ff0a679f4f84e44722f33e">ROS2::RobotConfiguration</a>
+<li>m_axleTag
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#a94ae1e0eced34951daf6bf7fac0ef91a">VehicleDynamics::AxleConfiguration</a>
 </li>
-<li>m_broadcastBusMode
-: <a class="el" href="struct_r_o_s2_1_1_control_configuration.html#a96919bc1e4b70572cdedc7392e1a17f3">ROS2::ControlConfiguration</a>
+<li>m_axleWheels
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#ae805160982ec97c22a20ddb18082b3f0">VehicleDynamics::AxleConfiguration</a>
 </li>
 <li>m_cameraIntrinsics
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#a0ca047a9f7e4202fc1da53360fcc9a96">ROS2::CameraSensorDescription</a>
@@ -246,17 +277,55 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>m_cameraName
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#ac8fa3b3712945d5d3f60e9d7c6a430b2">ROS2::CameraSensorDescription</a>
 </li>
+<li>m_driveAxis
+: <a class="el" href="struct_vehicle_dynamics_1_1_wheel_dynamics_data.html#ae24972c3b6cd27bfa0bae600e1521e63">VehicleDynamics::WheelDynamicsData</a>
+</li>
+<li>m_driveDir
+: <a class="el" href="class_vehicle_dynamics_1_1_wheel_controller_component.html#acf7b27898181364bb402b060be638c23">VehicleDynamics::WheelControllerComponent</a>
+</li>
 <li>m_frequency
 : <a class="el" href="struct_r_o_s2_1_1_sensor_configuration.html#a73ea18a76cf9edd580154cc2bae143a5">ROS2::SensorConfiguration</a>
 </li>
 <li>m_height
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#a937635966216a6a9272c69b9eff2579e">ROS2::CameraSensorDescription</a>
 </li>
+<li>m_jerk
+: <a class="el" href="struct_ackermann_command_struct.html#a7ba090085c6f183dc70a49a66fdfa7a3">AckermannCommandStruct</a>
+</li>
 <li>m_publishersConfigurations
 : <a class="el" href="struct_r_o_s2_1_1_sensor_configuration.html#a3ac3246bd4edeb23ac223dfe89bd1573">ROS2::SensorConfiguration</a>
 </li>
+<li>m_speed
+: <a class="el" href="struct_ackermann_command_struct.html#acd8e0b2c34b78dc4c248c6c4bf7b66e5">AckermannCommandStruct</a>
+, <a class="el" href="struct_vehicle_dynamics_1_1_vehicle_inputs_state.html#ac6a98fc0048ee06c6d9d45bf8dc3c758">VehicleDynamics::VehicleInputsState</a>
+</li>
+<li>m_speedLimit
+: <a class="el" href="struct_vehicle_dynamics_1_1_vehicle_model_limits.html#adb9b455ec23c767ef3b780bc3fd8eb81">VehicleDynamics::VehicleModelLimits</a>
+</li>
+<li>m_steering
+: <a class="el" href="struct_vehicle_dynamics_1_1_vehicle_inputs_state.html#a71aec3a8c41a5a4a8189e5cf28b33d39">VehicleDynamics::VehicleInputsState</a>
+</li>
+<li>m_steeringAngle
+: <a class="el" href="struct_ackermann_command_struct.html#a91939cf73a820225d4851ced01aa11f4">AckermannCommandStruct</a>
+</li>
+<li>m_steeringAngleVelocity
+: <a class="el" href="struct_ackermann_command_struct.html#ac90e6923ac679a36e7d8f2368e82ca4e">AckermannCommandStruct</a>
+</li>
+<li>m_steeringDir
+: <a class="el" href="class_vehicle_dynamics_1_1_wheel_controller_component.html#a24f7ee5041d12912c6122e60fb9bd093">VehicleDynamics::WheelControllerComponent</a>
+</li>
+<li>m_steeringEntity
+: <a class="el" href="struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a65fe81cbb10418c37f972a4c23e9388d">VehicleDynamics::SteeringDynamicsData</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_wheel_controller_component.html#a8904daa3872dc5296e9fbd6982edc856">VehicleDynamics::WheelControllerComponent</a>
+</li>
+<li>m_steeringLimit
+: <a class="el" href="struct_vehicle_dynamics_1_1_vehicle_model_limits.html#a756ebda76c0f73a789a35b6ef4681d29">VehicleDynamics::VehicleModelLimits</a>
+</li>
 <li>m_topic
 : <a class="el" href="struct_r_o_s2_1_1_publisher_configuration.html#a5d32ba0f8c19508284ed904fe14673b9">ROS2::PublisherConfiguration</a>
+</li>
+<li>m_turnAxis
+: <a class="el" href="struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a03305ffb8e925bc739b392ca154ca959">VehicleDynamics::SteeringDynamicsData</a>
 </li>
 <li>m_type
 : <a class="el" href="struct_r_o_s2_1_1_publisher_configuration.html#ad972c55e707fa7ff0f13b5ef12d81b1d">ROS2::PublisherConfiguration</a>
@@ -267,11 +336,18 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>m_viewToClipMatrix
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#a2ca88beaf7a754de3328c98be7ed7a1c">ROS2::CameraSensorDescription</a>
 </li>
-<li>m_wheelFrontLeft
-: <a class="el" href="struct_r_o_s2_1_1_robot_configuration.html#aef9de6c3abf245e03233748ffcc66e13">ROS2::RobotConfiguration</a>
+<li>m_wheelEntity
+: <a class="el" href="struct_vehicle_dynamics_1_1_wheel_dynamics_data.html#a19f4ea8088955b4f29cb3e82d2986877">VehicleDynamics::WheelDynamicsData</a>
+</li>
+<li>m_wheelRadius
+: <a class="el" href="class_vehicle_dynamics_1_1_axle_configuration.html#a8c07a31bc1d037af565fc79f178c744a">VehicleDynamics::AxleConfiguration</a>
+, <a class="el" href="struct_vehicle_dynamics_1_1_wheel_dynamics_data.html#ac8319d31738a063d452990e5c8be78ef">VehicleDynamics::WheelDynamicsData</a>
 </li>
 <li>m_width
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#aadfefa0095353c1d87569ac49ae02a9f">ROS2::CameraSensorDescription</a>
+</li>
+<li>ManualControlSingleEventHandler()
+: <a class="el" href="class_vehicle_dynamics_1_1_manual_control_single_event_handler.html#a1673e7d02cfb0b5748b572a9a558370a">VehicleDynamics::ManualControlSingleEventHandler</a>
 </li>
 </ul>
 
@@ -343,6 +419,21 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>SetRelationBetweenObjects()
 : <a class="el" href="class_r_o_s2_1_1_fbx_1_1_fbx_generator.html#a24cd247dd13c80527e43a275260f0b99">ROS2::Fbx::FbxGenerator</a>
 </li>
+<li>SetTargetAccelerationFraction()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#a5b20a48991a9f07031eb5d825995140c">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetLinearSpeed()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abe45b237292f8df914426a345f4abdd8">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetLinearSpeedFraction()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#acaa76bb082a10ee35c0779d5012cbedb">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetSteering()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abdbe597062b81b169fdfa5bd51819713">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
+<li>SetTargetSteeringFraction()
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#af941fc68b42c49ab1cf64abaed3ebc0e">VehicleDynamics::VehicleInputControlRequests</a>
+</li>
 <li>Steering
 : <a class="el" href="struct_r_o_s2_1_1_control_configuration.html#ae3765105e5e796cb2aa7c282d91d1d67">ROS2::ControlConfiguration</a>
 </li>
@@ -395,7 +486,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Sep 26 2022 14:36:16 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Sep 28 2022 12:06:08 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

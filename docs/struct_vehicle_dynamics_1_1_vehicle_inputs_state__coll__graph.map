@@ -1,0 +1,4 @@
+<map id="VehicleDynamics::VehicleInputsState" name="VehicleDynamics::VehicleInputsState">
+<area shape="rect" id="node1" title="The most recent inputs." alt="" coords="21,124,211,165"/>
+<area shape="rect" id="node2" href="$class_vehicle_dynamics_1_1_input_zeroed_on_timeout.html" title=" " alt="" coords="5,5,227,47"/>
+</map>
