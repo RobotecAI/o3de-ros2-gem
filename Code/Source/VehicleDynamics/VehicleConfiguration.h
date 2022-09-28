@@ -14,7 +14,7 @@
 
 namespace VehicleDynamics
 {
-    //! Drive and steering configuration for a vehicle
+    //! Drive and steering configuration for a vehicle. The class only holds axle information now but it is meant to be expanded.
     class VehicleConfiguration
     {
     public:

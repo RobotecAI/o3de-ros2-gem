@@ -1,14 +1,14 @@
-## ROS 2 Gem
+# ROS 2 Gem
 
 The Gem and its build instructions can be found in [this repository](https://github.com/RobotecAI/o3de-ros2-gem). The
 ROS 2 Gem helps to build robotic simulations with [ROS 2 / Robot Operating System](https://www.ros.org/). For an example
 of use see [Warehouse Demo Project](https://github.com/RobotecAI/Ros2WarehouseDemo).
 
-## Doxygen documentation
+## Gem classes documentation
 
 You can browse Doxygen-generated documentation on [Gem's GitHub page](https://robotecai.github.io/o3de-ros2-gem/).
 
-## Components overview
+# Components overview
 
 - __Central Singleton__
   - ROS2SystemComponent
@@ -21,9 +21,9 @@ You can browse Doxygen-generated documentation on [Gem's GitHub page](https://ro
   - ROS2IMUComponent
   - ROS2LidarComponent
 - __Robot control__
-    - ROS2RobotControlComponent
-    - AckermannControlComponent
-    - RigidBodyTwistControlComponent
+  - ROS2RobotControlComponent
+  - AckermannControlComponent
+  - RigidBodyTwistControlComponent
 - __Spawner__
   - ROS2SpawnerComponent
 - __Vehicle dynamics__
@@ -32,9 +32,9 @@ You can browse Doxygen-generated documentation on [Gem's GitHub page](https://ro
 - __Robot Import (URDF) system component__
   - ROS2RobotImporterSystemComponent
   
-## The Gem and ROS 2 ecosystem
+# The Gem and ROS 2 ecosystem
 
-### Supported Platforms and versions
+## Supported Platforms and versions
 
 The Gem is currently Linux-only and is being tested with ROS 2 Humble on Ubuntu 22.04 as well as ROS 2 Galactic with
 Ubuntu 20.04.
@@ -55,12 +55,12 @@ you [source](https://docs.ros.org/en/galactic/Tutorials/Workspace/Creating-A-Wor
 you want to use. You can check which version is sourced in your console by checking the value of `ROS_DISTRO`
 environment variable (`echo $ROS_DISTRO`).
 
-### ROS 2 Concepts
+## ROS 2 Concepts
 
 Please refer to [ROS 2 Concepts documentation](https://docs.ros.org/en/humble/Concepts.html) if you are not familiar
 with how ROS 2 works.
 
-### Structure and Communication
+## Structure and Communication
 
 The Gem creates a [ROS 2 node](https://docs.ros.org/en/galactic/Tutorials/Understanding-ROS2-Nodes.html) which is
 directly a part of ROS 2 ecosystem. As such, your simulation will not use any bridges to communicate and is subject to
@@ -81,7 +81,7 @@ m_myPublisher = ros2Node->create_publisher<sensor_msgs::msg::PointCloud2>(fullTo
 Note that QoS class is a simple wrapper
 to [rclcpp::QoS](https://docs.ros2.org/galactic/api/rclcpp/classrclcpp_1_1QoS.html).
 
-#### Frames
+### Frames
 
 `ROS2FrameComponent` is a representation of an interesting physical part of the robot. It handles spatio-temporal
 relationship between this part and other frames of reference. It also encapsulates namespaces, which help to distinguish
@@ -89,7 +89,7 @@ between different robots and different parts of the robot, such as in case of mu
 
 All Sensors and the Robot Control Component require `ROS2FrameComponent`.
 
-#### Sensors
+### Sensors
 
 Sensors are Components deriving from `ROS2SensorComponent`. They acquire data from the simulated environment and publish
 it to ROS 2 domain.
@@ -101,7 +101,7 @@ it to ROS 2 domain.
 If you intend to add your own sensor, it might be useful to look at how sensors already provided within the Gem are
 implemented.
 
-#### Robot Control
+### Robot Control
 
 The Gem comes with `ROS2RobotControlComponent`, which you can use to move your robot through:
 
@@ -123,7 +123,7 @@ Twist messages.
 
 It is possible to implement your own control mechanisms with this Component.
 
-#### Vehicle Model
+### Vehicle Model
 
 `VehicleModelComponent` serves the purpose of converting inputs such as target velocity, steering or acceleration to
 physical forces on parts of a vehicle (robot).
@@ -132,7 +132,7 @@ physical forces on parts of a vehicle (robot).
 The model requires a `WheelControllerComponent` present in each wheel entity. It also uses an implementation
 of `DriveModel`, which converts vehicle inputs to forces acting on steering elements and wheels.
 
-**Simplified drive model**
+#### Simplified drive model
 
 The only implementation of `DriveModel` available at this moment is the `SimplifiedDriveModel`. It
 uses [PID controllers](https://en.wikipedia.org/wiki/PID_controller)
@@ -140,13 +140,13 @@ from [control_toolbox](https://github.com/ros-controls/control_toolbox) package.
 to work with default parameters. The user should tune PID parameters manually. They are exposed through
 the `VehicleModel` component parameters.
 
-**Manual control**
+#### Manual control
 
 The `VehicleModel` will handle input events with names "steering" and "accelerate". This means you can add
 an [InputComponent](https://www.o3de.org/docs/user-guide/components/reference/gameplay/input/) to the same entity and
 define an input map for your input devices (such as keyboard or a game pad) to control the vehicle manually.
 
-**Design document**
+#### Design document
 
 To understand how vehicle dynamics works, please refer to the
 [design document](../design/vehicle_dynamics/design.md) and
@@ -158,7 +158,7 @@ Twist messages.
 
 It is possible to implement your own control mechanisms with this Component.
 
-#### Spawner
+### Spawner
 
 `ROS2SpawnerComponent` handles spawning entities during simulation.
 Available spawnables have to be set up as the component's field before the simulation.
@@ -170,7 +170,7 @@ During the simulation user can access names of available spawnables and request 
 - Available spawnable names access: names of available spawnables are sent in response.model_names
   - example call: `ros2 service call /get_available_spawnable_names gazebo_msgs/srv/GetWorldProperties`
 
-### Handling custom ROS 2 dependencies
+## Handling custom ROS 2 dependencies
 
 The ROS 2 Gem will respect your choice of [__
 sourced__](https://docs.ros.org/en/galactic/Tutorials/Workspace/Creating-A-Workspace.html#source-the-overlay) ROS 2
@@ -183,7 +183,7 @@ target_depends_on_ros2_packages(<your_target> <ros_package1> <ros_package2>)
 
 in your project's `Gem/CMakeLists.txt`.
 
-##### Example
+#### Example
 
 It could be the case that you need to create new type of sensor publishing a custom message.
 
@@ -199,7 +199,7 @@ workspace
 Remember to __always have your ROS 2 overlay sourced__ when building and running the project as sourcing provides
 visibility of ROS 2 package paths.
 
-## Diagram of classes
+# Diagram of classes
 
 Some classes with relationships and functions are presented on this diagram. Specific sensor classes (e.g. Lidar) are
 not included. Some classes are presented in sub-diagrams:

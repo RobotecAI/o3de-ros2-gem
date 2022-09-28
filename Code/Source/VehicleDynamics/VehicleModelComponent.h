@@ -37,9 +37,10 @@ namespace VehicleDynamics
     private:
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
 
+        //! @see VehicleInputControlRequests
         void SetTargetLinearSpeed(float speedMps) override;
-        void SetTargetAcceleration(float acceleration) override;
         void SetTargetSteering(float steering) override;
+        void SetTargetAccelerationFraction(float accelerationFraction) override;
         void SetTargetSteeringFraction(float steeringFraction) override;
         void SetTargetLinearSpeedFraction(float speedFraction) override;
 

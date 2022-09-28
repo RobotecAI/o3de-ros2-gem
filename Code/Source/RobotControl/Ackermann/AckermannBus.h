@@ -18,26 +18,10 @@ namespace ROS2
     class AckermannNotifications : public AZ::EBusTraits
     {
     public:
-        static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
-        static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
-
         //! Handle Ackermann command
         //! @param ackermannCommand A structure with AckermannDrive message fields
         virtual void AckermannReceived(const AckermannCommandStruct& angular) = 0;
     };
 
     using AckermannNotificationBus = AZ::EBus<AckermannNotifications>;
-
-    //! This simple handler can be used for prototyping using LUA scripting
-    class AckermannNotificationHandler
-        : public AckermannNotificationBus::Handler
-        , public AZ::BehaviorEBusHandler
-    {
-    public:
-        AZ_EBUS_BEHAVIOR_BINDER(
-            AckermannNotificationHandler, "{A6A2011B-8A76-4ACE-B5EF-6DD6F8F1E5DF}", AZ::SystemAllocator, AckermannReceived);
-
-        void AckermannReceived(const AckermannCommandStruct& angular) override;
-        static void Reflect(AZ::ReflectContext* context);
-    };
 } // namespace ROS2

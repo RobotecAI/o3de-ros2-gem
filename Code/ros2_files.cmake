@@ -25,7 +25,6 @@ set(FILES
         Source/RobotControl/ControlSubscriptionHandler.h
         Source/RobotControl/ROS2RobotControlComponent.cpp
         Source/RobotControl/ROS2RobotControlComponent.h
-        Source/RobotControl/Ackermann/AckermannBus.cpp
         Source/RobotControl/Ackermann/AckermannBus.h
         Source/RobotControl/Ackermann/AckermannCommandStruct.h
         Source/RobotControl/Ackermann/AckermannSubscriptionHandler.cpp
@@ -34,7 +33,6 @@ set(FILES
         Source/RobotControl/Controllers/AckermannController/AckermannControlComponent.h
         Source/RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.cpp
         Source/RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h
-        Source/RobotControl/Twist/TwistBus.cpp
         Source/RobotControl/Twist/TwistBus.h
         Source/RobotControl/Twist/TwistSubscriptionHandler.cpp
         Source/RobotControl/Twist/TwistSubscriptionHandler.h

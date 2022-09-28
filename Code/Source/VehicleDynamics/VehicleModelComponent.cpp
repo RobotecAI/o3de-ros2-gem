@@ -88,9 +88,9 @@ namespace VehicleDynamics
         m_inputsState.m_speed.UpdateValue(speedFraction * m_vehicleLimits.m_speedLimit);
     }
 
-    void VehicleModelComponent::SetTargetAcceleration([[maybe_unused]] float acceleration)
+    void VehicleModelComponent::SetTargetAccelerationFraction([[maybe_unused]] float accelerationFraction)
     {
-        AZ_Error("SetTargetAcceleration", false, "Not implemented");
+        AZ_Error("SetTargetAccelerationFraction", false, "Not implemented");
     }
 
     void VehicleModelComponent::SetTargetSteering(float steering)
