@@ -24,7 +24,11 @@ namespace VehicleDynamics
             serialize->Class<SimplifiedDriveModel, DriveModel>()
                 ->Version(1)
                 ->Field("SteeringPID", &SimplifiedDriveModel::m_steeringPid)
-                ->Field("SpeedPID", &SimplifiedDriveModel::m_speedPid);
+                ->Field("SpeedPID", &SimplifiedDriveModel::m_speedPid)
+                ->Field("MaxSpeedImpulse", &SimplifiedDriveModel::maxSpeedImpulse)
+                ->Field("ShowSteeringDebugInfo", &SimplifiedDriveModel::showSteeringDebugInfo)
+                ->Field("ShowSpeedDebugInfo", &SimplifiedDriveModel::showSpeedDebugInfo);
+
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -39,7 +43,14 @@ namespace VehicleDynamics
                         AZ::Edit::UIHandlers::Default,
                         &SimplifiedDriveModel::m_speedPid,
                         "Speed PID",
-                        "Configuration of speed PID controller");
+                        "Configuration of speed PID controller")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, 
+                        &SimplifiedDriveModel::maxSpeedImpulse, 
+                        "Max speed impulse", "Speed torque impulse limit [0, INF]. Set to 0.0 to disable.")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, 
+                        &SimplifiedDriveModel::showSteeringDebugInfo, "Show steering debug messages", "")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, 
+                        &SimplifiedDriveModel::showSpeedDebugInfo, "Show speed debug messages", "");
             }
         }
     }
@@ -96,6 +107,11 @@ namespace VehicleDynamics
             AZ::TransformBus::EventResult(steeringElementTransform, steeringEntity, &AZ::TransformBus::Events::GetWorldTM);
             auto transformedTorqueVector = steeringElementTransform.TransformVector(steeringElementData.m_turnAxis * torque);
             Physics::RigidBodyRequestBus::Event(steeringEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
+
+            if (showSteeringDebugInfo)
+            {
+                AZ_Warning("ApplySteering", false, "Steering target: %f current: %f impulse: %f", steering, currentSteeringAngle, pidCommand);
+            }            
         }
     }
 
@@ -134,10 +150,27 @@ namespace VehicleDynamics
                 continue;
             }
 
+            if (maxSpeedImpulse>0.0)
+            {
+                if (pidCommand>maxSpeedImpulse)
+                {
+                    pidCommand = maxSpeedImpulse;
+                }
+                if (pidCommand<-maxSpeedImpulse)
+                {
+                    pidCommand = -maxSpeedImpulse;
+                }
+            }
+
             auto impulse = pidCommand * deltaTimeSec;
 
             auto transformedTorqueVector = wheelTransform.TransformVector(wheelData.m_driveAxis * impulse);
             Physics::RigidBodyRequestBus::Event(wheelEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
+
+            if (showSpeedDebugInfo)
+            {
+                AZ_Warning("ApplySpeed", false, "Speed target: %f current: %f impulse: %f", desiredAngularSpeedX, currentAngularSpeedX, pidCommand);
+            }            
         }
     }
 } // namespace VehicleDynamics
