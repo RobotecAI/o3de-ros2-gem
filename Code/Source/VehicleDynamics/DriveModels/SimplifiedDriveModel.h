@@ -40,6 +40,6 @@ namespace VehicleDynamics
         PidConfiguration m_steeringPid;
         PidConfiguration m_speedPid;
 
-        float maxSpeedImpulse = 0.0f; // Zero means, the imuplse limit is disabled
+        float maxSpeedImpulse = 0.0f; // 0.0 means no limit will be applied
     };
 } // namespace VehicleDynamics

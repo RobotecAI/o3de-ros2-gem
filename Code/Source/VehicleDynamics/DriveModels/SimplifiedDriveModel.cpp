@@ -143,15 +143,8 @@ namespace VehicleDynamics
             }
 
             if (maxSpeedImpulse > 0.0)
-            {
-                if (pidCommand > maxSpeedImpulse)
-                {
-                    pidCommand = maxSpeedImpulse;
-                }
-                if (pidCommand < -maxSpeedImpulse)
-                {
-                    pidCommand = -maxSpeedImpulse;
-                }
+            { // 0.0 means no limit will be applied
+                pidCommand = AZStd::clamp<float>(pidCommand, -maxSpeedImpulse, maxSpeedImpulse);
             }
 
             auto impulse = pidCommand * deltaTimeSec;
