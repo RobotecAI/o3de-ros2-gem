@@ -116,7 +116,17 @@ namespace ROS2
             [this](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
             {
                 const AZ::RHI::ImageDescriptor& descriptor = result.m_imageDescriptor;
-                const auto* component = AzToolsFramework::FindWrappedComponentForEntity<ROS2FrameComponent>(GetEntity());
+                auto* component = GetEntity()->FindComponent<ROS2FrameComponent>();
+                if (!component)
+                {
+                    component = AzToolsFramework::FindWrappedComponentForEntity<ROS2FrameComponent>(GetEntity());
+                }
+                static bool printFrameType = false;
+                if (printFrameType; printFrameType = true)
+                {
+                    AZStd::string format_name = ROS2::CameraFormatConversions::kRHIFormatToString.at(descriptor.m_format);
+                    AZ_Printf("Camera Sensor", "RHI Format : %s \n", format_name.c_str());
+                }
                 AZStd::string frameName = component->GetFrameID();
                 sensor_msgs::msg::Image message;
                 message.encoding = sensor_msgs::image_encodings::RGBA8;
