@@ -15,6 +15,7 @@ var dir_75ba3cc3a845fac40158ebef0c4bd96e =
     [ "Utilities", "dir_2ce87583b6c2e1fe45541471c3bfd97e.html", "dir_2ce87583b6c2e1fe45541471c3bfd97e" ],
     [ "VehicleDynamics", "dir_499f366640df058874cfb96c5930cd36.html", "dir_499f366640df058874cfb96c5930cd36" ],
     [ "ROS2EditorSystemComponent.h", "_r_o_s2_editor_system_component_8h_source.html", null ],
+    [ "ROS2GemUtilities.h", "_r_o_s2_gem_utilities_8h_source.html", null ],
     [ "ROS2ModuleInterface.h", "_r_o_s2_module_interface_8h_source.html", null ],
     [ "ROS2SystemComponent.h", "_r_o_s2_system_component_8h_source.html", null ]
 ];
