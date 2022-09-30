@@ -115,19 +115,11 @@ namespace VehicleDynamics
         auto innerSteering = atan((m_wheelbase*tan(steering))/(m_wheelbase-0.5*m_track*tan(steering)));
         auto outerSteering = atan((m_wheelbase*tan(steering))/(m_wheelbase+0.5*m_track*tan(steering)));
 
-        AZ_Warning("ApplySteering", false, "COMB: %f, IN: %f, OUT: %f", steering, innerSteering, outerSteering);
-
         // TODO - use proper "epsilon"
         if (AZ::Abs(steering) > 0.01)
         {
             ApplyWheelSteering(m_steeringData.front(), innerSteering, deltaTimeNs);
             ApplyWheelSteering(m_steeringData.back(), outerSteering, deltaTimeNs);
-        }
-        for (const auto& steeringElementData : m_steeringData)
-        {
-            AZ::Vector3 currentSteeringElementRotation;
-            AZ::TransformBus::EventResult(currentSteeringElementRotation, steeringElementData.m_steeringEntity, &AZ::TransformBus::Events::GetLocalRotation);
-            AZ_Warning("ApplySteering", false, "Steering: (%f, %f, %f)", currentSteeringElementRotation.GetX(), currentSteeringElementRotation.GetY(), currentSteeringElementRotation.GetZ());
         }
     }
 
