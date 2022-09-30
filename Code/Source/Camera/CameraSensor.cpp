@@ -136,7 +136,7 @@ namespace ROS2
 
         m_pipeline->AddToRenderTickOnce();
         AZ::Render::FrameCaptureRequestBus::BroadcastResult(
-            userId,
+            captureId,
             &AZ::Render::FrameCaptureRequestBus::Events::CapturePassAttachmentWithCallback,
             m_passHierarchy,
             AZStd::string("Output"),
