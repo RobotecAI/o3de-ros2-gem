@@ -33,7 +33,7 @@ namespace VehicleDynamics
     private:
         void ApplySteering(float steering, uint64_t deltaTimeNs);
         void ApplySpeed(float speed, uint64_t deltaTimeNs);
-        void ApplyWheelSteering(SteeringDynamicsData &wheelData, float steering, double deltaTimeNs);
+        void ApplyWheelSteering(SteeringDynamicsData& wheelData, float steering, double deltaTimeNs);
 
         VehicleConfiguration m_vehicleConfiguration;
         AZStd::vector<WheelDynamicsData> m_driveWheelsData;
