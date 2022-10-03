@@ -116,20 +116,21 @@ $(document).ready(function(){initNavTree('_pid_configuration_8h_source.html','')
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">double</span> m_iMax = 10.0; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">double</span> m_iMin = -10.0; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">bool</span> m_antiWindup = <span class="keyword">false</span>; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        control_toolbox::Pid m_pid;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace VehicleDynamics</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">double</span> m_outputLimit = 0.0; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        control_toolbox::Pid m_pid;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    };</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace VehicleDynamics</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html_aeffadc46b3609e7313534a2133e06a39"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html#aeffadc46b3609e7313534a2133e06a39">VehicleDynamics::PidConfiguration::InitializePid</a></div><div class="ttdeci">void InitializePid()</div><div class="ttdef"><b>Definition:</b> PidConfiguration.cpp:47</div></div>
+<div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html_aeffadc46b3609e7313534a2133e06a39"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html#aeffadc46b3609e7313534a2133e06a39">VehicleDynamics::PidConfiguration::InitializePid</a></div><div class="ttdeci">void InitializePid()</div><div class="ttdef"><b>Definition:</b> PidConfiguration.cpp:54</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a></div><div class="ttdef"><b>Definition:</b> PidConfiguration.h:17</div></div>
-<div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html_acf5bd597696e94600a948fe5aa52e472"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html#acf5bd597696e94600a948fe5aa52e472">VehicleDynamics::PidConfiguration::ComputeCommand</a></div><div class="ttdeci">double ComputeCommand(double error, uint64_t deltaTimeNanoseconds)</div><div class="ttdef"><b>Definition:</b> PidConfiguration.cpp:52</div></div>
+<div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html_acf5bd597696e94600a948fe5aa52e472"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html#acf5bd597696e94600a948fe5aa52e472">VehicleDynamics::PidConfiguration::ComputeCommand</a></div><div class="ttdeci">double ComputeCommand(double error, uint64_t deltaTimeNanoseconds)</div><div class="ttdef"><b>Definition:</b> PidConfiguration.cpp:59</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_499f366640df058874cfb96c5930cd36.html">VehicleDynamics</a></li><li class="navelem"><a class="el" href="dir_cb8e44213b144c604b72a3672d6bd537.html">DriveModels</a></li><li class="navelem"><b>PidConfiguration.h</b></li>
-    <li class="footer">Generated on Mon Oct 3 2022 12:36:25 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Mon Oct 3 2022 12:45:16 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
