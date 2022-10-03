@@ -63,13 +63,13 @@ var annotated_dup =
       [ "VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", "class_r_o_s2_1_1_visuals_maker" ]
     ] ],
     [ "VehicleDynamics", null, [
+      [ "AckermannDriveModel", "class_vehicle_dynamics_1_1_ackermann_drive_model.html", "class_vehicle_dynamics_1_1_ackermann_drive_model" ],
       [ "AxleConfiguration", "class_vehicle_dynamics_1_1_axle_configuration.html", "class_vehicle_dynamics_1_1_axle_configuration" ],
       [ "DriveModel", "class_vehicle_dynamics_1_1_drive_model.html", "class_vehicle_dynamics_1_1_drive_model" ],
       [ "InputZeroedOnTimeout", "class_vehicle_dynamics_1_1_input_zeroed_on_timeout.html", "class_vehicle_dynamics_1_1_input_zeroed_on_timeout" ],
       [ "ManualControlEventHandler", "class_vehicle_dynamics_1_1_manual_control_event_handler.html", "class_vehicle_dynamics_1_1_manual_control_event_handler" ],
       [ "ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", "class_vehicle_dynamics_1_1_manual_control_single_event_handler" ],
       [ "PidConfiguration", "class_vehicle_dynamics_1_1_pid_configuration.html", "class_vehicle_dynamics_1_1_pid_configuration" ],
-      [ "SimplifiedDriveModel", "class_vehicle_dynamics_1_1_simplified_drive_model.html", "class_vehicle_dynamics_1_1_simplified_drive_model" ],
       [ "SteeringDynamicsData", "struct_vehicle_dynamics_1_1_steering_dynamics_data.html", "struct_vehicle_dynamics_1_1_steering_dynamics_data" ],
       [ "VehicleConfiguration", "class_vehicle_dynamics_1_1_vehicle_configuration.html", "class_vehicle_dynamics_1_1_vehicle_configuration" ],
       [ "VehicleInputControlBusTraits", "class_vehicle_dynamics_1_1_vehicle_input_control_bus_traits.html", null ],

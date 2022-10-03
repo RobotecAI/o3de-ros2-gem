@@ -93,8 +93,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>Activate()
 : <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">ROS2::ControlSubscriptionHandler&lt; T &gt;</a>
 , <a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a85b9485d0d6d7e6ba605ee3ed2f9518d">ROS2::IControlSubscriptionHandler</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_ackermann_drive_model.html#a55c9eb0114bac9629a7ffb94bb3ea443">VehicleDynamics::AckermannDriveModel</a>
 , <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#ad475df4aa5d9c3e0b2660f5bb367a7b9">VehicleDynamics::DriveModel</a>
-, <a class="el" href="class_vehicle_dynamics_1_1_simplified_drive_model.html#a15f0b5bf92f6422b6cffbe5be6ef0694">VehicleDynamics::SimplifiedDriveModel</a>
 </li>
 <li>AddChild()
 : <a class="el" href="class_r_o_s2_1_1_fbx_1_1_node.html#a440d0a85cca01647b9878c1c9a1dac23">ROS2::Fbx::Node</a>
@@ -121,8 +121,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 : <a class="el" href="class_r_o_s2_1_1_visuals_maker.html#abce50c2076fd7dd4a800c304a6c179d7">ROS2::VisualsMaker</a>
 </li>
 <li>ApplyInputState()
-: <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#a00d01aea453a9e0e38964f14419058f8">VehicleDynamics::DriveModel</a>
-, <a class="el" href="class_vehicle_dynamics_1_1_simplified_drive_model.html#ad61523b2fc668f13f06d4f6fa6d16212">VehicleDynamics::SimplifiedDriveModel</a>
+: <a class="el" href="class_vehicle_dynamics_1_1_ackermann_drive_model.html#a566568b75d595b8e814d4f7262c4fea6">VehicleDynamics::AckermannDriveModel</a>
+, <a class="el" href="class_vehicle_dynamics_1_1_drive_model.html#a00d01aea453a9e0e38964f14419058f8">VehicleDynamics::DriveModel</a>
 </li>
 </ul>
 
@@ -324,6 +324,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>m_topic
 : <a class="el" href="struct_r_o_s2_1_1_publisher_configuration.html#a5d32ba0f8c19508284ed904fe14673b9">ROS2::PublisherConfiguration</a>
 </li>
+<li>m_track
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_configuration.html#ac04318e9817d289166c3632e7f7dc3c2">VehicleDynamics::VehicleConfiguration</a>
+</li>
 <li>m_turnAxis
 : <a class="el" href="struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a03305ffb8e925bc739b392ca154ca959">VehicleDynamics::SteeringDynamicsData</a>
 </li>
@@ -335,6 +338,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>m_viewToClipMatrix
 : <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html#a2ca88beaf7a754de3328c98be7ed7a1c">ROS2::CameraSensorDescription</a>
+</li>
+<li>m_wheelbase
+: <a class="el" href="class_vehicle_dynamics_1_1_vehicle_configuration.html#a96afede13beb15b1fe6f97bf0d8b82d3">VehicleDynamics::VehicleConfiguration</a>
 </li>
 <li>m_wheelEntity
 : <a class="el" href="struct_vehicle_dynamics_1_1_wheel_dynamics_data.html#a19f4ea8088955b4f29cb3e82d2986877">VehicleDynamics::WheelDynamicsData</a>
@@ -489,7 +495,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 1 2022 13:06:06 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Mon Oct 3 2022 12:35:56 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

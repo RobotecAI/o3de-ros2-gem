@@ -33,7 +33,7 @@ var hierarchy =
     [ "ROS2::Fbx::Constants", "struct_r_o_s2_1_1_fbx_1_1_constants.html", null ],
     [ "ROS2::ControlConfiguration", "struct_r_o_s2_1_1_control_configuration.html", null ],
     [ "VehicleDynamics::DriveModel", "class_vehicle_dynamics_1_1_drive_model.html", [
-      [ "VehicleDynamics::SimplifiedDriveModel", "class_vehicle_dynamics_1_1_simplified_drive_model.html", null ]
+      [ "VehicleDynamics::AckermannDriveModel", "class_vehicle_dynamics_1_1_ackermann_drive_model.html", null ]
     ] ],
     [ "EBusTraits", null, [
       [ "ROS2::AckermannNotifications", "class_r_o_s2_1_1_ackermann_notifications.html", null ],
@@ -57,9 +57,6 @@ var hierarchy =
       [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
-    ] ],
-    [ "Handler", null, [
       [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
     ] ],
     [ "Handler", null, [
@@ -70,6 +67,9 @@ var hierarchy =
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "ROS2::IControlSubscriptionHandler", "class_r_o_s2_1_1_i_control_subscription_handler.html", [
       [ "ROS2::ControlSubscriptionHandler< ackermann_msgs::msg::AckermannDrive >", "class_r_o_s2_1_1_control_subscription_handler.html", [
