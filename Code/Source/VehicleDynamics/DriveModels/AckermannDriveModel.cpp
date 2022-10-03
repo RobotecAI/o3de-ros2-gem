@@ -25,15 +25,17 @@ namespace VehicleDynamics
                 ->Version(1)
                 ->Field("SteeringPID", &AckermannDriveModel::m_steeringPid)
                 ->Field("SpeedPID", &AckermannDriveModel::m_speedPid)
-                ->Field("Track", &AckermannDriveModel::m_track)
-                ->Field("Wheelbase", &AckermannDriveModel::m_wheelbase);
+                ->Field("SteeringDeadZone", &AckermannDriveModel::m_steeringDeadZone);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
                 ec->Class<AckermannDriveModel>("Simplified Drive Model", "Configuration of a simplified vehicle dynamics drive model")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &AckermannDriveModel::m_track, "Track", "Vehicle track width")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &AckermannDriveModel::m_wheelbase, "Wheelbase", "Vehicle wheelbase length")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default,
+                        &AckermannDriveModel::m_steeringDeadZone,
+                        "Steering dead zone",
+                        "The maximum absolute value in radians for which the steering is discarded")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &AckermannDriveModel::m_steeringPid,
@@ -103,11 +105,14 @@ namespace VehicleDynamics
             return;
         }
 
-        auto innerSteering = atan((m_wheelbase * tan(steering)) / (m_wheelbase - 0.5 * m_track * tan(steering)));
-        auto outerSteering = atan((m_wheelbase * tan(steering)) / (m_wheelbase + 0.5 * m_track * tan(steering)));
+        auto innerSteering = atan(
+            (m_vehicleConfiguration.m_wheelbase * tan(steering)) /
+            (m_vehicleConfiguration.m_wheelbase - 0.5 * m_vehicleConfiguration.m_track * tan(steering)));
+        auto outerSteering = atan(
+            (m_vehicleConfiguration.m_wheelbase * tan(steering)) /
+            (m_vehicleConfiguration.m_wheelbase + 0.5 * m_vehicleConfiguration.m_track * tan(steering)));
 
-        // TODO - use proper "epsilon"
-        if (AZ::Abs(steering) > 0.01)
+        if (AZ::Abs(steering) > m_steeringDeadZone)
         {
             ApplyWheelSteering(m_steeringData.front(), innerSteering, deltaTimeNs);
             ApplyWheelSteering(m_steeringData.back(), outerSteering, deltaTimeNs);

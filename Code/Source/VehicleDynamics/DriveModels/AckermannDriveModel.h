@@ -40,8 +40,6 @@ namespace VehicleDynamics
         AZStd::vector<SteeringDynamicsData> m_steeringData;
         PidConfiguration m_steeringPid;
         PidConfiguration m_speedPid;
-
-        float m_wheelbase = 2.0;
-        float m_track = 1.0;
+        float m_steeringDeadZone = 0.01;
     };
 } // namespace VehicleDynamics
