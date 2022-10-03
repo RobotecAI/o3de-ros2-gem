@@ -24,7 +24,8 @@ var searchData=
   ['ros2robotimportersystemcomponent_140',['ROS2RobotImporterSystemComponent',['../class_r_o_s2_1_1_r_o_s2_robot_importer_system_component.html',1,'ROS2']]],
   ['ros2sensorcomponent_141',['ROS2SensorComponent',['../class_r_o_s2_1_1_r_o_s2_sensor_component.html',1,'ROS2']]],
   ['ros2spawnercomponent_142',['ROS2SpawnerComponent',['../class_r_o_s2_1_1_r_o_s2_spawner_component.html',1,'ROS2']]],
-  ['ros2systemcomponent_143',['ROS2SystemComponent',['../class_r_o_s2_1_1_r_o_s2_system_component.html',1,'ROS2']]],
-  ['ros2transform_144',['ROS2Transform',['../class_r_o_s2_1_1_r_o_s2_transform.html',1,'ROS2']]],
-  ['rosifyname_145',['RosifyName',['../class_r_o_s2_1_1_r_o_s2_names.html#aac91bd75c8e6eb7d4b41308f97336640',1,'ROS2::ROS2Names']]]
+  ['ros2spawnpointcomponent_143',['ROS2SpawnPointComponent',['../class_r_o_s2_1_1_r_o_s2_spawn_point_component.html',1,'ROS2']]],
+  ['ros2systemcomponent_144',['ROS2SystemComponent',['../class_r_o_s2_1_1_r_o_s2_system_component.html',1,'ROS2']]],
+  ['ros2transform_145',['ROS2Transform',['../class_r_o_s2_1_1_r_o_s2_transform.html',1,'ROS2']]],
+  ['rosifyname_146',['RosifyName',['../class_r_o_s2_1_1_r_o_s2_names.html#aac91bd75c8e6eb7d4b41308f97336640',1,'ROS2::ROS2Names']]]
 ];
