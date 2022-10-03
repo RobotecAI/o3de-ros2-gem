@@ -166,10 +166,10 @@ Available spawnables have to be set up as the component's field before the simul
 User is able to define named spawn points inside the Editor. This can be done by adding `ROS2SpawnPointComponent` to a child entity of an entity with `ROS2SpawnerComponent`.
 
 During the simulation user can access names of available spawnables and request spawning using ros2 services. 
-The names of services are "/get_available_spawnable_names" and "/spawn_entity" respectivly. 
+The names of services are `/get_available_spawnable_names` and `/spawn_entity` respectivly. 
 GetWorldProperties.srv and SpawnEntity.srv types are used to handle these features.
-In order to request defined spawn points names user can use "/get_spawn_points_names" service with GetWorldProperties.srv type.
-Detailed information about specific spawn point (eg. pose) can be accessed using "get_spawn_point_info" service with GetModelState.srv type.
+In order to request defined spawn points names user can use `/get_spawn_points_names` service with GetWorldProperties.srv type.
+Detailed information about specific spawn point (e.g. pose) can be accessed using `/get_spawn_point_info` service with GetModelState.srv type.
 All used services types are defined in gazebo_msgs package.
 
 - Spawning: spawnable name should be passed in request.name and the position of entity in request.initial_pose

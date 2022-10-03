@@ -102,6 +102,8 @@ namespace ROS2
     void ROS2SpawnerComponent::SpawnEntity(const SpawnEntityRequest request, SpawnEntityResponse response)
     {
         AZStd::string_view spawnable_name(request->name.c_str(), request->name.size());
+        // xml parameter of the request is used here like a regular string and stores name of a spawn point
+        // todo: use xml format in this parameter
         AZStd::string_view spawn_point_name(request->xml.c_str(), request->xml.size());
 
         auto spawn_points = GetSpawnPoints();
@@ -109,7 +111,7 @@ namespace ROS2
         if (!m_spawnables.contains(spawnable_name))
         {
             response->success = false;
-            response->status_message = "Requested spawnable name not found";
+            response->status_message = "Could not find spawnable with given name: " + request->name;
             return;
         }
 
@@ -130,10 +132,6 @@ namespace ROS2
         if (spawn_points.contains(spawn_point_name))
         {
             transform = spawn_points.at(spawn_point_name).pose;
-        }
-        else if (spawn_point_name == "default")
-        {
-            transform = m_defaultSpawnPose;
         }
         else
         {
@@ -236,6 +234,9 @@ namespace ROS2
             result.insert(spawn_point->GetInfo());
         }
 
+        // setting name of spawn point component "default" in a child entity will have no effect since it is overwritten here with the
+        // default spawn pose of spawner
+        result["default"] = SpawnPointInfo{ "Default spawn pose defined in the Editor", m_defaultSpawnPose };
         return result;
     }
 } // namespace ROS2

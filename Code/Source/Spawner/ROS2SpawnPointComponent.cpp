@@ -38,7 +38,8 @@ namespace ROS2
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2SpawnPointComponent::m_name, "Name", "Name")
-                    ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2SpawnPointComponent::m_info, "Info", "Info");
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::EntityId, &ROS2SpawnPointComponent::m_info, "Info", "Spawn point detailed description");
             }
         }
     }

@@ -9,6 +9,7 @@
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Math/Transform.h>
+
 namespace ROS2
 {
     struct SpawnPointInfo
