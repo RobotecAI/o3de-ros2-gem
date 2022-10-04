@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 # If no ROS2 is found, no targets are valid for this Gem
+
 find_package(ROS2 MODULE)
 if (NOT ROS2_FOUND)
     return()
@@ -180,5 +181,3 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
         endif()
     endif()
 endif()
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
