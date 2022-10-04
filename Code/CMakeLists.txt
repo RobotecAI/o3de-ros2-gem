@@ -180,3 +180,5 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
         endif()
     endif()
 endif()
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
