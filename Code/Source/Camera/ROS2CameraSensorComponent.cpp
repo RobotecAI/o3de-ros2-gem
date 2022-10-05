@@ -123,6 +123,8 @@ namespace ROS2
 
                 message.width = descriptor.m_size.m_width;
                 message.height = descriptor.m_size.m_height;
+                message.step = message.width * sensor_msgs::image_encodings::bitDepth(message.encoding) / 8 *
+                    sensor_msgs::image_encodings::numChannels(message.encoding);
                 message.data = std::vector<uint8_t>(result.m_dataBuffer->data(), result.m_dataBuffer->data() + result.m_dataBuffer->size());
                 message.header.frame_id = frameName.c_str();
 
