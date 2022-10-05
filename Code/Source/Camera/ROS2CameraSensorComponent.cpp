@@ -35,10 +35,11 @@ namespace ROS2
             return AZStd::make_pair(messageType, config);
         }
 
-        AZStd::string GetCameraNameFromFrame(const AZ::Entity* entity) {
+        AZStd::string GetCameraNameFromFrame(const AZ::Entity* entity)
+        {
             const auto* component = Utils::GetGameOrEditorComponent<ROS2FrameComponent>(entity);
             AZStd::string cameraName = component->GetFrameID();
-            AZStd::replace( cameraName.begin(), cameraName.end(), '/', '_');
+            AZStd::replace(cameraName.begin(), cameraName.end(), '/', '_');
             return cameraName;
         }
     } // namespace Internal
@@ -98,7 +99,8 @@ namespace ROS2
         m_cameraInfoPublisher =
             ros2Node->create_publisher<sensor_msgs::msg::CameraInfo>(cameraInfoFullTopic.data(), cameraInfoPublisherConfig.GetQoS());
 
-        m_cameraSensor.emplace(CameraSensorDescription{Internal::GetCameraNameFromFrame(GetEntity()), m_VerticalFieldOfViewDeg, m_width, m_height });
+        m_cameraSensor.emplace(
+            CameraSensorDescription{ Internal::GetCameraNameFromFrame(GetEntity()), m_VerticalFieldOfViewDeg, m_width, m_height });
     }
 
     void ROS2CameraSensorComponent::Deactivate()
