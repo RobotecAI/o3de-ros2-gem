@@ -18,12 +18,13 @@ namespace ROS2
 {
     ROS2SpawnerComponent::ROS2SpawnerComponent()
     {
-        SpawnerInterface::Register(this);
+        // TODO - currently causes errors on close. It is here to enable URDF spawning in default point.
+        // SpawnerInterface::Register(this);
     }
 
     ROS2SpawnerComponent::~ROS2SpawnerComponent()
     {
-        SpawnerInterface::Unregister(this);
+        // SpawnerInterface::Unregister(this);
     }
 
     void ROS2SpawnerComponent::Activate()
