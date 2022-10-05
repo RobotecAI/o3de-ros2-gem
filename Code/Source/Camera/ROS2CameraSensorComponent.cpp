@@ -145,5 +145,4 @@ namespace ROS2
                 m_cameraInfoPublisher->publish(cameraInfo);
             });
     }
-
 } // namespace ROS2
