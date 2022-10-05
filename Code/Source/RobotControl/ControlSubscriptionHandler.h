@@ -9,8 +9,8 @@
 
 #include "ROS2/Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
-#include "RobotControl/ControlConfiguration.h"
 #include "ROS2/Utilities/ROS2Names.h"
+#include "RobotControl/ControlConfiguration.h"
 #include <rclcpp/rclcpp.hpp>
 
 namespace ROS2
@@ -37,6 +37,7 @@ namespace ROS2
         void Activate(const AZ::Entity* entity, const ControlConfiguration& controlConfiguration) final
         {
             m_active = true;
+            m_entityId = entity->GetId();
             if (!m_controlSubscription)
             {
                 auto ros2Frame = entity->FindComponent<ROS2FrameComponent>();
@@ -61,17 +62,24 @@ namespace ROS2
 
         virtual ~ControlSubscriptionHandler() = default;
 
+    protected:
+        AZ::EntityId GetEntityId() const
+        {
+            return m_entityId;
+        }
+
     private:
         void OnControlMessage(const T& message)
         {
             if (!m_active)
                 return;
 
-            BroadcastBus(message);
+            SendToBus(message);
         };
 
-        virtual void BroadcastBus(const T& message) = 0;
+        virtual void SendToBus(const T& message) = 0;
 
+        AZ::EntityId m_entityId;
         bool m_active = false;
         typename rclcpp::Subscription<T>::SharedPtr m_controlSubscription;
     };
