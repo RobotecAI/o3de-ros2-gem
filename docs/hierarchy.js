@@ -40,14 +40,11 @@ var hierarchy =
       [ "ROS2::AckermannNotifications", "class_r_o_s2_1_1_ackermann_notifications.html", null ],
       [ "ROS2::ROS2BusTraits", "class_r_o_s2_1_1_r_o_s2_bus_traits.html", null ],
       [ "ROS2::TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", null ],
-      [ "VehicleDynamics::VehicleInputControlBusTraits", "class_vehicle_dynamics_1_1_vehicle_input_control_bus_traits.html", null ]
+      [ "VehicleDynamics::VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", null ]
     ] ],
     [ "ROS2::Fbx::FbxGenerator", "class_r_o_s2_1_1_fbx_1_1_fbx_generator.html", null ],
     [ "ROS2::Fbx::Constants::FbxHeader", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_fbx_header.html", null ],
     [ "ROS2::Fbx::Constants::GlobalSettings", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_global_settings.html", null ],
-    [ "Handler", null, [
-      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
-    ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
     ] ],
@@ -71,6 +68,9 @@ var hierarchy =
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "ROS2::IControlSubscriptionHandler", "class_r_o_s2_1_1_i_control_subscription_handler.html", [
       [ "ROS2::ControlSubscriptionHandler< ackermann_msgs::msg::AckermannDrive >", "class_r_o_s2_1_1_control_subscription_handler.html", [
@@ -120,7 +120,6 @@ var hierarchy =
     [ "ROS2::URDFPrefabMaker", "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html", null ],
     [ "ROS2::UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", null ],
     [ "VehicleDynamics::VehicleConfiguration", "class_vehicle_dynamics_1_1_vehicle_configuration.html", null ],
-    [ "VehicleDynamics::VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", null ],
     [ "VehicleDynamics::VehicleInputsState", "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html", null ],
     [ "VehicleDynamics::VehicleModelLimits", "struct_vehicle_dynamics_1_1_vehicle_model_limits.html", null ],
     [ "ROS2::VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", null ],

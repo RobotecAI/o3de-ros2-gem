@@ -74,7 +74,6 @@ var annotated_dup =
       [ "PidConfiguration", "class_vehicle_dynamics_1_1_pid_configuration.html", "class_vehicle_dynamics_1_1_pid_configuration" ],
       [ "SteeringDynamicsData", "struct_vehicle_dynamics_1_1_steering_dynamics_data.html", "struct_vehicle_dynamics_1_1_steering_dynamics_data" ],
       [ "VehicleConfiguration", "class_vehicle_dynamics_1_1_vehicle_configuration.html", "class_vehicle_dynamics_1_1_vehicle_configuration" ],
-      [ "VehicleInputControlBusTraits", "class_vehicle_dynamics_1_1_vehicle_input_control_bus_traits.html", null ],
       [ "VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", "class_vehicle_dynamics_1_1_vehicle_input_control_requests" ],
       [ "VehicleInputsState", "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html", "struct_vehicle_dynamics_1_1_vehicle_inputs_state" ],
       [ "VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", "class_vehicle_dynamics_1_1_vehicle_model_component" ],

@@ -82,7 +82,9 @@ $(document).ready(function(){initNavTree('class_r_o_s2_1_1_ackermann_notificatio
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_r_o_s2_1_1_ackermann_notifications-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ROS2::AckermannNotifications Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -109,10 +111,22 @@ Collaboration diagram for ROS2::AckermannNotifications:</div>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a836c216f0692cb5dfcb7d53a7785f0ca"><td class="memItemLeft" align="right" valign="top"><a id="a836c216f0692cb5dfcb7d53a7785f0ca"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>BusIdType</b> = AZ::EntityId</td></tr>
+<tr class="separator:a836c216f0692cb5dfcb7d53a7785f0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a683c5fd45e6614e6a60d594e9cd2694b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_ackermann_notifications.html#a683c5fd45e6614e6a60d594e9cd2694b">AckermannReceived</a> (const <a class="el" href="struct_ackermann_command_struct.html">AckermannCommandStruct</a> &amp;angular)=0</td></tr>
 <tr class="separator:a683c5fd45e6614e6a60d594e9cd2694b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a35156c8032fc1a510e09e4480ec2909d"><td class="memItemLeft" align="right" valign="top"><a id="a35156c8032fc1a510e09e4480ec2909d"></a>
+static constexpr AZ::EBusAddressPolicy&#160;</td><td class="memItemRight" valign="bottom"><b>AddressPolicy</b> = AZ::EBusAddressPolicy::ById</td></tr>
+<tr class="separator:a35156c8032fc1a510e09e4480ec2909d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface class for handling Ackermann kinematics steering commands through EBus notifications. The interface serves to enable control through AckermannDrive (and AckermannDriveStamped) messages. </p>
@@ -158,7 +172,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_ackermann_notifications.html">AckermannNotifications</a></li>
-    <li class="footer">Generated on Wed Oct 5 2022 11:19:39 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Oct 5 2022 11:54:00 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

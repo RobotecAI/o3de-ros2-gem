@@ -103,11 +103,14 @@ $(document).ready(function(){initNavTree('_twist_bus_8h_source.html',''); initRe
 <div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_twist_notifications.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_twist_notifications.html">TwistNotifications</a> : <span class="keyword">public</span> AZ::EBusTraits</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_twist_notifications.html#a49faa912b2803f02396974d247b789ec">TwistReceived</a>(<span class="keyword">const</span> AZ::Vector3&amp; linear, <span class="keyword">const</span> AZ::Vector3&amp; angular) = 0;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    };</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">using</span> TwistNotificationBus = AZ::EBus&lt;TwistNotifications&gt;;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">static</span> constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">using</span> BusIdType = AZ::EntityId;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_twist_notifications.html#a49faa912b2803f02396974d247b789ec">TwistReceived</a>(<span class="keyword">const</span> AZ::Vector3&amp; linear, <span class="keyword">const</span> AZ::Vector3&amp; angular) = 0;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">using</span> TwistNotificationBus = AZ::EBus&lt;TwistNotifications&gt;;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_r_o_s2_1_1_twist_notifications_html_a49faa912b2803f02396974d247b789ec"><div class="ttname"><a href="class_r_o_s2_1_1_twist_notifications.html#a49faa912b2803f02396974d247b789ec">ROS2::TwistNotifications::TwistReceived</a></div><div class="ttdeci">virtual void TwistReceived(const AZ::Vector3 &amp;linear, const AZ::Vector3 &amp;angular)=0</div></div>
@@ -116,7 +119,7 @@ $(document).ready(function(){initNavTree('_twist_bus_8h_source.html',''); initRe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_adc3ae9cdfb5b11809552fed381dcb1e.html">RobotControl</a></li><li class="navelem"><a class="el" href="dir_7ce70440aef02fbfea525606a420c678.html">Twist</a></li><li class="navelem"><b>TwistBus.h</b></li>
-    <li class="footer">Generated on Wed Oct 5 2022 11:19:38 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Oct 5 2022 11:54:00 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

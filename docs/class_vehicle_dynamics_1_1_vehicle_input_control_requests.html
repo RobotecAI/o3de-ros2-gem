@@ -82,7 +82,9 @@ $(document).ready(function(){initNavTree('class_vehicle_dynamics_1_1_vehicle_inp
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">VehicleDynamics::VehicleInputControlRequests Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -90,12 +92,33 @@ $(document).ready(function(){initNavTree('class_vehicle_dynamics_1_1_vehicle_inp
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_vehicle_input_control_bus_8h_source.html">VehicleInputControlBus.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for VehicleDynamics::VehicleInputControlRequests:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_vehicle_dynamics_1_1_vehicle_input_control_requests__inherit__graph.png" border="0" usemap="#_vehicle_dynamics_1_1_vehicle_input_control_requests_inherit__map" alt="Inheritance graph"/></div>
+<map name="_vehicle_dynamics_1_1_vehicle_input_control_requests_inherit__map" id="_vehicle_dynamics_1_1_vehicle_input_control_requests_inherit__map">
+<area shape="rect" title=" " alt="" coords="5,80,195,121"/>
+<area shape="rect" title=" " alt="" coords="43,5,157,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for VehicleDynamics::VehicleInputControlRequests:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_vehicle_dynamics_1_1_vehicle_input_control_requests__coll__graph.png" border="0" usemap="#_vehicle_dynamics_1_1_vehicle_input_control_requests_coll__map" alt="Collaboration graph"/></div>
+<map name="_vehicle_dynamics_1_1_vehicle_input_control_requests_coll__map" id="_vehicle_dynamics_1_1_vehicle_input_control_requests_coll__map">
+<area shape="rect" title=" " alt="" coords="5,80,195,121"/>
+<area shape="rect" title=" " alt="" coords="43,5,157,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aae466c0231b370e626614aebee289fcc"><td class="memItemLeft" align="right" valign="top"><a id="aae466c0231b370e626614aebee289fcc"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>BusIdType</b> = AZ::EntityId</td></tr>
+<tr class="separator:aae466c0231b370e626614aebee289fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1bae63c09419bd22c02a8940c3cffb32"><td class="memItemLeft" align="right" valign="top"><a id="a1bae63c09419bd22c02a8940c3cffb32"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AZ_RTTI</b> (<a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html">VehicleInputControlRequests</a>, &quot;{AB0F1D2A-3A73-41B6-B882-62316DE32010}&quot;)</td></tr>
-<tr class="separator:a1bae63c09419bd22c02a8940c3cffb32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe45b237292f8df914426a345f4abdd8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abe45b237292f8df914426a345f4abdd8">SetTargetLinearSpeed</a> (float speedMps)=0</td></tr>
 <tr class="separator:abe45b237292f8df914426a345f4abdd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdbe597062b81b169fdfa5bd51819713"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abdbe597062b81b169fdfa5bd51819713">SetTargetSteering</a> (float steering)=0</td></tr>
@@ -106,6 +129,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af941fc68b42c49ab1cf64abaed3ebc0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaa76bb082a10ee35c0779d5012cbedb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#acaa76bb082a10ee35c0779d5012cbedb">SetTargetLinearSpeedFraction</a> (float speedFraction)=0</td></tr>
 <tr class="separator:acaa76bb082a10ee35c0779d5012cbedb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ae1e98c6ba80a1f2c7d22a1e1cadbe962"><td class="memItemLeft" align="right" valign="top"><a id="ae1e98c6ba80a1f2c7d22a1e1cadbe962"></a>
+static constexpr AZ::EBusAddressPolicy&#160;</td><td class="memItemRight" valign="bottom"><b>AddressPolicy</b> = AZ::EBusAddressPolicy::ById</td></tr>
+<tr class="separator:ae1e98c6ba80a1f2c7d22a1e1cadbe962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Inputs (speed, steering, acceleration etc.) for vehicle dynamics system Inputs are valid for a short time (configurable) and need to be repeated if continuous movement is needed. (Use cruise system to set cruise speed). </p>
@@ -279,7 +308,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>VehicleDynamics</b></li><li class="navelem"><a class="el" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html">VehicleInputControlRequests</a></li>
-    <li class="footer">Generated on Wed Oct 5 2022 11:19:39 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Oct 5 2022 11:54:00 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
