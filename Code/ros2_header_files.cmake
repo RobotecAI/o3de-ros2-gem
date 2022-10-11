@@ -11,4 +11,5 @@ set(FILES
         Include/ROS2/ROS2GemUtilities.h
         Include/ROS2/Utilities/ROS2Conversions.h
         Include/ROS2/Utilities/ROS2Names.h
+        Include/ROS2/Manipulator/MotorizedJoint.h
         )

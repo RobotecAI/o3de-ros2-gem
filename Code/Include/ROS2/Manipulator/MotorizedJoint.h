@@ -10,13 +10,6 @@
 #include "VehicleDynamics/DriveModels/PidConfiguration.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
-#include <AzFramework/AzFrameworkModule.h>
-#include <AzToolsFramework/Entity/EditorEntityHelpers.h>
-#include <Source/EditorColliderComponent.h>
-#include <Source/EditorFixedJointComponent.h>
-#include <Source/EditorHingeJointComponent.h>
-#include <Source/EditorPrismaticJointComponent.h>
-#include <Source/EditorRigidBodyComponent.h>
 
 namespace ROS2
 {
@@ -34,6 +27,8 @@ namespace ROS2
         void Activate() override;
         void Deactivate() override;
         static void Reflect(AZ::ReflectContext* context);
+        void setSetpoint(float setpoint);
+        float getError() const;
 
     private:
         float getMeasurment(AZ::ScriptTimePoint time);
@@ -55,21 +50,13 @@ namespace ROS2
 
         float m_current_position{ 0 };
         float m_current_velocity{ 0 };
+        float m_setpoint{ 0 };
+        float m_error{ 0 };
         double m_last_measurment_time;
         double m_last_time;
 
         VehicleDynamics::PidConfiguration m_pid_pos_conf;
         AZ::EntityId m_debug_draw_entity;
         AZ::Transform m_debug_draw_entity_initial_transfomr;
-
-        //        float m_maxspeed;
-        //        float m_maxacceleration;
-        //        float m_maxforce;
-        //        float m_gain_p_speed{100.f};
-        //        float m_gain_i_speed{0};
-        //        float m_gain_d_speed{0};
-        //        float m_gain_p_position{10.f};
-        //        float m_gain_i_position{0.f};
-        //        float m_gain_d_position{0.f};
     };
 } // namespace ROS2

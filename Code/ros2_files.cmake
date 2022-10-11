@@ -97,4 +97,5 @@ set(FILES
         Source/Spawner/ROS2SpawnPointComponent.cpp
         Source/Spawner/ROS2SpawnPointComponent.h
         Source/Spawner/SpawnerBus.h
+        Source/Manipulator/MotorizedJoint.cpp
         )

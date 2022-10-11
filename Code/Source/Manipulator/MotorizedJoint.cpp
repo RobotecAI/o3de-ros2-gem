@@ -6,7 +6,7 @@
  *
  */
 
-#include "MotorizedJoint.h"
+#include "ROS2/Manipulator/MotorizedJoint.h"
 
 #include "AzFramework/Physics/Components/SimulatedBodyComponentBus.h"
 #include <AzFramework/Physics/RigidBodyBus.h>
@@ -93,19 +93,19 @@ namespace ROS2
     void MotorizedJoint::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
         const float measurment = getMeasurment(time);
-        float setpoint = 0;
         if (m_test_sinusoidal)
         {
-            setpoint = m_sin_amplitude * AZ::Sin(m_sin_freq * time.GetSeconds());
+            m_setpoint = m_sin_amplitude * AZ::Sin(m_sin_freq * time.GetSeconds());
         }
-        const float control_position_error = (setpoint + m_zero_offset) - measurment;
+        const float control_position_error = (m_setpoint + m_zero_offset) - measurment;
+        m_error = control_position_error; // TODO decide if we want to expose this control error.
 
         if (m_debug_draw_entity.IsValid())
         {
             if (m_linear)
             {
                 AZ::Transform transform = AZ::Transform::Identity();
-                transform.SetTranslation(m_joint_dir * (setpoint + m_zero_offset));
+                transform.SetTranslation(m_joint_dir * (m_setpoint + m_zero_offset));
                 AZ::TransformBus::Event(
                     m_debug_draw_entity, &AZ::TransformBus::Events::SetLocalTM, transform * m_debug_draw_entity_initial_transfomr);
             }
@@ -176,8 +176,9 @@ namespace ROS2
         {
             if (m_linear)
             {
-                constexpr bool applyForceMode{ false };
-                constexpr bool applyVelocityMode{ true };
+                // TODO decide which API call is better here.
+                constexpr bool applyForceMode{ true };
+                constexpr bool applyVelocityMode{ false };
                 if (applyForceMode)
                 {
                     auto force_impulse = transform.TransformVector(m_joint_dir * velocity);
@@ -195,6 +196,14 @@ namespace ROS2
                 }
             }
         }
+    }
+    void MotorizedJoint::setSetpoint(float setpoint)
+    {
+        m_setpoint = setpoint;
+    }
+    float MotorizedJoint::getError() const
+    {
+        return m_error;
     }
 
 } // namespace ROS2
