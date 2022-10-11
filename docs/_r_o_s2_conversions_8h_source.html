@@ -97,29 +97,30 @@ $(document).ready(function(){initNavTree('_r_o_s2_conversions_8h_source.html',''
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Quaternion.h&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Transform.h&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Vector3.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;geometry_msgs/msg/pose.hpp&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;geometry_msgs/msg/vector3.hpp&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>ROS2</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_r_o_s2_conversions.html">   19</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_r_o_s2_conversions.html">ROS2Conversions</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">static</span> AZ::Vector3 FromROS2Vector3(<span class="keyword">const</span> geometry_msgs::msg::Vector3&amp; ros2vector);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Vector3 ToROS2Vector3(<span class="keyword">const</span> AZ::Vector3&amp; azvector);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Quaternion ToROS2Quaternion(<span class="keyword">const</span> AZ::Quaternion&amp; azquaternion);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;geometry_msgs/msg/point.hpp&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;geometry_msgs/msg/pose.hpp&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;geometry_msgs/msg/vector3.hpp&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>ROS2</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_r_o_s2_conversions.html">   20</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_r_o_s2_conversions.html">ROS2Conversions</a></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">static</span> AZ::Vector3 FromROS2Vector3(<span class="keyword">const</span> geometry_msgs::msg::Vector3&amp; ros2vector);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Vector3 ToROS2Vector3(<span class="keyword">const</span> AZ::Vector3&amp; azvector);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Point ToROS2Point(<span class="keyword">const</span> AZ::Vector3&amp; azvector);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Pose ToROS2Pose(<span class="keyword">const</span> AZ::Transform&amp; aztransform);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    };</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Quaternion ToROS2Quaternion(<span class="keyword">const</span> AZ::Quaternion&amp; azquaternion);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">static</span> geometry_msgs::msg::Pose ToROS2Pose(<span class="keyword">const</span> AZ::Transform&amp; aztransform);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_conversions_html"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_conversions.html">ROS2::ROS2Conversions</a></div><div class="ttdoc">Utility class for conversions between ROS2 types and O3DE (AZ::) types.</div><div class="ttdef"><b>Definition:</b> ROS2Conversions.h:19</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_conversions_html"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_conversions.html">ROS2::ROS2Conversions</a></div><div class="ttdoc">Utility class for conversions between ROS2 types and O3DE (AZ::) types.</div><div class="ttdef"><b>Definition:</b> ROS2Conversions.h:20</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_9022305039626e0c58b15f77be73727d.html">Include</a></li><li class="navelem"><a class="el" href="dir_425207894c42c9b6aec7b3a29627c951.html">ROS2</a></li><li class="navelem"><a class="el" href="dir_e9d94de8a4ae50c264db1e09e6415fec.html">Utilities</a></li><li class="navelem"><b>ROS2Conversions.h</b></li>
-    <li class="footer">Generated on Mon Oct 10 2022 12:12:31 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Tue Oct 11 2022 13:50:32 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
