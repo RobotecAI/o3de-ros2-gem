@@ -13,6 +13,14 @@
 
 namespace ROS2
 {
+    //! Helper that allows us to design a joint with a 'motor'
+    //! It can affect the scene with two APIS: TransformBus and RigidBodyBus
+    //! TransformBus mode, called `AnimationMode` changes local transform. In this mode, you cannot have a rigid body
+    //! controller enabled. It is intended to use in a simple scenario.
+    //! With RigidBodyBus it applies forces and torque according to PID control.
+    //! @note This class is already used through ROS2FrameComponent.
+    // TODO Add interface using EBus, test implement also rotation, add ramps, cascading controllers,
+    // TODO automatic tests on test scene
 
     class MotorizedJoint
         : public AZ::Component
@@ -27,36 +35,78 @@ namespace ROS2
         void Activate() override;
         void Deactivate() override;
         static void Reflect(AZ::ReflectContext* context);
-        void setSetpoint(float setpoint);
-        float getError() const;
+
+        //! Set a setpoint (e.g. desired local position). Controller follows it.
+        void SetSetpoint(float setpoint);
+
+        //! Get current control error. It is a difference between control value and measurement
+        //! For steady state should be close to zero
+        //! @returns error in meters for linear joints and radians for angular
+        float GetError() const;
+
+        //! Get current position from measurement.
+        //! For steady state should be close to setpoint
+        //! @returns current position  in meters for linear joints and radians for angular
+        float GetCurrentPosition() const;
 
     private:
-        float getMeasurment(AZ::ScriptTimePoint time);
-        void setVelocity(float velocity, float deltaTime);
+        float ComputeMeasurement(AZ::ScriptTimePoint time);
+
+        void SetVelocity(float velocity, float deltaTime);
+
+        // TODO apply RotVel...
+        void ApplyLinVelAnimation(float velocity, float deltaTime);
+
+        void ApplyLinVelRigidBodyImpulse(float velocity, float deltaTime);
+
+        void ApplyLinVelRigidBody(float velocity, float deltaTime);
 
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
-        AZ::Vector3 m_joint_dir{ 0.f, 0.f, 1.f };
+
+        ///! Direction of degree of freedom
+        AZ::Vector3 m_jointDir{ 0.f, 0.f, 1.f };
+
+        ///! Limits - on limit controller will apply force only in opposite direction
         AZStd::pair<float, float> m_limits{ -0.5f, 0.5f };
-        VehicleDynamics::PidConfiguration m_pid_pos;
 
-        float m_zero_offset{ 0.f };
+        ///! PID controller for position
+        VehicleDynamics::PidConfiguration m_pidPos;
 
+        ///! offset added to setpoint
+        float m_zeroOffset{ 0.f };
+
+        ///! Linear mode - apply force
         bool m_linear{ true };
-        bool m_animation_mode{ true };
-        bool m_test_sinusoidal{ true };
-        bool m_debug_print{ false };
-        float m_sin_amplitude{ 0.25 };
-        float m_sin_freq{ 0.1 };
 
-        float m_current_position{ 0 };
-        float m_current_velocity{ 0 };
+        ///! Use TransformBus instead of RigidBodyBus
+        bool m_animationMode{ true };
+
+        ///! Enable sinusoidal signal generator to setpoint (for tuning)
+        bool m_testSinusoidal{ true };
+
+        ///! Print To console debug info
+        bool m_debugPrint{ false };
+
+        ///! Amplitude of test signal generator
+        float m_sinAmplitude{ 0.25 };
+
+        ///! Frequency of test signal generator
+        float m_sinFreq{ 0.1 };
+
+        ///! Last measured position
+        float m_currentPosition{ 0 };
+
+        ///! Last measured position
+        float m_currentVelocity{ 0 };
+
         float m_setpoint{ 0 };
         float m_error{ 0 };
-        double m_last_measurment_time;
-        double m_last_time;
+        double m_lastMeasurementTime;
 
-        VehicleDynamics::PidConfiguration m_pid_pos_conf;
-        AZ::EntityId m_debug_draw_entity;
-        AZ::Transform m_debug_draw_entity_initial_transfomr;
+        ///! Optional Entity that allows to visualize desired setpoint value
+        AZ::EntityId m_debugDrawEntity;
+
+        ///! initial transform of m_debugDrawEntity. It will be modified by the desired setpoint value in the set direction.
+        AZ::Transform m_debugDrawEntityInitialTransform;
     };
 } // namespace ROS2

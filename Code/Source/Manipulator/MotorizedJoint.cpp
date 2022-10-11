@@ -16,11 +16,10 @@ namespace ROS2
     void MotorizedJoint::Activate()
     {
         AZ::TickBus::Handler::BusConnect();
-        m_pid_pos_conf.InitializePid();
-        if (m_debug_draw_entity.IsValid())
+        m_pidPos.InitializePid();
+        if (m_debugDrawEntity.IsValid())
         {
-            AZ::TransformBus::EventResult(
-                m_debug_draw_entity_initial_transfomr, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
+            AZ::TransformBus::EventResult(m_debugDrawEntityInitialTransform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
         }
     }
 
@@ -35,17 +34,17 @@ namespace ROS2
         {
             serialize->Class<MotorizedJoint, AZ::Component>()
                 ->Version(1)
-                ->Field("JointAxis", &MotorizedJoint::m_joint_dir)
+                ->Field("JointAxis", &MotorizedJoint::m_jointDir)
                 ->Field("Limit", &MotorizedJoint::m_limits)
                 ->Field("Linear", &MotorizedJoint::m_linear)
-                ->Field("AnimationMode", &MotorizedJoint::m_animation_mode)
-                ->Field("ZeroOffset", &MotorizedJoint::m_zero_offset)
-                ->Field("PidPosition", &MotorizedJoint::m_pid_pos_conf)
-                ->Field("DebugDrawEntity", &MotorizedJoint::m_debug_draw_entity)
-                ->Field("TestSinActive", &MotorizedJoint::m_test_sinusoidal)
-                ->Field("TestSinAmplitude", &MotorizedJoint::m_sin_amplitude)
-                ->Field("TestSinFreq", &MotorizedJoint::m_sin_freq)
-                ->Field("DebugPrint", &MotorizedJoint::m_debug_print);
+                ->Field("AnimationMode", &MotorizedJoint::m_animationMode)
+                ->Field("ZeroOffset", &MotorizedJoint::m_zeroOffset)
+                ->Field("PidPosition", &MotorizedJoint::m_pidPos)
+                ->Field("DebugDrawEntity", &MotorizedJoint::m_debugDrawEntity)
+                ->Field("TestSinActive", &MotorizedJoint::m_testSinusoidal)
+                ->Field("TestSinAmplitude", &MotorizedJoint::m_sinAmplitude)
+                ->Field("TestSinFreq", &MotorizedJoint::m_sinFreq)
+                ->Field("DebugPrint", &MotorizedJoint::m_debugPrint);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -53,61 +52,62 @@ namespace ROS2
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "MotorizedJoint")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "MotorizedJoint")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_joint_dir, "Dir.", "Direction of joint.")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_jointDir, "Dir.", "Direction of joint.")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &MotorizedJoint::m_limits,
                         "ControllerLimits",
-                        "When measurment is outside the limits, ")
+                        "When measurement is outside the limits, ")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MotorizedJoint::m_debug_draw_entity,
+                        &MotorizedJoint::m_debugDrawEntity,
                         "Setpoint",
                         "Allows to apply debug setpoint visualizer")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MotorizedJoint::m_zero_offset,
+                        &MotorizedJoint::m_zeroOffset,
                         "Zero Off.",
                         "Allows to change offset of zero to set point")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_linear, "Apl. Linear", "Applies linear force instead of torque")
+                        AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_linear, "Linear joint", "Applies linear force instead of torque")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MotorizedJoint::m_animation_mode,
+                        &MotorizedJoint::m_animationMode,
                         "Animation mode",
-                        "In animation mode, the transform API is used instead of Rigid Body. Note that using this "
-                        "the Rigid Body Component should be disabled.")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_pid_pos_conf, "PidPosition", "PidPosition")
+                        "In animation mode, the transform API is used instead of Rigid Body. "
+                        "If this property is set to true the Rigid Body Component should be disabled.")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_pidPos, "PidPosition", "PidPosition")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MotorizedJoint::m_test_sinusoidal,
+                        &MotorizedJoint::m_testSinusoidal,
                         "SinusoidalTest",
                         "Allows to apply sinusoidal test signal")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_sin_amplitude, "Amplitude", "Amplitude of sinusoidal test signal")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_sin_freq, "Frequency", "TestSinFreq")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_debug_print, "Debug", "Print debug to console");
+                        AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_sinAmplitude, "Amplitude", "Amplitude of sinusoidal test signal.")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_sinFreq, "Frequency", "Frequency of sinusoidal test signal.")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJoint::m_debugPrint, "Debug", "Print debug to console");
             }
         }
     }
     void MotorizedJoint::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
-        const float measurment = getMeasurment(time);
-        if (m_test_sinusoidal)
+        const float measurement = ComputeMeasurement(time);
+        if (m_testSinusoidal)
         {
-            m_setpoint = m_sin_amplitude * AZ::Sin(m_sin_freq * time.GetSeconds());
+            m_setpoint = m_sinAmplitude * AZ::Sin(m_sinFreq * time.GetSeconds());
         }
-        const float control_position_error = (m_setpoint + m_zero_offset) - measurment;
+        const float control_position_error = (m_setpoint + m_zeroOffset) - measurement;
         m_error = control_position_error; // TODO decide if we want to expose this control error.
 
-        if (m_debug_draw_entity.IsValid())
+        if (m_debugDrawEntity.IsValid())
         {
             if (m_linear)
             {
                 AZ::Transform transform = AZ::Transform::Identity();
-                transform.SetTranslation(m_joint_dir * (m_setpoint + m_zero_offset));
+                transform.SetTranslation(m_jointDir * (m_setpoint + m_zeroOffset));
                 AZ::TransformBus::Event(
-                    m_debug_draw_entity, &AZ::TransformBus::Events::SetLocalTM, transform * m_debug_draw_entity_initial_transfomr);
+                    m_debugDrawEntity, &AZ::TransformBus::Events::SetLocalTM, transform * m_debugDrawEntityInitialTransform);
             }
             else
             {
@@ -116,94 +116,110 @@ namespace ROS2
         }
 
         const uint64_t deltaTimeNs = deltaTime * 1'000'000'000;
-        float speed_control = m_pid_pos_conf.ComputeCommand(control_position_error, deltaTimeNs);
+        float speed_control = m_pidPos.ComputeCommand(control_position_error, deltaTimeNs);
 
-        if (measurment <= m_limits.first)
+        if (measurement <= m_limits.first)
         {
             // allow only positive control
             speed_control = AZStd::max(0.f, speed_control);
         }
-        else if (measurment >= m_limits.second)
+        else if (measurement >= m_limits.second)
         {
             // allow only negative control
             speed_control = AZStd::min(0.f, speed_control);
         }
 
-        if (m_debug_print)
+        if (m_debugPrint)
         {
             AZ_Printf(
                 "MotorizedJoint",
                 " %s | pos: %f | err: %f | cntrl : %f |",
                 GetEntity()->GetName().c_str(),
-                measurment,
+                measurement,
                 control_position_error,
                 speed_control);
         }
-        setVelocity(speed_control, deltaTime);
-        m_last_time = time.GetSeconds();
+        SetVelocity(speed_control, deltaTime);
     }
-    float MotorizedJoint::getMeasurment(AZ::ScriptTimePoint time)
+
+    float MotorizedJoint::ComputeMeasurement(AZ::ScriptTimePoint time)
     {
         AZ::Transform transform;
         AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
         if (m_linear)
         {
-            const float last_position = m_current_position;
-            m_current_position = transform.GetTranslation().Dot(this->m_joint_dir);
-            if (m_last_measurment_time > 0)
+            const float last_position = m_currentPosition;
+            m_currentPosition = transform.GetTranslation().Dot(this->m_jointDir);
+            if (m_lastMeasurementTime > 0)
             {
-                double delta_time = time.GetSeconds() - m_last_measurment_time;
-                m_current_velocity = (m_current_position - last_position) / delta_time;
+                double delta_time = time.GetSeconds() - m_lastMeasurementTime;
+                m_currentVelocity = (m_currentPosition - last_position) / delta_time;
             }
-            m_last_measurment_time = time.GetSeconds();
-            return m_current_position;
+            m_lastMeasurementTime = time.GetSeconds();
+            return m_currentPosition;
         }
         AZ_Assert(false, "it is not implemented");
         return 0;
     }
 
-    void MotorizedJoint::setVelocity(float velocity, float deltaTime)
+    void MotorizedJoint::SetVelocity(float velocity, float deltaTime)
     {
-        AZ::Transform transform;
-        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
-
-        if (m_animation_mode)
+        if (m_animationMode)
         {
-            transform.SetTranslation(transform.GetTranslation() + velocity * m_joint_dir * deltaTime);
-            AZ::TransformBus::Event(this->GetEntityId(), &AZ::TransformBus::Events::SetLocalTM, transform);
+            ApplyLinVelAnimation(velocity, deltaTime);
         }
         else
         {
             if (m_linear)
             {
-                // TODO decide which API call is better here.
-                constexpr bool applyForceMode{ true };
-                constexpr bool applyVelocityMode{ false };
-                if (applyForceMode)
-                {
-                    auto force_impulse = transform.TransformVector(m_joint_dir * velocity);
-                    Physics::RigidBodyRequestBus::Event(
-                        this->GetEntityId(), &Physics::RigidBodyRequests::ApplyLinearImpulse, force_impulse * deltaTime);
-                }
-                if (applyVelocityMode)
-                {
-                    AZ::Vector3 current_velocicty;
-                    auto transformed_velocity_increment = transform.TransformVector(m_joint_dir * velocity);
-                    Physics::RigidBodyRequestBus::EventResult(
-                        current_velocicty, this->GetEntityId(), &Physics::RigidBodyRequests::GetLinearVelocity);
-                    AZ::Vector3 new_velocity = current_velocicty + transformed_velocity_increment;
-                    Physics::RigidBodyRequestBus::Event(this->GetEntityId(), &Physics::RigidBodyRequests::SetLinearVelocity, new_velocity);
-                }
+                // TODO decide which approach is better here.
+                ApplyLinVelRigidBodyImpulse(velocity, deltaTime);
+                // ApplyLinVelRigidBody(velocity, deltaTime);
             }
         }
     }
-    void MotorizedJoint::setSetpoint(float setpoint)
+
+    void MotorizedJoint::ApplyLinVelAnimation(float velocity, float deltaTime)
+    {
+        AZ::Transform transform;
+        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
+        transform.SetTranslation(transform.GetTranslation() + velocity * m_jointDir * deltaTime);
+        AZ::TransformBus::Event(this->GetEntityId(), &AZ::TransformBus::Events::SetLocalTM, transform);
+    }
+
+    void MotorizedJoint::ApplyLinVelRigidBodyImpulse(float velocity, float deltaTime)
+    {
+        AZ::Transform transform;
+        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
+        auto force_impulse = transform.TransformVector(m_jointDir * velocity);
+        Physics::RigidBodyRequestBus::Event(
+            this->GetEntityId(), &Physics::RigidBodyRequests::ApplyLinearImpulse, force_impulse * deltaTime);
+    }
+
+    void MotorizedJoint::ApplyLinVelRigidBody(float velocity, float deltaTime)
+    {
+        AZ::Transform transform;
+        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
+        AZ::Vector3 currentVelocity;
+        auto transformed_velocity_increment = transform.TransformVector(m_jointDir * velocity);
+        Physics::RigidBodyRequestBus::EventResult(currentVelocity, this->GetEntityId(), &Physics::RigidBodyRequests::GetLinearVelocity);
+        AZ::Vector3 new_velocity = currentVelocity + transformed_velocity_increment;
+        Physics::RigidBodyRequestBus::Event(this->GetEntityId(), &Physics::RigidBodyRequests::SetLinearVelocity, new_velocity);
+    }
+
+    void MotorizedJoint::SetSetpoint(float setpoint)
     {
         m_setpoint = setpoint;
     }
-    float MotorizedJoint::getError() const
+
+    float MotorizedJoint::GetError() const
     {
         return m_error;
+    }
+
+    float MotorizedJoint::GetCurrentPosition() const
+    {
+        return m_currentPosition;
     }
 
 } // namespace ROS2

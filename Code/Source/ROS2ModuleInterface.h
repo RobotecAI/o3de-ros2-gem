@@ -11,8 +11,8 @@
 #include "GNSS/ROS2GNSSSensorComponent.h"
 #include "Imu/ROS2ImuSensorComponent.h"
 #include "Lidar/ROS2LidarSensorComponent.h"
-#include "Manipulator/MotorizedJoint.h"
 #include "ROS2/Frame/ROS2FrameComponent.h"
+#include "ROS2/Manipulator/MotorizedJoint.h"
 #include "ROS2SystemComponent.h"
 #include "RobotControl/Controllers/AckermannController/AckermannControlComponent.h"
 #include "RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h"
@@ -57,7 +57,7 @@ namespace ROS2
                   ROS2SpawnPointComponent::CreateDescriptor(),
                   VehicleDynamics::VehicleModelComponent::CreateDescriptor(),
                   VehicleDynamics::WheelControllerComponent::CreateDescriptor(),
-                  MotorizedJoint::CreateDescriptor()});
+                  MotorizedJoint::CreateDescriptor() });
         }
 
         //! Add required SystemComponents to the SystemEntity.
