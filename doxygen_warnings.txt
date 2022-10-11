@@ -1,10 +1,10 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Spawner/ROS2SpawnPointComponent.h:16: warning: Compound ROS2::SpawnPointInfo is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:57: warning: Compound ROS2::Fbx::Constants::Object is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:48: warning: Compound ROS2::Fbx::Constants::Material is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:30: warning: Compound ROS2::ROS2ModuleInterface is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:36: warning: Compound ROS2::Fbx::Constants::GlobalSettings is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:20: warning: Compound ROS2::Fbx::Constants::FbxHeader is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:31: warning: Compound ROS2::ROS2ModuleInterface is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/ROS2Bus.h:56: warning: Compound ROS2::ROS2BusTraits is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:36: warning: Compound ROS2::Fbx::Constants::GlobalSettings is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/Ackermann/AckermannSubscriptionHandler.h:16: warning: Compound ROS2::AckermannSubscriptionHandler is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/Twist/TwistSubscriptionHandler.h:16: warning: Compound ROS2::TwistSubscriptionHandler is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/CollidersMaker.h:25: warning: Unsupported xml/html tag <collider> found
@@ -69,6 +69,10 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplateUtils.h:23: warning: argument 'model' of command @param is not found in the argument list of ROS2::LidarTemplateUtils::PopulateRayDirections(const LidarTemplate &lidarTemplate, const AZ::Vector3 &rootRotation)
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplateUtils.h:27: warning: The following parameter of ROS2::LidarTemplateUtils::PopulateRayDirections(const LidarTemplate &lidarTemplate, const AZ::Vector3 &rootRotation) is not documented:
   parameter 'lidarTemplate'
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Manipulator/MotorizedJoint.h:30: warning: Member AZ_COMPONENT(MotorizedJoint, "{AE9207DB-5B7E-4F70-A7DD-C4EAD8DD9403}", AZ::Component) (function) of class ROS2::MotorizedJoint is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Manipulator/MotorizedJoint.h:35: warning: Member Activate() override (function) of class ROS2::MotorizedJoint is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Manipulator/MotorizedJoint.h:36: warning: Member Deactivate() override (function) of class ROS2::MotorizedJoint is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Manipulator/MotorizedJoint.h:37: warning: Member Reflect(AZ::ReflectContext *context) (function) of class ROS2::MotorizedJoint is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Frame/NamespaceConfiguration.h:23: warning: Member AZ_TYPE_INFO(NamespaceConfiguration, "{5E5BC6EA-DD01-480E-A4D1-6857CF70FDC8}") (function) of class ROS2::NamespaceConfiguration is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Frame/NamespaceConfiguration.h:42: warning: Member GetNamespace(const AZStd::string &parentNamespace) const (function) of class ROS2::NamespaceConfiguration is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/Frame/NamespaceConfiguration.h:24: warning: Member Reflect(AZ::ReflectContext *context) (function) of class ROS2::NamespaceConfiguration is not documented.
@@ -160,8 +164,8 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Sensor/ROS2SensorComponent.h:32: warning: Member Reflect(AZ::ReflectContext *context) (function) of class ROS2::ROS2SensorComponent is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Sensor/ROS2SensorComponent.h:34: warning: Member GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType &required) (function) of class ROS2::ROS2SensorComponent is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Sensor/ROS2SensorComponent.h:40: warning: Member m_sensorConfiguration (variable) of class ROS2::ROS2SensorComponent is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:32: warning: Member AZ_RTTI(ROS2ModuleInterface, "{8b5567cb-1de9-49af-9cd4-9750d4abcd6b}", AZ::Module) (function) of class ROS2::ROS2ModuleInterface is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:33: warning: Member AZ_CLASS_ALLOCATOR(ROS2ModuleInterface, AZ::SystemAllocator, 0) (function) of class ROS2::ROS2ModuleInterface is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:33: warning: Member AZ_RTTI(ROS2ModuleInterface, "{8b5567cb-1de9-49af-9cd4-9750d4abcd6b}", AZ::Module) (function) of class ROS2::ROS2ModuleInterface is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:34: warning: Member AZ_CLASS_ALLOCATOR(ROS2ModuleInterface, AZ::SystemAllocator, 0) (function) of class ROS2::ROS2ModuleInterface is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/ROS2Bus.h:26: warning: Member AZ_RTTI(ROS2Requests, "{a9bdbff6-e644-430d-8096-cdb53c88e8fc}") (function) of class ROS2::ROS2Requests is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/ROS2RobotControlComponent.h:24: warning: Member AZ_COMPONENT(ROS2RobotControlComponent, "{CBFB0764-99F9-40EE-9FEE-F5F5A66E59D2}", AZ::Component) (function) of class ROS2::ROS2RobotControlComponent is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/ROS2RobotControlComponent.h:26: warning: Member ROS2RobotControlComponent(ControlConfiguration controlConfiguration) (function) of class ROS2::ROS2RobotControlComponent is not documented.

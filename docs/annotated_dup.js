@@ -26,6 +26,7 @@ var annotated_dup =
       [ "LidarRaycaster", "class_r_o_s2_1_1_lidar_raycaster.html", "class_r_o_s2_1_1_lidar_raycaster" ],
       [ "LidarTemplate", "struct_r_o_s2_1_1_lidar_template.html", "struct_r_o_s2_1_1_lidar_template" ],
       [ "LidarTemplateUtils", "class_r_o_s2_1_1_lidar_template_utils.html", null ],
+      [ "MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", "class_r_o_s2_1_1_motorized_joint" ],
       [ "NamespaceConfiguration", "struct_r_o_s2_1_1_namespace_configuration.html", "struct_r_o_s2_1_1_namespace_configuration" ],
       [ "PublisherConfiguration", "struct_r_o_s2_1_1_publisher_configuration.html", "struct_r_o_s2_1_1_publisher_configuration" ],
       [ "QoS", "struct_r_o_s2_1_1_qo_s.html", "struct_r_o_s2_1_1_qo_s" ],
