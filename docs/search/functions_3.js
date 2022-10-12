@@ -9,7 +9,7 @@ var searchData=
   ['getfbxstring_298',['GetFbxString',['../class_r_o_s2_1_1_fbx_1_1_fbx_generator.html#af3affe0a74d8c18c4fbc270415122f3a',1,'ROS2::Fbx::FbxGenerator']]],
   ['getframeid_299',['GetFrameID',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#a634aa142324096228faccd6eb023d14c',1,'ROS2::ROS2FrameComponent::GetFrameID()'],['../class_r_o_s2_1_1_r_o_s2_sensor_component.html#a989cb6379ebb4a9ad9e28c08b5426eea',1,'ROS2::ROS2SensorComponent::GetFrameID()']]],
   ['getframetransform_300',['GetFrameTransform',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#ae8119c22eadc0928e777490d6a9320a3',1,'ROS2::ROS2FrameComponent']]],
-  ['getglobalframename_301',['GetGlobalFrameName',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#a7a948f9c915c8c372c4175eb1f4e2b24',1,'ROS2::ROS2FrameComponent']]],
+  ['getglobalframename_301',['GetGlobalFrameName',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#a670f5281f664ee4c8d4d61bba7096604',1,'ROS2::ROS2FrameComponent']]],
   ['getleftwheelentityid_302',['GetLeftWheelEntityId',['../class_vehicle_dynamics_1_1_axle_configuration.html#ac154defd4bb715b61a851a00698d7c27',1,'VehicleDynamics::AxleConfiguration']]],
   ['getname_303',['GetName',['../class_r_o_s2_1_1_fbx_1_1_node.html#a2e53d495265e41511618f9828e694f03',1,'ROS2::Fbx::Node']]],
   ['getnamespace_304',['GetNamespace',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#ac78a6662d3a8375c8d61073d87d90e7a',1,'ROS2::ROS2FrameComponent::GetNamespace()'],['../class_r_o_s2_1_1_r_o_s2_sensor_component.html#a452f044dfb869774f0610cac89946ff7',1,'ROS2::ROS2SensorComponent::GetNamespace()']]],

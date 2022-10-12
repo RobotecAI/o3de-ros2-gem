@@ -7,6 +7,7 @@ var class_r_o_s2_1_1_r_o_s2_frame_component =
     [ "Deactivate", "class_r_o_s2_1_1_r_o_s2_frame_component.html#a4d2c293ae2260c0c9a97116e7efa06a5", null ],
     [ "GetFrameID", "class_r_o_s2_1_1_r_o_s2_frame_component.html#a634aa142324096228faccd6eb023d14c", null ],
     [ "GetFrameTransform", "class_r_o_s2_1_1_r_o_s2_frame_component.html#ae8119c22eadc0928e777490d6a9320a3", null ],
+    [ "GetGlobalFrameName", "class_r_o_s2_1_1_r_o_s2_frame_component.html#a670f5281f664ee4c8d4d61bba7096604", null ],
     [ "GetNamespace", "class_r_o_s2_1_1_r_o_s2_frame_component.html#ac78a6662d3a8375c8d61073d87d90e7a", null ],
     [ "SetFrameID", "class_r_o_s2_1_1_r_o_s2_frame_component.html#a47c4ea3509935ddb083faf0bb965a2c8", null ]
 ];

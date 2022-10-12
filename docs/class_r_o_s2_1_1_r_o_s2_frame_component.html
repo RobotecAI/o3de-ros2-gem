@@ -136,6 +136,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ac78a6662d3a8375c8d61073d87d90e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8119c22eadc0928e777490d6a9320a3"><td class="memItemLeft" align="right" valign="top">const AZ::Transform &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#ae8119c22eadc0928e777490d6a9320a3">GetFrameTransform</a> () const</td></tr>
 <tr class="separator:ae8119c22eadc0928e777490d6a9320a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a670f5281f664ee4c8d4d61bba7096604"><td class="memItemLeft" align="right" valign="top">AZStd::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#a670f5281f664ee4c8d4d61bba7096604">GetGlobalFrameName</a> () const</td></tr>
+<tr class="separator:a670f5281f664ee4c8d4d61bba7096604"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -151,8 +153,6 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetIncompatibl
 <tr class="memitem:a1cc0c69fec45bbd766c226605ef38f52"><td class="memItemLeft" align="right" valign="top"><a id="a1cc0c69fec45bbd766c226605ef38f52"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRequiredServices</b> (AZ::ComponentDescriptor::DependencyArrayType &amp;required)</td></tr>
 <tr class="separator:a1cc0c69fec45bbd766c226605ef38f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a948f9c915c8c372c4175eb1f4e2b24"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#a7a948f9c915c8c372c4175eb1f4e2b24">GetGlobalFrameName</a> ()</td></tr>
-<tr class="separator:a7a948f9c915c8c372c4175eb1f4e2b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This component marks an interesting reference frame for ROS2 ecosystem. It serves as sensor data frame of reference and is responsible, through <a class="el" href="class_r_o_s2_1_1_r_o_s2_transform.html">ROS2Transform</a>, for publishing ros2 static and dynamic transforms (/tf_static, /tf). It also facilitates namespace handling. An entity can only have a single ROS2Frame on each level. Many ROS2 Components require this component. </p><dl class="section note"><dt>Note</dt><dd>A robot should have this component on every level of entity hierarchy (for each joint, fixed or dynamic) </dd></dl>
@@ -203,29 +203,31 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a7a948f9c915c8c372c4175eb1f4e2b24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a948f9c915c8c372c4175eb1f4e2b24">&#9670;&nbsp;</a></span>GetGlobalFrameName()</h2>
+<a id="a670f5281f664ee4c8d4d61bba7096604"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a670f5281f664ee4c8d4d61bba7096604">&#9670;&nbsp;</a></span>GetGlobalFrameName()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char * ROS2::ROS2FrameComponent::GetGlobalFrameName </td>
+          <td class="memname">AZStd::string ROS2::ROS2FrameComponent::GetGlobalFrameName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>Global frame name in ros2 ecosystem. </p><dl class="section return"><dt>Returns</dt><dd>The name of the global frame. It is typically "odom", "map", "world". </dd></dl>
+<p>Global frame name in ros2 ecosystem. </p><dl class="section return"><dt>Returns</dt><dd>The name of the global frame with namespace attached. It is typically "odom", "map", "world". </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_r_o_s2_1_1_r_o_s2_frame_component_a670f5281f664ee4c8d4d61bba7096604_cgraph.png" border="0" usemap="#class_r_o_s2_1_1_r_o_s2_frame_component_a670f5281f664ee4c8d4d61bba7096604_cgraph" alt=""/></div>
+<map name="class_r_o_s2_1_1_r_o_s2_frame_component_a670f5281f664ee4c8d4d61bba7096604_cgraph" id="class_r_o_s2_1_1_r_o_s2_frame_component_a670f5281f664ee4c8d4d61bba7096604_cgraph">
+<area shape="rect" title=" " alt="" coords="5,35,221,76"/>
+<area shape="rect" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#ac78a6662d3a8375c8d61073d87d90e7a" title=" " alt="" coords="312,5,528,47"/>
+<area shape="rect" href="class_r_o_s2_1_1_r_o_s2_names.html#a2be38d011980c74f296fa9f90b0af7f5" title="Joins namespace and the given name." alt="" coords="269,71,571,98"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -249,8 +251,9 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_r_o_s2_1_1_r_o_s2_frame_component_ac78a6662d3a8375c8d61073d87d90e7a_icgraph.png" border="0" usemap="#class_r_o_s2_1_1_r_o_s2_frame_component_ac78a6662d3a8375c8d61073d87d90e7a_icgraph" alt=""/></div>
 <map name="class_r_o_s2_1_1_r_o_s2_frame_component_ac78a6662d3a8375c8d61073d87d90e7a_icgraph" id="class_r_o_s2_1_1_r_o_s2_frame_component_ac78a6662d3a8375c8d61073d87d90e7a_icgraph">
-<area shape="rect" title=" " alt="" coords="269,5,485,47"/>
+<area shape="rect" title=" " alt="" coords="269,39,485,80"/>
 <area shape="rect" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#a634aa142324096228faccd6eb023d14c" title=" " alt="" coords="5,5,221,47"/>
+<area shape="rect" href="class_r_o_s2_1_1_r_o_s2_frame_component.html#a670f5281f664ee4c8d4d61bba7096604" title=" " alt="" coords="5,71,221,112"/>
 </map>
 </div>
 
@@ -266,7 +269,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_r_o_s2_frame_component.html">ROS2FrameComponent</a></li>
-    <li class="footer">Generated on Wed Oct 12 2022 10:36:49 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Oct 12 2022 12:37:53 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
