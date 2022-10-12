@@ -6,6 +6,7 @@ var class_r_o_s2_1_1_motorized_joint =
     [ "AZ_COMPONENT", "class_r_o_s2_1_1_motorized_joint.html#a43b7af1b29698ced20c4aa6328a415c1", null ],
     [ "Deactivate", "class_r_o_s2_1_1_motorized_joint.html#abae4bca4ecbf601d5104436a6d7130b1", null ],
     [ "GetCurrentPosition", "class_r_o_s2_1_1_motorized_joint.html#a237d53f23b53c58e425d96686fb7483c", null ],
+    [ "GetDir", "class_r_o_s2_1_1_motorized_joint.html#a833f603bd324c76df67eff1bab0754d8", null ],
     [ "GetError", "class_r_o_s2_1_1_motorized_joint.html#a1da07e4a027b21b2a470a5deb7318450", null ],
     [ "SetSetpoint", "class_r_o_s2_1_1_motorized_joint.html#ad78676075cc01e2d360e56718982462d", null ]
 ];

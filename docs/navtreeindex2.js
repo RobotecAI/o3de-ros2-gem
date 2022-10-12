@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"struct_vehicle_dynamics_1_1_vehicle_inputs_state.html#ac6a98fc0048ee06c6d9d45bf8dc3c758":[2,0,1,10,0],
+"struct_vehicle_dynamics_1_1_vehicle_model_limits.html":[2,0,1,12],
+"struct_vehicle_dynamics_1_1_vehicle_model_limits.html#a756ebda76c0f73a789a35b6ef4681d29":[2,0,1,12,3],
 "struct_vehicle_dynamics_1_1_vehicle_model_limits.html#a8c0e20823506f21b827f80662bdc505a":[2,0,1,12,1],
 "struct_vehicle_dynamics_1_1_vehicle_model_limits.html#ab8cefcdd9c1d28942557d4282e7c51e1":[2,0,1,12,0],
 "struct_vehicle_dynamics_1_1_vehicle_model_limits.html#adb9b455ec23c767ef3b780bc3fd8eb81":[2,0,1,12,2],

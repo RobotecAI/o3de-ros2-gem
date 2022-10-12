@@ -1,8 +1,8 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Spawner/ROS2SpawnPointComponent.h:16: warning: Compound ROS2::SpawnPointInfo is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:31: warning: Compound ROS2::ROS2ModuleInterface is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:57: warning: Compound ROS2::Fbx::Constants::Object is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:48: warning: Compound ROS2::Fbx::Constants::Material is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:20: warning: Compound ROS2::Fbx::Constants::FbxHeader is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/ROS2ModuleInterface.h:31: warning: Compound ROS2::ROS2ModuleInterface is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/ROS2Bus.h:56: warning: Compound ROS2::ROS2BusTraits is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Converters/URDF/ToFBX/Constants.h:36: warning: Compound ROS2::Fbx::Constants::GlobalSettings is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotControl/Ackermann/AckermannSubscriptionHandler.h:16: warning: Compound ROS2::AckermannSubscriptionHandler is not documented.
@@ -328,8 +328,8 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/ManualControlEventHandler.h:20: warning: Member OnHeldHandlerFunction (typedef) of class VehicleDynamics::ManualControlSingleEventHandler is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/ManualControlEventHandler.h:31: warning: Member Activate() (function) of class VehicleDynamics::ManualControlSingleEventHandler is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/ManualControlEventHandler.h:37: warning: Member Deactivate() (function) of class VehicleDynamics::ManualControlSingleEventHandler is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/DriveModels/PidConfiguration.h:20: warning: Member AZ_TYPE_INFO(PidConfiguration, "{814E0D1E-2C33-44A5-868E-C914640E2F7E}") (function) of class VehicleDynamics::PidConfiguration is not documented.
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/DriveModels/PidConfiguration.h:21: warning: Member Reflect(AZ::ReflectContext *context) (function) of class VehicleDynamics::PidConfiguration is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/VehicleDynamics/DriveModels/PidConfiguration.h:20: warning: Member AZ_TYPE_INFO(PidConfiguration, "{814E0D1E-2C33-44A5-868E-C914640E2F7E}") (function) of class VehicleDynamics::PidConfiguration is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/VehicleDynamics/DriveModels/PidConfiguration.h:21: warning: Member Reflect(AZ::ReflectContext *context) (function) of class VehicleDynamics::PidConfiguration is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/VehicleConfiguration.h:21: warning: Member AZ_TYPE_INFO(VehicleConfiguration, "{C616E333-E618-4E37-8CE6-1E8A28182D00}") (function) of class VehicleDynamics::VehicleConfiguration is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/VehicleConfiguration.h:23: warning: Member Reflect(AZ::ReflectContext *context) (function) of class VehicleDynamics::VehicleConfiguration is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/VehicleDynamics/VehicleConfiguration.h:25: warning: Member m_axles (variable) of class VehicleDynamics::VehicleConfiguration is not documented.
