@@ -98,16 +98,14 @@ $(document).ready(function(){initNavTree('class_r_o_s2_1_1_lidar_raycaster.html'
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab0668e56e58627c79a5f4d7f3d056e51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#ab0668e56e58627c79a5f4d7f3d056e51">SetRaycasterScene</a> (const AzPhysics::SceneHandle &amp;handle)</td></tr>
 <tr class="separator:ab0668e56e58627c79a5f4d7f3d056e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29ba7ac5b3b8e256856b300e286cba32"><td class="memItemLeft" align="right" valign="top">AZStd::vector&lt; AZ::Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#a29ba7ac5b3b8e256856b300e286cba32">PerformRaycast</a> (const AZ::Vector3 &amp;start, const AZStd::vector&lt; AZ::Vector3 &gt; &amp;directions, float distance)</td></tr>
-<tr class="separator:a29ba7ac5b3b8e256856b300e286cba32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94035cdf2c789a34682038633406b4b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#a94035cdf2c789a34682038633406b4b1">setLidarTransparentEntity</a> (const AZ::EntityId &amp;lidarTransparentEntityId)</td></tr>
-<tr class="separator:a94035cdf2c789a34682038633406b4b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace5ccc9edda92219104041833c5ca0a5"><td class="memItemLeft" align="right" valign="top">AZStd::vector&lt; AZ::Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#ace5ccc9edda92219104041833c5ca0a5">PerformRaycast</a> (const AZ::Vector3 &amp;start, const AZStd::vector&lt; AZ::Vector3 &gt; &amp;directions, float distance, bool ignoreLayer, unsigned int ignoredLayerIndex)</td></tr>
+<tr class="separator:ace5ccc9edda92219104041833c5ca0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A simple implementation of Lidar operation in terms of raycasting. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a29ba7ac5b3b8e256856b300e286cba32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29ba7ac5b3b8e256856b300e286cba32">&#9670;&nbsp;</a></span>PerformRaycast()</h2>
+<a id="ace5ccc9edda92219104041833c5ca0a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace5ccc9edda92219104041833c5ca0a5">&#9670;&nbsp;</a></span>PerformRaycast()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,7 +126,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>distance</em>&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignoreLayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>ignoredLayerIndex</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -142,35 +152,12 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">start</td><td>Starting point of rays. This is a simplification since there can be multiple starting points in real sensors. </td></tr>
     <tr><td class="paramname">directions</td><td>Directions in which to shoot rays. These should be generated from Lidar configuration. </td></tr>
     <tr><td class="paramname">distance</td><td>Maximum distance for ray-casting. </td></tr>
+    <tr><td class="paramname">ignoreLayer</td><td>Should a specified collision layer be ignored </td></tr>
+    <tr><td class="paramname">ignoredLayerIndex</td><td>Index of collision layer to be ignored </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Hits of raycast. The returned vector size can be anything between zero and size of directions. No hits further than distance will be reported. </dd></dl>
-
-</div>
-</div>
-<a id="a94035cdf2c789a34682038633406b4b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94035cdf2c789a34682038633406b4b1">&#9670;&nbsp;</a></span>setLidarTransparentEntity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ROS2::LidarRaycaster::setLidarTransparentEntity </td>
-          <td>(</td>
-          <td class="paramtype">const AZ::EntityId &amp;&#160;</td>
-          <td class="paramname"><em>lidarTransparentEntityId</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Set the lidar entity to use to filter out this lidar's collider(s) from ray-casting scene. For example, if a lidar prefab contains a physical model with a collider, we would like ray-casts to ignore it completely. This is a simplification due to lack of handling of transparency (e.g. lidar front glass). </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lidarTransparentEntity</td><td>entity to ignore in ray-casts. Note that all colliders within the entity will be ignored. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>in robotics, self-detection (or ego-detection) is means detecting any part of the robot. As such, it should be simulated to match the real data (which will also initially include self-detection). </dd></dl>
 
 </div>
 </div>
@@ -209,7 +196,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html">LidarRaycaster</a></li>
-    <li class="footer">Generated on Wed Oct 12 2022 12:37:53 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Thu Oct 13 2022 11:47:30 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

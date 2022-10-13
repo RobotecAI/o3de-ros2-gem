@@ -132,9 +132,8 @@ var NAVTREEINDEX0 =
 "class_r_o_s2_1_1_joints_maker.html":[2,0,0,12],
 "class_r_o_s2_1_1_joints_maker.html#aa83a894c4122394a3aa97194ea46d938":[2,0,0,12,0],
 "class_r_o_s2_1_1_lidar_raycaster.html":[2,0,0,13],
-"class_r_o_s2_1_1_lidar_raycaster.html#a29ba7ac5b3b8e256856b300e286cba32":[2,0,0,13,0],
-"class_r_o_s2_1_1_lidar_raycaster.html#a94035cdf2c789a34682038633406b4b1":[2,0,0,13,1],
-"class_r_o_s2_1_1_lidar_raycaster.html#ab0668e56e58627c79a5f4d7f3d056e51":[2,0,0,13,2],
+"class_r_o_s2_1_1_lidar_raycaster.html#ab0668e56e58627c79a5f4d7f3d056e51":[2,0,0,13,1],
+"class_r_o_s2_1_1_lidar_raycaster.html#ace5ccc9edda92219104041833c5ca0a5":[2,0,0,13,0],
 "class_r_o_s2_1_1_lidar_template_utils.html":[2,0,0,15],
 "class_r_o_s2_1_1_motorized_joint.html":[2,0,0,16],
 "class_r_o_s2_1_1_motorized_joint.html#a1da07e4a027b21b2a470a5deb7318450":[2,0,0,16,7],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "class_r_o_s2_1_1_r_o_s2_system_component.html#a5fabb1a410dc88ab84cdf89422605133":[2,0,0,41,3],
 "class_r_o_s2_1_1_r_o_s2_system_component.html#a7930fab4006b52b7a16e7b79b716a0ee":[2,0,0,41,1],
 "class_r_o_s2_1_1_r_o_s2_system_component.html#a7deb9da0f56f10be00c892a24208548f":[2,0,0,41,4],
-"class_r_o_s2_1_1_r_o_s2_system_component.html#a90fb4218c5163a553a5bd40bef58ab61":[2,0,0,41,6]
+"class_r_o_s2_1_1_r_o_s2_system_component.html#a90fb4218c5163a553a5bd40bef58ab61":[2,0,0,41,6],
+"class_r_o_s2_1_1_r_o_s2_system_component.html#aa80b1ae072e0d62cddc3c6e2752605bc":[2,0,0,41,2]
 };
