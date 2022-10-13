@@ -146,13 +146,12 @@ namespace ROS2
         {
             AZ_Printf(
                 "MotorizedJoint",
-                " %s | pos: %f | err: %f | cntrl : %f | set : %f | %f",
+                " %s | pos: %f | err: %f | cntrl : %f | set : %f |",
                 GetEntity()->GetName().c_str(),
                 measurement,
                 control_position_error,
                 speed_control,
-                m_setpoint,
-                m_sinDC);
+                m_setpoint);
         }
         SetVelocity(speed_control, deltaTime);
     }
@@ -184,7 +183,6 @@ namespace ROS2
             m_lastMeasurementTime = time.GetSeconds();
             return m_currentPosition;
         }
-
         AZ_Assert(false, "it is not implemented");
         return 0;
     }
@@ -226,13 +224,10 @@ namespace ROS2
 
     void MotorizedJoint::ApplyLinVelRigidBody(float velocity, float deltaTime)
     {
-        AZ::Quaternion transform1;
-        AZ::TransformBus::EventResult(transform1, this->GetEntityId(), &AZ::TransformBus::Events::GetWorldRotationQuaternion);
-        AZ::Quaternion transform2;
-        AZ::TransformBus::EventResult(transform2, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalRotationQuaternion);
-
+        AZ::Quaternion transform;
+        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetWorldRotationQuaternion);
         AZ::Vector3 currentVelocity;
-        auto transformed_velocity_increment = transform2.TransformVector(transform1.TransformVector(m_effortAxis * velocity));
+        auto transformed_velocity_increment = transform.TransformVector(m_effortAxis * velocity);
         Physics::RigidBodyRequestBus::EventResult(currentVelocity, this->GetEntityId(), &Physics::RigidBodyRequests::GetLinearVelocity);
         AZ::Vector3 new_velocity = currentVelocity + transformed_velocity_increment;
         Physics::RigidBodyRequestBus::Event(this->GetEntityId(), &Physics::RigidBodyRequests::SetLinearVelocity, new_velocity);
