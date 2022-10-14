@@ -46,8 +46,8 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/JointsMaker.h:27: warning: The following parameters of ROS2::JointsMaker::AddJoint(urdf::LinkSharedPtr parentLink, urdf::LinkSharedPtr childLink, AZ::EntityId linkChildId, AZ::EntityId linkParentId) are not documented:
   parameter 'linkChildId'
   parameter 'linkParentId'
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarRaycaster.h:22: warning: argument 'scene' of command @param is not found in the argument list of ROS2::LidarRaycaster::SetRaycasterScene(const AzPhysics::SceneHandle &handle)
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarRaycaster.h:28: warning: The following parameter of ROS2::LidarRaycaster::SetRaycasterScene(const AzPhysics::SceneHandle &handle) is not documented:
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarRaycaster.h:23: warning: argument 'scene' of command @param is not found in the argument list of ROS2::LidarRaycaster::SetRaycasterScene(const AzPhysics::SceneHandle &handle)
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarRaycaster.h:29: warning: The following parameter of ROS2::LidarRaycaster::SetRaycasterScene(const AzPhysics::SceneHandle &handle) is not documented:
   parameter 'handle'
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplate.h:28: warning: Member LidarModel (enumeration) of class ROS2::LidarTemplate is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplate.h:23: warning: Member AZ_TYPE_INFO(LidarTemplate, "{9E9EF583-733D-4450-BBA0-ADD4D1BEFBF2}") (function) of class ROS2::LidarTemplate is not documented.

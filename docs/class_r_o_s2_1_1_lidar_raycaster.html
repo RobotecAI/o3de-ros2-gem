@@ -98,18 +98,18 @@ $(document).ready(function(){initNavTree('class_r_o_s2_1_1_lidar_raycaster.html'
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab0668e56e58627c79a5f4d7f3d056e51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#ab0668e56e58627c79a5f4d7f3d056e51">SetRaycasterScene</a> (const AzPhysics::SceneHandle &amp;handle)</td></tr>
 <tr class="separator:ab0668e56e58627c79a5f4d7f3d056e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace5ccc9edda92219104041833c5ca0a5"><td class="memItemLeft" align="right" valign="top">AZStd::vector&lt; AZ::Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#ace5ccc9edda92219104041833c5ca0a5">PerformRaycast</a> (const AZ::Vector3 &amp;start, const AZStd::vector&lt; AZ::Vector3 &gt; &amp;directions, float distance, bool ignoreLayer, unsigned int ignoredLayerIndex)</td></tr>
-<tr class="separator:ace5ccc9edda92219104041833c5ca0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a298279794bedac353da937f1acf98b72"><td class="memItemLeft" align="right" valign="top"><a id="a298279794bedac353da937f1acf98b72"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#a298279794bedac353da937f1acf98b72">setAddPointsMaxRange</a> (bool addPointsMaxRange)</td></tr>
-<tr class="memdesc:a298279794bedac353da937f1acf98b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true the raycaster produces points at maximum range, if no obstacle was hit. <br /></td></tr>
-<tr class="separator:a298279794bedac353da937f1acf98b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b12b461a311ab6734e5a7a719cb915f"><td class="memItemLeft" align="right" valign="top">AZStd::vector&lt; AZ::Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#a2b12b461a311ab6734e5a7a719cb915f">PerformRaycast</a> (const AZ::Vector3 &amp;start, const AZStd::vector&lt; AZ::Vector3 &gt; &amp;directions, const AZ::Transform &amp;globalToLidarTM, float distance, bool ignoreLayer, unsigned int ignoredLayerIndex)</td></tr>
+<tr class="separator:a2b12b461a311ab6734e5a7a719cb915f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26c85c4f01bad5583ad106ac8a159cf9"><td class="memItemLeft" align="right" valign="top"><a id="a26c85c4f01bad5583ad106ac8a159cf9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html#a26c85c4f01bad5583ad106ac8a159cf9">SetAddPointsMaxRange</a> (bool addPointsMaxRange)</td></tr>
+<tr class="memdesc:a26c85c4f01bad5583ad106ac8a159cf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true the raycaster will also include points at maximum range when nothing was hit. <br /></td></tr>
+<tr class="separator:a26c85c4f01bad5583ad106ac8a159cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A simple implementation of Lidar operation in terms of raycasting. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ace5ccc9edda92219104041833c5ca0a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace5ccc9edda92219104041833c5ca0a5">&#9670;&nbsp;</a></span>PerformRaycast()</h2>
+<a id="a2b12b461a311ab6734e5a7a719cb915f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b12b461a311ab6734e5a7a719cb915f">&#9670;&nbsp;</a></span>PerformRaycast()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,6 +125,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
           <td class="paramtype">const AZStd::vector&lt; AZ::Vector3 &gt; &amp;&#160;</td>
           <td class="paramname"><em>directions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const AZ::Transform &amp;&#160;</td>
+          <td class="paramname"><em>globalToLidarTM</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -155,6 +161,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">start</td><td>Starting point of rays. This is a simplification since there can be multiple starting points in real sensors. </td></tr>
     <tr><td class="paramname">directions</td><td>Directions in which to shoot rays. These should be generated from Lidar configuration. </td></tr>
+    <tr><td class="paramname">globalToLidarTM</td><td>Transform from global to lidar reference frame. </td></tr>
     <tr><td class="paramname">distance</td><td>Maximum distance for ray-casting. </td></tr>
     <tr><td class="paramname">ignoreLayer</td><td>Should a specified collision layer be ignored </td></tr>
     <tr><td class="paramname">ignoredLayerIndex</td><td>Index of collision layer to be ignored </td></tr>
@@ -200,7 +207,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_lidar_raycaster.html">LidarRaycaster</a></li>
-    <li class="footer">Generated on Fri Oct 14 2022 12:17:50 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Fri Oct 14 2022 13:35:33 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
