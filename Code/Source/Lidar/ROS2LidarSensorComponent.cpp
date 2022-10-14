@@ -140,7 +140,7 @@ namespace ROS2
             auto* entityScene = AZ::RPI::Scene::GetSceneForEntityId(GetEntityId());
             m_drawQueue = AZ::RPI::AuxGeomFeatureProcessorInterface::GetDrawQueueForScene(entityScene);
         }
-        m_lidarRaycaster.setAddPointsMaxRange(m_lidarParameters.m_addPointsAtMax);
+        m_lidarRaycaster.SetAddPointsMaxRange(m_lidarParameters.m_addPointsAtMax);
         ROS2SensorComponent::Activate();
     }
 
@@ -159,7 +159,11 @@ namespace ROS2
         AZ::Vector3 start = entityTransform->GetWorldTM().GetTranslation();
         start.SetZ(start.GetZ());
 
-        m_lastScanResults = m_lidarRaycaster.PerformRaycast(start, directions, distance, m_ignoreLayer, m_ignoredLayerIndex);
+        auto worldToLidarTransform = entityTransform->GetWorldTM();
+        worldToLidarTransform.Invert();
+
+        m_lastScanResults =
+            m_lidarRaycaster.PerformRaycast(start, directions, worldToLidarTransform, distance, m_ignoreLayer, m_ignoredLayerIndex);
         if (m_lastScanResults.empty())
         {
             AZ_TracePrintf("Lidar Sensor Component", "No results from raycast\n");
@@ -167,8 +171,15 @@ namespace ROS2
         }
 
         if (m_sensorConfiguration.m_visualise)
-        { // Store points for visualisation purposes, before transformations occur
+        { // Store points for visualisation purposes, in global frame
+            auto localToWorldTM = entityTransform->GetWorldTM();
+
+            // TODO - improve performance
             m_visualisationPoints = m_lastScanResults;
+            for (auto& point : m_visualisationPoints)
+            {
+                point = localToWorldTM.TransformPoint(point);
+            }
         }
 
         auto* ros2Frame = Utils::GetGameOrEditorComponent<ROS2FrameComponent>(GetEntity());
@@ -190,15 +201,6 @@ namespace ROS2
             pf.datatype = sensor_msgs::msg::PointField::FLOAT32;
             pf.count = 1;
             message.fields.push_back(pf);
-        }
-
-        auto lidarTM = entityTransform->GetWorldTM();
-        lidarTM.Invert();
-
-        // TODO - improve performance
-        for (auto& point : m_lastScanResults)
-        {
-            point = lidarTM.TransformPoint(point);
         }
 
         size_t sizeInBytes = m_lastScanResults.size() * sizeof(AZ::Vector3);
