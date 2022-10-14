@@ -146,50 +146,56 @@ $(document).ready(function(){initNavTree('_motorized_joint_8h_source.html',''); 
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        AZ::Vector3 m_jointDir{ 0.f, 0.f, 1.f };</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        AZStd::pair&lt;float, float&gt; m_limits{ -0.5f, 0.5f };</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        AZ::Vector3 m_effortAxis{ 0.f, 0.f, 1.f };</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a> m_pidPos;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        AZStd::pair&lt;float, float&gt; m_limits{ -0.5f, 0.5f };</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">float</span> m_zeroOffset{ 0.f };</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a> m_pidPos;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">bool</span> m_linear{ <span class="keyword">true</span> };</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">float</span> m_zeroOffset{ 0.f };</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">bool</span> m_animationMode{ <span class="keyword">true</span> };</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">bool</span> m_linear{ <span class="keyword">true</span> };</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">bool</span> m_testSinusoidal{ <span class="keyword">true</span> };</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">bool</span> m_animationMode{ <span class="keyword">true</span> };</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordtype">bool</span> m_debugPrint{ <span class="keyword">false</span> };</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordtype">bool</span> m_testSinusoidal{ <span class="keyword">true</span> };</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">float</span> m_sinAmplitude{ 0.25 };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordtype">bool</span> m_debugPrint{ <span class="keyword">false</span> };</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordtype">float</span> m_sinFreq{ 0.1 };</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordtype">float</span> m_sinAmplitude{ 0.5 };</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordtype">float</span> m_currentPosition{ 0 };</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordtype">float</span> m_sinDC{ 0.25 };</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">float</span> m_currentVelocity{ 0 };</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">float</span> m_sinFreq{ 0.1 };</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordtype">float</span> m_setpoint{ 0 };</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordtype">float</span> m_error{ 0 };</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">double</span> m_lastMeasurementTime;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        AZ::EntityId m_debugDrawEntity;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        AZ::Transform m_debugDrawEntityInitialTransform;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    };</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordtype">float</span> m_currentPosition{ 0 };</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordtype">float</span> m_currentVelocity{ 0 };</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordtype">float</span> m_setpoint{ 0 };</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordtype">float</span> m_error{ 0 };</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordtype">double</span> m_lastMeasurementTime;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        AZ::EntityId m_debugDrawEntity;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        AZ::Transform m_debugDrawEntityInitialTransform;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        AZ::EntityId m_ParentOverride;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    };</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_ad78676075cc01e2d360e56718982462d"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#ad78676075cc01e2d360e56718982462d">ROS2::MotorizedJoint::SetSetpoint</a></div><div class="ttdeci">void SetSetpoint(float setpoint)</div><div class="ttdoc">Set a setpoint (e.g. desired local position). Controller follows it.</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.cpp:214</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_ad78676075cc01e2d360e56718982462d"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#ad78676075cc01e2d360e56718982462d">ROS2::MotorizedJoint::SetSetpoint</a></div><div class="ttdeci">void SetSetpoint(float setpoint)</div><div class="ttdoc">Set a setpoint (e.g. desired local position). Controller follows it.</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.cpp:236</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html">ROS2::MotorizedJoint</a></div><div class="ttdef"><b>Definition:</b> MotorizedJoint.h:27</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_a237d53f23b53c58e425d96686fb7483c"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#a237d53f23b53c58e425d96686fb7483c">ROS2::MotorizedJoint::GetCurrentPosition</a></div><div class="ttdeci">float GetCurrentPosition() const</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.cpp:224</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_a237d53f23b53c58e425d96686fb7483c"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#a237d53f23b53c58e425d96686fb7483c">ROS2::MotorizedJoint::GetCurrentPosition</a></div><div class="ttdeci">float GetCurrentPosition() const</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.cpp:246</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_a833f603bd324c76df67eff1bab0754d8"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#a833f603bd324c76df67eff1bab0754d8">ROS2::MotorizedJoint::GetDir</a></div><div class="ttdeci">AZ::Vector3 GetDir() const</div><div class="ttdoc">Get a degree of freedom direction.</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.h:55</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a></div><div class="ttdef"><b>Definition:</b> PidConfiguration.h:17</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_a1da07e4a027b21b2a470a5deb7318450"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#a1da07e4a027b21b2a470a5deb7318450">ROS2::MotorizedJoint::GetError</a></div><div class="ttdeci">float GetError() const</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.cpp:219</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_html_a1da07e4a027b21b2a470a5deb7318450"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint.html#a1da07e4a027b21b2a470a5deb7318450">ROS2::MotorizedJoint::GetError</a></div><div class="ttdeci">float GetError() const</div><div class="ttdef"><b>Definition:</b> MotorizedJoint.cpp:241</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_9022305039626e0c58b15f77be73727d.html">Include</a></li><li class="navelem"><a class="el" href="dir_425207894c42c9b6aec7b3a29627c951.html">ROS2</a></li><li class="navelem"><a class="el" href="dir_0b6a5316aa6946701aaa5ceae4c1ad86.html">Manipulator</a></li><li class="navelem"><b>MotorizedJoint.h</b></li>
-    <li class="footer">Generated on Thu Oct 13 2022 11:47:30 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Fri Oct 14 2022 10:17:27 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

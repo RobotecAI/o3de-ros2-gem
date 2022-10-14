@@ -4,6 +4,7 @@ var struct_r_o_s2_1_1_lidar_template =
       [ "Generic3DLidar", "struct_r_o_s2_1_1_lidar_template.html#a74b8818ad629b6543b04246411fb881fa4946cf5946d4ee5f8f616bcec065890c", null ]
     ] ],
     [ "AZ_TYPE_INFO", "struct_r_o_s2_1_1_lidar_template.html#aa9bfb43a7b85a0407d5073949f398878", null ],
+    [ "m_addPointsAtMax", "struct_r_o_s2_1_1_lidar_template.html#aef6e8b21a722b01cb1d8332b0382569d", null ],
     [ "m_layers", "struct_r_o_s2_1_1_lidar_template.html#a248a1511ea1d7089c1baa07fde4cc7e7", null ],
     [ "m_maxHAngle", "struct_r_o_s2_1_1_lidar_template.html#a1998f025dc933d7c6291b100400490f6", null ],
     [ "m_maxRange", "struct_r_o_s2_1_1_lidar_template.html#a1efb49bb8efa45447c9c0dfc4912c000", null ],

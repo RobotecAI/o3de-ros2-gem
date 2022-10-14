@@ -61,6 +61,7 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplate.h:38: warning: Member m_layers (variable) of class ROS2::LidarTemplate is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplate.h:39: warning: Member m_numberOfIncrements (variable) of class ROS2::LidarTemplate is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplate.h:40: warning: Member m_maxRange (variable) of class ROS2::LidarTemplate is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplate.h:41: warning: Member m_addPointsAtMax (variable) of class ROS2::LidarTemplate is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplateUtils.h:20: warning: Member GetTemplate(LidarTemplate::LidarModel model) (function) of class ROS2::LidarTemplateUtils is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplateUtils.h:21: warning: Member TotalPointCount(const LidarTemplate &t) (function) of class ROS2::LidarTemplateUtils is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Lidar/LidarTemplateUtils.h:23: warning: argument 'model' of command @param is not found in the argument list of ROS2::LidarTemplateUtils::PopulateRayDirections(const LidarTemplate &lidarTemplate, const AZ::Vector3 &rootRotation)
