@@ -142,6 +142,9 @@ namespace ROS2
                 cameraInfo.height = descriptor.m_size.m_height;
                 cameraInfo.distortion_model = sensor_msgs::distortion_models::PLUMB_BOB;
                 cameraInfo.k = m_cameraSensor->GetCameraSensorDescription().m_cameraIntrinsics;
+                cameraInfo.p.fill(0.0);
+                std::copy(cameraInfo.k.begin(), cameraInfo.k.end(), cameraInfo.p.begin());
+
                 m_cameraInfoPublisher->publish(cameraInfo);
             });
     }
