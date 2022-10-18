@@ -64,10 +64,10 @@ namespace ROS2
         // (cx, cy).
         const auto w = static_cast<double>(m_width);
         const auto h = static_cast<double>(m_height);
-        const double horizontalFoV = 2.0 * AZStd::atan(AZStd::tan(m_verticalFieldOfViewRad / 2.0) / m_aspectRatio);
+        const double horizontalFoV = 2.0 * AZStd::atan(AZStd::tan(m_verticalFieldOfViewRad / 2.0) * m_aspectRatio);
         const double focalLengthX = w / (2.0 * AZStd::tan(horizontalFoV / 2.0));
         const double focalLengthY = h / (2.0 * AZStd::tan(m_verticalFieldOfViewRad / 2.0));
-        return { focalLengthY, 0.0, h / 2.0, 0.0, focalLengthX, w / 2.0, 0.0, 0.0, 1.0 };
+        return { focalLengthX, 0.0, w / 2.0, 0.0, focalLengthY, h / 2.0, 0.0, 0.0, 1.0 };
     }
 
     CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription)
@@ -128,7 +128,7 @@ namespace ROS2
     void CameraSensor::RequestFrame(
         const AZ::Transform& cameraPose, std::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback)
     {
-        AZ::Transform inverse = cameraPose.GetInverse();
+        AZ::Transform inverse = (cameraPose * kAtomToRos).GetInverse();
         m_view->SetWorldToViewMatrix(AZ::Matrix4x4::CreateFromQuaternionAndTranslation(inverse.GetRotation(), inverse.GetTranslation()));
 
         AZ::Render::FrameCaptureId captureId = AZ::Render::InvalidFrameCaptureId;

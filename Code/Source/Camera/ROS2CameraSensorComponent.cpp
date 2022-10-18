@@ -16,8 +16,8 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
-#include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <AzToolsFramework/ToolsComponents/TransformComponent.h>
 
 #include <sensor_msgs/distortion_models.hpp>
 #include <sensor_msgs/image_encodings.hpp>
@@ -47,53 +47,6 @@ namespace ROS2
         }
     } // namespace Internal
 
-
-    namespace FrameHelpers
-    {
-        AZ::TransformInterface* GetEntityTransformInterface(const AZ::Entity* entity)
-        {
-            // TODO - instead, use EditorFrameComponent to handle Editor-context queries and here only use the "Game" version
-            if (!entity)
-            {
-                AZ_Error("GetEntityTransformInterface", false, "Invalid entity!");
-                return nullptr;
-            }
-
-            auto* interface = entity->FindComponent<AzFramework::TransformComponent>();
-            if (interface)
-            {
-                return interface;
-            }
-            return entity->FindComponent<AzToolsFramework::Components::TransformComponent>();
-        }
-
-
-        const ROS2FrameComponent* GetFirstROS2FrameAncestor(const AZ::Entity* entity)
-        {
-            AZ::TransformInterface* entityTransformInterface = GetEntityTransformInterface(entity);
-            if (!entityTransformInterface)
-            {
-                AZ_Error("GetFirstROS2FrameAncestor", false, "Invalid transform interface!");
-                return nullptr;
-            }
-
-            AZ::EntityId parentEntityId = entityTransformInterface->GetParentId();
-            if (!parentEntityId.IsValid())
-            { // We have reached the top level, there is no parent entity so there can be no parent ROS2Frame
-                return nullptr;
-            }
-
-            const AZ::Entity* parentEntity = AzToolsFramework::GetEntityById(parentEntityId);
-            auto* component = Utils::GetGameOrEditorComponent<ROS2FrameComponent>(parentEntity);
-            if (component == nullptr)
-            { // Parent entity has no ROS2Frame, but there can still be a ROS2Frame in its ancestors
-                return GetFirstROS2FrameAncestor(parentEntity);
-            }
-
-            // Found the component!
-            return component;
-        }
-    };
     ROS2CameraSensorComponent::ROS2CameraSensorComponent()
     {
         m_sensorConfiguration.m_frequency = 10;
@@ -101,15 +54,6 @@ namespace ROS2
             Internal::MakePublisherConfigurationPair("camera_image", Internal::kImageMessageType));
         m_sensorConfiguration.m_publishersConfigurations.insert(
             Internal::MakePublisherConfigurationPair("camera_info", Internal::kCameraInfoMessageType));
-    }
-
-    void ROS2CameraSensorComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
-    {
-    }
-
-    void ROS2CameraSensorComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
-    {
-        provided.push_back(AZ_CRC_CE("ROS2Frame"));
     }
 
     void ROS2CameraSensorComponent::Reflect(AZ::ReflectContext* context)
@@ -121,10 +65,7 @@ namespace ROS2
                 ->Version(1)
                 ->Field("VerticalFieldOfViewDeg", &ROS2CameraSensorComponent::m_VerticalFieldOfViewDeg)
                 ->Field("Width", &ROS2CameraSensorComponent::m_width)
-                ->Field("Height", &ROS2CameraSensorComponent::m_height)
-                ->Field("Namespace Configuration", &ROS2CameraSensorComponent::m_namespaceConfiguration)
-                ->Field("Frame Name", &ROS2CameraSensorComponent::m_frameName)
-                ->Field("Publish Transform", &ROS2CameraSensorComponent::m_publishTransform);
+                ->Field("Height", &ROS2CameraSensorComponent::m_height);
 
             AZ::EditContext* ec = serialize->GetEditContext();
             if (ec)
@@ -139,15 +80,7 @@ namespace ROS2
                         "Vertical field of view",
                         "Camera's vertical (y axis) field of view in degrees.")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_width, "Image width", "Image width")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_height, "Image height", "Image height")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &ROS2CameraSensorComponent::m_namespaceConfiguration,
-                        "Namespace Configuration",
-                        "Namespace Configuration")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_frameName, "Frame Name", "Frame Name")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_publishTransform, "Publish Transform", "Publish Transform");
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_height, "Image height", "Image height");
             }
         }
     }
@@ -171,45 +104,12 @@ namespace ROS2
 
         m_cameraSensor.emplace(
             CameraSensorDescription{ Internal::GetCameraNameFromFrame(GetEntity()), m_VerticalFieldOfViewDeg, m_width, m_height });
-
-        m_namespaceConfiguration.PopulateNamespace(false, GetEntity()->GetName());
-
-        if (m_publishTransform)
-        {
-            m_ros2Transform = AZStd::make_unique<ROS2Transform>(GetParentFrameID(), GetFrameID(), true);
-        }
-    }
-
-    AZStd::string ROS2CameraSensorComponent::GetParentFrameID() const
-    {
-        auto parentFrame = FrameHelpers::GetFirstROS2FrameAncestor(GetEntity());
-        if (parentFrame != nullptr)
-        {
-            return parentFrame->GetFrameID();
-        }
-
-        AZStd::string parentNamespace("");
-        return ROS2Names::GetNamespacedName(m_namespaceConfiguration.GetNamespace(parentNamespace), AZStd::string("camera"));
-    }
-
-    void ROS2CameraSensorComponent::OnTick(float deltaTime, AZ::ScriptTimePoint time)
-    {
-        ROS2SensorComponent::OnTick(deltaTime, time);
-        m_ros2Transform->Publish(GetFrameTransform());
-    }
-
-    const AZ::Transform& ROS2CameraSensorComponent::GetFrameTransform() const
-    {
-        auto* interface = GetEntity()->FindComponent<AzFramework::TransformComponent>();
-        // todo: apply transform modification
-        return interface->GetLocalTM();
     }
 
     void ROS2CameraSensorComponent::Deactivate()
     {
         m_cameraSensor.reset();
         ROS2SensorComponent::Deactivate();
-        m_ros2Transform.reset();
     }
 
     void ROS2CameraSensorComponent::FrequencyTick()
@@ -245,9 +145,8 @@ namespace ROS2
                 cameraInfo.height = descriptor.m_size.m_height;
                 cameraInfo.distortion_model = sensor_msgs::distortion_models::PLUMB_BOB;
                 cameraInfo.k = m_cameraSensor->GetCameraSensorDescription().m_cameraIntrinsics;
-                cameraInfo.p = {cameraInfo.k[0],cameraInfo.k[1],cameraInfo.k[2], 0,
-                                 cameraInfo.k[3],cameraInfo.k[4],cameraInfo.k[5], 0,
-                                 cameraInfo.k[6],cameraInfo.k[7],cameraInfo.k[8], 0};
+                cameraInfo.p = { cameraInfo.k[0], cameraInfo.k[1], cameraInfo.k[2], 0, cameraInfo.k[3], cameraInfo.k[4], cameraInfo.k[5], 0,
+                                 cameraInfo.k[6], cameraInfo.k[7], cameraInfo.k[8], 0 };
 
                 m_cameraInfoPublisher->publish(cameraInfo);
             });
