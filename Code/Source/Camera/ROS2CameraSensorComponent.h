@@ -15,6 +15,9 @@
 
 #include <AzCore/Component/Component.h>
 
+#include <ROS2/Frame/NamespaceConfiguration.h>
+#include <ROS2/Frame/ROS2Transform.h>
+
 #include "CameraSensor.h"
 
 namespace ROS2
@@ -34,6 +37,9 @@ namespace ROS2
         AZ_COMPONENT(ROS2CameraSensorComponent, "{3C6B8AE6-9721-4639-B8F9-D8D28FD7A071}", ROS2SensorComponent);
         static void Reflect(AZ::ReflectContext* context);
 
+        static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
+        static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& required);
+
         void Activate() override;
         void Deactivate() override;
 
@@ -44,8 +50,20 @@ namespace ROS2
 
         void FrequencyTick() override;
 
+        void OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time) override;
+
+        const AZ::Transform& GetFrameTransform() const;
+
+        AZStd::string GetParentFrameID() const;
+
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> m_imagePublisher;
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::CameraInfo>> m_cameraInfoPublisher;
         std::optional<CameraSensor> m_cameraSensor;
+
+        NamespaceConfiguration m_namespaceConfiguration;
+        AZStd::string m_frameName = "camera_frame";
+
+        bool m_publishTransform = true;
+        AZStd::unique_ptr<ROS2Transform> m_ros2Transform;
     };
 } // namespace ROS2

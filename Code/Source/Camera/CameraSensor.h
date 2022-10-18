@@ -27,6 +27,7 @@ namespace ROS2
         CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height);
 
         const float m_verticalFieldOfViewDeg; //!< camera vertical field of view
+        double m_verticalFieldOfViewRad;
         const int m_width; //!< camera image width in pixels
         const int m_height; //!< camera image height in pixels
         const AZStd::string m_cameraName; //!< camera name to differentiate cameras in a multi-camera setup
