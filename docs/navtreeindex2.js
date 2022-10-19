@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a65fe81cbb10418c37f972a4c23e9388d":[2,0,1,7,0],
 "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html":[2,0,1,10],
 "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html#a71aec3a8c41a5a4a8189e5cf28b33d39":[2,0,1,10,1],
 "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html#ac6a98fc0048ee06c6d9d45bf8dc3c758":[2,0,1,10,0],
