@@ -28,4 +28,6 @@ set(FILES
     Source/RobotImporter/URDF/JointsMaker.h
     Source/RobotImporter/URDF/PrefabMakerUtils.cpp
     Source/RobotImporter/URDF/PrefabMakerUtils.cpp
+    Source/RobotImporter/Utils/RobotImporterUtils.h
+    Source/RobotImporter/Utils/RobotImporterUtils.cpp
 )

@@ -43,7 +43,7 @@ namespace ROS2::PrefabMakerUtils
         return assetPath;
     }
 
-    void SetEntityTransform(const urdf::Pose& origin, AZ::EntityId entityId)
+    void SetEntityTransformLocal(const urdf::Pose& origin, AZ::EntityId entityId)
     {
         urdf::Vector3 urdfPosition = origin.position;
         urdf::Rotation urdfRotation = origin.rotation;

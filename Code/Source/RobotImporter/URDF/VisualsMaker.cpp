@@ -86,7 +86,7 @@ namespace ROS2
     void VisualsMaker::AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId)
     {
         // Apply transform as per origin
-        PrefabMakerUtils::SetEntityTransform(visual->origin, entityId);
+        PrefabMakerUtils::SetEntityTransformLocal(visual->origin, entityId);
 
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         auto geometry = visual->geometry;

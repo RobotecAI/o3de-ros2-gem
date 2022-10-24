@@ -374,6 +374,7 @@ namespace ROS2
             if (!pxmodelPath)
             {
                 AZ_Error(Internal::collidersMakerLoggingTag, false, "Could not find pxmodel for %s", azMeshPath.c_str());
+                entity->Deactivate();
                 return;
             }
 
