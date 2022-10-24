@@ -52,6 +52,8 @@ set(FILES
         Source/Frame/ROS2Transform.cpp
         Source/Utilities/ROS2Conversions.cpp
         Source/Utilities/ROS2Names.cpp
+        Source/Utilities/SubscriberConfiguration.cpp
+        Source/Utilities/SubscriberConfiguration.h
         Source/GNSS/ROS2GNSSSensorComponent.cpp
         Source/GNSS/ROS2GNSSSensorComponent.h
         Source/GNSS/GNSSFormatConversions.cpp

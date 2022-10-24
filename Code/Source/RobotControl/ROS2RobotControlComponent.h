@@ -12,6 +12,7 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 #include <AzToolsFramework/ToolsComponents/GenericComponentWrapper.h>
+#include <Utilities/SubscriberConfiguration.h>
 
 namespace ROS2
 {
@@ -32,6 +33,10 @@ namespace ROS2
 
         void SetControlConfiguration(const ControlConfiguration& controlConfiguration);
 
+        const SubscriberConfiguration& GetSubscriberConfigration() const;
+
+        void SetSubscriberConfiguration(const SubscriberConfiguration& subscriberConfiguration);
+
         // AZ::Component interface implementation.
         void Activate() override;
         void Deactivate() override;
@@ -44,5 +49,6 @@ namespace ROS2
     private:
         AZStd::unique_ptr<IControlSubscriptionHandler> m_subscriptionHandler;
         ControlConfiguration m_controlConfiguration;
+        SubscriberConfiguration m_subscriberConfiguration;
     };
 } // namespace ROS2
