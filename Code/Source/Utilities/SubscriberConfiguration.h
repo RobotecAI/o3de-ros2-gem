@@ -18,7 +18,7 @@ namespace ROS2
     struct SubscriberConfiguration
     {
     public:
-        AZ_TYPE_INFO(SubscriberConfiguration, "{7F875348-F2F9-404A-841E-D9A749EA4E79}");
+        AZ_TYPE_INFO(SubscriberConfiguration, "{7C09FBF8-1CFA-4D3E-9D5C-17BFB6683818}");
         static void Reflect(AZ::ReflectContext* context);
 
         AZStd::string m_type = "std_msgs::msg::Empty"; //!< descriptive topic type for identification.

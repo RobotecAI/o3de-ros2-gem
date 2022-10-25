@@ -8,7 +8,7 @@
 #include <ROS2SystemComponent.h>
 
 #include "QoS/QoS.h"
-#include "Sensor/PublisherConfiguration.h"
+#include "Utilities/PublisherConfiguration.h"
 
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
