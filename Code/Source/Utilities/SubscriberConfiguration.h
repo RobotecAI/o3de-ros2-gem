@@ -21,7 +21,6 @@ namespace ROS2
         AZ_TYPE_INFO(SubscriberConfiguration, "{7C09FBF8-1CFA-4D3E-9D5C-17BFB6683818}");
         static void Reflect(AZ::ReflectContext* context);
 
-        AZStd::string m_type = "std_msgs::msg::Empty"; //!< descriptive topic type for identification.
         AZStd::string m_topic = "default_topic"; //!< Topic to subscribe. Final topic will have a namespace added.
 
         //! Get topic QoS (Quality of Service) settings.

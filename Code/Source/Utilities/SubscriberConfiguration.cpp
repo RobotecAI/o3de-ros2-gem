@@ -18,7 +18,6 @@ namespace ROS2
         {
             serializeContext->Class<SubscriberConfiguration>()
                 ->Version(1)
-                ->Field("Type", &SubscriberConfiguration::m_type)
                 ->Field("Topic", &SubscriberConfiguration::m_topic)
                 ->Field("QoS", &SubscriberConfiguration::m_qos);
 
@@ -26,7 +25,6 @@ namespace ROS2
             {
                 ec->Class<SubscriberConfiguration>("Subscriber configuration", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &SubscriberConfiguration::m_type, "Type", "Type of topic messages")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &SubscriberConfiguration::m_topic, "Topic", "Topic with no namespace")
                     ->Attribute(AZ::Edit::Attributes::ChangeValidate, &ROS2Names::ValidateTopicField)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &SubscriberConfiguration::m_qos, "QoS", "Quality of Service");
