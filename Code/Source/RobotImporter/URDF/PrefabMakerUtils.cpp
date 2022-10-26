@@ -7,7 +7,7 @@
  */
 
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/URDF/TypeConversions.h"
+#include "RobotImporter/Utils/TypeConversions.h"
 #include <AzCore/Math/Quaternion.h>
 #include <AzCore/Utils/Utils.h>
 #include <AzCore/std/string/conversions.h>
@@ -132,4 +132,5 @@ namespace ROS2::PrefabMakerUtils
         const AZStd::string suffix = index == 0 ? AZStd::string() : AZStd::string::format("_%zu", index);
         return AZStd::string::format("%s_%s%s", rootName.c_str(), type.c_str(), suffix.c_str());
     }
+
 } // namespace ROS2::PrefabMakerUtils

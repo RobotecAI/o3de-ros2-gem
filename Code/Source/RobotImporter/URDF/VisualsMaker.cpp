@@ -8,7 +8,7 @@
 
 #include "RobotImporter/URDF/VisualsMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/URDF/TypeConversions.h"
+#include "RobotImporter/Utils/TypeConversions.h"
 
 #include <AtomLyIntegration/CommonFeatures/Material/MaterialComponentBus.h>
 #include <AtomLyIntegration/CommonFeatures/Material/MaterialComponentConstants.h>

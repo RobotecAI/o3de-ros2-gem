@@ -8,8 +8,8 @@
 
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/URDF/TypeConversions.h"
 #include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "RobotImporter/Utils/TypeConversions.h"
 #include <AzCore/Asset/AssetManagerBus.h>
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/StringFunc/StringFunc.h>

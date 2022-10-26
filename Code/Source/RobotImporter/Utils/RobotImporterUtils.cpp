@@ -7,8 +7,8 @@
  */
 
 #include "RobotImporterUtils.h"
-#include "RobotImporter/URDF/TypeConversions.h"
-#include <AzCore/std //string/regex.h>
+#include "TypeConversions.h"
+#include <AzCore/std/string/regex.h>
 namespace ROS2
 {
 
