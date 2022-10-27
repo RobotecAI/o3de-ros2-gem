@@ -9,6 +9,7 @@
 #include "RobotImporter/URDF/CollidersMaker.h"
 #include "RobotImporter/URDF/PrefabMakerUtils.h"
 #include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "RobotImporter/Utils/SourceAssetsStorage.h"
 #include "RobotImporter/Utils/TypeConversions.h"
 #include <AzCore/Asset/AssetManagerBus.h>
 #include <AzCore/Serialization/Json/JsonUtils.h>
@@ -28,15 +29,6 @@ namespace ROS2
     namespace Internal
     {
         static const char* collidersMakerLoggingTag = "CollidersMaker";
-
-        AZ::IO::Path GetFullURDFMeshPath(AZ::IO::Path modelPath, AZ::IO::Path meshPath)
-        {
-            modelPath.RemoveFilename();
-            AZ::StringFunc::Replace(meshPath.Native(), "package://", "", true, true);
-            modelPath /= meshPath;
-
-            return modelPath;
-        }
 
         AZStd::optional<AZ::IO::Path> GetMeshProductPathFromSourcePath(const AZ::IO::Path& sourcePath)
         {
@@ -107,8 +99,8 @@ namespace ROS2
         }
     } // namespace Internal
 
-    CollidersMaker::CollidersMaker(AZStd::string modelPath)
-        : m_modelPath(AZStd::move(modelPath))
+    CollidersMaker::CollidersMaker(const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping)
+        : m_urdfAssetsMapping(urdfAssetsMapping)
         , m_stopBuildFlag(false)
     {
         FindWheelMaterial();
@@ -117,7 +109,10 @@ namespace ROS2
     CollidersMaker::~CollidersMaker()
     {
         m_stopBuildFlag = true;
-        m_buildThread.join();
+        if (m_buildThread.joinable())
+        {
+            m_buildThread.join();
+        }
     };
 
     void CollidersMaker::FindWheelMaterial()
@@ -172,7 +167,16 @@ namespace ROS2
         if (!isPrimitiveShape)
         {
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-            auto azMeshPath = Internal::GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
+            const AZStd::string urdfMeshPath{ meshGeometry->filename.c_str(), meshGeometry->filename.size() };
+
+            if (!m_urdfAssetsMapping->contains(urdfMeshPath))
+            {
+                AZ_Warning(Internal::collidersMakerLoggingTag, false, "there is no asset for  mesh %s ", urdfMeshPath.c_str());
+                return;
+            }
+
+            // Get asset path for a given model path
+            auto azMeshPath = m_urdfAssetsMapping->at(urdfMeshPath).m_availableAssetInfo.m_sourceAssetGlobalPath;
 
             AZStd::shared_ptr<AZ::SceneAPI::Containers::Scene> scene;
             AZ::SceneAPI::Events::SceneSerializationBus::BroadcastResult(
@@ -225,7 +229,7 @@ namespace ROS2
                 return;
             }
 
-            auto assetInfoFilePath = azMeshPath;
+            auto assetInfoFilePath = AZ::IO::Path{ azMeshPath };
             assetInfoFilePath.Native() += ".assetinfo";
             AZ_Printf(Internal::collidersMakerLoggingTag, "Saving collider manifest to %s", assetInfoFilePath.c_str());
             scene->GetManifest().SaveToFile(assetInfoFilePath.c_str());
@@ -369,7 +373,16 @@ namespace ROS2
             AZ_Printf(Internal::collidersMakerLoggingTag, "Adding mesh collider to %s\n", entityId.ToString().c_str());
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
             AZ_Assert(meshGeometry, "geometry is not meshGeometry");
-            auto azMeshPath = Internal::GetFullURDFMeshPath(AZ::IO::Path(m_modelPath), AZ::IO::Path(meshGeometry->filename.c_str()));
+
+            const AZStd::string urdfMeshPath{ meshGeometry->filename.c_str(), meshGeometry->filename.size() };
+            if (!m_urdfAssetsMapping->contains(urdfMeshPath))
+            {
+                AZ_Warning(Internal::collidersMakerLoggingTag, false, "there is no asset for  mesh %s ", urdfMeshPath.c_str());
+                return;
+            }
+            // Get asset path for a given model path
+            const auto azMeshPath = AZ::IO::Path(m_urdfAssetsMapping->at(urdfMeshPath).m_availableAssetInfo.m_sourceAssetGlobalPath);
+
             AZStd::optional<AZ::IO::Path> pxmodelPath = Internal::GetMeshProductPathFromSourcePath(azMeshPath);
             if (!pxmodelPath)
             {

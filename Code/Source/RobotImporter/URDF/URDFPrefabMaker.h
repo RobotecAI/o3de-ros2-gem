@@ -12,6 +12,7 @@
 #include "RobotImporter/URDF/InertialsMaker.h"
 #include "RobotImporter/URDF/JointsMaker.h"
 #include "RobotImporter/URDF/VisualsMaker.h"
+#include "RobotImporter/Utils/SourceAssetsStorage.h"
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
@@ -22,7 +23,11 @@ namespace ROS2
     class URDFPrefabMaker
     {
     public:
-        URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath);
+        URDFPrefabMaker(
+            const AZStd::string& modelFilePath,
+            urdf::ModelInterfaceSharedPtr model,
+            AZStd::string prefabPath,
+            const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> urdfAssetsMapping);
         ~URDFPrefabMaker() = default;
 
         //! Loads URDF file and builds all required meshes and colliders.
@@ -50,5 +55,7 @@ namespace ROS2
         BuildReadyCallback m_notifyBuildReadyCb;
         AZStd::mutex m_statusLock;
         AZStd::multimap<AZStd::string, AZStd::string> m_status;
+
+        AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
     };
 } // namespace ROS2

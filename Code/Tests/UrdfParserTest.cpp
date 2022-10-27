@@ -409,4 +409,45 @@ namespace UnitTest
         EXPECT_NEAR(expected_translation_link3.GetZ(), transform_from_urdf_link3.GetTranslation().GetZ(), 1e-5);
     }
 
+    TEST_F(UrdfParserTest, TestPathResolvementGlobal)
+    {
+        AZStd::string dae = "file:///home/foo/ros_ws/instal/foo_robot/meshes/bar.dae";
+        AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/foo_robot.urdf";
+        auto result = ROS2::Utils::resolveURDFPath(
+            dae,
+            urdf,
+            [](const AZStd::string& p) -> bool
+            {
+                return false;
+            });
+        EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
+    }
+
+    TEST_F(UrdfParserTest, TestPathResolvementRelative)
+    {
+        AZStd::string dae = "meshes/bar.dae";
+        AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/foo_robot.urdf";
+        auto result = ROS2::Utils::resolveURDFPath(
+            dae,
+            urdf,
+            [](const AZStd::string& p) -> bool
+            {
+                return false;
+            });
+        EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
+    }
+
+    TEST_F(UrdfParserTest, TestPathResolvementRelativePackage)
+    {
+        AZStd::string dae = "package://meshes/bar.dae";
+        AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/description/foo_robot.urdf";
+        AZStd::string xml = "/home/foo/ros_ws/instal/foo_robot/package.xml";
+        auto mockFileSystem = [&](const AZStd::string& p) -> bool
+        {
+            return (p == xml);
+        };
+        auto result = ROS2::Utils::resolveURDFPath(dae, urdf, mockFileSystem);
+        EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
+    }
+
 } // namespace UnitTest

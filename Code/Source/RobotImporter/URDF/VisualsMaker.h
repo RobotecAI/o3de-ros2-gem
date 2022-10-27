@@ -12,6 +12,7 @@
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/std/containers/unordered_map.h>
+#include <RobotImporter/Utils/SourceAssetsStorage.h>
 
 namespace ROS2
 {
@@ -19,7 +20,9 @@ namespace ROS2
     class VisualsMaker
     {
     public:
-        VisualsMaker(const AZ::IO::Path& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials);
+        VisualsMaker(
+            const std::map<std::string, urdf::MaterialSharedPtr>& materials,
+            const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping);
 
         //! Add zero, one or many visual elements to a given entity (depending on link content).
         //! Note that a sub-entity will be added to hold each visual (since they can have different transforms).
@@ -32,7 +35,7 @@ namespace ROS2
         void AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId) const;
         void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId) const;
 
-        AZ::IO::Path m_modelPath; // TODO - this should be handled on level of assets
         AZStd::unordered_map<AZStd::string, urdf::MaterialSharedPtr> m_materials;
+        AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
     };
 } // namespace ROS2

@@ -24,11 +24,16 @@
 
 namespace ROS2
 {
-    URDFPrefabMaker::URDFPrefabMaker(const AZStd::string& modelFilePath, urdf::ModelInterfaceSharedPtr model, AZStd::string prefabPath)
+    URDFPrefabMaker::URDFPrefabMaker(
+        const AZStd::string& modelFilePath,
+        urdf::ModelInterfaceSharedPtr model,
+        AZStd::string prefabPath,
+        const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> urdfAssetsMapping)
         : m_model(model)
-        , m_visualsMaker(modelFilePath, model->materials_)
-        , m_collidersMaker(modelFilePath)
+        , m_visualsMaker(model->materials_, urdfAssetsMapping)
+        , m_collidersMaker(urdfAssetsMapping)
         , m_prefabPath(std::move(prefabPath))
+        , m_urdfAssetsMapping(urdfAssetsMapping)
     {
         AZ_Assert(!m_prefabPath.empty(), "Prefab path is empty");
         AZ_Assert(m_model, "Model is nullptr");

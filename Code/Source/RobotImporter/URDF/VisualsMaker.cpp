@@ -25,8 +25,10 @@
 
 namespace ROS2
 {
-    VisualsMaker::VisualsMaker(const AZ::IO::Path& modelPath, const std::map<std::string, urdf::MaterialSharedPtr>& materials)
-        : m_modelPath(modelPath)
+    VisualsMaker::VisualsMaker(
+        const std::map<std::string, urdf::MaterialSharedPtr>& materials,
+        const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping)
+        : m_urdfAssetsMapping(urdfAssetsMapping)
     {
         AZStd::ranges::for_each(
             materials,
@@ -34,7 +36,6 @@ namespace ROS2
             {
                 m_materials[AZStd::string(p.first.c_str(), p.first.size())] = p.second;
             });
-        AZ_Assert(!m_modelPath.empty(), "modelPath path is empty");
     }
 
     void VisualsMaker::AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId) const
@@ -133,15 +134,17 @@ namespace ROS2
                 auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
                 AZ_Assert(meshGeometry, "geometry is not Mesh");
                 // TODO - a PoC solution for path, replace with something generic, robust, proper
-                AZ::IO::Path modelPath(m_modelPath);
-                modelPath.RemoveFilename();
-                AZ::IO::Path relativePathToMesh(AZStd::string_view(meshGeometry->filename.c_str(), meshGeometry->filename.size()));
-                AZ::StringFunc::Replace(relativePathToMesh.Native(), "package://", "", true, true);
-                modelPath /= relativePathToMesh;
+
+                const AZStd::string urdfMeshPath{ meshGeometry->filename.c_str(), meshGeometry->filename.size() };
+
+                if (!m_urdfAssetsMapping->contains(urdfMeshPath))
+                {
+                    AZ_Warning("AddVisual", false, "there is no asset for  mesh %s ", urdfMeshPath.c_str());
+                    return;
+                }
 
                 // Get asset path for a given model path
-                auto assetPath = PrefabMakerUtils::GetAzModelAssetPathFromModelPath(modelPath);
-
+                auto assetPath = m_urdfAssetsMapping->at(urdfMeshPath).m_availableAssetInfo.m_productAssetRelativePath;
                 entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
 
                 // Prepare scale
