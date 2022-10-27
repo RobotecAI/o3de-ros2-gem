@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "QoS/QoS.h"
+#include "ROS2/Communication/QoS.h"
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>

@@ -50,7 +50,7 @@ namespace ROS2
 
     void ROS2RobotControlComponent::Reflect(AZ::ReflectContext* context)
     {
-        SubscriberConfiguration::Reflect(context);
+        TopicConfiguration::Reflect(context);
         ControlConfiguration::Reflect(context);
 
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
@@ -91,7 +91,7 @@ namespace ROS2
         return m_controlConfiguration;
     }
 
-    const SubscriberConfiguration& ROS2RobotControlComponent::GetSubscriberConfigration() const
+    const TopicConfiguration& ROS2RobotControlComponent::GetSubscriberConfigration() const
     {
         return m_subscriberConfiguration;
     }
@@ -106,7 +106,7 @@ namespace ROS2
         m_controlConfiguration = controlConfiguration;
     }
 
-    void ROS2RobotControlComponent::SetSubscriberConfiguration(const ROS2::SubscriberConfiguration& subscriberConfiguration)
+    void ROS2RobotControlComponent::SetSubscriberConfiguration(const TopicConfiguration& subscriberConfiguration)
     {
         m_subscriberConfiguration = subscriberConfiguration;
     }
