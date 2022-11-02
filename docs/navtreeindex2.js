@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"struct_r_o_s2_1_1_sensor_configuration.html#acbd5c182f213134b49a81b28bd5c87e9":[2,0,0,43,2],
+"struct_r_o_s2_1_1_spawn_point_info.html":[2,0,0,46],
+"struct_r_o_s2_1_1_spawn_point_info.html#a19c7c3510eb3d91fd4d524e6d45ceeaf":[2,0,0,46,1],
 "struct_r_o_s2_1_1_spawn_point_info.html#acb622a4d5adf46a3f6404e3d902d2274":[2,0,0,46,0],
 "struct_r_o_s2_1_1_topic_configuration.html":[2,0,0,47],
 "struct_r_o_s2_1_1_topic_configuration.html#a6427a6fa872ad86fa35fb269e6914dd2":[2,0,0,47,0],

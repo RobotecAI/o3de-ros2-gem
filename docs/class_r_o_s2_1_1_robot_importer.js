@@ -7,5 +7,6 @@ var class_r_o_s2_1_1_robot_importer =
     ] ],
     [ "RobotImporter", "class_r_o_s2_1_1_robot_importer.html#afa9bb4a584386304d4b9b2fbd22dc835", null ],
     [ "CheckIfAssetsWereLoadedAndCreatePrefab", "class_r_o_s2_1_1_robot_importer.html#aad2694e5a679426aba4530fe8134b283", null ],
+    [ "GetProgress", "class_r_o_s2_1_1_robot_importer.html#ae86b1ae8fa5e62fdaaef912f5d318544", null ],
     [ "ParseURDFAndStartLoadingAssets", "class_r_o_s2_1_1_robot_importer.html#a0d40b7624cbe58a689b0bac285f55ca2", null ]
 ];

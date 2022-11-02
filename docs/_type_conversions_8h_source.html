@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>O3DE ROS2 Gem: o3de-ros2-gem/Code/Source/RobotImporter/URDF/TypeConversions.h Source File</title>
+<title>O3DE ROS2 Gem: o3de-ros2-gem/Code/Source/RobotImporter/Utils/TypeConversions.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,29 +95,31 @@ $(document).ready(function(){initNavTree('_type_conversions_8h_source.html','');
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;UrdfParser.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Color.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Quaternion.h&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Vector3.h&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>ROS2::URDF</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html">   19</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html">TypeConversions</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">static</span> AZ::Vector3 ConvertVector3(<span class="keyword">const</span> urdf::Vector3&amp; urdfVector);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">static</span> AZ::Quaternion ConvertQuaternion(<span class="keyword">const</span> urdf::Rotation&amp; urdfQuaternion);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">static</span> AZ::Color ConvertColor(<span class="keyword">const</span> urdf::Color&amp; color);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    };</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;} <span class="comment">// namespace ROS2::URDF</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;AzCore/Math/Transform.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;RobotImporter/URDF/UrdfParser.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Color.h&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Quaternion.h&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Vector3.h&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>ROS2::URDF</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html">   20</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html">TypeConversions</a></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">static</span> AZ::Vector3 ConvertVector3(<span class="keyword">const</span> urdf::Vector3&amp; urdfVector);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">static</span> AZ::Quaternion ConvertQuaternion(<span class="keyword">const</span> urdf::Rotation&amp; urdfQuaternion);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">static</span> AZ::Color ConvertColor(<span class="keyword">const</span> urdf::Color&amp; color);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">static</span> AZ::Transform ConvertPose(<span class="keyword">const</span> urdf::Pose&amp; pose);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    };</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace ROS2::URDF</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_r_o_s2_1_1_u_r_d_f_1_1_type_conversions_html"><div class="ttname"><a href="class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html">ROS2::URDF::TypeConversions</a></div><div class="ttdoc">Common types conversion between urdf and AZ formats.</div><div class="ttdef"><b>Definition:</b> TypeConversions.h:19</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_u_r_d_f_1_1_type_conversions_html"><div class="ttname"><a href="class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html">ROS2::URDF::TypeConversions</a></div><div class="ttdoc">Common types conversion between urdf and AZ formats.</div><div class="ttdef"><b>Definition:</b> TypeConversions.h:20</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_eae6b30a964938d522f79c58154155f0.html">RobotImporter</a></li><li class="navelem"><a class="el" href="dir_a83c0b79dd9a152995ca99aacead9b19.html">URDF</a></li><li class="navelem"><b>TypeConversions.h</b></li>
-    <li class="footer">Generated on Wed Nov 2 2022 11:00:39 for O3DE ROS2 Gem by
+    <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_eae6b30a964938d522f79c58154155f0.html">RobotImporter</a></li><li class="navelem"><a class="el" href="dir_0be81a030332e6e50a23f72b093675b9.html">Utils</a></li><li class="navelem"><b>TypeConversions.h</b></li>
+    <li class="footer">Generated on Wed Nov 2 2022 11:36:52 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

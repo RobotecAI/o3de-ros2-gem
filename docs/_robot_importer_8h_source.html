@@ -125,18 +125,27 @@ $(document).ready(function(){initNavTree('_robot_importer_8h_source.html',''); i
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_robot_importer.html#aad2694e5a679426aba4530fe8134b283">CheckIfAssetsWereLoadedAndCreatePrefab</a>(std::function&lt;<span class="keywordtype">void</span>()&gt; importFinishedCb);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        std::atomic_bool m_isProcessingAssets;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        std::atomic_bool m_loadingURDFFailed;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        std::optional&lt;URDFPrefabMaker&gt; m_prefabMaker;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        LoggerFunction m_logger;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    };</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        AZStd::string GetProgress()</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">if</span> (m_prefabMaker)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">return</span> m_prefabMaker-&gt;getStatus();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        std::atomic_bool m_isProcessingAssets;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        std::atomic_bool m_loadingURDFFailed;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        std::optional&lt;URDFPrefabMaker&gt; m_prefabMaker;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        LoggerFunction m_logger;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    };</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astruct_r_o_s2_1_1_robot_importer_config_html"><div class="ttname"><a href="struct_r_o_s2_1_1_robot_importer_config.html">ROS2::RobotImporterConfig</a></div><div class="ttdoc">Robot importer configuration structure.</div><div class="ttdef"><b>Definition:</b> RobotImporter.h:20</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_urdf_parser_html_a57a63cb877db7301080e28a03b00fd7b"><div class="ttname"><a href="class_r_o_s2_1_1_urdf_parser.html#a57a63cb877db7301080e28a03b00fd7b">ROS2::UrdfParser::ParseFromFile</a></div><div class="ttdeci">static urdf::ModelInterfaceSharedPtr ParseFromFile(const AZStd::string &amp;filePath)</div><div class="ttdef"><b>Definition:</b> UrdfParser.cpp:46</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_urdf_parser_html_a57a63cb877db7301080e28a03b00fd7b"><div class="ttname"><a href="class_r_o_s2_1_1_urdf_parser.html#a57a63cb877db7301080e28a03b00fd7b">ROS2::UrdfParser::ParseFromFile</a></div><div class="ttdeci">static urdf::ModelInterfaceSharedPtr ParseFromFile(const AZStd::string &amp;filePath)</div><div class="ttdef"><b>Definition:</b> UrdfParser.cpp:44</div></div>
 <div class="ttc" id="astruct_r_o_s2_1_1_robot_importer_config_html_aa6addbed164566e20303fc9295b86c19"><div class="ttname"><a href="struct_r_o_s2_1_1_robot_importer_config.html#aa6addbed164566e20303fc9295b86c19">ROS2::RobotImporterConfig::urdfFilePath</a></div><div class="ttdeci">AZStd::string urdfFilePath</div><div class="ttdoc">Path to the robot definition file to import.</div><div class="ttdef"><b>Definition:</b> RobotImporter.h:22</div></div>
 <div class="ttc" id="astruct_r_o_s2_1_1_robot_importer_config_html_af0bd2555ac05da4d6f6a45ab02ad0c54"><div class="ttname"><a href="struct_r_o_s2_1_1_robot_importer_config.html#af0bd2555ac05da4d6f6a45ab02ad0c54">ROS2::RobotImporterConfig::prefabFilePath</a></div><div class="ttdeci">AZStd::string prefabFilePath</div><div class="ttdoc">Path to the prefab file to create.</div><div class="ttdef"><b>Definition:</b> RobotImporter.h:23</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_robot_importer_html_afa9bb4a584386304d4b9b2fbd22dc835"><div class="ttname"><a href="class_r_o_s2_1_1_robot_importer.html#afa9bb4a584386304d4b9b2fbd22dc835">ROS2::RobotImporter::RobotImporter</a></div><div class="ttdeci">RobotImporter(RobotImporter::LoggerFunction logger)</div><div class="ttdef"><b>Definition:</b> RobotImporter.cpp:14</div></div>
@@ -147,7 +156,7 @@ $(document).ready(function(){initNavTree('_robot_importer_8h_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_eae6b30a964938d522f79c58154155f0.html">RobotImporter</a></li><li class="navelem"><a class="el" href="dir_a83c0b79dd9a152995ca99aacead9b19.html">URDF</a></li><li class="navelem"><b>RobotImporter.h</b></li>
-    <li class="footer">Generated on Wed Nov 2 2022 11:00:39 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Nov 2 2022 11:36:52 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

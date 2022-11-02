@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_r_o_s2_1_1_r_o_s2_spawner_component.html#aa9816965a406d6ea715a07afa281c279":[2,0,0,39,3],
 "class_r_o_s2_1_1_r_o_s2_spawner_component.html#abaffe720d068c38c1414ec7aae96b247":[2,0,0,39,0],
 "class_r_o_s2_1_1_r_o_s2_system_component.html":[2,0,0,41],
 "class_r_o_s2_1_1_r_o_s2_system_component.html#a0104a506ae2c7b8605f65357f0e13d0d":[2,0,0,41,0],
@@ -21,11 +22,12 @@ var NAVTREEINDEX1 =
 "class_r_o_s2_1_1_rigid_body_twist_control_component.html#a939634d22b369ef7b0689e262910b20e":[2,0,0,19,1],
 "class_r_o_s2_1_1_rigid_body_twist_control_component.html#afc62d23cbe277cda5d713d936021747c":[2,0,0,19,0],
 "class_r_o_s2_1_1_robot_importer.html":[2,0,0,20],
-"class_r_o_s2_1_1_robot_importer.html#a0d40b7624cbe58a689b0bac285f55ca2":[2,0,0,20,4],
+"class_r_o_s2_1_1_robot_importer.html#a0d40b7624cbe58a689b0bac285f55ca2":[2,0,0,20,5],
 "class_r_o_s2_1_1_robot_importer.html#a7dec60321d888dc23dcac287b29ecff6":[2,0,0,20,1],
 "class_r_o_s2_1_1_robot_importer.html#a7dec60321d888dc23dcac287b29ecff6a18f5f65588332e5c7a24ba89a0d078ec":[2,0,0,20,1,1],
 "class_r_o_s2_1_1_robot_importer.html#a7dec60321d888dc23dcac287b29ecff6a8cfbacbe06aa5dd5aa9a19d99faf7e06":[2,0,0,20,1,0],
 "class_r_o_s2_1_1_robot_importer.html#aad2694e5a679426aba4530fe8134b283":[2,0,0,20,3],
+"class_r_o_s2_1_1_robot_importer.html#ae86b1ae8fa5e62fdaaef912f5d318544":[2,0,0,20,4],
 "class_r_o_s2_1_1_robot_importer.html#ae9dac7c89f5fde61f4adc7e3db79af71":[2,0,0,20,0],
 "class_r_o_s2_1_1_robot_importer.html#afa9bb4a584386304d4b9b2fbd22dc835":[2,0,0,20,2],
 "class_r_o_s2_1_1_robot_importer_widget.html":[2,0,0,22],
@@ -43,9 +45,10 @@ var NAVTREEINDEX1 =
 "class_r_o_s2_1_1_twist_subscription_handler.html":[2,0,0,49],
 "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html":[2,0,0,1,0],
 "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html":[2,0,0,52],
+"class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a030ca590f1c8afc4afd04c76a1580824":[2,0,0,52,4],
 "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a257339af02c630e5a3a4a345eacaa7b7":[2,0,0,52,2],
 "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a4e6adbb280ece621c3c9c1bdc70c2ff2":[2,0,0,52,0],
-"class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a61251c2ee8574c2bbb0d87b116db0ab9":[2,0,0,52,4],
+"class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a61251c2ee8574c2bbb0d87b116db0ab9":[2,0,0,52,5],
 "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#a71bdcc710ca5d3746aa1b1af61a26001":[2,0,0,52,1],
 "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html#acfc79c54eabc3b935e0acf61196cecc8":[2,0,0,52,3],
 "class_r_o_s2_1_1_unique_id_generator.html":[2,0,0,50],
@@ -165,8 +168,8 @@ var NAVTREEINDEX1 =
 "functions_func.html":[2,3,1],
 "functions_vars.html":[2,3,2],
 "hierarchy.html":[2,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "index.html#autotoc_md1":[0,0],
 "namespace_r_o_s2_1_1_prefab_maker_utils.html":[1,0,0,0],
 "namespaces.html":[1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "struct_r_o_s2_1_1_sensor_configuration.html#a1e822f2c0b28fb1ec91b0ea1aa9c29b5":[2,0,0,43,3],
 "struct_r_o_s2_1_1_sensor_configuration.html#a3aa57c0a9787ede10fcabb4f886f49e7":[2,0,0,43,0],
 "struct_r_o_s2_1_1_sensor_configuration.html#a73ea18a76cf9edd580154cc2bae143a5":[2,0,0,43,1],
-"struct_r_o_s2_1_1_sensor_configuration.html#a81c05b0180ea16b8fac07fa9e1008aed":[2,0,0,43,4],
-"struct_r_o_s2_1_1_sensor_configuration.html#acbd5c182f213134b49a81b28bd5c87e9":[2,0,0,43,2],
-"struct_r_o_s2_1_1_spawn_point_info.html":[2,0,0,46],
-"struct_r_o_s2_1_1_spawn_point_info.html#a19c7c3510eb3d91fd4d524e6d45ceeaf":[2,0,0,46,1]
+"struct_r_o_s2_1_1_sensor_configuration.html#a81c05b0180ea16b8fac07fa9e1008aed":[2,0,0,43,4]
 };
