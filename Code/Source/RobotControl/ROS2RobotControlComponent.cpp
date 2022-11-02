@@ -50,13 +50,12 @@ namespace ROS2
 
     void ROS2RobotControlComponent::Reflect(AZ::ReflectContext* context)
     {
-        TopicConfiguration::Reflect(context);
         ControlConfiguration::Reflect(context);
 
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<ROS2RobotControlComponent, AZ::Component>()
-                ->Version(1)
+                ->Version(2)
                 ->Field("ControlConfiguration", &ROS2RobotControlComponent::m_controlConfiguration)
                 ->Field("SubscriberConfiguration", &ROS2RobotControlComponent::m_subscriberConfiguration);
 

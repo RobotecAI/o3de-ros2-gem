@@ -20,7 +20,7 @@ namespace ROS2
                 ->Version(1)
                 ->Field("Type", &TopicConfiguration::m_type)
                 ->Field("Topic", &TopicConfiguration::m_topic)
-                ->Field("Communication", &TopicConfiguration::m_qos);
+                ->Field("QoS", &TopicConfiguration::m_qos);
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
@@ -29,7 +29,7 @@ namespace ROS2
                     ->DataElement(AZ::Edit::UIHandlers::Default, &TopicConfiguration::m_type, "Type", "Type of topic messages")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &TopicConfiguration::m_topic, "Topic", "Topic with no namespace")
                     ->Attribute(AZ::Edit::Attributes::ChangeValidate, &ROS2Names::ValidateTopicField)
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &TopicConfiguration::m_qos, "Communication", "Quality of Service");
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &TopicConfiguration::m_qos, "QoS", "Quality of Service");
             }
         }
     };

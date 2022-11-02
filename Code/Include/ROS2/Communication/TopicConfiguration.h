@@ -24,8 +24,8 @@ namespace ROS2
         AZStd::string m_type = "std_msgs::msg::Empty"; //!< descriptive topic type for identification.
         AZStd::string m_topic = "default_topic"; //!< Topic to publish. Final topic will have a namespace added.
 
-        //! Get topic Communication (Quality of Service) settings.
-        //! @see ROS2::Communication.
+        //! Get topic QoS (Quality of Service) settings.
+        //! @see ROS2::QoS.
         rclcpp::QoS GetQoS() const
         {
             return m_qos.GetQoS();
