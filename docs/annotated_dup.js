@@ -43,6 +43,7 @@ var annotated_dup =
       [ "ROS2LidarSensorComponent", "class_r_o_s2_1_1_r_o_s2_lidar_sensor_component.html", "class_r_o_s2_1_1_r_o_s2_lidar_sensor_component" ],
       [ "ROS2ModuleInterface", "class_r_o_s2_1_1_r_o_s2_module_interface.html", "class_r_o_s2_1_1_r_o_s2_module_interface" ],
       [ "ROS2Names", "class_r_o_s2_1_1_r_o_s2_names.html", null ],
+      [ "ROS2OdometrySensorComponent", "class_r_o_s2_1_1_r_o_s2_odometry_sensor_component.html", "class_r_o_s2_1_1_r_o_s2_odometry_sensor_component" ],
       [ "ROS2Requests", "class_r_o_s2_1_1_r_o_s2_requests.html", "class_r_o_s2_1_1_r_o_s2_requests" ],
       [ "ROS2RobotControlComponent", "class_r_o_s2_1_1_r_o_s2_robot_control_component.html", "class_r_o_s2_1_1_r_o_s2_robot_control_component" ],
       [ "ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component" ],

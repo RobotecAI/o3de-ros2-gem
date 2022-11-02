@@ -50,8 +50,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"class_r_o_s2_1_1_r_o_s2_system_component.html#a7deb9da0f56f10be00c892a24208548f",
-"struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a65fe81cbb10418c37f972a4c23e9388d"
+"class_r_o_s2_1_1_r_o_s2_spawner_component.html#abaffe720d068c38c1414ec7aae96b247",
+"struct_r_o_s2_1_1_spawn_point_info.html#acb622a4d5adf46a3f6404e3d902d2274"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

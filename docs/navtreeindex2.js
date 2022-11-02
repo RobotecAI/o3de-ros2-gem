@@ -1,5 +1,13 @@
 var NAVTREEINDEX2 =
 {
+"struct_r_o_s2_1_1_spawn_point_info.html#acb622a4d5adf46a3f6404e3d902d2274":[2,0,0,46,0],
+"struct_r_o_s2_1_1_topic_configuration.html":[2,0,0,47],
+"struct_r_o_s2_1_1_topic_configuration.html#a6427a6fa872ad86fa35fb269e6914dd2":[2,0,0,47,0],
+"struct_r_o_s2_1_1_topic_configuration.html#a7e0e99dfcacc687c88491f1ad2504a62":[2,0,0,47,1],
+"struct_r_o_s2_1_1_topic_configuration.html#aa611e2a1ea63b880b1b6580c2bc6fa0e":[2,0,0,47,3],
+"struct_r_o_s2_1_1_topic_configuration.html#ae67c2dafda60e822ea49c812252bc500":[2,0,0,47,2],
+"struct_vehicle_dynamics_1_1_steering_dynamics_data.html":[2,0,1,7],
+"struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a03305ffb8e925bc739b392ca154ca959":[2,0,1,7,1],
 "struct_vehicle_dynamics_1_1_steering_dynamics_data.html#a65fe81cbb10418c37f972a4c23e9388d":[2,0,1,7,0],
 "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html":[2,0,1,10],
 "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html#a71aec3a8c41a5a4a8189e5cf28b33d39":[2,0,1,10,1],
