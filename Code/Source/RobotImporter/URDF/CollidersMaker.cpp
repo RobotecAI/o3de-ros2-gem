@@ -138,7 +138,7 @@ namespace ROS2
         {
             m_wheelMaterial =
                 AZ::Data::Asset<Physics::MaterialAsset>(assetId, Physics::MaterialAsset::TYPEINFO_Uuid(), physicsMaterialAssetRelPath);
-            AZ_TracePrintf(Internal::collidersMakerLoggingTag, "Wait for loading asset\n");
+            AZ_TracePrintf(Internal::collidersMakerLoggingTag, "Waiting for asset load\n");
             m_wheelMaterial.BlockUntilLoadComplete();
         }
         else
@@ -302,7 +302,7 @@ namespace ROS2
         const bool isWheelEntity = Utils::IsWheelURDFHeuristics(link);
         if (isWheelEntity)
         {
-            AZ_Printf(Internal::collidersMakerLoggingTag, "%s is wheel", link->name.c_str());
+            AZ_Printf(Internal::collidersMakerLoggingTag, "Due to its name, %s is considered a wheel entity", link->name.c_str());
         }
         const AZ::Data::Asset<Physics::MaterialAsset> materialAsset =
             isWheelEntity ? m_wheelMaterial : AZ::Data::Asset<Physics::MaterialAsset>();
@@ -335,7 +335,7 @@ namespace ROS2
         auto geometry = collision->geometry;
         if (!geometry)
         { // non-empty visual should have a geometry
-            AZ_Warning(Internal::collidersMakerLoggingTag, false, "No Geometry for a collider");
+            AZ_Warning(Internal::collidersMakerLoggingTag, false, "No Geometry for a collider of entity %s", entityId.ToString().c_str());
             return;
         }
 
@@ -390,7 +390,7 @@ namespace ROS2
             return;
         }
 
-        AZ_Printf(Internal::collidersMakerLoggingTag, "URDF geometry type : %d\n", geometry->type);
+        AZ_Printf(Internal::collidersMakerLoggingTag, "URDF geometry type: %d\n", geometry->type);
         switch (geometry->type)
         {
         case urdf::Geometry::SPHERE:
@@ -437,7 +437,7 @@ namespace ROS2
             }
             break;
         default:
-            AZ_Warning(Internal::collidersMakerLoggingTag, false, "Unsupported collider geometry type, %d", geometry->type);
+            AZ_Warning(Internal::collidersMakerLoggingTag, false, "Unsupported collider geometry type: %d", geometry->type);
             break;
         }
     }
@@ -465,7 +465,7 @@ namespace ROS2
                     }
                 }
 
-                AZ_Printf(Internal::collidersMakerLoggingTag, "All URDF assets ready!\n");
+                AZ_Printf(Internal::collidersMakerLoggingTag, "All URDF assets are ready!\n");
                 // Notify the caller that we can continue with constructing the prefab.
                 notifyBuildReadyCb();
             });

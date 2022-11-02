@@ -103,7 +103,7 @@ namespace ROS2
             const auto this_entry = created_links.at(name);
             if (!this_entry.IsSuccess())
             {
-                AZ_TracePrintf("CreatePrefabFromURDF", "Link %s was failed to create", name.c_str());
+                AZ_TracePrintf("CreatePrefabFromURDF", "Link %s creation failed", name.c_str());
                 continue;
             }
             auto parent_ptr = link_ptr->getParent();
@@ -122,7 +122,7 @@ namespace ROS2
             if (!parent_entry->second.IsSuccess())
             {
                 AZ_TracePrintf(
-                    "CreatePrefabFromURDF", "Link %s has parent %s which was failed to create", name.c_str(), parent_name.c_str());
+                    "CreatePrefabFromURDF", "Link %s has parent %s which has failed to create", name.c_str(), parent_name.c_str());
                 continue;
             }
             AZ::TransformBus::Event(this_entry.GetValue(), &AZ::TransformBus::Events::SetParent, parent_entry->second.GetValue());
@@ -220,7 +220,7 @@ namespace ROS2
 
         if (templateId != AzToolsFramework::Prefab::InvalidTemplateId)
         {
-            AZ_TracePrintf("CreatePrefabFromURDF", "Prefab was already loaded \n");
+            AZ_TracePrintf("CreatePrefabFromURDF", "Prefab was already loaded\n");
             prefabSystemComponent->RemoveTemplate(templateId);
         }
 
@@ -230,7 +230,7 @@ namespace ROS2
             AZ::EntityId prefabContainerEntityId = outcome.GetValue();
             PrefabMakerUtils::AddRequiredComponentsToEntity(prefabContainerEntityId);
         }
-        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created %s prefab\n", m_prefabPath.c_str());
+        AZ_TracePrintf("CreatePrefabFromURDF", "Successfully created prefab %s\n", m_prefabPath.c_str());
         return outcome;
     }
 
@@ -255,7 +255,7 @@ namespace ROS2
         if (frameCompontentId)
         {
             auto* component = Utils::GetGameOrEditorComponent<ROS2FrameComponent>(entity);
-            AZ_Assert(component, "Component not exists for %s", entityId.ToString().c_str());
+            AZ_Assert(component, "ROS2 Frame Component does not exist for %s", entityId.ToString().c_str());
             component->SetFrameID(AZStd::string(link->name.c_str(), link->name.size()));
         }
         m_visualsMaker.AddVisuals(link, entityId);

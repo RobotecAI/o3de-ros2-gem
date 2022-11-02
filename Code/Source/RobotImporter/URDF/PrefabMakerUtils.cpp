@@ -80,7 +80,7 @@ namespace ROS2::PrefabMakerUtils
             return AZ::Failure(AZStd::string("Invalid id for created entity"));
         }
 
-        AZ_TracePrintf("CreateEntity", "Processing entity id:%s with name:%s\n", entityId.ToString().c_str(), name.c_str());
+        AZ_TracePrintf("CreateEntity", "Processing entity id: %s with name: %s\n", entityId.ToString().c_str(), name.c_str());
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         entity->SetName(name);
         entity->Deactivate();
