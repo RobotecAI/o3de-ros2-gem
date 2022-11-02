@@ -63,10 +63,10 @@ var hierarchy =
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
+      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
@@ -100,7 +100,6 @@ var hierarchy =
     [ "ROS2::Fbx::NodeWithId", "struct_r_o_s2_1_1_fbx_1_1_node_with_id.html", null ],
     [ "ROS2::Fbx::Constants::Object", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_object.html", null ],
     [ "VehicleDynamics::PidConfiguration", "class_vehicle_dynamics_1_1_pid_configuration.html", null ],
-    [ "ROS2::PublisherConfiguration", "struct_r_o_s2_1_1_publisher_configuration.html", null ],
     [ "ROS2::QoS", "struct_r_o_s2_1_1_qo_s.html", null ],
     [ "QWidget", null, [
       [ "ROS2::RobotImporterWidget", "class_r_o_s2_1_1_robot_importer_widget.html", null ]
@@ -116,6 +115,7 @@ var hierarchy =
     [ "ROS2::SimulationClock", "class_r_o_s2_1_1_simulation_clock.html", null ],
     [ "ROS2::SpawnPointInfo", "struct_r_o_s2_1_1_spawn_point_info.html", null ],
     [ "VehicleDynamics::SteeringDynamicsData", "struct_vehicle_dynamics_1_1_steering_dynamics_data.html", null ],
+    [ "ROS2::TopicConfiguration", "struct_r_o_s2_1_1_topic_configuration.html", null ],
     [ "ROS2::URDF::TypeConversions", "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html", null ],
     [ "ROS2::UniqueIdGenerator", "class_r_o_s2_1_1_unique_id_generator.html", null ],
     [ "ROS2::UrdfParser", "class_r_o_s2_1_1_urdf_parser.html", null ],

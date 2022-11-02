@@ -112,8 +112,8 @@ Collaboration diagram for ROS2::ControlSubscriptionHandler&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5da4f2d620b41fa1ac6348b2601bffc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">Activate</a> (const AZ::Entity *entity, const <a class="el" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> &amp;controlConfiguration) final</td></tr>
-<tr class="separator:a5da4f2d620b41fa1ac6348b2601bffc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dc3e9b01681862ad50f2e667fafaddc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a7dc3e9b01681862ad50f2e667fafaddc">Activate</a> (const AZ::Entity *entity, const <a class="el" href="struct_r_o_s2_1_1_topic_configuration.html">TopicConfiguration</a> &amp;subscriberConfiguration) final</td></tr>
+<tr class="separator:a7dc3e9b01681862ad50f2e667fafaddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa64284de7bb1d7ae26ba759b0536f880"><td class="memItemLeft" align="right" valign="top"><a id="aa64284de7bb1d7ae26ba759b0536f880"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Deactivate</b> () final</td></tr>
 <tr class="separator:aa64284de7bb1d7ae26ba759b0536f880"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,8 +130,8 @@ class ROS2::ControlSubscriptionHandler&lt; T &gt;</h3>
 
 <p>The generic class for handling subscriptions to ROS2 control messages of different types. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="struct_r_o_s2_1_1_control_configuration.html#ae3765105e5e796cb2aa7c282d91d1d67">ControlConfiguration::Steering</a>. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5da4f2d620b41fa1ac6348b2601bffc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da4f2d620b41fa1ac6348b2601bffc3">&#9670;&nbsp;</a></span>Activate()</h2>
+<a id="a7dc3e9b01681862ad50f2e667fafaddc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dc3e9b01681862ad50f2e667fafaddc">&#9670;&nbsp;</a></span>Activate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,8 +150,8 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> &amp;&#160;</td>
-          <td class="paramname"><em>controlConfiguration</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="struct_r_o_s2_1_1_topic_configuration.html">TopicConfiguration</a> &amp;&#160;</td>
+          <td class="paramname"><em>subscriberConfiguration</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -168,12 +168,12 @@ template&lt;typename T &gt; </div>
 <p>Interface handling component activation Only activated IComponentActivationHandler will receive and process control messages. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entity</td><td>Activation context for the owning Component - the entity it belongs to. </td></tr>
-    <tr><td class="paramname">controlConfiguration</td><td>configuration with topic and qos </td></tr>
+    <tr><td class="paramname">subscriberConfiguration</td><td>configuration with topic and qos </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a85b9485d0d6d7e6ba605ee3ed2f9518d">ROS2::IControlSubscriptionHandler</a>.</p>
+<p>Implements <a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a036aa50cc3b826e5f605d1b10755fb44">ROS2::IControlSubscriptionHandler</a>.</p>
 
 </div>
 </div>
@@ -186,7 +186,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html">ControlSubscriptionHandler</a></li>
-    <li class="footer">Generated on Wed Nov 2 2022 09:47:26 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Nov 2 2022 09:59:34 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

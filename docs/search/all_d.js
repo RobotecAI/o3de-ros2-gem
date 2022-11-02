@@ -9,6 +9,5 @@ var searchData=
   ['populateraydirections_117',['PopulateRayDirections',['../class_r_o_s2_1_1_lidar_template_utils.html#a2cb4018e8c8a8b8ab600e293ce69a276',1,'ROS2::LidarTemplateUtils']]],
   ['prefabfilepath_118',['prefabFilePath',['../struct_r_o_s2_1_1_robot_importer_config.html#af0bd2555ac05da4d6f6a45ab02ad0c54',1,'ROS2::RobotImporterConfig']]],
   ['processmeshes_119',['ProcessMeshes',['../class_r_o_s2_1_1_colliders_maker.html#abd47f403dadcd6f82f833b2002994393',1,'ROS2::CollidersMaker']]],
-  ['publish_120',['Publish',['../class_r_o_s2_1_1_r_o_s2_transform.html#acd5e23d22771ce83ad1311ba741ab79c',1,'ROS2::ROS2Transform']]],
-  ['publisherconfiguration_121',['PublisherConfiguration',['../struct_r_o_s2_1_1_publisher_configuration.html',1,'ROS2']]]
+  ['publish_120',['Publish',['../class_r_o_s2_1_1_r_o_s2_transform.html#acd5e23d22771ce83ad1311ba741ab79c',1,'ROS2::ROS2Transform']]]
 ];

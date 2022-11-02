@@ -109,8 +109,8 @@ Inheritance diagram for ROS2::IControlSubscriptionHandler:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a85b9485d0d6d7e6ba605ee3ed2f9518d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a85b9485d0d6d7e6ba605ee3ed2f9518d">Activate</a> (const AZ::Entity *entity, const <a class="el" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> &amp;controlConfiguration)=0</td></tr>
-<tr class="separator:a85b9485d0d6d7e6ba605ee3ed2f9518d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a036aa50cc3b826e5f605d1b10755fb44"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html#a036aa50cc3b826e5f605d1b10755fb44">Activate</a> (const AZ::Entity *entity, const <a class="el" href="struct_r_o_s2_1_1_topic_configuration.html">TopicConfiguration</a> &amp;subscriberConfiguration)=0</td></tr>
+<tr class="separator:a036aa50cc3b826e5f605d1b10755fb44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9caeee0fff3eda4e36fb330b99851b8e"><td class="memItemLeft" align="right" valign="top"><a id="a9caeee0fff3eda4e36fb330b99851b8e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Deactivate</b> ()=0</td></tr>
 <tr class="separator:a9caeee0fff3eda4e36fb330b99851b8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,8 +118,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Deactivate</b
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Component extension enabling polymorphic use of generics. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a85b9485d0d6d7e6ba605ee3ed2f9518d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85b9485d0d6d7e6ba605ee3ed2f9518d">&#9670;&nbsp;</a></span>Activate()</h2>
+<a id="a036aa50cc3b826e5f605d1b10755fb44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a036aa50cc3b826e5f605d1b10755fb44">&#9670;&nbsp;</a></span>Activate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -136,8 +136,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Deactivate</b
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="struct_r_o_s2_1_1_control_configuration.html">ControlConfiguration</a> &amp;&#160;</td>
-          <td class="paramname"><em>controlConfiguration</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="struct_r_o_s2_1_1_topic_configuration.html">TopicConfiguration</a> &amp;&#160;</td>
+          <td class="paramname"><em>subscriberConfiguration</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -154,12 +154,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Deactivate</b
 <p>Interface handling component activation Only activated IComponentActivationHandler will receive and process control messages. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">entity</td><td>Activation context for the owning Component - the entity it belongs to. </td></tr>
-    <tr><td class="paramname">controlConfiguration</td><td>configuration with topic and qos </td></tr>
+    <tr><td class="paramname">subscriberConfiguration</td><td>configuration with topic and qos </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">ROS2::ControlSubscriptionHandler&lt; T &gt;</a>, <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">ROS2::ControlSubscriptionHandler&lt; ackermann_msgs::msg::AckermannDrive &gt;</a>, and <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a5da4f2d620b41fa1ac6348b2601bffc3">ROS2::ControlSubscriptionHandler&lt; geometry_msgs::msg::Twist &gt;</a>.</p>
+<p>Implemented in <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a7dc3e9b01681862ad50f2e667fafaddc">ROS2::ControlSubscriptionHandler&lt; T &gt;</a>, <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a7dc3e9b01681862ad50f2e667fafaddc">ROS2::ControlSubscriptionHandler&lt; ackermann_msgs::msg::AckermannDrive &gt;</a>, and <a class="el" href="class_r_o_s2_1_1_control_subscription_handler.html#a7dc3e9b01681862ad50f2e667fafaddc">ROS2::ControlSubscriptionHandler&lt; geometry_msgs::msg::Twist &gt;</a>.</p>
 
 </div>
 </div>
@@ -172,7 +172,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Deactivate</b
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_i_control_subscription_handler.html">IControlSubscriptionHandler</a></li>
-    <li class="footer">Generated on Wed Nov 2 2022 09:47:26 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Nov 2 2022 09:59:34 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
