@@ -9,8 +9,8 @@
 #include "ROS2OdometrySensorComponent.h"
 #include "ROS2/Frame/ROS2FrameComponent.h"
 #include "ROS2/ROS2Bus.h"
+#include "ROS2/Utilities/ROS2Conversions.h"
 #include "ROS2/Utilities/ROS2Names.h"
-#include "Utilities/ROS2Conversions.h"
 #include <AzFramework/Physics/RigidBodyBus.h>
 
 namespace ROS2
@@ -38,12 +38,12 @@ namespace ROS2
 
     ROS2OdometrySensorComponent::ROS2OdometrySensorComponent()
     {
-        PublisherConfiguration pc;
+        TopicConfiguration tc;
         const AZStd::string type = Internal::kOdometryMsgType;
-        pc.m_type = type;
-        pc.m_topic = "odom";
+        tc.m_type = type;
+        tc.m_topic = "odom";
         m_sensorConfiguration.m_frequency = 10;
-        m_sensorConfiguration.m_publishersConfigurations.insert(AZStd::make_pair(type, pc));
+        m_sensorConfiguration.m_publishersConfigurations.insert(AZStd::make_pair(type, tc));
     }
 
     void ROS2OdometrySensorComponent::FrequencyTick()
@@ -69,10 +69,15 @@ namespace ROS2
         m_odometryPublisher->publish(m_odometryMsg);
     }
 
+    void ROS2OdometrySensorComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
+    {
+        required.push_back(AZ_CRC_CE("PhysicsRigidBodyService"));
+    }
+
     void ROS2OdometrySensorComponent::Activate()
     {
         // "odom" is globally fixed frame for all robots, no matter the namespace
-        m_odometryMsg.header.frame_id = "odom";
+        m_odometryMsg.header.frame_id = ROS2Names::GetNamespacedName(GetNamespace(), "odom").c_str();
         m_odometryMsg.child_frame_id = GetFrameID().c_str();
 
         ROS2SensorComponent::Activate();

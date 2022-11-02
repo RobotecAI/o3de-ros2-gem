@@ -6,6 +6,7 @@
  *
  */
 #pragma once
+
 #include "Sensor/ROS2SensorComponent.h"
 #include <AzCore/Math/Transform.h>
 #include <AzCore/Serialization/SerializeContext.h>
@@ -14,14 +15,17 @@
 
 namespace ROS2
 {
-    //! An Odometry sensor Component.
-    //! Odometry message contains information about vehicle velocity and position in space.
+    //! Odometry sensor Component.
+    //! It constructs and publishes an odometry message, which contains information about vehicle velocity and position in space.
+    //! This is a ground truth "sensor", which can be helpful for development and machine learning.
+    //! @see <a href="https://index.ros.org/p/nav_msgs/"> nav_msgs package. </a>
     class ROS2OdometrySensorComponent : public ROS2SensorComponent
     {
     public:
         AZ_COMPONENT(ROS2OdometrySensorComponent, "{61387448-63AA-4563-AF87-60C72B05B863}", ROS2SensorComponent);
         ROS2OdometrySensorComponent();
         ~ROS2OdometrySensorComponent() = default;
+        static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void Reflect(AZ::ReflectContext* context);
         void Activate() override;
         void Deactivate() override;
