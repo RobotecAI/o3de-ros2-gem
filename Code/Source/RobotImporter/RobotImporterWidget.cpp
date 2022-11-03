@@ -83,6 +83,13 @@ namespace ROS2
                     ReportError("User cancelled");
                     return;
                 }
+
+                if (IsDependencyCyclical(prefabName.Filename()))
+                {
+                    ReportError("Cyclical dependency detected.\nPlease choose another prefab to import or exit the focus mode.");
+                    return;
+                }
+
                 m_robotImporter.ParseURDFAndStartLoadingAssets({ urdfPath.value(), prefabPath->c_str() });
 
                 // Disable the button until the import is complete to prevent the user from clicking it again
@@ -92,6 +99,18 @@ namespace ROS2
             });
 
         setLayout(mainLayout);
+    }
+
+    bool RobotImporterWidget::IsDependencyCyclical(const AZ::IO::PathView& importedPrefabFilename)
+    {
+        AzFramework::EntityContextId context_id;
+        EBUS_EVENT_RESULT(context_id, AzFramework::EntityIdContextQueryBus, GetOwningContextId);
+
+        auto focus_interface = AZ::Interface<AzToolsFramework::Prefab::PrefabFocusInterface>::Get();
+        auto focus_prefab_instance = focus_interface->GetFocusedPrefabInstance(context_id);
+        auto focus_prefab_filename = focus_prefab_instance.value().get().GetTemplateSourcePath().Filename();
+
+        return focus_prefab_filename == importedPrefabFilename;
     }
 
     void RobotImporterWidget::ReportError(const AZStd::string& errorMessage)
