@@ -51,7 +51,7 @@ var NAVTREEINDEX =
 [
 ".html",
 "class_r_o_s2_1_1_r_o_s2_spawner_component.html#aa9816965a406d6ea715a07afa281c279",
-"struct_r_o_s2_1_1_sensor_configuration.html#acbd5c182f213134b49a81b28bd5c87e9"
+"struct_r_o_s2_1_1_sensor_configuration.html#a73ea18a76cf9edd580154cc2bae143a5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

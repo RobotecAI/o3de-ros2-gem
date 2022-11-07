@@ -48,13 +48,13 @@ var hierarchy =
     [ "ROS2::Fbx::Constants::FbxHeader", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_fbx_header.html", null ],
     [ "ROS2::Fbx::Constants::GlobalSettings", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_global_settings.html", null ],
     [ "Handler", null, [
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
+    ] ],
+    [ "Handler", null, [
       [ "ROS2::MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", null ],
       [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
       [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ],
-      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
-    ] ],
-    [ "Handler", null, [
       [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
@@ -64,10 +64,10 @@ var hierarchy =
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
+      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]

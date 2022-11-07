@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>O3DE ROS2 Gem: o3de-ros2-gem/Code/Source/VehicleDynamics/VehicleInputControlBus.h Source File</title>
+<title>O3DE ROS2 Gem: o3de-ros2-gem/Code/Include/ROS2/VehicleDynamics/VehicleInputControlBus.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -117,14 +117,17 @@ $(document).ready(function(){initNavTree('_vehicle_input_control_bus_8h_source.h
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#af941fc68b42c49ab1cf64abaed3ebc0e">SetTargetSteeringFraction</a>(<span class="keywordtype">float</span> steeringFraction) = 0;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#acaa76bb082a10ee35c0779d5012cbedb">SetTargetLinearSpeedFraction</a>(<span class="keywordtype">float</span> speedFraction) = 0;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    };</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">using</span> VehicleInputControlRequestBus = AZ::EBus&lt;VehicleInputControlRequests&gt;;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;} <span class="comment">// namespace VehicleDynamics</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#a5f50afc779b842a8693526a313bccd0f">SetDisableVehicleDynamics</a>(<span class="keywordtype">bool</span> is_disable) = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">using</span> VehicleInputControlRequestBus = AZ::EBus&lt;VehicleInputControlRequests&gt;;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <span class="comment">// namespace VehicleDynamics</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_vehicle_input_control_requests_html_abdbe597062b81b169fdfa5bd51819713"><div class="ttname"><a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abdbe597062b81b169fdfa5bd51819713">VehicleDynamics::VehicleInputControlRequests::SetTargetSteering</a></div><div class="ttdeci">virtual void SetTargetSteering(float steering)=0</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_vehicle_input_control_requests_html_acaa76bb082a10ee35c0779d5012cbedb"><div class="ttname"><a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#acaa76bb082a10ee35c0779d5012cbedb">VehicleDynamics::VehicleInputControlRequests::SetTargetLinearSpeedFraction</a></div><div class="ttdeci">virtual void SetTargetLinearSpeedFraction(float speedFraction)=0</div></div>
+<div class="ttc" id="aclass_vehicle_dynamics_1_1_vehicle_input_control_requests_html_a5f50afc779b842a8693526a313bccd0f"><div class="ttname"><a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#a5f50afc779b842a8693526a313bccd0f">VehicleDynamics::VehicleInputControlRequests::SetDisableVehicleDynamics</a></div><div class="ttdeci">virtual void SetDisableVehicleDynamics(bool is_disable)=0</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_vehicle_input_control_requests_html_abe45b237292f8df914426a345f4abdd8"><div class="ttname"><a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#abe45b237292f8df914426a345f4abdd8">VehicleDynamics::VehicleInputControlRequests::SetTargetLinearSpeed</a></div><div class="ttdeci">virtual void SetTargetLinearSpeed(float speedMps)=0</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_vehicle_input_control_requests_html_af941fc68b42c49ab1cf64abaed3ebc0e"><div class="ttname"><a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html#af941fc68b42c49ab1cf64abaed3ebc0e">VehicleDynamics::VehicleInputControlRequests::SetTargetSteeringFraction</a></div><div class="ttdeci">virtual void SetTargetSteeringFraction(float steeringFraction)=0</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_vehicle_input_control_requests_html"><div class="ttname"><a href="class_vehicle_dynamics_1_1_vehicle_input_control_requests.html">VehicleDynamics::VehicleInputControlRequests</a></div><div class="ttdef"><b>Definition:</b> VehicleInputControlBus.h:19</div></div>
@@ -132,8 +135,8 @@ $(document).ready(function(){initNavTree('_vehicle_input_control_bus_8h_source.h
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_499f366640df058874cfb96c5930cd36.html">VehicleDynamics</a></li><li class="navelem"><b>VehicleInputControlBus.h</b></li>
-    <li class="footer">Generated on Thu Nov 3 2022 08:53:12 for O3DE ROS2 Gem by
+    <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_9022305039626e0c58b15f77be73727d.html">Include</a></li><li class="navelem"><a class="el" href="dir_425207894c42c9b6aec7b3a29627c951.html">ROS2</a></li><li class="navelem"><a class="el" href="dir_0d102ebf15f6525171c810eae25f5b26.html">VehicleDynamics</a></li><li class="navelem"><b>VehicleInputControlBus.h</b></li>
+    <li class="footer">Generated on Mon Nov 7 2022 12:26:01 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
