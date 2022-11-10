@@ -58,13 +58,7 @@ namespace ROS2
         options.isDisabledInSimMode = true;
         options.isDeletable = true;
 
-        options.toolbarIcon = ":/ROS2/ROS_9DotsLogo_white.svg";
-        AZStd::function<QWidget*(QWidget*)> windowCreationFunc = []([[maybe_unused]] QWidget* parent = nullptr)
-        {
-            parent->setWindowFlag(Qt::WindowType::Window);
-            return parent;
-        };
-
+        options.toolbarIcon = ":/ROS2/ROS_import_icon.svg";
         AzToolsFramework::RegisterViewPane<RobotImporterWidget>("Robot Importer", "ROS2", options);
     }
 } // namespace ROS2

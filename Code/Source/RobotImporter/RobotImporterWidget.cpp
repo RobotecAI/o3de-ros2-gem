@@ -15,6 +15,8 @@
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include "RobotImporter/URDF/UrdfParser.h"
 #include "RobotImporter/Utils/RobotImporterUtils.h"
+#include <QApplication>
+#include <QScreen>
 
 namespace ROS2
 {
@@ -42,7 +44,7 @@ namespace ROS2
         m_fileDialog->setNameFilter("URDF (*.urdf *.udf)");
         m_button = new QPushButton("...", this);
         // TODO remove this!
-        m_textEdit = new QLineEdit("/home/michal/01-myfirst_prismatic.urdf", this);
+        m_textEdit = new QLineEdit("", this);
         setTitle("Load URDF file");
         QVBoxLayout* layout = new QVBoxLayout;
         layout->addStretch();
@@ -205,11 +207,11 @@ namespace ROS2
         m_prefabName->setText(QString::fromUtf8(prefabName.data(), int(prefabName.size())));
     }
 
-    void PrefabMakerPage::onCreateButtonPressed()
+    AZStd::string PrefabMakerPage::getPrefabName() const
     {
-        AZStd::string prefabName(m_prefabName->text().toUtf8().constData());
-        m_parentImporterWidget->CreatePrefab(prefabName);
+        return AZStd::string(m_prefabName->text().toUtf8().constData());
     }
+
     void PrefabMakerPage::reportProgress(const AZStd::string& progressForUser)
     {
         m_log->setText(QString::fromUtf8(progressForUser.data(), int(progressForUser.size())));
@@ -239,6 +241,22 @@ namespace ROS2
         addPage(m_prefabMakerPage);
 
         connect(this, &QWizard::currentIdChanged, this, &RobotImporterWidget::onCurrentIdChanged);
+        connect(m_prefabMakerPage, &QWizardPage::completeChanged, this, &RobotImporterWidget::OnUrdfCreated);
+        connect(m_prefabMakerPage, &PrefabMakerPage::onCreateButtonPressed, this, &RobotImporterWidget::onCreateButtonPressed);
+        connect(
+            this,
+            &QWizard::customButtonClicked,
+            this,
+            [this](int id)
+            {
+                if (id == QWizard::CustomButton1)
+                {
+                    this->onCreateButtonPressed();
+                }
+            });
+
+        void onCreateButtonPressed();
+
         setWindowTitle("Robot Import Wizard");
         connect(
             this,
@@ -251,53 +269,64 @@ namespace ROS2
             });
     }
 
+    void RobotImporterWidget::OnUrdfCreated()
+    {
+        // hide cancel and back buttons when last page succeed
+        if (currentPage() == m_prefabMakerPage)
+        {
+            QWizard::button(QWizard::CancelButton)->hide();
+            QWizard::button(QWizard::BackButton)->hide();
+            QWizard::button(QWizard::CustomButton1)->hide();
+        }
+    }
+
+    void RobotImporterWidget::OpenUrdf()
+    {
+        m_urdfPath = AZStd::string(m_fileSelectPage->getFileName().toUtf8().constData());
+        if (!m_urdfPath.empty())
+        {
+            AZ_Printf("Wizard", "Testing urdf file : %s", m_urdfPath.c_str());
+            m_parsedUrdf = UrdfParser::ParseFromFile(m_urdfPath);
+            QString report;
+            const auto log = UrdfParser::getUrdfParsingLog();
+            if (m_parsedUrdf)
+            {
+                report += "# The URDF was parsed and opened successfully\n";
+                // get rid of old prefab maker
+                m_prefabMaker.reset();
+                // let us skip this page
+                AZ_Printf("Wizard", "Wizard skips m_checkUrdfPage since there is no errors in URDF");
+                m_meshNames = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), true, true);
+            }
+            else
+            {
+                report += "# The URDF was not opened\n";
+                report += "URDF parser returned following errors:\n\n";
+            }
+            if (!log.empty())
+            {
+                report += "`";
+                report += QString::fromUtf8(log.data(), int(log.size()));
+                report += "`";
+            }
+            m_checkUrdfPage->ReportURDFResult(report, m_parsedUrdf != nullptr);
+        }
+    }
+
     void RobotImporterWidget::onCurrentIdChanged(int id)
     {
         AZ_Printf("Wizard", "Wizard at page %d", id);
-        if (currentPage() == m_checkUrdfPage)
-        {
-            m_urdfPath = AZStd::string(m_fileSelectPage->getFileName().toUtf8().constData());
-            if (!m_urdfPath.empty())
-            {
-                AZ_Printf("Wizard", "Testing urdf file : %s", m_urdfPath.c_str());
-                m_parsedUrdf = UrdfParser::ParseFromFile(m_urdfPath);
-                QString report;
-                const auto log = UrdfParser::getUrdfParsingLog();
-                if (m_parsedUrdf)
-                {
-                    report += "# The URDF was parsed and opened successfully\n";
-                    // get rid of old prefab maker
-                    m_prefabMaker.reset();
-                    // let us skip this page
-                    AZ_Printf("Wizard", "Wizard skips m_checkUrdfPage since there is no errors in URDF");
-                    next();
-                }
-                else
-                {
-                    report += "# The URDF was not opened\n";
-                    report += "URDF parser returned following errors:\n\n";
-                }
-                if (!log.empty())
-                {
-                    report += "`";
-                    report += QString::fromUtf8(log.data(), int(log.size()));
-                    report += "`";
-                }
-                m_checkUrdfPage->ReportURDFResult(report, m_parsedUrdf != nullptr);
-            }
-        }
-        else if (currentPage() == m_assetPage)
+
+        if (currentPage() == m_assetPage)
         {
             m_assetPage->ClearAssetsList();
             if (m_parsedUrdf)
             {
-                auto all_meshes = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), true, true);
                 m_urdfAssetsMapping = AZStd::make_shared<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>(
-                    Utils::findAssetsForUrdf(all_meshes, m_urdfPath));
+                    Utils::findAssetsForUrdf(m_meshNames, m_urdfPath));
                 auto colliders_names = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
                 auto visual_names = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
-                // TODO - code is placeholder
-                for (auto& mesh_path : all_meshes)
+                for (auto& mesh_path : m_meshNames)
                 {
                     const AZStd::string kNotFound = "not found";
 
@@ -329,12 +358,6 @@ namespace ROS2
                         m_assetPage->ReportAsset(mesh_path, kNotFound, kNotFound, AZ::Crc32(), kNotFound);
                     };
                 }
-
-                if (colliders_names.size() == 0 && visual_names.size() == 0)
-                {
-                    AZ_Printf("Wizard", "Wizard skips m_assetPage since there is no meshes in URDF");
-                    next();
-                }
             }
         }
         else if (currentPage() == m_prefabMakerPage)
@@ -343,8 +366,40 @@ namespace ROS2
             {
                 AZStd::string robotName = AZStd::string(m_parsedUrdf->getName().c_str(), m_parsedUrdf->getName().size()) + ".prefab";
                 m_prefabMakerPage->setProposedPrefabName(robotName);
+                QWizard::button(QWizard::CustomButton1)->setText("Create Prefab");
+                QWizard::setOption(QWizard::HaveCustomButton1, true);
             }
         }
+    }
+
+    bool RobotImporterWidget::validateCurrentPage()
+    {
+        if (currentPage() == m_fileSelectPage)
+        {
+            OpenUrdf();
+        }
+        return currentPage()->validatePage();
+    }
+
+    int RobotImporterWidget::nextId() const
+    {
+        if (currentPage() == m_fileSelectPage)
+        {
+            if (m_parsedUrdf)
+            {
+                if (m_meshNames.size() == 0)
+                {
+                    // skip two pages when urdf is parsed without problems, and it has no meshes
+                    return m_assetPage->nextId();
+                }
+                else
+                {
+                    // skip one page when urdf is parsed without problems
+                    return m_checkUrdfPage->nextId();
+                }
+            }
+        }
+        return currentPage()->nextId();
     }
 
     void RobotImporterWidget::CreatePrefab(AZStd::string prefabName)
@@ -382,6 +437,12 @@ namespace ROS2
             m_prefabMakerPage->setSuccess(false);
         }
     }
+
+    void RobotImporterWidget::onCreateButtonPressed()
+    {
+        CreatePrefab(m_prefabMakerPage->getPrefabName());
+    }
+
 
     bool RobotImporterWidget::CheckCyclicalDependency(const AZ::IO::PathView& importedPrefabFilename)
     {

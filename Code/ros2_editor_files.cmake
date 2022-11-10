@@ -5,7 +5,7 @@
 
 set(FILES
     ../Assets/Editor/Images/Icons/Resources.qrc
-    ../Assets/Editor/Images/Icons/ROS_9DotsLogo_white.svg
+    ../Assets/Editor/Images/Icons/ROS_import_icon.svg
     Source/ROS2EditorSystemComponent.cpp
     Source/ROS2EditorSystemComponent.h
     Source/ROS2GemUtilities.cpp

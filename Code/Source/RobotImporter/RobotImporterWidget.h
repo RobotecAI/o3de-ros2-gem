@@ -107,12 +107,14 @@ namespace ROS2
     public:
         explicit PrefabMakerPage(RobotImporterWidget* parent);
         void setProposedPrefabName(const AZStd::string prefabName);
+        AZStd::string getPrefabName() const;
         void reportProgress(const AZStd::string& progressForUser);
         void setSuccess(bool success);
         bool isComplete() const override;
+    Q_SIGNALS:
+        void onCreateButtonPressed();
 
     private:
-        void onCreateButtonPressed();
         bool m_success;
         QLineEdit* m_prefabName;
         QPushButton* m_createButton;
@@ -129,6 +131,11 @@ namespace ROS2
         void CreatePrefab(AZStd::string prefabName);
 
     private:
+        int nextId() const override;
+        bool validateCurrentPage() override;
+        void OpenUrdf();
+        void OnUrdfCreated();
+        void onCreateButtonPressed();
         FileSelectionPage* m_fileSelectPage;
         CheckUrdfPage* m_checkUrdfPage;
         CheckAssetPage* m_assetPage;
@@ -140,6 +147,7 @@ namespace ROS2
         AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
 
         AZStd::unique_ptr<URDFPrefabMaker> m_prefabMaker;
+        AZStd::unordered_set<AZStd::string> m_meshNames;
         void ImporterTimerUpdate();
         void onCurrentIdChanged(int id);
 
