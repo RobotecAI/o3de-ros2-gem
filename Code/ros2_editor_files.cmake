@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 set(FILES
+    ../Assets/Editor/Images/Icons/Resources.qrc
+    ../Assets/Editor/Images/Icons/ROS_9DotsLogo_white.svg
     Source/ROS2EditorSystemComponent.cpp
     Source/ROS2EditorSystemComponent.h
     Source/ROS2GemUtilities.cpp

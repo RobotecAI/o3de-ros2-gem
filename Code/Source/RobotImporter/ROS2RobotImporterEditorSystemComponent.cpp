@@ -58,7 +58,7 @@ namespace ROS2
         options.isDisabledInSimMode = true;
         options.isDeletable = true;
 
-        // options.toolbarIcon = ":/.svg"; // TODO - icon
+        options.toolbarIcon = ":/ROS2/ROS_9DotsLogo_white.svg";
         AZStd::function<QWidget*(QWidget*)> windowCreationFunc = []([[maybe_unused]] QWidget* parent = nullptr)
         {
             parent->setWindowFlag(Qt::WindowType::Window);
