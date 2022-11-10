@@ -44,8 +44,8 @@ namespace ROS2
 
         //! Checks if the importedPrefabFilename is the same as focused prefab name.
         //! @param importedPrefabFilename name of imported prefab
-        //! @return True if names of prefabs are identical
-        bool IsDependencyCyclical(const AZ::IO::PathView& importedPrefabFilename);
+        //! @return True if names of prefabs are identical or an erorr occured during validation
+        bool CheckCyclicalDependency(const AZ::IO::PathView& importedPrefabFilename);
 
         QLabel m_statusLabel;
         QTextEdit m_statusText;
