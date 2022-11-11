@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 60
     env:
 #     vv Change the o3de hash (LONG FORMAT!) here to fit the build vv
-      O3DE_SHA: bb79fa363586e907de7c736dee554fbdae6e570d
+      O3DE_SHA: 773da3a12364dc4bbab162798ecc496874c71901
       ROS_DISTRO: galactic
     steps:
       - name: O3DE ROS 2 Gem checkout
