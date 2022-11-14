@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['lidarraycaster_218',['LidarRaycaster',['../class_r_o_s2_1_1_lidar_raycaster.html',1,'ROS2']]],
-  ['lidartemplate_219',['LidarTemplate',['../struct_r_o_s2_1_1_lidar_template.html',1,'ROS2']]],
-  ['lidartemplateutils_220',['LidarTemplateUtils',['../class_r_o_s2_1_1_lidar_template_utils.html',1,'ROS2']]]
+  ['namespaceconfiguration_193',['NamespaceConfiguration',['../struct_r_o_s2_1_1_namespace_configuration.html',1,'ROS2']]]
 ];

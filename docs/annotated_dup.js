@@ -1,14 +1,6 @@
 var annotated_dup =
 [
     [ "ROS2", null, [
-      [ "Fbx", null, [
-        [ "Color", "struct_r_o_s2_1_1_fbx_1_1_color.html", "struct_r_o_s2_1_1_fbx_1_1_color" ],
-        [ "Constants", "struct_r_o_s2_1_1_fbx_1_1_constants.html", "struct_r_o_s2_1_1_fbx_1_1_constants" ],
-        [ "FbxGenerator", "class_r_o_s2_1_1_fbx_1_1_fbx_generator.html", "class_r_o_s2_1_1_fbx_1_1_fbx_generator" ],
-        [ "Node", "class_r_o_s2_1_1_fbx_1_1_node.html", "class_r_o_s2_1_1_fbx_1_1_node" ],
-        [ "NodeWithId", "struct_r_o_s2_1_1_fbx_1_1_node_with_id.html", "struct_r_o_s2_1_1_fbx_1_1_node_with_id" ],
-        [ "RawString", "struct_r_o_s2_1_1_fbx_1_1_raw_string.html", "struct_r_o_s2_1_1_fbx_1_1_raw_string" ]
-      ] ],
       [ "URDF", null, [
         [ "TypeConversions", "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html", null ]
       ] ],
@@ -60,10 +52,8 @@ var annotated_dup =
       [ "TopicConfiguration", "struct_r_o_s2_1_1_topic_configuration.html", "struct_r_o_s2_1_1_topic_configuration" ],
       [ "TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", "class_r_o_s2_1_1_twist_notifications" ],
       [ "TwistSubscriptionHandler", "class_r_o_s2_1_1_twist_subscription_handler.html", null ],
-      [ "UniqueIdGenerator", "class_r_o_s2_1_1_unique_id_generator.html", null ],
       [ "UrdfParser", "class_r_o_s2_1_1_urdf_parser.html", null ],
       [ "URDFPrefabMaker", "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html", "class_r_o_s2_1_1_u_r_d_f_prefab_maker" ],
-      [ "UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", "class_r_o_s2_1_1_urdf_to_fbx_converter" ],
       [ "VisualsMaker", "class_r_o_s2_1_1_visuals_maker.html", "class_r_o_s2_1_1_visuals_maker" ]
     ] ],
     [ "VehicleDynamics", null, [

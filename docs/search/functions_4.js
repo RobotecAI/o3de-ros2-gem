@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['haschildren_315',['HasChildren',['../class_r_o_s2_1_1_fbx_1_1_node.html#af4fe0f1425523f3982737ca5555a95ec',1,'ROS2::Fbx::Node']]],
-  ['hasproperties_316',['HasProperties',['../class_r_o_s2_1_1_fbx_1_1_node.html#ac851e61da7ba62abd9239aff7078ec20',1,'ROS2::Fbx::Node']]]
+  ['initializepid_269',['InitializePid',['../class_vehicle_dynamics_1_1_pid_configuration.html#aeffadc46b3609e7313534a2133e06a39',1,'VehicleDynamics::PidConfiguration']]]
 ];

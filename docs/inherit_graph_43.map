@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_r_o_s2_1_1_visuals_maker.html" title="Populates a given entity with all the contents of the &lt;visual&gt; tag in robot description." alt="" coords="5,5,157,32"/>
+<area shape="rect" id="node1" href="$struct_vehicle_dynamics_1_1_wheel_dynamics_data.html" title="Data structure to pass wheel dynamics data for a single wheel entity." alt="" coords="5,5,284,32"/>
 </map>

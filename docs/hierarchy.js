@@ -5,7 +5,6 @@ var hierarchy =
     [ "ROS2::CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", null ],
     [ "ROS2::CameraSensorDescription", "struct_r_o_s2_1_1_camera_sensor_description.html", null ],
     [ "ROS2::CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", null ],
-    [ "ROS2::Fbx::Color", "struct_r_o_s2_1_1_fbx_1_1_color.html", null ],
     [ "Component", null, [
       [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ],
       [ "ROS2::MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", null ],
@@ -33,7 +32,6 @@ var hierarchy =
     [ "ComponentBus", null, [
       [ "ROS2::SpawnerRequests", "class_r_o_s2_1_1_spawner_requests.html", null ]
     ] ],
-    [ "ROS2::Fbx::Constants", "struct_r_o_s2_1_1_fbx_1_1_constants.html", null ],
     [ "ROS2::ControlConfiguration", "struct_r_o_s2_1_1_control_configuration.html", null ],
     [ "VehicleDynamics::DriveModel", "class_vehicle_dynamics_1_1_drive_model.html", [
       [ "VehicleDynamics::AckermannDriveModel", "class_vehicle_dynamics_1_1_ackermann_drive_model.html", null ]
@@ -44,11 +42,8 @@ var hierarchy =
       [ "ROS2::TwistNotifications", "class_r_o_s2_1_1_twist_notifications.html", null ],
       [ "VehicleDynamics::VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", null ]
     ] ],
-    [ "ROS2::Fbx::FbxGenerator", "class_r_o_s2_1_1_fbx_1_1_fbx_generator.html", null ],
-    [ "ROS2::Fbx::Constants::FbxHeader", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_fbx_header.html", null ],
-    [ "ROS2::Fbx::Constants::GlobalSettings", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_global_settings.html", null ],
     [ "Handler", null, [
-      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
+      [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", null ],
@@ -58,22 +53,22 @@ var hierarchy =
       [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
-    ] ],
-    [ "Handler", null, [
-      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
+      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
-    ] ],
-    [ "Handler", null, [
-      [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
-    ] ],
-    [ "Handler", null, [
       [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
     ] ],
     [ "ROS2::IControlSubscriptionHandler", "class_r_o_s2_1_1_i_control_subscription_handler.html", [
       [ "ROS2::ControlSubscriptionHandler< ackermann_msgs::msg::AckermannDrive >", "class_r_o_s2_1_1_control_subscription_handler.html", [
@@ -92,20 +87,15 @@ var hierarchy =
     [ "ROS2::LidarTemplate", "struct_r_o_s2_1_1_lidar_template.html", null ],
     [ "ROS2::LidarTemplateUtils", "class_r_o_s2_1_1_lidar_template_utils.html", null ],
     [ "VehicleDynamics::ManualControlEventHandler", "class_vehicle_dynamics_1_1_manual_control_event_handler.html", null ],
-    [ "ROS2::Fbx::Constants::Material", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_material.html", null ],
     [ "Module", null, [
       [ "ROS2::ROS2ModuleInterface", "class_r_o_s2_1_1_r_o_s2_module_interface.html", null ]
     ] ],
     [ "ROS2::NamespaceConfiguration", "struct_r_o_s2_1_1_namespace_configuration.html", null ],
-    [ "ROS2::Fbx::Node", "class_r_o_s2_1_1_fbx_1_1_node.html", null ],
-    [ "ROS2::Fbx::NodeWithId", "struct_r_o_s2_1_1_fbx_1_1_node_with_id.html", null ],
-    [ "ROS2::Fbx::Constants::Object", "struct_r_o_s2_1_1_fbx_1_1_constants_1_1_object.html", null ],
     [ "VehicleDynamics::PidConfiguration", "class_vehicle_dynamics_1_1_pid_configuration.html", null ],
     [ "ROS2::QoS", "struct_r_o_s2_1_1_qo_s.html", null ],
     [ "QWidget", null, [
       [ "ROS2::RobotImporterWidget", "class_r_o_s2_1_1_robot_importer_widget.html", null ]
     ] ],
-    [ "ROS2::Fbx::RawString", "struct_r_o_s2_1_1_fbx_1_1_raw_string.html", null ],
     [ "ROS2::RobotImporter", "class_r_o_s2_1_1_robot_importer.html", null ],
     [ "ROS2::RobotImporterConfig", "struct_r_o_s2_1_1_robot_importer_config.html", null ],
     [ "ROS2::ROS2Conversions", "class_r_o_s2_1_1_r_o_s2_conversions.html", null ],
@@ -118,10 +108,8 @@ var hierarchy =
     [ "VehicleDynamics::SteeringDynamicsData", "struct_vehicle_dynamics_1_1_steering_dynamics_data.html", null ],
     [ "ROS2::TopicConfiguration", "struct_r_o_s2_1_1_topic_configuration.html", null ],
     [ "ROS2::URDF::TypeConversions", "class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html", null ],
-    [ "ROS2::UniqueIdGenerator", "class_r_o_s2_1_1_unique_id_generator.html", null ],
     [ "ROS2::UrdfParser", "class_r_o_s2_1_1_urdf_parser.html", null ],
     [ "ROS2::URDFPrefabMaker", "class_r_o_s2_1_1_u_r_d_f_prefab_maker.html", null ],
-    [ "ROS2::UrdfToFbxConverter", "class_r_o_s2_1_1_urdf_to_fbx_converter.html", null ],
     [ "VehicleDynamics::VehicleConfiguration", "class_vehicle_dynamics_1_1_vehicle_configuration.html", null ],
     [ "VehicleDynamics::VehicleInputsState", "struct_vehicle_dynamics_1_1_vehicle_inputs_state.html", null ],
     [ "VehicleDynamics::VehicleModelLimits", "struct_vehicle_dynamics_1_1_vehicle_model_limits.html", null ],
