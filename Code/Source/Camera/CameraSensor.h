@@ -24,7 +24,8 @@ namespace ROS2
         //! @param verticalFov - vertical field of view of camera sensor
         //! @param width - camera image width in pixels
         //! @param height - camera image height in pixels
-        CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height);
+        //! @param isDepth - camera will produce depth image
+        CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height, bool isDepth);
 
         const float m_verticalFieldOfViewDeg; //!< camera vertical field of view
         double m_verticalFieldOfViewRad;
@@ -35,6 +36,7 @@ namespace ROS2
         const float m_aspectRatio; //!< camera image aspect ratio; equal to (width / height)
         const AZ::Matrix4x4 m_viewToClipMatrix; //!< camera view to clip space transform matrix; derived from other parameters
         const AZStd::array<double, 9> m_cameraIntrinsics; //!< camera intrinsics; derived from other parameters
+        bool m_depthCamera{ false }; //!< camera will produce depth instead of RGB
 
     private:
         AZ::Matrix4x4 MakeViewToClipMatrix() const;

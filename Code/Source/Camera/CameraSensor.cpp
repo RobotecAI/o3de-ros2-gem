@@ -17,11 +17,22 @@
 #include <AzFramework/Components/TransformComponent.h>
 #include <AzFramework/Scene/SceneSystemInterface.h>
 
+#include <Atom/RPI.Public/FeatureProcessorFactory.h>
+#include <Atom/RPI.Public/Pass/PassSystemInterface.h>
 #include <PostProcess/PostProcessFeatureProcessor.h>
+
+#include <Atom/RPI.Public/Pass/PassFactory.h>
 
 namespace ROS2
 {
-    CameraSensorDescription::CameraSensorDescription(const AZStd::string& cameraName, float verticalFov, int width, int height)
+    namespace Internal
+    {
+        const char* RosCameraColorPipeline = "PipelineRenderToTextureROSColor";
+        const char* RosCameraDepthPipeline = "PipelineRenderToTextureROSDepth";
+
+    } // namespace Internal
+    CameraSensorDescription::CameraSensorDescription(
+        const AZStd::string& cameraName, float verticalFov, int width, int height, bool isDepth)
         : m_verticalFieldOfViewDeg(verticalFov)
         , m_verticalFieldOfViewRad(AZ::DegToRad(m_verticalFieldOfViewDeg))
         , m_width(width)
@@ -30,6 +41,7 @@ namespace ROS2
         , m_aspectRatio(static_cast<float>(width) / static_cast<float>(height))
         , m_viewToClipMatrix(MakeViewToClipMatrix())
         , m_cameraIntrinsics(MakeCameraIntrinsics())
+        , m_depthCamera(isDepth)
     {
         validateParameters();
     }
@@ -80,14 +92,17 @@ namespace ROS2
         m_view->SetViewToClipMatrix(cameraSensorDescription.m_viewToClipMatrix);
         m_scene = AZ::RPI::RPISystemInterface::Get()->GetSceneByName(AZ::Name("Main"));
 
-        AZStd::string pipelineName = cameraSensorDescription.m_cameraName + "Pipeline";
+        const AZStd::string pipelineName =
+            cameraSensorDescription.m_cameraName + "Pipeline" + (m_cameraSensorDescription.m_depthCamera ? "_Color" : "_Depth");
 
         AZ::RPI::RenderPipelineDescriptor pipelineDesc;
         pipelineDesc.m_mainViewTagName = "MainCamera";
         pipelineDesc.m_name = pipelineName;
-        pipelineDesc.m_rootPassTemplate = "MainPipelineRenderToTexture";
-        // TODO: expose sample count to user as it might substantially affect the performance
-        pipelineDesc.m_renderSettings.m_multisampleState.m_samples = 4;
+
+        pipelineDesc.m_rootPassTemplate =
+            m_cameraSensorDescription.m_depthCamera ? Internal::RosCameraDepthPipeline : Internal::RosCameraColorPipeline;
+
+        pipelineDesc.m_renderSettings.m_multisampleState = AZ::RPI::RPISystemInterface::Get()->GetApplicationMultisampleState();
         m_pipeline = AZ::RPI::RenderPipeline::CreateRenderPipeline(pipelineDesc);
         m_pipeline->RemoveFromRenderTick();
 

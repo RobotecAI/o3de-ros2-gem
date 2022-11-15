@@ -44,11 +44,16 @@ namespace ROS2
         float m_VerticalFieldOfViewDeg = 90.0f;
         int m_width = 640;
         int m_height = 480;
+        bool m_colorCamera = true;
+        bool m_depthCamera = true;
 
         void FrequencyTick() override;
-
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> m_imagePublisher;
+        std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> m_depthPublisher;
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::CameraInfo>> m_cameraInfoPublisher;
-        std::optional<CameraSensor> m_cameraSensor;
+        std::optional<CameraSensor> m_cameraSensorColor;
+        std::optional<CameraSensor> m_cameraSensorDepth;
+        AZStd::array<double, 9> m_cameraIntrinsics;
+        AZStd::string m_frameName;
     };
 } // namespace ROS2
