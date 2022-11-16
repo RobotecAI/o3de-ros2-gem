@@ -99,8 +99,8 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#ad63a5e451b277e8e8b1e9f20776e42cc">~CameraSensor</a> ()</td></tr>
 <tr class="memdesc:ad63a5e451b277e8e8b1e9f20776e42cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitializes rendering pipeline for the camera sensor. <br /></td></tr>
 <tr class="separator:ad63a5e451b277e8e8b1e9f20776e42cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e0a75345e37adc0873651d7a00f7add"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#a3e0a75345e37adc0873651d7a00f7add">RequestFrame</a> (const AZ::Transform &amp;cameraPose, std::function&lt; void(const AZ::RPI::AttachmentReadback::ReadbackResult &amp;result)&gt; callback)</td></tr>
-<tr class="separator:a3e0a75345e37adc0873651d7a00f7add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ee76159cad11ffbda3a163f9bcc25fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#a3ee76159cad11ffbda3a163f9bcc25fd">RequestFrame</a> (const AZ::Transform &amp;cameraPose, AZStd::function&lt; void(const AZ::RPI::AttachmentReadback::ReadbackResult &amp;result)&gt; callback)</td></tr>
+<tr class="separator:a3ee76159cad11ffbda3a163f9bcc25fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49ca929a051b8775b6caf4617cd386ec"><td class="memItemLeft" align="right" valign="top"><a id="a49ca929a051b8775b6caf4617cd386ec"></a>
 const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">CameraSensorDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#a49ca929a051b8775b6caf4617cd386ec">GetCameraSensorDescription</a> () const</td></tr>
 <tr class="memdesc:a49ca929a051b8775b6caf4617cd386ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to get camera sensor description. <br /></td></tr>
@@ -134,8 +134,8 @@ const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">Came
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3e0a75345e37adc0873651d7a00f7add"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e0a75345e37adc0873651d7a00f7add">&#9670;&nbsp;</a></span>RequestFrame()</h2>
+<a id="a3ee76159cad11ffbda3a163f9bcc25fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ee76159cad11ffbda3a163f9bcc25fd">&#9670;&nbsp;</a></span>RequestFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,7 +149,7 @@ const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">Came
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::function&lt; void(const AZ::RPI::AttachmentReadback::ReadbackResult &amp;result)&gt;&#160;</td>
+          <td class="paramtype">AZStd::function&lt; void(const AZ::RPI::AttachmentReadback::ReadbackResult &amp;result)&gt;&#160;</td>
           <td class="paramname"><em>callback</em>&#160;</td>
         </tr>
         <tr>
@@ -179,7 +179,7 @@ const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">Came
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html">CameraSensor</a></li>
-    <li class="footer">Generated on Mon Nov 14 2022 11:33:31 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Nov 16 2022 14:07:02 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
