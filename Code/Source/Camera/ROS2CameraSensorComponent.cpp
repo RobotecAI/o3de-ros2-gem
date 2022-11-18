@@ -48,15 +48,20 @@ namespace ROS2
 
     } // namespace Internal
 
-    ROS2CameraSensorComponent::ROS2CameraSensorComponent()
+    ROS2CameraSensorComponent::ROS2CameraSensorComponent(
+        const SensorConfiguration& sensorConfiguration,
+        float verticalFieldOfViewDeg,
+        int width,
+        int height,
+        bool colorCamera,
+        bool depthCamera)
     {
-        m_sensorConfiguration.m_frequency = 10;
-        m_sensorConfiguration.m_publishersConfigurations.insert(
-            Internal::MakeTopicConfigurationPair("camera_image_color", Internal::kImageMessageType, Internal::kColorImageConfig));
-        m_sensorConfiguration.m_publishersConfigurations.insert(
-            Internal::MakeTopicConfigurationPair("camera_image_depth", Internal::kImageMessageType, Internal::kDepthImageConfig));
-        m_sensorConfiguration.m_publishersConfigurations.insert(
-            Internal::MakeTopicConfigurationPair("camera_info", Internal::kCameraInfoMessageType, Internal::kInfoConfig));
+        m_sensorConfiguration = sensorConfiguration;
+        m_VerticalFieldOfViewDeg = verticalFieldOfViewDeg;
+        m_width = width;
+        m_height = height;
+        m_colorCamera = colorCamera;
+        m_depthCamera = depthCamera;
     }
 
     void ROS2CameraSensorComponent::Reflect(AZ::ReflectContext* context)
@@ -71,24 +76,6 @@ namespace ROS2
                 ->Field("Height", &ROS2CameraSensorComponent::m_height)
                 ->Field("Depth", &ROS2CameraSensorComponent::m_depthCamera)
                 ->Field("Color", &ROS2CameraSensorComponent::m_colorCamera);
-
-            AZ::EditContext* ec = serialize->GetEditContext();
-            if (ec)
-            {
-                ec->Class<ROS2CameraSensorComponent>("ROS2 Camera Sensor", "[Camera component]")
-                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &ROS2CameraSensorComponent::m_VerticalFieldOfViewDeg,
-                        "Vertical field of view",
-                        "Camera's vertical (y axis) field of view in degrees.")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_width, "Image width", "Image width")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_height, "Image height", "Image height")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_colorCamera, "Color Camera", "Color Camera")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &ROS2CameraSensorComponent::m_depthCamera, "Depth Camera", "Depth Camera");
-            }
         }
     }
 

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Camera/ROS2CameraSensorComponent.h"
+#include "Camera/ROS2CameraSensorEditorComponent.h"
 #include "GNSS/ROS2GNSSSensorComponent.h"
 #include "Imu/ROS2ImuSensorComponent.h"
 #include "Lidar/ROS2LidarSensorComponent.h"
@@ -51,10 +52,10 @@ namespace ROS2
                   ROS2OdometrySensorComponent::CreateDescriptor(),
                   ROS2FrameComponent::CreateDescriptor(),
                   ROS2RobotControlComponent::CreateDescriptor(),
-                  ROS2CameraSensorComponent::CreateDescriptor(),
                   AckermannControlComponent::CreateDescriptor(),
                   RigidBodyTwistControlComponent::CreateDescriptor(),
                   ROS2CameraSensorComponent::CreateDescriptor(),
+                  ROS2CameraSensorEditorComponent::CreateDescriptor(),
                   ROS2SpawnerComponent::CreateDescriptor(),
                   ROS2SpawnPointComponent::CreateDescriptor(),
                   VehicleDynamics::VehicleModelComponent::CreateDescriptor(),

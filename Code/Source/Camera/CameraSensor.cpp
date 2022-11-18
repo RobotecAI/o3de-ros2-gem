@@ -15,7 +15,6 @@
 #include <Atom/RPI.Public/RenderPipeline.h>
 #include <Atom/RPI.Public/Scene.h>
 #include <AzFramework/Components/TransformComponent.h>
-#include <AzFramework/Scene/SceneSystemInterface.h>
 
 #include <Atom/RPI.Public/FeatureProcessorFactory.h>
 #include <Atom/RPI.Public/Pass/PassSystemInterface.h>

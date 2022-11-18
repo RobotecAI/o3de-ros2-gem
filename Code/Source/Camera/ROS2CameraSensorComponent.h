@@ -32,7 +32,14 @@ namespace ROS2
     class ROS2CameraSensorComponent : public ROS2SensorComponent
     {
     public:
-        ROS2CameraSensorComponent();
+        ROS2CameraSensorComponent() = default;
+        ROS2CameraSensorComponent(
+            const SensorConfiguration& sensorConfiguration,
+            float verticalFieldOfViewDeg,
+            int width,
+            int height,
+            bool colorCamera,
+            bool depthCamera);
         ~ROS2CameraSensorComponent() override = default;
         AZ_COMPONENT(ROS2CameraSensorComponent, "{3C6B8AE6-9721-4639-B8F9-D8D28FD7A071}", ROS2SensorComponent);
         static void Reflect(AZ::ReflectContext* context);
