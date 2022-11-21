@@ -47,6 +47,21 @@ namespace ROS2
         void validateParameters() const;
     };
 
+    struct FrameTask
+    {
+        std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> publisher;
+        std_msgs::msg::Header header;
+        AZ::RHI::Format format;
+        AZStd::shared_ptr<AZStd::vector<uint8_t>> dataBuffer;
+        uint32_t width;
+        uint32_t height;
+
+        bool operator<(const FrameTask& r) const
+        {
+            return header.stamp.nanosec >= r.header.stamp.nanosec;
+        }
+    };
+
     //! Class to create camera sensor using Atom renderer
     //! It creates dedicated rendering pipeline for each camera
     class CameraSensor
@@ -59,14 +74,17 @@ namespace ROS2
         //! Deinitializes rendering pipeline for the camera sensor
         virtual ~CameraSensor();
 
-        //! Function publish Image Message frame from rendering pipeline
+        //! Function adds FrameTask related to Image Message frame from rendering pipeline to the queue
         //! @param publisher - ROS2 publisher to publish image in future
         //! @param header - header with filled message information (frame, timestamp, seq)
         //! @param cameraPose - current camera pose from which the rendering should take place
-        void publishMassage(
+        void publishMessage(
             std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> publisher,
             const AZ::Transform& cameraPose,
             const std_msgs::msg::Header& header);
+
+        //! Function publishes all tasks that are in the queue at the moment
+        void ProcessQueue();
 
         //! Function to get camera sensor description
         [[nodiscard]] const CameraSensorDescription& GetCameraSensorDescription() const;
@@ -84,6 +102,8 @@ namespace ROS2
         AZ::RPI::RenderPipelinePtr m_pipeline;
         AZ::RPI::ViewPtr m_view;
         AZ::RPI::Scene* m_scene = nullptr;
+        AZStd::shared_ptr<AZStd::mutex> m_mutex;
+        AZStd::shared_ptr<AZStd::priority_queue<FrameTask>> m_frames_publish_queue;
         const AZ::Transform kAtomToRos{ AZ::Transform::CreateFromQuaternion(
             AZ::Quaternion::CreateFromMatrix3x3(AZ::Matrix3x3::CreateFromRows({ 1, 0, 0 }, { 0, -1, 0 }, { 0, 0, -1 }))) };
         virtual AZStd::string getPipelineTemplateName() = 0;

@@ -21,6 +21,8 @@
 #include <Atom/RPI.Public/Pass/PassSystemInterface.h>
 #include <PostProcess/PostProcessFeatureProcessor.h>
 
+#include <ROS2/ROS2Bus.h>
+
 #include <Atom/RPI.Public/Pass/PassFactory.h>
 
 namespace ROS2
@@ -102,6 +104,8 @@ namespace ROS2
     CameraSensor::CameraSensor(const CameraSensorDescription& cameraSensorDescription)
         : m_cameraSensorDescription(cameraSensorDescription)
     {
+        m_mutex = AZStd::make_shared<AZStd::mutex>();
+        m_frames_publish_queue = AZStd::make_shared<AZStd::priority_queue<FrameTask>>();
     }
 
     void CameraSensor::setupPasses()
@@ -182,27 +186,45 @@ namespace ROS2
         return m_cameraSensorDescription;
     }
 
-    void CameraSensor::publishMassage(
+    void CameraSensor::publishMessage(
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>> publisher,
         const AZ::Transform& cameraPose,
         const std_msgs::msg::Header& header)
     {
         RequestFrame(
             cameraPose,
-            [header, publisher](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
+            [header, publisher, queue = m_frames_publish_queue, mutex = m_mutex](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
             {
                 const AZ::RHI::ImageDescriptor& descriptor = result.m_imageDescriptor;
                 const auto format = descriptor.m_format;
                 AZ_Assert(Internal::FormatMappings.contains(format), "Unknown format in result %u", static_cast<uint32_t>(format));
-                sensor_msgs::msg::Image message;
-                message.encoding = Internal::FormatMappings.at(format);
-                message.width = descriptor.m_size.m_width;
-                message.height = descriptor.m_size.m_height;
-                message.step = message.width * Internal::BitDepth.at(format);
-                message.data = std::vector<uint8_t>(result.m_dataBuffer->data(), result.m_dataBuffer->data() + result.m_dataBuffer->size());
-                message.header = header;
-                publisher->publish(message);
+
+                AZStd::scoped_lock lock(*mutex);
+                queue->push(
+                    FrameTask{ publisher, header, format, result.m_dataBuffer, descriptor.m_size.m_width, descriptor.m_size.m_height });
             });
+    }
+
+    void CameraSensor::ProcessQueue()
+    {
+        while (!m_frames_publish_queue->empty())
+        {
+            m_mutex->lock();
+
+            auto task = m_frames_publish_queue->top();
+            m_frames_publish_queue->pop();
+
+            m_mutex->unlock();
+
+            sensor_msgs::msg::Image message;
+            message.encoding = Internal::FormatMappings.at(task.format);
+            message.width = task.width;
+            message.height = task.height;
+            message.step = message.width * Internal::BitDepth.at(task.format);
+            message.data = std::vector<uint8_t>(task.dataBuffer->data(), task.dataBuffer->data() + task.dataBuffer->size());
+            message.header = task.header;
+            task.publisher->publish(message);
+        }
     }
 
     CameraDepthSensor::CameraDepthSensor(const CameraSensorDescription& cameraSensorDescription)

@@ -60,7 +60,7 @@ namespace ROS2
         bool m_depthCamera = true;
 
         void FrequencyTick() override;
-        AZStd::vector<PublisherSensorPtrPair> m_cameraSensorsWithPublihsers;
+        AZStd::vector<PublisherSensorPtrPair> m_cameraSensorsWithPublishers;
         CameraInfoPublisherPtrType m_cameraInfoPublisher;
 
         AZStd::string m_frameName;
