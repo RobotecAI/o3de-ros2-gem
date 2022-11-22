@@ -79,7 +79,7 @@
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/RobotImporter.h:37: warning: argument 'infoLogger' of command @param is not found in the argument list of ROS2::RobotImporter::RobotImporter(RobotImporter::LoggerFunction logger)
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/URDF/RobotImporter.h:39: warning: The following parameter of ROS2::RobotImporter::RobotImporter(RobotImporter::LoggerFunction logger) is not documented:
   parameter 'logger'
-/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/RobotImporterWidget.h:31: warning: Member RobotImporterWidget(QWidget *parent=nullptr) (function) of class ROS2::RobotImporterWidget is not documented.
+/home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/RobotImporter/RobotImporterWidget.h:32: warning: Member RobotImporterWidget(QWidget *parent=nullptr) (function) of class ROS2::RobotImporterWidget is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/ROS2Bus.h:60: warning: Member HandlerPolicy (variable) of class ROS2::ROS2BusTraits is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Include/ROS2/ROS2Bus.h:61: warning: Member AddressPolicy (variable) of class ROS2::ROS2BusTraits is not documented.
 /home/runner/work/o3de-ros2-gem/o3de-ros2-gem/o3de-ros2-gem/Code/Source/Camera/ROS2CameraSensorComponent.h:37: warning: Member AZ_COMPONENT(ROS2CameraSensorComponent, "{3C6B8AE6-9721-4639-B8F9-D8D28FD7A071}", ROS2SensorComponent) (function) of class ROS2::ROS2CameraSensorComponent is not documented.
