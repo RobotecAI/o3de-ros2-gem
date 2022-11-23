@@ -15,7 +15,6 @@
 #include <AzCore/std/containers/unordered_map.h>
 #include <RobotImporter/Utils/RobotImporterUtils.h>
 
-#include "RobotImporter/URDF/RobotImporter.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <AzToolsFramework/Prefab/PrefabFocusInterface.h>
 #include <QCheckBox>
@@ -151,20 +150,14 @@ namespace ROS2
         void ImporterTimerUpdate();
         void onCurrentIdChanged(int id);
 
-        //! Report an information to the user.
-        //! Populates the log and sets status information in the status label
-        //! @param infoMessage info message to display to the user
-        void ReportInfo(const AZStd::string& infoMessage);
-
         //! Checks if the importedPrefabFilename is the same as focused prefab name.
         //! @param importedPrefabFilename name of imported prefab
         //! @return True if names of prefabs are identical or an erorr occured during validation
-        bool CheckCyclicalDependency(const AZ::IO::PathView& importedPrefabFilename);
+        bool CheckCyclicalDependency(AZ::IO::Path importedPrefabFilename);
 
         //! Report an error to the user.
         //! Populates the log, sets status information in the status label and shows an error popup with the message
         //! @param errorMessage error message to display to the user
         void ReportError(const AZStd::string& errorMessage);
-
     };
 } // namespace ROS2
