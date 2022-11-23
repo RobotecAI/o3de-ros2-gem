@@ -46,7 +46,7 @@ namespace ROS2
             { // We have reached the top level, there is no parent entity so there can be no parent ROS2Frame
                 return nullptr;
             }
-            AZ::Entity* parentEntity;
+            AZ::Entity* parentEntity = nullptr;
             AZ::ComponentApplicationBus::BroadcastResult(parentEntity, &AZ::ComponentApplicationRequests::FindEntity, parentEntityId);
             AZ_Assert(parentEntity, "No parent entity id : %s", parentEntityId.ToString().c_str());
             auto* component = Utils::GetGameOrEditorComponent<ROS2FrameComponent>(parentEntity);
