@@ -52,20 +52,14 @@ namespace ROS2
         void BuildGameEntity(AZ::Entity* gameEntity) override;
 
     private:
+        void DisplayEntityViewport(const AzFramework::ViewportInfo& viewportInfo, AzFramework::DebugDisplayRequests& debugDisplay) override;
+        AZStd::pair<AZStd::string, TopicConfiguration> MakeTopicConfigurationPair(
+            const AZStd::string& topic, const AZStd::string& messageType, const AZStd::string& configName);
         SensorConfiguration m_sensorConfiguration;
         float m_VerticalFieldOfViewDeg = 90.0f;
         int m_width = 640;
         int m_height = 480;
         bool m_colorCamera = true;
         bool m_depthCamera = true;
-
-        const char* kImageMessageType = "sensor_msgs::msg::Image";
-        const char* kDepthImageConfig = "Depth Image";
-        const char* kColorImageConfig = "Color Image";
-        const char* kInfoConfig = "Camera Info";
-        const char* kCameraInfoMessageType = "sensor_msgs::msg::CameraInfo";
-
-    protected:
-        void DisplayEntityViewport(const AzFramework::ViewportInfo& viewportInfo, AzFramework::DebugDisplayRequests& debugDisplay) override;
     };
 } // namespace ROS2

@@ -19,6 +19,15 @@ class Entity;
 namespace ROS2
 {
 
+    struct CameraSensorConstants
+    {
+        const static char* kImageMessageType;
+        const static char* kDepthImageConfig;
+        const static char* kColorImageConfig;
+        const static char* kInfoConfig;
+        const static char* kCameraInfoMessageType;
+    };
+
     //! Structure containing all information required to create the camera sensor
     struct CameraSensorDescription
     {

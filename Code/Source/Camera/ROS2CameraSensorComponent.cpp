@@ -23,20 +23,6 @@ namespace ROS2
 {
     namespace Internal
     {
-        const char* kImageMessageType = "sensor_msgs::msg::Image";
-        const char* kDepthImageConfig = "Depth Image";
-        const char* kColorImageConfig = "Color Image";
-        const char* kInfoConfig = "Camera Info";
-        const char* kCameraInfoMessageType = "sensor_msgs::msg::CameraInfo";
-
-        AZStd::pair<AZStd::string, TopicConfiguration> MakeTopicConfigurationPair(
-            const AZStd::string& topic, const AZStd::string& messageType, const AZStd::string& configName)
-        {
-            TopicConfiguration config;
-            config.m_topic = topic;
-            config.m_type = messageType;
-            return AZStd::make_pair(configName, config);
-        }
 
         AZStd::string GetCameraNameFromFrame(const AZ::Entity* entity)
         {
@@ -85,7 +71,7 @@ namespace ROS2
 
         auto ros2Node = ROS2Interface::Get()->GetNode();
 
-        const auto cameraInfoPublisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kInfoConfig];
+        const auto cameraInfoPublisherConfig = m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kInfoConfig];
         AZStd::string cameraInfoFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraInfoPublisherConfig.m_topic);
         AZ_TracePrintf("ROS2", "Creating publisher for camera info on topic %s", cameraInfoFullTopic.data());
 
@@ -97,7 +83,7 @@ namespace ROS2
         };
         if (m_colorCamera)
         {
-            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kColorImageConfig];
+            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kColorImageConfig];
             AZStd::string cameraImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraImagePublisherConfig.m_topic);
             auto publisher =
                 ros2Node->create_publisher<sensor_msgs::msg::Image>(cameraImageFullTopic.data(), cameraImagePublisherConfig.GetQoS());
@@ -105,7 +91,7 @@ namespace ROS2
         }
         if (m_depthCamera)
         {
-            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kDepthImageConfig];
+            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kDepthImageConfig];
             AZStd::string cameraImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraImagePublisherConfig.m_topic);
             auto publisher =
                 ros2Node->create_publisher<sensor_msgs::msg::Image>(cameraImageFullTopic.data(), cameraImagePublisherConfig.GetQoS());

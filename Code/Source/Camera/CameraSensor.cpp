@@ -24,6 +24,13 @@
 
 namespace ROS2
 {
+
+    const char* CameraSensorConstants::kImageMessageType{ "sensor_msgs::msg::Image" };
+    const char* CameraSensorConstants::kDepthImageConfig{ "Depth Image" };
+    const char* CameraSensorConstants::kColorImageConfig{ "Color Image" };
+    const char* CameraSensorConstants::kInfoConfig{ "Camera Info" };
+    const char* CameraSensorConstants::kCameraInfoMessageType{ "sensor_msgs::msg::CameraInfo" };
+
     namespace Internal
     {
 

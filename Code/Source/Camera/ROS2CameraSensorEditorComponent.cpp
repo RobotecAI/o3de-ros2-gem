@@ -1,17 +1,27 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
+
 #include "ROS2CameraSensorEditorComponent.h"
+#include "AzCore/Component/TransformBus.h"
 #include "ROS2CameraSensorComponent.h"
+
 namespace ROS2
 {
 
     ROS2CameraSensorEditorComponent::ROS2CameraSensorEditorComponent()
     {
         m_sensorConfiguration.m_frequency = 10;
+        m_sensorConfiguration.m_publishersConfigurations.insert(MakeTopicConfigurationPair(
+            "camera_image_color", CameraSensorConstants::kImageMessageType, CameraSensorConstants::kColorImageConfig));
+        m_sensorConfiguration.m_publishersConfigurations.insert(MakeTopicConfigurationPair(
+            "camera_image_depth", CameraSensorConstants::kImageMessageType, CameraSensorConstants::kDepthImageConfig));
         m_sensorConfiguration.m_publishersConfigurations.insert(
-            Internal::MakeTopicConfigurationPair("camera_image_color", Internal::kImageMessageType, Internal::kColorImageConfig));
-        m_sensorConfiguration.m_publishersConfigurations.insert(
-            Internal::MakeTopicConfigurationPair("camera_image_depth", Internal::kImageMessageType, Internal::kDepthImageConfig));
-        m_sensorConfiguration.m_publishersConfigurations.insert(
-            Internal::MakeTopicConfigurationPair("camera_info", Internal::kCameraInfoMessageType, Internal::kInfoConfig));
+            MakeTopicConfigurationPair("camera_info", CameraSensorConstants::kCameraInfoMessageType, CameraSensorConstants::kInfoConfig));
     }
 
     void ROS2CameraSensorEditorComponent::Reflect(AZ::ReflectContext* context)
@@ -82,7 +92,6 @@ namespace ROS2
         required.push_back(AZ_CRC_CE("ROS2SensorCamera"));
     }
 
-
     void ROS2CameraSensorEditorComponent::BuildGameEntity(AZ::Entity* gameEntity)
     {
         gameEntity->CreateComponent<ROS2::ROS2CameraSensorComponent>(
@@ -142,4 +151,14 @@ namespace ROS2
 
         debugDisplay.SetState(stateBefore);
     }
+
+    AZStd::pair<AZStd::string, TopicConfiguration> ROS2CameraSensorEditorComponent::MakeTopicConfigurationPair(
+        const AZStd::string& topic, const AZStd::string& messageType, const AZStd::string& configName)
+    {
+        TopicConfiguration config;
+        config.m_topic = topic;
+        config.m_type = messageType;
+        return AZStd::make_pair(configName, config);
+    }
+
 } // namespace ROS2

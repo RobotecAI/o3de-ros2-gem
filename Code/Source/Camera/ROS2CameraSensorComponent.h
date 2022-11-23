@@ -71,5 +71,8 @@ namespace ROS2
         CameraInfoPublisherPtrType m_cameraInfoPublisher;
 
         AZStd::string m_frameName;
+
+        AZStd::pair<AZStd::string, TopicConfiguration> MakeTopicConfigurationPair(
+            const AZStd::string& topic, const AZStd::string& messageType, const AZStd::string& configName);
     };
 } // namespace ROS2
