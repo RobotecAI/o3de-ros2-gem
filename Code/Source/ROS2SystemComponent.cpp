@@ -90,7 +90,6 @@ namespace ROS2
         m_staticTFBroadcaster = AZStd::make_unique<tf2_ros::StaticTransformBroadcaster>(m_ros2Node);
         m_dynamicTFBroadcaster = AZStd::make_unique<tf2_ros::TransformBroadcaster>(m_ros2Node);
 
-        AZ_Printf("FOOROS2SystemComponent", "Hello!\n");
         auto* passSystem = AZ::RPI::PassSystemInterface::Get();
         AZ_Assert(passSystem, "Cannot get the pass system.");
 
@@ -155,7 +154,7 @@ namespace ROS2
         AZ_Assert(passSystem, "PassSystemInterface is null");
 
         const char* passTemplatesFile = "Passes/ROSPassTemplates.azasset";
-        bool isOk = passSystem->LoadPassTemplateMappings(passTemplatesFile);
+        [[maybe_unused]] bool isOk = passSystem->LoadPassTemplateMappings(passTemplatesFile);
         AZ_Assert(isOk, "LoadPassTemplateMappings return false ");
     }
 

@@ -49,16 +49,7 @@ namespace ROS2
             AZStd::replace(cameraName.begin(), cameraName.end(), '/', '_');
             return cameraName;
         }
-        // maping from ATOM to ROS/OpenCV
-        AZStd::unordered_map<AZ::RHI::Format, const char*> FormatMappings{
-            { AZ::RHI::Format::R8G8B8A8_UNORM, sensor_msgs::image_encodings::RGBA8 },
-            { AZ::RHI::Format::R16G16B16A16_UNORM, sensor_msgs::image_encodings::RGBA16 },
-            { AZ::RHI::Format::R32G32B32A32_FLOAT, sensor_msgs::image_encodings::TYPE_32FC4 }, // Unsuported by RVIZ2
-            { AZ::RHI::Format::R8_UNORM, sensor_msgs::image_encodings::MONO8 },
-            { AZ::RHI::Format::R16_UNORM, sensor_msgs::image_encodings::MONO16 },
-            { AZ::RHI::Format::R32_FLOAT, sensor_msgs::image_encodings::TYPE_32FC1 },
 
-        };
     } // namespace Internal
 
     ROS2CameraSensorComponent::ROS2CameraSensorComponent()
@@ -118,28 +109,24 @@ namespace ROS2
         m_cameraInfoPublisher =
             ros2Node->create_publisher<sensor_msgs::msg::CameraInfo>(cameraInfoFullTopic.data(), cameraInfoPublisherConfig.GetQoS());
 
+        const CameraSensorDescription description{
+            Internal::GetCameraNameFromFrame(GetEntity()), m_VerticalFieldOfViewDeg, m_width, m_height
+        };
         if (m_colorCamera)
         {
             const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kColorImageConfig];
             AZStd::string cameraImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraImagePublisherConfig.m_topic);
-            m_imagePublisher =
+            auto publisher =
                 ros2Node->create_publisher<sensor_msgs::msg::Image>(cameraImageFullTopic.data(), cameraImagePublisherConfig.GetQoS());
-            m_cameraSensorColor.emplace(CameraSensorDescription{
-                Internal::GetCameraNameFromFrame(GetEntity()), m_VerticalFieldOfViewDeg, m_width, m_height, false });
-            m_cameraIntrinsics = m_cameraSensorColor->GetCameraSensorDescription().m_cameraIntrinsics;
+            m_cameraSensorsWithPublihsers.emplace_back(createPair<CameraColorSensor>(publisher, description));
         }
         if (m_depthCamera)
         {
-            const auto cameraDepthPublisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kDepthImageConfig];
-            AZStd::string depthImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraDepthPublisherConfig.m_topic);
-            m_depthPublisher =
-                ros2Node->create_publisher<sensor_msgs::msg::Image>(depthImageFullTopic.data(), cameraDepthPublisherConfig.GetQoS());
-            m_cameraSensorDepth.emplace(CameraSensorDescription{
-                Internal::GetCameraNameFromFrame(GetEntity()), m_VerticalFieldOfViewDeg, m_width, m_height, true });
-            if (!m_colorCamera)
-            {
-                m_cameraIntrinsics = m_cameraSensorColor->GetCameraSensorDescription().m_cameraIntrinsics;
-            }
+            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[Internal::kDepthImageConfig];
+            AZStd::string cameraImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraImagePublisherConfig.m_topic);
+            auto publisher =
+                ros2Node->create_publisher<sensor_msgs::msg::Image>(cameraImageFullTopic.data(), cameraImagePublisherConfig.GetQoS());
+            m_cameraSensorsWithPublihsers.emplace_back(createPair<CameraDepthSensor>(publisher, description));
         }
         const auto* component = Utils::GetGameOrEditorComponent<ROS2FrameComponent>(GetEntity());
         AZ_Assert(component, "Entity has no ROS2FrameComponent");
@@ -148,9 +135,7 @@ namespace ROS2
 
     void ROS2CameraSensorComponent::Deactivate()
     {
-        m_cameraSensorColor.reset();
-        m_cameraSensorDepth.reset();
-
+        m_cameraSensorsWithPublihsers.clear();
         ROS2SensorComponent::Deactivate();
     }
 
@@ -158,66 +143,27 @@ namespace ROS2
     {
         AZ::Transform transform = GetEntity()->GetTransform()->GetWorldTM();
         const auto timestamp = ROS2Interface::Get()->GetROSTimestamp();
-        if (m_cameraSensorColor || m_depthCamera)
+        std_msgs::msg::Header ros_header;
+        if (!m_cameraSensorsWithPublihsers.empty())
         {
+            const auto& camera_descritpion = m_cameraSensorsWithPublihsers.front().second->GetCameraSensorDescription();
+            const auto& cameraIntrinsics = camera_descritpion.m_cameraIntrinsics;
             sensor_msgs::msg::CameraInfo cameraInfo;
-            cameraInfo.header.stamp = timestamp;
-            cameraInfo.header.frame_id = m_frameName.c_str();
+            ros_header.stamp = timestamp;
+            ros_header.frame_id = m_frameName.c_str();
+            cameraInfo.header = ros_header;
             cameraInfo.width = m_width;
             cameraInfo.height = m_height;
             cameraInfo.distortion_model = sensor_msgs::distortion_models::PLUMB_BOB;
-            AZ_Assert(m_cameraIntrinsics.size() == cameraInfo.k.size(), "should be 9");
-            std::copy_n(m_cameraIntrinsics.data(), m_cameraIntrinsics.size(), cameraInfo.k.begin());
+            AZ_Assert(cameraIntrinsics.size() == cameraInfo.k.size(), "should be 9");
+            std::copy_n(cameraIntrinsics.data(), cameraIntrinsics.size(), cameraInfo.k.begin());
             cameraInfo.p = { cameraInfo.k[0], cameraInfo.k[1], cameraInfo.k[2], 0, cameraInfo.k[3], cameraInfo.k[4], cameraInfo.k[5], 0,
                              cameraInfo.k[6], cameraInfo.k[7], cameraInfo.k[8], 0 };
             m_cameraInfoPublisher->publish(cameraInfo);
         }
-
-        if (m_cameraSensorColor)
+        for (auto& [publisher, sensor] : m_cameraSensorsWithPublihsers)
         {
-            m_cameraSensorColor->RequestFrame(
-                transform,
-                [this, timestamp](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
-                {
-                    AZ_Assert(m_imagePublisher, "m_depthPublisher should exists");
-                    const AZ::RHI::ImageDescriptor& descriptor = result.m_imageDescriptor;
-                    const auto format = descriptor.m_format;
-                    AZ_Assert(Internal::FormatMappings.contains(format), "Unknown format in result %u", static_cast<uint32_t>(format));
-                    sensor_msgs::msg::Image message;
-                    message.encoding = Internal::FormatMappings.at(format);
-                    message.width = descriptor.m_size.m_width;
-                    message.height = descriptor.m_size.m_height;
-                    message.step = message.width * sensor_msgs::image_encodings::bitDepth(message.encoding) / 8 *
-                        sensor_msgs::image_encodings::numChannels(message.encoding);
-                    message.data =
-                        std::vector<uint8_t>(result.m_dataBuffer->data(), result.m_dataBuffer->data() + result.m_dataBuffer->size());
-                    message.header.frame_id = m_frameName.c_str();
-                    message.header.stamp = timestamp;
-                    m_imagePublisher->publish(message);
-                });
-        }
-        if (m_depthCamera)
-        {
-            m_cameraSensorDepth->RequestFrame(
-                transform,
-                [this, timestamp](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
-                {
-                    AZ_Assert(m_depthPublisher, "m_depthPublisher should exists");
-                    const AZ::RHI::ImageDescriptor& descriptor = result.m_imageDescriptor;
-                    const auto format = descriptor.m_format;
-                    AZ_Assert(Internal::FormatMappings.contains(format), "Unknown format in result %u", static_cast<uint32_t>(format));
-                    sensor_msgs::msg::Image message;
-                    message.encoding = Internal::FormatMappings.at(format);
-                    message.width = descriptor.m_size.m_width;
-                    message.height = descriptor.m_size.m_height;
-                    message.step = message.width * sensor_msgs::image_encodings::bitDepth(message.encoding) / 8 *
-                        sensor_msgs::image_encodings::numChannels(message.encoding);
-                    message.data =
-                        std::vector<uint8_t>(result.m_dataBuffer->data(), result.m_dataBuffer->data() + result.m_dataBuffer->size());
-                    message.header.frame_id = m_frameName.c_str();
-                    message.header.stamp = timestamp;
-                    m_depthPublisher->publish(message);
-                });
+            sensor->publishMassage(publisher, transform, ros_header);
         }
     }
 } // namespace ROS2
