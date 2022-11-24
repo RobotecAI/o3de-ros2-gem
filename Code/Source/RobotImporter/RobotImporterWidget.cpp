@@ -25,9 +25,9 @@ namespace ROS2
         QWizardPage* page = new QWizardPage;
         page->setTitle("Introduction");
 
-        QLabel* label = new QLabel("This wizard allows you to build robot simulation"
-                                   "out of URDF description."
-                                   "<br> before proceed please make that all assets are imported</br>");
+        QLabel* label = new QLabel("This wizard allows you to build robot simulations out of URDF description."
+                                   " Before processing, please, make sure that all necessary assets that are"
+                                   " used by URDF file are processed by Asset Processor");
         label->setWordWrap(true);
 
         QVBoxLayout* layout = new QVBoxLayout;
@@ -48,7 +48,7 @@ namespace ROS2
         setTitle("Load URDF file");
         QVBoxLayout* layout = new QVBoxLayout;
         layout->addStretch();
-        layout->addWidget(new QLabel("URDF file : ", this));
+        layout->addWidget(new QLabel("URDF file path to load : ", this));
         QHBoxLayout* layout_in = new QHBoxLayout;
         layout_in->addWidget(m_button);
         layout_in->addWidget(m_textEdit);

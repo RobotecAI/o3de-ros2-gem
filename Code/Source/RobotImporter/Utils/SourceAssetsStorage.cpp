@@ -6,6 +6,7 @@
  *
  */
 #include "SourceAssetsStorage.h"
+#include "RobotImporter/Utils/RobotImporterUtils.h"
 
 namespace ROS2::Utils
 {
