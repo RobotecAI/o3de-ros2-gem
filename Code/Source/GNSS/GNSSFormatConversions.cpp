@@ -45,8 +45,8 @@ namespace ROS2::GNSS
 
     AZ::Vector3 ECEFToENU(const AZ::Vector3& referenceLatitudeLongitudeAltitude, const AZ::Vector3& ECEFPoint)
     {
-        AZ::Vector3 referencePointInECEF = WGS84ToECEF(referenceLatitudeLongitudeAltitude);
-        AZ::Vector3 pointToReferencePointECEF = ECEFPoint - referencePointInECEF;
+        const AZ::Vector3 referencePointInECEF = WGS84ToECEF(referenceLatitudeLongitudeAltitude);
+        const AZ::Vector3 pointToReferencePointECEF = ECEFPoint - referencePointInECEF;
 
         float referenceLatitudeRad = Deg2Rad(referenceLatitudeLongitudeAltitude.GetX());
         float referenceLongitudeRad = Deg2Rad(referenceLatitudeLongitudeAltitude.GetY());
