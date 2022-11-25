@@ -18,7 +18,6 @@
 #include <AzCore/Serialization/SerializeContext.h>
 
 #include <sensor_msgs/distortion_models.hpp>
-#include <sensor_msgs/image_encodings.hpp>
 
 namespace ROS2
 {
