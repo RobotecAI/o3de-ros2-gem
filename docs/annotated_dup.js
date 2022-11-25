@@ -7,6 +7,8 @@ var annotated_dup =
       [ "AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", "class_r_o_s2_1_1_ackermann_control_component" ],
       [ "AckermannNotifications", "class_r_o_s2_1_1_ackermann_notifications.html", "class_r_o_s2_1_1_ackermann_notifications" ],
       [ "AckermannSubscriptionHandler", "class_r_o_s2_1_1_ackermann_subscription_handler.html", null ],
+      [ "CameraColorSensor", "class_r_o_s2_1_1_camera_color_sensor.html", "class_r_o_s2_1_1_camera_color_sensor" ],
+      [ "CameraDepthSensor", "class_r_o_s2_1_1_camera_depth_sensor.html", "class_r_o_s2_1_1_camera_depth_sensor" ],
       [ "CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", "class_r_o_s2_1_1_camera_sensor" ],
       [ "CameraSensorDescription", "struct_r_o_s2_1_1_camera_sensor_description.html", "struct_r_o_s2_1_1_camera_sensor_description" ],
       [ "CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", "class_r_o_s2_1_1_colliders_maker" ],

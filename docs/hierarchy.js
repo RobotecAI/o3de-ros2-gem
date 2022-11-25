@@ -2,7 +2,10 @@ var hierarchy =
 [
     [ "AckermannCommandStruct", "struct_ackermann_command_struct.html", null ],
     [ "VehicleDynamics::AxleConfiguration", "class_vehicle_dynamics_1_1_axle_configuration.html", null ],
-    [ "ROS2::CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", null ],
+    [ "ROS2::CameraSensor", "class_r_o_s2_1_1_camera_sensor.html", [
+      [ "ROS2::CameraColorSensor", "class_r_o_s2_1_1_camera_color_sensor.html", null ],
+      [ "ROS2::CameraDepthSensor", "class_r_o_s2_1_1_camera_depth_sensor.html", null ]
+    ] ],
     [ "ROS2::CameraSensorDescription", "struct_r_o_s2_1_1_camera_sensor_description.html", null ],
     [ "ROS2::CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", null ],
     [ "Component", null, [
@@ -43,7 +46,7 @@ var hierarchy =
       [ "VehicleDynamics::VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", null ],
@@ -56,19 +59,19 @@ var hierarchy =
       [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
+      [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2RobotImporterEditorSystemComponent", "class_r_o_s2_1_1_r_o_s2_robot_importer_editor_system_component.html", null ]
-    ] ],
-    [ "Handler", null, [
-      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "ROS2::IControlSubscriptionHandler", "class_r_o_s2_1_1_i_control_subscription_handler.html", [
       [ "ROS2::ControlSubscriptionHandler< ackermann_msgs::msg::AckermannDrive >", "class_r_o_s2_1_1_control_subscription_handler.html", [

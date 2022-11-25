@@ -121,20 +121,33 @@ $(document).ready(function(){initNavTree('_r_o_s2_camera_sensor_component_8h_sou
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> Deactivate() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">float</span> m_VerticalFieldOfViewDeg = 90.0f;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">int</span> m_width = 640;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">int</span> m_height = 480;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">void</span> FrequencyTick() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        std::shared_ptr&lt;rclcpp::Publisher&lt;sensor_msgs::msg::Image&gt;&gt; m_imagePublisher;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::shared_ptr&lt;rclcpp::Publisher&lt;sensor_msgs::msg::CameraInfo&gt;&gt; m_cameraInfoPublisher;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::optional&lt;CameraSensor&gt; m_cameraSensor;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">using</span> ImagePublisherPtrType = std::shared_ptr&lt;rclcpp::Publisher&lt;sensor_msgs::msg::Image&gt;&gt;;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">using</span> CameraInfoPublisherPtrType = std::shared_ptr&lt;rclcpp::Publisher&lt;sensor_msgs::msg::CameraInfo&gt;&gt;;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">using</span> PublisherSensorPtrPair = AZStd::pair&lt;ImagePublisherPtrType, AZStd::shared_ptr&lt;CameraSensor&gt;&gt;;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> CameraType&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        PublisherSensorPtrPair createPair(ImagePublisherPtrType publisher, <span class="keyword">const</span> <a class="code" href="struct_r_o_s2_1_1_camera_sensor_description.html">CameraSensorDescription</a>&amp; description)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> { publisher, AZStd::make_shared&lt;CameraType&gt;(description) };</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordtype">float</span> m_VerticalFieldOfViewDeg = 90.0f;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordtype">int</span> m_width = 640;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">int</span> m_height = 480;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">bool</span> m_colorCamera = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">bool</span> m_depthCamera = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">void</span> FrequencyTick() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        AZStd::vector&lt;PublisherSensorPtrPair&gt; m_cameraSensorsWithPublihsers;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        CameraInfoPublisherPtrType m_cameraInfoPublisher;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        AZStd::string m_frameName;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    };</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astruct_r_o_s2_1_1_sensor_configuration_html_acbd5c182f213134b49a81b28bd5c87e9"><div class="ttname"><a href="struct_r_o_s2_1_1_sensor_configuration.html#acbd5c182f213134b49a81b28bd5c87e9">ROS2::SensorConfiguration::m_publishersConfigurations</a></div><div class="ttdeci">AZStd::map&lt; AZStd::string, TopicConfiguration &gt; m_publishersConfigurations</div><div class="ttdef"><b>Definition:</b> SensorConfiguration.h:30</div></div>
+<div class="ttc" id="astruct_r_o_s2_1_1_camera_sensor_description_html"><div class="ttname"><a href="struct_r_o_s2_1_1_camera_sensor_description.html">ROS2::CameraSensorDescription</a></div><div class="ttdoc">Structure containing all information required to create the camera sensor.</div><div class="ttdef"><b>Definition:</b> CameraSensor.h:23</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_sensor_component_html_a452f044dfb869774f0610cac89946ff7"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_sensor_component.html#a452f044dfb869774f0610cac89946ff7">ROS2::ROS2SensorComponent::GetNamespace</a></div><div class="ttdeci">AZStd::string GetNamespace() const</div><div class="ttdoc">Get a complete namespace for this sensor topics and frame ids.</div><div class="ttdef"><b>Definition:</b> ROS2SensorComponent.cpp:52</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_r_o_s2_sensor_component_html"><div class="ttname"><a href="class_r_o_s2_1_1_r_o_s2_sensor_component.html">ROS2::ROS2SensorComponent</a></div><div class="ttdef"><b>Definition:</b> ROS2SensorComponent.h:21</div></div>
 <div class="ttc" id="astruct_r_o_s2_1_1_sensor_configuration_html_a73ea18a76cf9edd580154cc2bae143a5"><div class="ttname"><a href="struct_r_o_s2_1_1_sensor_configuration.html#a73ea18a76cf9edd580154cc2bae143a5">ROS2::SensorConfiguration::m_frequency</a></div><div class="ttdeci">float m_frequency</div><div class="ttdef"><b>Definition:</b> SensorConfiguration.h:36</div></div>
@@ -144,7 +157,7 @@ $(document).ready(function(){initNavTree('_r_o_s2_camera_sensor_component_8h_sou
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_5af4eff1658b21ba6facaf8d5c165f80.html">Camera</a></li><li class="navelem"><b>ROS2CameraSensorComponent.h</b></li>
-    <li class="footer">Generated on Thu Nov 24 2022 13:40:30 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Fri Nov 25 2022 08:37:52 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

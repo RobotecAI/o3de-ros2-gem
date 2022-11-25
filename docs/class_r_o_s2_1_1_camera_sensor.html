@@ -83,28 +83,46 @@ $(document).ready(function(){initNavTree('class_r_o_s2_1_1_camera_sensor.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="class_r_o_s2_1_1_camera_sensor-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ROS2::CameraSensor Class Reference</div>  </div>
+<div class="title">ROS2::CameraSensor Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_camera_sensor_8h_source.html">CameraSensor.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for ROS2::CameraSensor:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_r_o_s2_1_1_camera_sensor__inherit__graph.png" border="0" usemap="#_r_o_s2_1_1_camera_sensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="_r_o_s2_1_1_camera_sensor_inherit__map" id="_r_o_s2_1_1_camera_sensor_inherit__map">
+<area shape="rect" title=" " alt="" coords="133,5,293,32"/>
+<area shape="rect" href="class_r_o_s2_1_1_camera_color_sensor.html" title=" " alt="" coords="5,80,200,107"/>
+<area shape="rect" href="class_r_o_s2_1_1_camera_depth_sensor.html" title=" " alt="" coords="225,80,423,107"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afe44c92e31fcad1e30c687e285e5a964"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#afe44c92e31fcad1e30c687e285e5a964">CameraSensor</a> (const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">CameraSensorDescription</a> &amp;cameraSensorDescription)</td></tr>
 <tr class="separator:afe44c92e31fcad1e30c687e285e5a964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad63a5e451b277e8e8b1e9f20776e42cc"><td class="memItemLeft" align="right" valign="top"><a id="ad63a5e451b277e8e8b1e9f20776e42cc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#ad63a5e451b277e8e8b1e9f20776e42cc">~CameraSensor</a> ()</td></tr>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#ad63a5e451b277e8e8b1e9f20776e42cc">~CameraSensor</a> ()</td></tr>
 <tr class="memdesc:ad63a5e451b277e8e8b1e9f20776e42cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitializes rendering pipeline for the camera sensor. <br /></td></tr>
 <tr class="separator:ad63a5e451b277e8e8b1e9f20776e42cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ee76159cad11ffbda3a163f9bcc25fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#a3ee76159cad11ffbda3a163f9bcc25fd">RequestFrame</a> (const AZ::Transform &amp;cameraPose, AZStd::function&lt; void(const AZ::RPI::AttachmentReadback::ReadbackResult &amp;result)&gt; callback)</td></tr>
-<tr class="separator:a3ee76159cad11ffbda3a163f9bcc25fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac844a6f898719cce7f03c1d363c06fc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#ac844a6f898719cce7f03c1d363c06fc5">publishMassage</a> (std::shared_ptr&lt; rclcpp::Publisher&lt; sensor_msgs::msg::Image &gt;&gt; publisher, const AZ::Transform &amp;cameraPose, const std_msgs::msg::Header &amp;header)</td></tr>
+<tr class="separator:ac844a6f898719cce7f03c1d363c06fc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49ca929a051b8775b6caf4617cd386ec"><td class="memItemLeft" align="right" valign="top"><a id="a49ca929a051b8775b6caf4617cd386ec"></a>
 const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">CameraSensorDescription</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#a49ca929a051b8775b6caf4617cd386ec">GetCameraSensorDescription</a> () const</td></tr>
 <tr class="memdesc:a49ca929a051b8775b6caf4617cd386ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to get camera sensor description. <br /></td></tr>
 <tr class="separator:a49ca929a051b8775b6caf4617cd386ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ad143d0c086db22f9c6a12e90c4373ea3"><td class="memItemLeft" align="right" valign="top"><a id="ad143d0c086db22f9c6a12e90c4373ea3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html#ad143d0c086db22f9c6a12e90c4373ea3">setupPasses</a> ()</td></tr>
+<tr class="memdesc:ad143d0c086db22f9c6a12e90c4373ea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and setup Atom Passes. <br /></td></tr>
+<tr class="separator:ad143d0c086db22f9c6a12e90c4373ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to create camera sensor using Atom renderer It creates dedicated rendering pipeline for each camera </p>
@@ -134,23 +152,29 @@ const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">Came
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3ee76159cad11ffbda3a163f9bcc25fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ee76159cad11ffbda3a163f9bcc25fd">&#9670;&nbsp;</a></span>RequestFrame()</h2>
+<a id="ac844a6f898719cce7f03c1d363c06fc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac844a6f898719cce7f03c1d363c06fc5">&#9670;&nbsp;</a></span>publishMassage()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ROS2::CameraSensor::RequestFrame </td>
+          <td class="memname">void ROS2::CameraSensor::publishMassage </td>
           <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; rclcpp::Publisher&lt; sensor_msgs::msg::Image &gt;&gt;&#160;</td>
+          <td class="paramname"><em>publisher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const AZ::Transform &amp;&#160;</td>
           <td class="paramname"><em>cameraPose</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">AZStd::function&lt; void(const AZ::RPI::AttachmentReadback::ReadbackResult &amp;result)&gt;&#160;</td>
-          <td class="paramname"><em>callback</em>&#160;</td>
+          <td class="paramtype">const std_msgs::msg::Header &amp;&#160;</td>
+          <td class="paramname"><em>header</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -159,10 +183,11 @@ const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">Came
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Function requesting frame from rendering pipeline </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Function publish Image Message frame from rendering pipeline </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">publisher</td><td>- ROS2 publisher to publish image in future </td></tr>
+    <tr><td class="paramname">header</td><td>- header with filled message information (frame, timestamp, seq) </td></tr>
     <tr><td class="paramname">cameraPose</td><td>- current camera pose from which the rendering should take place </td></tr>
-    <tr><td class="paramname">callback</td><td>- callback function object that will be called when capture is ready it's argument is readback structure containing, among other thins, captured image </td></tr>
   </table>
   </dd>
 </dl>
@@ -179,7 +204,7 @@ const <a class="el" href="struct_r_o_s2_1_1_camera_sensor_description.html">Came
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>ROS2</b></li><li class="navelem"><a class="el" href="class_r_o_s2_1_1_camera_sensor.html">CameraSensor</a></li>
-    <li class="footer">Generated on Thu Nov 24 2022 13:40:30 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Fri Nov 25 2022 08:37:52 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
