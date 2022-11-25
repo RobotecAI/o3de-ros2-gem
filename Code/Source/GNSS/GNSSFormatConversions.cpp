@@ -93,7 +93,7 @@ namespace ROS2::GNSS
         const double F = 54.0f * earthSemiminorAxis * earthSemiminorAxis * z * z;
         const double G = radiusSquared + (1.0f - firstEccentricitySquared) * z * z - firstEccentricitySquared * E2;
         const double c = (firstEccentricitySquared * firstEccentricitySquared * F * radiusSquared) / (G * G * G);
-        const double s = std::cbrt(1.0f + c + AZStd::sqrt(c * c + 2.0f * c));
+        const double s = AZStd::pow(1. + c + AZStd::sqrt(c * c + 2. * c), 1. / 3);
         const double P = F / (3.0f * (s + 1.0f / s + 1.0f) * (s + 1.0f / s + 1.0f) * G * G);
         const double Q = AZStd::sqrt(1.0f + 2.0f * firstEccentricitySquared * firstEccentricitySquared * P);
 
