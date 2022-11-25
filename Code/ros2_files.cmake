@@ -13,8 +13,6 @@ set(FILES
         Source/Camera/CameraSensor.h
         Source/Camera/ROS2CameraSensorComponent.cpp
         Source/Camera/ROS2CameraSensorComponent.h
-        Source/Camera/ROS2CameraSensorEditorComponent.cpp
-        Source/Camera/ROS2CameraSensorEditorComponent.h
         Source/Clock/SimulationClock.cpp
         Source/Clock/SimulationClock.h
         Source/Communication/QoS.cpp

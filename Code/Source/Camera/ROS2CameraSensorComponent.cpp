@@ -83,7 +83,8 @@ namespace ROS2
         };
         if (m_colorCamera)
         {
-            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kColorImageConfig];
+            const auto cameraImagePublisherConfig =
+                m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kColorImageConfig];
             AZStd::string cameraImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraImagePublisherConfig.m_topic);
             auto publisher =
                 ros2Node->create_publisher<sensor_msgs::msg::Image>(cameraImageFullTopic.data(), cameraImagePublisherConfig.GetQoS());
@@ -91,7 +92,8 @@ namespace ROS2
         }
         if (m_depthCamera)
         {
-            const auto cameraImagePublisherConfig = m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kDepthImageConfig];
+            const auto cameraImagePublisherConfig =
+                m_sensorConfiguration.m_publishersConfigurations[CameraSensorConstants::kDepthImageConfig];
             AZStd::string cameraImageFullTopic = ROS2Names::GetNamespacedName(GetNamespace(), cameraImagePublisherConfig.m_topic);
             auto publisher =
                 ros2Node->create_publisher<sensor_msgs::msg::Image>(cameraImageFullTopic.data(), cameraImagePublisherConfig.GetQoS());

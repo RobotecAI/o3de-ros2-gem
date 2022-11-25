@@ -14,7 +14,6 @@
 #include "Sensor/ROS2SensorComponent.h"
 
 #include <AzCore/Component/Component.h>
-#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 #include <ROS2/Frame/NamespaceConfiguration.h>
 #include <ROS2/Frame/ROS2Transform.h>
 

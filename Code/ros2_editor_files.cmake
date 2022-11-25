@@ -7,6 +7,8 @@ set(FILES
     Source/ROS2EditorSystemComponent.cpp
     Source/ROS2EditorSystemComponent.h
     Source/ROS2GemUtilities.cpp
+    Source/Camera/ROS2CameraSensorEditorComponent.cpp
+    Source/Camera/ROS2CameraSensorEditorComponent.h
     Source/RobotImporter/RobotImporterWidget.cpp
     Source/RobotImporter/RobotImporterWidget.h
     Source/RobotImporter/RobotImporterWidgetUtils.cpp
