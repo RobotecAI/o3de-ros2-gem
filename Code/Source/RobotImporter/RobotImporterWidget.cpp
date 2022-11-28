@@ -15,6 +15,7 @@
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include "RobotImporter/URDF/UrdfParser.h"
 #include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "RobotImporter/xacro/XacroUtils.h"
 #include <QApplication>
 #include <QScreen>
 #include <QTranslator>
@@ -80,11 +81,36 @@ namespace ROS2
     void RobotImporterWidget::OpenUrdf()
     {
         m_urdfPath = AZStd::string(m_fileSelectPage->getFileName().toUtf8().constData());
+        QString report;
         if (!m_urdfPath.empty())
         {
-            AZ_Printf("Wizard", "Loading URDF file : %s", m_urdfPath.c_str());
-            m_parsedUrdf = UrdfParser::ParseFromFile(m_urdfPath);
-            QString report;
+            if (m_urdfPath.ends_with("xacro"))
+            {
+                Utils::xacro::Params params;
+                Utils::xacro::ExecutionOutcome outcome = Utils::xacro::ParseXacro(m_urdfPath, params);
+                if (outcome)
+                {
+                    m_parsedUrdf = outcome.m_urdfHandle;
+                    report += "# " + tr("XACRO execution succeed") + "\n";
+                }
+                else
+                {
+                    report += "# " + tr("XACRO parsing failed") + "\n";
+                    report += "\n\n" + tr("Command called : \n'") + QString::fromUtf8(outcome.m_called.data()) + "'";
+                    report += "\n\n" + tr("Process failed with code : ") + QString::number(outcome.m_returnCode);
+                    report += "\n\n" + tr("error output") + " :\n\n";
+                    report += QString::fromLocal8Bit(outcome.m_logErrorOutput.data(), static_cast<int>(outcome.m_logErrorOutput.size()));
+                    m_checkUrdfPage->ReportURDFResult(report, false);
+                    return;
+                }
+            }
+            else
+            {
+                // standard URDF
+                AZ_Printf("Wizard", "Loading urdf file : %s", m_urdfPath.c_str());
+                m_parsedUrdf = UrdfParser::ParseFromFile(m_urdfPath);
+            }
+
             const auto log = UrdfParser::GetUrdfParsingLog();
             if (m_parsedUrdf)
             {
@@ -153,7 +179,7 @@ namespace ROS2
                     {
                         type = tr("Visual");
                     }
-                    else if (visual)
+                    else if (collider)
                     {
                         type = tr("Collider");
                     }

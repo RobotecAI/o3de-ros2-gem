@@ -11,13 +11,20 @@
 #include <AzCore/std/string/string.h>
 #include <AzTest/AzTest.h>
 #include <RobotImporter/URDF/UrdfParser.h>
-
+#include <RobotImporter/xacro/XacroUtils.h>
 namespace UnitTest
 {
 
     class UrdfParserTest : public AllocatorsTestFixture
     {
     public:
+        AZStd::string GetXacroParams()
+        {
+            return "<robot name=\"test\" xmlns:xacro=\"http://ros.org/wiki/xacro\">\n"
+                   "    <xacro:arg name=\"laser_enabled\" default=\"false\" />\n"
+                   "</robot>";
+        }
+
         AZStd::string GetUrdfWithOneLink()
         {
             return "<robot name=\"test_one_link\">"
@@ -448,6 +455,18 @@ namespace UnitTest
         };
         auto result = ROS2::Utils::ResolveURDFPath(dae, urdf, mockFileSystem);
         EXPECT_EQ(result, "/home/foo/ros_ws/install/foo_robot/meshes/bar.dae");
+    }
+
+    TEST_F(UrdfParserTest, XacroParseArgs)
+    {
+        AZStd::string st = GetXacroParams();
+        AZStd::vector<char> data;
+        data.resize(st.size());
+        AZStd::copy(st.begin(), st.end(), data.begin());
+        ROS2::Utils::xacro::Params p = ROS2::Utils::xacro::GetParameterFromXacroData(data);
+        EXPECT_EQ(p.size(), 1);
+        ASSERT_TRUE(p.contains("laser_enabled"));
+        EXPECT_EQ(p["laser_enabled"], "false");
     }
 
 } // namespace UnitTest
