@@ -107,12 +107,12 @@ $(document).ready(function(){initNavTree('_visuals_maker_8h_source.html',''); in
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="class_r_o_s2_1_1_visuals_maker.html">VisualsMaker</a>(<span class="keyword">const</span> AZ::IO::Path&amp; modelPath, <span class="keyword">const</span> std::map&lt;std::string, urdf::MaterialSharedPtr&gt;&amp; materials);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_visuals_maker.html#abce50c2076fd7dd4a800c304a6c179d7">AddVisuals</a>(urdf::LinkSharedPtr link, AZ::EntityId entityId);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_visuals_maker.html#a6e91dae0774ae36a472b8bb27a287472">AddVisuals</a>(urdf::LinkSharedPtr link, AZ::EntityId entityId) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordtype">void</span> AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId, <span class="keyword">const</span> AZStd::string&amp; generatedName);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">void</span> AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">void</span> AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordtype">void</span> AddVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId, <span class="keyword">const</span> AZStd::string&amp; generatedName) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">void</span> AddVisualToEntity(urdf::VisualSharedPtr visual, AZ::EntityId entityId) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">void</span> AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        AZ::IO::Path m_modelPath; <span class="comment">// TODO - this should be handled on level of assets</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        AZStd::unordered_map&lt;AZStd::string, urdf::MaterialSharedPtr&gt; m_materials;</div>
@@ -120,13 +120,13 @@ $(document).ready(function(){initNavTree('_visuals_maker_8h_source.html',''); in
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="aclass_r_o_s2_1_1_visuals_maker_html_a6e91dae0774ae36a472b8bb27a287472"><div class="ttname"><a href="class_r_o_s2_1_1_visuals_maker.html#a6e91dae0774ae36a472b8bb27a287472">ROS2::VisualsMaker::AddVisuals</a></div><div class="ttdeci">void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId) const</div><div class="ttdef"><b>Definition:</b> VisualsMaker.cpp:40</div></div>
 <div class="ttc" id="aclass_r_o_s2_1_1_visuals_maker_html"><div class="ttname"><a href="class_r_o_s2_1_1_visuals_maker.html">ROS2::VisualsMaker</a></div><div class="ttdoc">Populates a given entity with all the contents of the &lt;visual&gt; tag in robot description.</div><div class="ttdef"><b>Definition:</b> VisualsMaker.h:19</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_visuals_maker_html_abce50c2076fd7dd4a800c304a6c179d7"><div class="ttname"><a href="class_r_o_s2_1_1_visuals_maker.html#abce50c2076fd7dd4a800c304a6c179d7">ROS2::VisualsMaker::AddVisuals</a></div><div class="ttdeci">void AddVisuals(urdf::LinkSharedPtr link, AZ::EntityId entityId)</div><div class="ttdef"><b>Definition:</b> VisualsMaker.cpp:40</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_eae6b30a964938d522f79c58154155f0.html">RobotImporter</a></li><li class="navelem"><a class="el" href="dir_a83c0b79dd9a152995ca99aacead9b19.html">URDF</a></li><li class="navelem"><b>VisualsMaker.h</b></li>
-    <li class="footer">Generated on Mon Nov 28 2022 10:35:43 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Mon Nov 28 2022 11:52:30 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
