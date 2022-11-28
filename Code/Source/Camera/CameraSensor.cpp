@@ -28,7 +28,9 @@ namespace ROS2
     namespace Internal
     {
 
-        // maping from ATOM to ROS/OpenCV
+        /// @FormatMappings - contains the mapping from RHI to ROS image encodings. List of supported
+        /// ROS image encodings lives in `sensor_msgs/image_encodings.hpp'
+        /// We are not including `image_encodings.hpp` since it uses exceptions.
         AZStd::unordered_map<AZ::RHI::Format, const char*> FormatMappings{
             { AZ::RHI::Format::R8G8B8A8_UNORM, "rgba8" },     { AZ::RHI::Format::R16G16B16A16_UNORM, "rgba16" },
             { AZ::RHI::Format::R32G32B32A32_FLOAT, "32FC4" }, // Unsuported by RVIZ2
@@ -36,6 +38,8 @@ namespace ROS2
             { AZ::RHI::Format::R32_FLOAT, "32FC1" },
         };
 
+        /// @BitDepth - contains the mapping from RHI to size used in `step` size computation.
+        /// It is some equivalent to `bitDepth()` function from `sensor_msgs/image_encodings.hpp`
         AZStd::unordered_map<AZ::RHI::Format, int> BitDepth{
             { AZ::RHI::Format::R8G8B8A8_UNORM, 4 * sizeof(uint8_t) },
             { AZ::RHI::Format::R16G16B16A16_UNORM, 4 * sizeof(uint16_t) },
@@ -192,7 +196,6 @@ namespace ROS2
                 AZ_Assert(Internal::FormatMappings.contains(format), "Unknown format in result %u", static_cast<uint32_t>(format));
                 sensor_msgs::msg::Image message;
                 message.encoding = Internal::FormatMappings.at(format);
-
                 message.width = descriptor.m_size.m_width;
                 message.height = descriptor.m_size.m_height;
                 message.step = message.width * Internal::BitDepth.at(format);
