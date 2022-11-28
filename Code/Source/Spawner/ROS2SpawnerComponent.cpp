@@ -230,7 +230,7 @@ namespace ROS2
             AZ::Entity* child_entity = nullptr;
             AZ::ComponentApplicationBus::BroadcastResult(child_entity, &AZ::ComponentApplicationRequests::FindEntity, child);
             AZ_Assert(child_entity, "No child entity %s", child.ToString().c_str());
-            auto spawn_point = child_entity->FindComponent<ROS2SpawnPointComponent>();
+            const auto* spawn_point = child_entity->FindComponent<ROS2SpawnPointComponent>();
 
             if (spawn_point == nullptr)
             {

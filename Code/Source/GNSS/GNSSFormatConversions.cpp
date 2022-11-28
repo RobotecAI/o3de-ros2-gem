@@ -48,8 +48,8 @@ namespace ROS2::GNSS
         const AZ::Vector3 referencePointInECEF = WGS84ToECEF(referenceLatitudeLongitudeAltitude);
         const AZ::Vector3 pointToReferencePointECEF = ECEFPoint - referencePointInECEF;
 
-        float referenceLatitudeRad = Deg2Rad(referenceLatitudeLongitudeAltitude.GetX());
-        float referenceLongitudeRad = Deg2Rad(referenceLatitudeLongitudeAltitude.GetY());
+        const float referenceLatitudeRad = Deg2Rad(referenceLatitudeLongitudeAltitude.GetX());
+        const float referenceLongitudeRad = Deg2Rad(referenceLatitudeLongitudeAltitude.GetY());
 
         return {
             -AZStd::sin(referenceLongitudeRad) * pointToReferencePointECEF.GetX() +

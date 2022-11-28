@@ -108,7 +108,7 @@ namespace ROS2
     {
         AZ_TracePrintf("CameraSensor", "Initializing pipeline for %s", m_cameraSensorDescription.m_cameraName.c_str());
 
-        AZ::Name viewName = AZ::Name("MainCamera");
+        const AZ::Name viewName = AZ::Name("MainCamera");
         m_view = AZ::RPI::View::CreateView(viewName, AZ::RPI::View::UsageCamera);
         m_view->SetViewToClipMatrix(m_cameraSensorDescription.m_viewToClipMatrix);
         m_scene = AZ::RPI::RPISystemInterface::Get()->GetSceneByName(AZ::Name("Main"));
@@ -136,7 +136,7 @@ namespace ROS2
         m_passHierarchy.push_back("CopyToSwapChain");
 
         m_pipeline->SetDefaultView(m_view);
-        AZ::RPI::ViewPtr targetView = m_scene->GetDefaultRenderPipeline()->GetDefaultView();
+        const AZ::RPI::ViewPtr targetView = m_scene->GetDefaultRenderPipeline()->GetDefaultView();
         if (auto* fp = m_scene->GetFeatureProcessor<AZ::Render::PostProcessFeatureProcessor>())
         {
             fp->SetViewAlias(m_view, targetView);
@@ -162,7 +162,7 @@ namespace ROS2
     void CameraSensor::RequestFrame(
         const AZ::Transform& cameraPose, AZStd::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback)
     {
-        AZ::Transform inverse = (cameraPose * kAtomToRos).GetInverse();
+        const AZ::Transform inverse = (cameraPose * kAtomToRos).GetInverse();
         m_view->SetWorldToViewMatrix(AZ::Matrix4x4::CreateFromQuaternionAndTranslation(inverse.GetRotation(), inverse.GetTranslation()));
 
         AZ::Render::FrameCaptureId captureId = AZ::Render::InvalidFrameCaptureId;
