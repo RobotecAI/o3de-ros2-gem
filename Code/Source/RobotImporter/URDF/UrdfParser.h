@@ -12,6 +12,7 @@
 #include <console_bridge/console.h>
 #include <sstream>
 #include <urdf_parser/urdf_parser.h>
+
 namespace ROS2
 {
     //! Class for parsing URDF data.
@@ -28,7 +29,7 @@ namespace ROS2
         //! @return model represented as a tree of parsed links.
         static urdf::ModelInterfaceSharedPtr ParseFromFile(const AZStd::string& filePath);
 
-        static AZStd::string getUrdfParsingLog();
+        static AZStd::string GetUrdfParsingLog();
 
     private:
         class customConsoleHandler : public console_bridge::OutputHandler

@@ -31,22 +31,22 @@ namespace ROS2
         bool IsWheelURDFHeuristics(const urdf::LinkConstSharedPtr& link);
 
         /// Goes through URDF and finds world to entity transformation for us
-        AZ::Transform getWorldTransformURDF(const urdf::LinkSharedPtr& link, AZ::Transform t = AZ::Transform::Identity());
+        AZ::Transform GetWorldTransformURDF(const urdf::LinkSharedPtr& link, AZ::Transform t = AZ::Transform::Identity());
 
         /// Retrieve all links in urdf file
-        AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> getAllLinks(const std::vector<urdf::LinkSharedPtr>& links);
+        AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> GetAllLinks(const std::vector<urdf::LinkSharedPtr>& links);
 
         /// Retrieve all joints in urdf file
-        AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> getAllJoints(const std::vector<urdf::LinkSharedPtr>& links);
+        AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> GetAllJoints(const std::vector<urdf::LinkSharedPtr>& links);
 
         /// Retireve all meshes as URDF paths
         /// @param visual - find for visual
         /// @param colliders - find for colliders
         /// @returns set of meshes
-        AZStd::unordered_set<AZStd::string> getMeshesFilenames(const urdf::LinkConstSharedPtr& root_link, bool visual, bool colliders);
+        AZStd::unordered_set<AZStd::string> GetMeshesFilenames(const urdf::LinkConstSharedPtr& root_link, bool visual, bool colliders);
 
         /// Finds global path from URDF path
-        AZStd::string resolveURDFPath(
+        AZStd::string ResolveURDFPath(
             AZStd::string path,
             const AZStd::string& urdf_path,
             const AZStd::function<bool(const AZStd::string&)>& fileExists = fileExistsCall);

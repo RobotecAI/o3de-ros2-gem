@@ -12,7 +12,7 @@ namespace ROS2::Utils
 {
 
     /// Function computes CRC32 on first kilobyte of file.
-    AZ::Crc32 getFileCRC(const AZStd::string& filename)
+    AZ::Crc32 GetFileCRC(const AZStd::string& filename)
     {
         auto fileSize = AZ::IO::SystemFile::Length(filename.c_str());
         fileSize = AZStd::min(fileSize, 1024ull); // limit crc computation to first kilobyte
@@ -31,7 +31,7 @@ namespace ROS2::Utils
         return r;
     }
 
-    AZStd::unordered_map<AZ::Crc32, available_asset> getInterestingSourceAssetsCRC()
+    AZStd::unordered_map<AZ::Crc32, available_asset> GetInterestingSourceAssetsCRC()
     {
         const AZStd::unordered_set<AZStd::string> kInterestingExtensions{ ".dae", ".stl", ".obj" };
         AZStd::unordered_map<AZ::Crc32, available_asset> availableAssets;
@@ -64,7 +64,7 @@ namespace ROS2::Utils
                     return;
                 }
 
-                AZ::Crc32 crc = Utils::getFileCRC(fullSourcePathStr);
+                AZ::Crc32 crc = Utils::GetFileCRC(fullSourcePathStr);
                 AZ_Printf(
                     "RobotImporterWidget",
                     "m_relativePath %s %s : %s %llu \n",
@@ -87,7 +87,7 @@ namespace ROS2::Utils
         return availableAssets;
     }
 
-    AZStd::unordered_map<AZStd::string, Utils::urdf_asset> findAssetsForUrdf(
+    AZStd::unordered_map<AZStd::string, Utils::urdf_asset> FindAssetsForUrdf(
         const AZStd::unordered_set<AZStd::string>& meshes_filenames, const AZStd::string& urdf_filename)
     {
         AZStd::unordered_map<AZStd::string, Utils::urdf_asset> urdf_to_asset;
@@ -95,11 +95,11 @@ namespace ROS2::Utils
         {
             Utils::urdf_asset asset;
             asset.m_urdfPath = t;
-            asset.m_resolvedUrdfPath = Utils::resolveURDFPath(asset.m_urdfPath, urdf_filename);
-            asset.m_urdfFileCRC = Utils::getFileCRC(asset.m_resolvedUrdfPath);
+            asset.m_resolvedUrdfPath = Utils::ResolveURDFPath(asset.m_urdfPath, urdf_filename);
+            asset.m_urdfFileCRC = Utils::GetFileCRC(asset.m_resolvedUrdfPath);
             urdf_to_asset.emplace(t, AZStd::move(asset));
         }
-        const AZStd::unordered_map<AZ::Crc32, available_asset> available_assets = Utils::getInterestingSourceAssetsCRC();
+        const AZStd::unordered_map<AZ::Crc32, available_asset> available_assets = Utils::GetInterestingSourceAssetsCRC();
         for (auto it = urdf_to_asset.begin(); it != urdf_to_asset.end(); it++)
         {
             Utils::urdf_asset& asset = it->second;

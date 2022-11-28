@@ -20,7 +20,7 @@
 
 namespace ROS2
 {
-    QWizardPage* createIntroPage()
+    QWizardPage* CreateIntroPage()
     {
         QWizardPage* page = new QWizardPage;
         page->setTitle("Introduction");
@@ -234,7 +234,7 @@ namespace ROS2
         m_assetPage = new CheckAssetPage(this);
         m_prefabMakerPage = new PrefabMakerPage(this);
 
-        addPage(createIntroPage());
+        addPage(CreateIntroPage());
         addPage(m_fileSelectPage);
         addPage(m_checkUrdfPage);
         addPage(m_assetPage);
@@ -288,7 +288,7 @@ namespace ROS2
             AZ_Printf("Wizard", "Testing urdf file : %s", m_urdfPath.c_str());
             m_parsedUrdf = UrdfParser::ParseFromFile(m_urdfPath);
             QString report;
-            const auto log = UrdfParser::getUrdfParsingLog();
+            const auto log = UrdfParser::GetUrdfParsingLog();
             if (m_parsedUrdf)
             {
                 report += "# The URDF was parsed and opened successfully\n";
@@ -296,7 +296,7 @@ namespace ROS2
                 m_prefabMaker.reset();
                 // let us skip this page
                 AZ_Printf("Wizard", "Wizard skips m_checkUrdfPage since there is no errors in URDF");
-                m_meshNames = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), true, true);
+                m_meshNames = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, true);
             }
             else
             {
@@ -323,9 +323,9 @@ namespace ROS2
             if (m_parsedUrdf)
             {
                 m_urdfAssetsMapping = AZStd::make_shared<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>(
-                    Utils::findAssetsForUrdf(m_meshNames, m_urdfPath));
-                auto colliders_names = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
-                auto visual_names = Utils::getMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
+                    Utils::FindAssetsForUrdf(m_meshNames, m_urdfPath));
+                auto colliders_names = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
+                auto visual_names = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
                 for (auto& mesh_path : m_meshNames)
                 {
                     const AZStd::string kNotFound = "not found";

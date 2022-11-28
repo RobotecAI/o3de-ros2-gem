@@ -36,17 +36,16 @@ namespace ROS2::Utils
     };
 
     /// Function computes CRC32 on first kilobyte of file.
-    AZ::Crc32 getFileCRC(const AZStd::string& filename);
+    AZ::Crc32 GetFileCRC(const AZStd::string& filename);
 
     /// Function takes assets catalog and compute CRC for every source mesh
     /// ToDo consider lazy initialization / future-promise threading
     /// ToDo consider limit scope to only sub-directory
     /// ToDo consider use filesystem instead of AssetCatalogRequestBus::EnumerateAssets
-    /// ToDo benchmark on large project
     /// @returns map where key is crc of source file and value is a azmodel relative path
-    AZStd::unordered_map<AZ::Crc32, available_asset> getInterestingSourceAssetsCRC();
+    AZStd::unordered_map<AZ::Crc32, available_asset> GetInterestingSourceAssetsCRC();
 
-    AZStd::unordered_map<AZStd::string, urdf_asset> findAssetsForUrdf(
+    AZStd::unordered_map<AZStd::string, urdf_asset> FindAssetsForUrdf(
         const AZStd::unordered_set<AZStd::string>& meshes_filenames, const AZStd::string& urdf_filename);
 
 } // namespace ROS2::Utils

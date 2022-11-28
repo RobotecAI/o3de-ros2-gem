@@ -40,7 +40,7 @@ namespace ROS2
         m_customConsoleHandler.console_ss = std::stringstream();
         console_bridge::useOutputHandler(&m_customConsoleHandler);
         Internal::checkIfCurrentLocaleHasDotAsADecimalSeparator();
-        auto ret = urdf::parseURDF(xmlString.c_str());
+        const auto ret = urdf::parseURDF(xmlString.c_str());
         console_bridge::restorePreviousOutputHandler();
         return ret;
     }
@@ -58,7 +58,7 @@ namespace ROS2
         return Parse(xmlStr.c_str());
     }
 
-    AZStd::string UrdfParser::getUrdfParsingLog()
+    AZStd::string UrdfParser::GetUrdfParsingLog()
     {
         return AZStd::string(
             UrdfParser::m_customConsoleHandler.console_ss.str().c_str(), UrdfParser::m_customConsoleHandler.console_ss.str().size());

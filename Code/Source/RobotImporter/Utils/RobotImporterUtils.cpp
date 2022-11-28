@@ -46,17 +46,17 @@ namespace ROS2
         return false;
     }
 
-    AZ::Transform Utils::getWorldTransformURDF(const urdf::LinkSharedPtr& link, AZ::Transform t)
+    AZ::Transform Utils::GetWorldTransformURDF(const urdf::LinkSharedPtr& link, AZ::Transform t)
     {
         if (link->getParent() != nullptr)
         {
             t = URDF::TypeConversions::ConvertPose(link->parent_joint->parent_to_joint_origin_transform) * t;
-            return getWorldTransformURDF(link->getParent(), t);
+            return GetWorldTransformURDF(link->getParent(), t);
         }
         return t;
     }
 
-    AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> Utils::getAllLinks(const std::vector<urdf::LinkSharedPtr>& child_links)
+    AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> Utils::GetAllLinks(const std::vector<urdf::LinkSharedPtr>& child_links)
     {
         AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> pointers;
         std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
@@ -73,7 +73,7 @@ namespace ROS2
         return pointers;
     }
 
-    AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> Utils::getAllJoints(const std::vector<urdf::LinkSharedPtr>& child_links)
+    AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> Utils::GetAllJoints(const std::vector<urdf::LinkSharedPtr>& child_links)
     {
         AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> joints;
         std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
@@ -91,7 +91,7 @@ namespace ROS2
         return joints;
     }
 
-    AZStd::unordered_set<AZStd::string> Utils::getMeshesFilenames(const urdf::LinkConstSharedPtr& root_link, bool visual, bool colliders)
+    AZStd::unordered_set<AZStd::string> Utils::GetMeshesFilenames(const urdf::LinkConstSharedPtr& root_link, bool visual, bool colliders)
     {
         AZStd::unordered_set<AZStd::string> filenames;
         const auto getFnFromGeometry = [](const urdf::GeometrySharedPtr& geometry)
@@ -149,7 +149,7 @@ namespace ROS2
     }
 
     /// Finds global path from URDF path
-    AZStd::string Utils::resolveURDFPath(
+    AZStd::string Utils::ResolveURDFPath(
         AZStd::string path, const AZStd::string& urdf_path, const AZStd::function<bool(const AZStd::string&)>& fileExists)
     {
         if (path.starts_with("package://"))
@@ -163,7 +163,7 @@ namespace ROS2
                 AZStd::string package_xml_candite = (package_path / "package.xml").String();
                 if (fileExists(package_xml_candite))
                 {
-                    // bingo - we have package.xml
+                    // package.xml has been found
                     return (package_path / path).String();
                 }
             }

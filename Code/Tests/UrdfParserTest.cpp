@@ -86,7 +86,7 @@ namespace UnitTest
         AZStd::string GetURDFWithTranforms()
         {
             return "<?xml version=\"1.0\"?>\n"
-                   "<robot name=\"comlicated\">\n"
+                   "<robot name=\"complicated\">\n"
                    "    <link name=\"base_link\">\n"
                    "    </link>\n"
                    "    <link name=\"link1\">\n"
@@ -359,7 +359,7 @@ namespace UnitTest
         ROS2::UrdfParser parser;
         const auto xmlStr = GetURDFWithTranforms();
         const auto urdf = parser.Parse(xmlStr);
-        auto links = ROS2::Utils::getAllLinks(urdf->getRoot()->child_links);
+        auto links = ROS2::Utils::GetAllLinks(urdf->getRoot()->child_links);
         EXPECT_EQ(links.size(), 3);
         ASSERT_TRUE(links.contains("link1"));
         ASSERT_TRUE(links.contains("link2"));
@@ -374,7 +374,7 @@ namespace UnitTest
         ROS2::UrdfParser parser;
         const auto xmlStr = GetURDFWithTranforms();
         const auto urdf = parser.Parse(xmlStr);
-        auto joints = ROS2::Utils::getAllJoints(urdf->getRoot()->child_links);
+        auto joints = ROS2::Utils::GetAllJoints(urdf->getRoot()->child_links);
         EXPECT_EQ(joints.size(), 3);
     }
 
@@ -383,7 +383,7 @@ namespace UnitTest
         ROS2::UrdfParser parser;
         const auto xmlStr = GetURDFWithTranforms();
         const auto urdf = parser.Parse(xmlStr);
-        const auto links = ROS2::Utils::getAllLinks(urdf->getRoot()->child_links);
+        const auto links = ROS2::Utils::GetAllLinks(urdf->getRoot()->child_links);
         const auto link1_ptr = links.at("link1");
         const auto link2_ptr = links.at("link2");
         const auto link3_ptr = links.at("link3");
@@ -393,17 +393,17 @@ namespace UnitTest
         const AZ::Vector3 expected_translation_link2{ -1.2000000476837158, 2.0784599781036377, 0.0 };
         const AZ::Vector3 expected_translation_link3{ -2.4000000953674316, 0.0, 0.0 };
 
-        const AZ::Transform transform_from_urdf_link1 = ROS2::Utils::getWorldTransformURDF(link1_ptr);
+        const AZ::Transform transform_from_urdf_link1 = ROS2::Utils::GetWorldTransformURDF(link1_ptr);
         EXPECT_NEAR(expected_translation_link1.GetX(), transform_from_urdf_link1.GetTranslation().GetX(), 1e-5);
         EXPECT_NEAR(expected_translation_link1.GetY(), transform_from_urdf_link1.GetTranslation().GetY(), 1e-5);
         EXPECT_NEAR(expected_translation_link1.GetZ(), transform_from_urdf_link1.GetTranslation().GetZ(), 1e-5);
 
-        const AZ::Transform transform_from_urdf_link2 = ROS2::Utils::getWorldTransformURDF(link2_ptr);
+        const AZ::Transform transform_from_urdf_link2 = ROS2::Utils::GetWorldTransformURDF(link2_ptr);
         EXPECT_NEAR(expected_translation_link2.GetX(), transform_from_urdf_link2.GetTranslation().GetX(), 1e-5);
         EXPECT_NEAR(expected_translation_link2.GetY(), transform_from_urdf_link2.GetTranslation().GetY(), 1e-5);
         EXPECT_NEAR(expected_translation_link2.GetZ(), transform_from_urdf_link2.GetTranslation().GetZ(), 1e-5);
 
-        const AZ::Transform transform_from_urdf_link3 = ROS2::Utils::getWorldTransformURDF(link3_ptr);
+        const AZ::Transform transform_from_urdf_link3 = ROS2::Utils::GetWorldTransformURDF(link3_ptr);
         EXPECT_NEAR(expected_translation_link3.GetX(), transform_from_urdf_link3.GetTranslation().GetX(), 1e-5);
         EXPECT_NEAR(expected_translation_link3.GetY(), transform_from_urdf_link3.GetTranslation().GetY(), 1e-5);
         EXPECT_NEAR(expected_translation_link3.GetZ(), transform_from_urdf_link3.GetTranslation().GetZ(), 1e-5);
@@ -413,7 +413,7 @@ namespace UnitTest
     {
         AZStd::string dae = "file:///home/foo/ros_ws/instal/foo_robot/meshes/bar.dae";
         AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/foo_robot.urdf";
-        auto result = ROS2::Utils::resolveURDFPath(
+        auto result = ROS2::Utils::ResolveURDFPath(
             dae,
             urdf,
             [](const AZStd::string& p) -> bool
@@ -427,7 +427,7 @@ namespace UnitTest
     {
         AZStd::string dae = "meshes/bar.dae";
         AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/foo_robot.urdf";
-        auto result = ROS2::Utils::resolveURDFPath(
+        auto result = ROS2::Utils::ResolveURDFPath(
             dae,
             urdf,
             [](const AZStd::string& p) -> bool
@@ -446,7 +446,7 @@ namespace UnitTest
         {
             return (p == xml);
         };
-        auto result = ROS2::Utils::resolveURDFPath(dae, urdf, mockFileSystem);
+        auto result = ROS2::Utils::ResolveURDFPath(dae, urdf, mockFileSystem);
         EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
     }
 
