@@ -1,10 +1,10 @@
 var searchData=
 [
   ['getcamerasensordescription_31',['GetCameraSensorDescription',['../class_r_o_s2_1_1_camera_sensor.html#a49ca929a051b8775b6caf4617cd386ec',1,'ROS2::CameraSensor']]],
-  ['getcurrentposition_32',['GetCurrentPosition',['../class_r_o_s2_1_1_motorized_joint.html#a237d53f23b53c58e425d96686fb7483c',1,'ROS2::MotorizedJoint']]],
+  ['getcurrentposition_32',['GetCurrentPosition',['../class_r_o_s2_1_1_motorized_joint_component.html#ac133c66ef2f242259cbc4a3c3af3419e',1,'ROS2::MotorizedJointComponent']]],
   ['getdefaultspawnpose_33',['GetDefaultSpawnPose',['../class_r_o_s2_1_1_spawner_requests.html#a0b7b06a187f288f80dc3184677b431c5',1,'ROS2::SpawnerRequests']]],
-  ['getdir_34',['GetDir',['../class_r_o_s2_1_1_motorized_joint.html#a833f603bd324c76df67eff1bab0754d8',1,'ROS2::MotorizedJoint']]],
-  ['geterror_35',['GetError',['../class_r_o_s2_1_1_motorized_joint.html#a1da07e4a027b21b2a470a5deb7318450',1,'ROS2::MotorizedJoint']]],
+  ['getdir_34',['GetDir',['../class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b',1,'ROS2::MotorizedJointComponent']]],
+  ['geterror_35',['GetError',['../class_r_o_s2_1_1_motorized_joint_component.html#a8365ea5170be472638e4a4b423aec90d',1,'ROS2::MotorizedJointComponent']]],
   ['getframeid_36',['GetFrameID',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#a634aa142324096228faccd6eb023d14c',1,'ROS2::ROS2FrameComponent::GetFrameID()'],['../class_r_o_s2_1_1_r_o_s2_sensor_component.html#a989cb6379ebb4a9ad9e28c08b5426eea',1,'ROS2::ROS2SensorComponent::GetFrameID()']]],
   ['getframetransform_37',['GetFrameTransform',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#ae8119c22eadc0928e777490d6a9320a3',1,'ROS2::ROS2FrameComponent']]],
   ['getglobalframename_38',['GetGlobalFrameName',['../class_r_o_s2_1_1_r_o_s2_frame_component.html#a670f5281f664ee4c8d4d61bba7096604',1,'ROS2::ROS2FrameComponent']]],

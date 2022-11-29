@@ -10,7 +10,7 @@ var hierarchy =
     [ "ROS2::CollidersMaker", "class_r_o_s2_1_1_colliders_maker.html", null ],
     [ "Component", null, [
       [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ],
-      [ "ROS2::MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", null ],
+      [ "ROS2::MotorizedJointComponent", "class_r_o_s2_1_1_motorized_joint_component.html", null ],
       [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ],
       [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
       [ "ROS2::ROS2RobotControlComponent", "class_r_o_s2_1_1_r_o_s2_robot_control_component.html", null ],
@@ -46,17 +46,23 @@ var hierarchy =
       [ "VehicleDynamics::VehicleInputControlRequests", "class_vehicle_dynamics_1_1_vehicle_input_control_requests.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
+      [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
     ] ],
     [ "Handler", null, [
-      [ "ROS2::MotorizedJoint", "class_r_o_s2_1_1_motorized_joint.html", null ],
+      [ "ROS2::MotorizedJointComponent", "class_r_o_s2_1_1_motorized_joint_component.html", null ],
       [ "ROS2::ROS2FrameComponent", "class_r_o_s2_1_1_r_o_s2_frame_component.html", null ],
       [ "ROS2::ROS2SensorComponent", "class_r_o_s2_1_1_r_o_s2_sensor_component.html", null ],
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ],
       [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
     ] ],
     [ "Handler", null, [
+      [ "VehicleDynamics::VehicleModelComponent", "class_vehicle_dynamics_1_1_vehicle_model_component.html", null ]
+    ] ],
+    [ "Handler", null, [
       [ "VehicleDynamics::ManualControlSingleEventHandler", "class_vehicle_dynamics_1_1_manual_control_single_event_handler.html", null ]
+    ] ],
+    [ "Handler", null, [
+      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "Handler", null, [
       [ "ROS2::RigidBodyTwistControlComponent", "class_r_o_s2_1_1_rigid_body_twist_control_component.html", null ]
@@ -66,12 +72,6 @@ var hierarchy =
     ] ],
     [ "Handler", null, [
       [ "ROS2::ROS2SystemComponent", "class_r_o_s2_1_1_r_o_s2_system_component.html", null ]
-    ] ],
-    [ "Handler", null, [
-      [ "ROS2::ROS2SpawnerComponent", "class_r_o_s2_1_1_r_o_s2_spawner_component.html", null ]
-    ] ],
-    [ "Handler", null, [
-      [ "ROS2::AckermannControlComponent", "class_r_o_s2_1_1_ackermann_control_component.html", null ]
     ] ],
     [ "ROS2::IControlSubscriptionHandler", "class_r_o_s2_1_1_i_control_subscription_handler.html", [
       [ "ROS2::ControlSubscriptionHandler< ackermann_msgs::msg::AckermannDrive >", "class_r_o_s2_1_1_control_subscription_handler.html", [

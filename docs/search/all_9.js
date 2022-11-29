@@ -32,5 +32,5 @@ var searchData=
   ['m_5fwidth_87',['m_width',['../struct_r_o_s2_1_1_camera_sensor_description.html#aadfefa0095353c1d87569ac49ae02a9f',1,'ROS2::CameraSensorDescription']]],
   ['manualcontroleventhandler_88',['ManualControlEventHandler',['../class_vehicle_dynamics_1_1_manual_control_event_handler.html',1,'VehicleDynamics']]],
   ['manualcontrolsingleeventhandler_89',['ManualControlSingleEventHandler',['../class_vehicle_dynamics_1_1_manual_control_single_event_handler.html',1,'VehicleDynamics::ManualControlSingleEventHandler'],['../class_vehicle_dynamics_1_1_manual_control_single_event_handler.html#a1673e7d02cfb0b5748b572a9a558370a',1,'VehicleDynamics::ManualControlSingleEventHandler::ManualControlSingleEventHandler()']]],
-  ['motorizedjoint_90',['MotorizedJoint',['../class_r_o_s2_1_1_motorized_joint.html',1,'ROS2']]]
+  ['motorizedjointcomponent_90',['MotorizedJointComponent',['../class_r_o_s2_1_1_motorized_joint_component.html',1,'ROS2']]]
 ];
