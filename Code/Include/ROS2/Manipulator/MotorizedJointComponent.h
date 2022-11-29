@@ -16,7 +16,7 @@
 namespace ROS2
 {
     //! A prototype component for simulated joint with a motor.
-    //! It works with either TransformBus and RigidBodyBus.
+    //! It works with either TransformBus or RigidBodyBus.
     //! TransformBus mode, called `AnimationMode` changes local transform. In this mode, you cannot have a rigid body
     //! controller enabled. With RigidBodyBus it applies forces and torque according to PID control.
     //! @note This class is already used through ROS2FrameComponent.
