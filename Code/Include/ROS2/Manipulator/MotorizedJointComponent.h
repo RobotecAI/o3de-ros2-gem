@@ -62,7 +62,7 @@ namespace ROS2
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
 
         AZ::Vector3 m_jointDir{ 0.f, 0.f, 1.f }; //!< Direction of joint movement in parent frame of reference, used to compute measurement.
-        AZ::Vector3 m_effortAxis{ 0.f, 0.f, 1.f }; //!< Direction of force application in owning entity frame of reference.
+        AZ::Vector3 m_effortAxis{ 0.f, 0.f, 1.f }; //!< Direction of force or torque application in owning entity frame of reference.
         AZStd::pair<float, float> m_limits{ -0.5f, 0.5f }; //!< limits of joint, the force is applied only when joint is within limits.
         VehicleDynamics::PidConfiguration m_pidPos; //!< PID controller for position.
 
