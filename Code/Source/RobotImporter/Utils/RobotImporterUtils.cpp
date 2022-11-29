@@ -56,7 +56,7 @@ namespace ROS2
         return t;
     }
 
-    AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> Utils::GetAllLinks(const std::vector<urdf::LinkSharedPtr>& child_links)
+    AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> Utils::GetAllLinks(const std::vector<urdf::LinkSharedPtr>& childLinks)
     {
         AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> pointers;
         std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
@@ -69,11 +69,11 @@ namespace ROS2
                 link_visitor(child_link->child_links);
             }
         };
-        link_visitor(child_links);
+        link_visitor(childLinks);
         return pointers;
     }
 
-    AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> Utils::GetAllJoints(const std::vector<urdf::LinkSharedPtr>& child_links)
+    AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> Utils::GetAllJoints(const std::vector<urdf::LinkSharedPtr>& childLinks)
     {
         AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> joints;
         std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
@@ -87,98 +87,96 @@ namespace ROS2
                 link_visitor(child_link->child_links);
             }
         };
-        link_visitor(child_links);
+        link_visitor(childLinks);
         return joints;
     }
 
-    AZStd::unordered_set<AZStd::string> Utils::GetMeshesFilenames(const urdf::LinkConstSharedPtr& root_link, bool visual, bool colliders)
+    AZStd::unordered_set<AZStd::string> Utils::GetMeshesFilenames(const urdf::LinkConstSharedPtr& rootLink, bool visual, bool colliders)
     {
         AZStd::unordered_set<AZStd::string> filenames;
-        const auto getFnFromGeometry = [](const urdf::GeometrySharedPtr& geometry)
+        const auto addFilenameFromGeometry = [&filenames](const urdf::GeometrySharedPtr& geometry)
         {
             if (geometry->type == urdf::Geometry::MESH)
             {
                 auto pMesh = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-                if (!pMesh)
+                if (pMesh)
                 {
-                    return AZStd::string{};
+                    filenames.insert(AZStd::string(pMesh->filename.c_str(), pMesh->filename.size()));
                 }
-                return AZStd::string(pMesh->filename.c_str(), pMesh->filename.size());
             }
-            return AZStd::string{};
         };
 
-        const auto processLink = [&](const urdf::Link& link)
+        const auto processLink = [&addFilenameFromGeometry, visual, colliders](const urdf::Link& link)
         {
             if (visual)
             {
                 for (auto& p : link.visual_array)
                 {
-                    const auto fn = getFnFromGeometry(p->geometry);
-                    if (!fn.empty())
-                    {
-                        filenames.insert(fn);
-                    }
+                    addFilenameFromGeometry(p->geometry);
                 }
             }
             if (colliders)
             {
                 for (auto& p : link.collision_array)
                 {
-                    const auto fn = getFnFromGeometry(p->geometry);
-                    if (!fn.empty())
-                    {
-                        filenames.insert(fn);
-                    }
+                    addFilenameFromGeometry(p->geometry);
                 }
             }
         };
 
-        std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
-            [&](const std::vector<urdf::LinkSharedPtr>& child_links) -> void
+        std::function<void(const std::vector<urdf::LinkConstSharedPtr>&)> linkVisitor =
+            [&](const std::vector<urdf::LinkConstSharedPtr>& child_links) -> void
         {
-            for (auto child_link : child_links)
+            for (auto link : child_links)
             {
-                processLink(*child_link);
-                link_visitor(child_link->child_links);
+                processLink(*link);
+                std::vector<urdf::LinkConstSharedPtr> childVector(link->child_links.size());
+                std::transform(
+                    link->child_links.begin(),
+                    link->child_links.end(),
+                    childVector.begin(),
+                    [](const urdf::LinkSharedPtr& p)
+                    {
+                        return urdf::const_pointer_cast<urdf::Link>(p);
+                    });
+                linkVisitor(childVector);
             }
         };
-        processLink(*root_link);
-        link_visitor(root_link->child_links);
+        linkVisitor({ rootLink });
         return filenames;
     }
 
     /// Finds global path from URDF path
     AZStd::string Utils::ResolveURDFPath(
-        AZStd::string path, const AZStd::string& urdf_path, const AZStd::function<bool(const AZStd::string&)>& fileExists)
+        AZStd::string unresolvedPath, const AZStd::string& urdfFilePath, const AZStd::function<bool(const AZStd::string&)>& fileExists)
     {
-        if (path.starts_with("package://"))
+        if (unresolvedPath.starts_with("package://"))
         {
-            AZ::StringFunc::Replace(path, "package://", "", true, true);
-            AZ::IO::Path urdf_proper_Path(urdf_path);
+            AZ::StringFunc::Replace(unresolvedPath, "package://", "", true, true);
+            AZ::IO::Path urdfProperPath(urdfFilePath);
             AZ::IO::Path package_path;
-            for (auto it = urdf_proper_Path.begin(); it != urdf_proper_Path.end(); it++)
+            for (auto it = urdfProperPath.begin(); it != urdfProperPath.end(); it++)
             {
                 package_path /= *it;
                 AZStd::string package_xml_candite = (package_path / "package.xml").String();
                 if (fileExists(package_xml_candite))
                 {
                     // package.xml has been found
-                    return (package_path / path).String();
+                    return (package_path / unresolvedPath).String();
                 }
             }
             // we have nothing
             return "";
         }
-        if (path.starts_with("file:///"))
+        if (unresolvedPath.starts_with("file:///"))
         {
             // seems to be global path
-            AZ::StringFunc::Replace(path, "file://", "", true, true);
-            return path;
+            AZ::StringFunc::Replace(unresolvedPath, "file://", "", true, true);
+            return unresolvedPath;
         }
         // seems to be relative path
-        AZ::IO::Path relative_path(path);
-        AZ::IO::Path urdf_proper_Path(urdf_path);
+        AZ::IO::Path relative_path(unresolvedPath);
+        AZ::IO::Path urdf_proper_Path(urdfFilePath);
         AZ::IO::Path urdf_parent_path = urdf_proper_Path.ParentPath();
         return (urdf_parent_path / relative_path).String();
     }

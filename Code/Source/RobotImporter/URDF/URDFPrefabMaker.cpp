@@ -28,7 +28,7 @@ namespace ROS2
         const AZStd::string& modelFilePath,
         urdf::ModelInterfaceSharedPtr model,
         AZStd::string prefabPath,
-        const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> urdfAssetsMapping)
+        const AZStd::shared_ptr<Utils::UrdfAssetMap> urdfAssetsMapping)
         : m_model(model)
         , m_visualsMaker(model->materials_, urdfAssetsMapping)
         , m_collidersMaker(urdfAssetsMapping)

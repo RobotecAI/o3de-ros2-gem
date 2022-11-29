@@ -32,12 +32,13 @@ namespace ROS2
         static AZStd::string GetUrdfParsingLog();
 
     private:
-        class customConsoleHandler : public console_bridge::OutputHandler
+        class CustomConsoleHandler : private console_bridge::OutputHandler
         {
+        private:
             friend UrdfParser;
             void log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line) override;
             std::stringstream console_ss;
         };
-        static customConsoleHandler m_customConsoleHandler;
+        static CustomConsoleHandler m_customConsoleHandler;
     };
 } // namespace ROS2

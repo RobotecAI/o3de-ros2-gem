@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "RobotImporter/Utils/SourceAssetsStorage.h"
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/IO/Path/Path.h>
@@ -23,7 +24,7 @@ namespace ROS2
     public:
         VisualsMaker(
             const std::map<std::string, urdf::MaterialSharedPtr>& materials,
-            const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping);
+            const AZStd::shared_ptr<Utils::UrdfAssetMap>& urdfAssetsMapping);
 
         //! Add zero, one or many visual elements to a given entity (depending on link content).
         //! Note that a sub-entity will be added to hold each visual (since they can have different transforms).
@@ -37,6 +38,6 @@ namespace ROS2
         void AddMaterialForVisual(urdf::VisualSharedPtr visual, AZ::EntityId entityId) const;
 
         AZStd::unordered_map<AZStd::string, urdf::MaterialSharedPtr> m_materials;
-        AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
+        AZStd::shared_ptr<Utils::UrdfAssetMap> m_urdfAssetsMapping;
     };
 } // namespace ROS2

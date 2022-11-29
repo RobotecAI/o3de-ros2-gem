@@ -29,7 +29,7 @@ namespace ROS2
             const AZStd::string& modelFilePath,
             urdf::ModelInterfaceSharedPtr model,
             AZStd::string prefabPath,
-            const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> urdfAssetsMapping);
+            const AZStd::shared_ptr<Utils::UrdfAssetMap> urdfAssetsMapping);
         ~URDFPrefabMaker() = default;
 
         //! Loads URDF file and builds all required meshes and colliders.
@@ -58,6 +58,6 @@ namespace ROS2
         AZStd::mutex m_statusLock;
         AZStd::multimap<AZStd::string, AZStd::string> m_status;
 
-        AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
+        AZStd::shared_ptr<Utils::UrdfAssetMap> m_urdfAssetsMapping;
     };
 } // namespace ROS2

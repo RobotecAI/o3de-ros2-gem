@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "RobotImporter/Utils/SourceAssetsStorage.h"
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/IO/Path/Path.h>
@@ -20,7 +21,6 @@
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialId.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialManager.h>
-#include <RobotImporter/Utils/SourceAssetsStorage.h>
 
 namespace ROS2
 {
@@ -30,7 +30,7 @@ namespace ROS2
     class CollidersMaker
     {
     public:
-        CollidersMaker(const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping);
+        CollidersMaker(const AZStd::shared_ptr<Utils::UrdfAssetMap>& urdfAssetsMapping);
         CollidersMaker(const CollidersMaker& other) = delete;
 
         ~CollidersMaker();
@@ -62,6 +62,6 @@ namespace ROS2
         AZStd::vector<AZ::IO::Path> m_meshesToBuild;
         AZStd::atomic_bool m_stopBuildFlag;
         AZ::Data::Asset<Physics::MaterialAsset> m_wheelMaterial;
-        AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
+        AZStd::shared_ptr<Utils::UrdfAssetMap> m_urdfAssetsMapping;
     };
 } // namespace ROS2

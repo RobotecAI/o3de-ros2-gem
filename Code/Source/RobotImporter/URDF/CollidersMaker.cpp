@@ -99,7 +99,7 @@ namespace ROS2
         }
     } // namespace Internal
 
-    CollidersMaker::CollidersMaker(const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping)
+    CollidersMaker::CollidersMaker(const AZStd::shared_ptr<Utils::UrdfAssetMap>& urdfAssetsMapping)
         : m_urdfAssetsMapping(urdfAssetsMapping)
         , m_stopBuildFlag(false)
     {
@@ -162,21 +162,22 @@ namespace ROS2
             return;
         }
 
+        AZ_Printf("CollidersMaker", "BuildCollider for %s", collision->name.c_str());
         auto geometry = collision->geometry;
         bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
         if (!isPrimitiveShape)
         {
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
-            const AZStd::string urdfMeshPath{ meshGeometry->filename.c_str(), meshGeometry->filename.size() };
-
-            if (!m_urdfAssetsMapping->contains(urdfMeshPath))
+            if (!meshGeometry)
             {
-                AZ_Warning(Internal::collidersMakerLoggingTag, false, "there is no asset for  mesh %s ", urdfMeshPath.c_str());
                 return;
             }
-
-            // Get asset path for a given model path
-            auto azMeshPath = m_urdfAssetsMapping->at(urdfMeshPath).m_availableAssetInfo.m_sourceAssetGlobalPath;
+            const auto asset = PrefabMakerUtils::GetAssetFromPath(*m_urdfAssetsMapping, meshGeometry->filename);
+            if (!asset)
+            {
+                return;
+            }
+            const AZStd::string& azMeshPath = asset->m_sourceAssetGlobalPath;
 
             AZStd::shared_ptr<AZ::SceneAPI::Containers::Scene> scene;
             AZ::SceneAPI::Events::SceneSerializationBus::BroadcastResult(
@@ -374,14 +375,13 @@ namespace ROS2
             auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
             AZ_Assert(meshGeometry, "geometry is not meshGeometry");
 
-            const AZStd::string urdfMeshPath{ meshGeometry->filename.c_str(), meshGeometry->filename.size() };
-            if (!m_urdfAssetsMapping->contains(urdfMeshPath))
+            auto asset = PrefabMakerUtils::GetAssetFromPath(*m_urdfAssetsMapping, meshGeometry->filename);
+            if (!asset)
             {
-                AZ_Warning(Internal::collidersMakerLoggingTag, false, "there is no asset for  mesh %s ", urdfMeshPath.c_str());
                 return;
             }
             // Get asset path for a given model path
-            const auto azMeshPath = AZ::IO::Path(m_urdfAssetsMapping->at(urdfMeshPath).m_availableAssetInfo.m_sourceAssetGlobalPath);
+            const auto azMeshPath = AZ::IO::Path(asset->m_sourceAssetGlobalPath);
 
             AZStd::optional<AZ::IO::Path> pxmodelPath = Internal::GetMeshProductPathFromSourcePath(azMeshPath);
             if (!pxmodelPath)

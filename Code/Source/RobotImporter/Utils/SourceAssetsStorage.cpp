@@ -10,7 +10,6 @@
 
 namespace ROS2::Utils
 {
-
     /// Function computes CRC32 on first kilobyte of file.
     AZ::Crc32 GetFileCRC(const AZStd::string& filename)
     {
@@ -31,10 +30,10 @@ namespace ROS2::Utils
         return r;
     }
 
-    AZStd::unordered_map<AZ::Crc32, available_asset> GetInterestingSourceAssetsCRC()
+    AZStd::unordered_map<AZ::Crc32, AvailableAsset> GetInterestingSourceAssetsCRC()
     {
         const AZStd::unordered_set<AZStd::string> kInterestingExtensions{ ".dae", ".stl", ".obj" };
-        AZStd::unordered_map<AZ::Crc32, available_asset> availableAssets;
+        AZStd::unordered_map<AZ::Crc32, AvailableAsset> availableAssets;
 
         // take all meshes in catalog
         AZ::Data::AssetCatalogRequests::AssetEnumerationCB collectAssetsCb =
@@ -73,9 +72,9 @@ namespace ROS2::Utils
                     fullSourcePath.c_str(),
                     crc);
 
-                available_asset t;
+                AvailableAsset t;
                 t.m_sourceAssetRelativePath = info.m_relativePath;
-                t.assetId = info.m_assetId;
+                t.m_assetId = info.m_assetId;
                 t.m_sourceAssetGlobalPath = fullSourcePathStr;
                 t.m_productAssetRelativePath = info.m_relativePath;
                 availableAssets[crc] = t;
@@ -87,29 +86,32 @@ namespace ROS2::Utils
         return availableAssets;
     }
 
-    AZStd::unordered_map<AZStd::string, Utils::urdf_asset> FindAssetsForUrdf(
-        const AZStd::unordered_set<AZStd::string>& meshes_filenames, const AZStd::string& urdf_filename)
+    UrdfAssetMap FindAssetsForUrdf(const AZStd::unordered_set<AZStd::string>& meshesFilenames, const AZStd::string& urdFilename)
     {
-        AZStd::unordered_map<AZStd::string, Utils::urdf_asset> urdf_to_asset;
-        for (const auto& t : meshes_filenames)
+        UrdfAssetMap urdfToAsset;
+        for (const auto& t : meshesFilenames)
         {
-            Utils::urdf_asset asset;
+            Utils::UrdfAsset asset;
             asset.m_urdfPath = t;
-            asset.m_resolvedUrdfPath = Utils::ResolveURDFPath(asset.m_urdfPath, urdf_filename);
+            asset.m_resolvedUrdfPath = Utils::ResolveURDFPath(asset.m_urdfPath, urdFilename);
             asset.m_urdfFileCRC = Utils::GetFileCRC(asset.m_resolvedUrdfPath);
-            urdf_to_asset.emplace(t, AZStd::move(asset));
+            urdfToAsset.emplace(t, AZStd::move(asset));
         }
-        const AZStd::unordered_map<AZ::Crc32, available_asset> available_assets = Utils::GetInterestingSourceAssetsCRC();
-        for (auto it = urdf_to_asset.begin(); it != urdf_to_asset.end(); it++)
+
+        // scans all available o3de assets by calling
+        const AZStd::unordered_map<AZ::Crc32, AvailableAsset> availableAssets = Utils::GetInterestingSourceAssetsCRC();
+
+        // search for suitable mappings  by comparing checksum
+        for (auto it = urdfToAsset.begin(); it != urdfToAsset.end(); it++)
         {
-            Utils::urdf_asset& asset = it->second;
-            auto found_source_asset = available_assets.find(asset.m_urdfFileCRC);
-            if (found_source_asset != available_assets.end())
+            Utils::UrdfAsset& asset = it->second;
+            auto found_source_asset = availableAssets.find(asset.m_urdfFileCRC);
+            if (found_source_asset != availableAssets.end())
             {
                 asset.m_availableAssetInfo = found_source_asset->second;
             }
         }
-        return urdf_to_asset;
+        return urdfToAsset;
     }
 
 } // namespace ROS2::Utils

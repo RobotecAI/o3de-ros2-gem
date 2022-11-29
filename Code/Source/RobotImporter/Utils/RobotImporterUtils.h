@@ -19,36 +19,41 @@ namespace ROS2
 {
     namespace
     {
-        const AZStd::function<bool(const AZStd::string&)> fileExistsCall = [](const AZStd::string& fn) -> bool
+        const AZStd::function<bool(const AZStd::string&)> fileExistsCall = [](const AZStd::string& filename) -> bool
         {
-            return AZ::IO::SystemFile::Exists(fn.c_str());
+            return AZ::IO::SystemFile::Exists(filename.c_str());
         };
-
     }
+
     namespace Utils
     {
-
         bool IsWheelURDFHeuristics(const urdf::LinkConstSharedPtr& link);
 
-        /// Goes through URDF and finds world to entity transformation for us
+        /// Goes through URDF and finds world to entity transformation for us.
         AZ::Transform GetWorldTransformURDF(const urdf::LinkSharedPtr& link, AZ::Transform t = AZ::Transform::Identity());
 
-        /// Retrieve all links in urdf file
-        AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> GetAllLinks(const std::vector<urdf::LinkSharedPtr>& links);
+        /// Retrieve all childLinks in urdf file.
+        AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> GetAllLinks(const std::vector<urdf::LinkSharedPtr>& childLinks);
 
-        /// Retrieve all joints in urdf file
-        AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> GetAllJoints(const std::vector<urdf::LinkSharedPtr>& links);
+        /// Retrieve all joints in urdf file.
+        AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> GetAllJoints(const std::vector<urdf::LinkSharedPtr>& childLinks);
 
-        /// Retireve all meshes as URDF paths
-        /// @param visual - find for visual
-        /// @param colliders - find for colliders
-        /// @returns set of meshes
-        AZStd::unordered_set<AZStd::string> GetMeshesFilenames(const urdf::LinkConstSharedPtr& root_link, bool visual, bool colliders);
+        /// Retrieve all meshes as URDF paths.
+        /// Function traverse URDF in recursive manner.
+        /// It obtains referenced meshes' filenames.
+        /// Note that returned filenames are unresolved URDF patches.
+        /// @param visual - find for visual.
+        /// @param colliders - find for colliders.
+        /// @returns set of meshes' filenames.
+        AZStd::unordered_set<AZStd::string> GetMeshesFilenames(const urdf::LinkConstSharedPtr& rootLink, bool visual, bool colliders);
 
-        /// Finds global path from URDF path
+        /// Finds global path from URDF path.
+        /// @param unresolvedPath - unresolved URDF path, example : `package://meshes/foo.dae`.
+        /// @param urdfFilePath - absolute path of URDF file which contains path that are to be resolved.
+        /// @param fileExists - functor to check if given file exists. Exposed for unit test, default one should be used.
         AZStd::string ResolveURDFPath(
-            AZStd::string path,
-            const AZStd::string& urdf_path,
+            AZStd::string unresolvedPath,
+            const AZStd::string& urdfFilePath,
             const AZStd::function<bool(const AZStd::string&)>& fileExists = fileExistsCall);
 
     } // namespace Utils

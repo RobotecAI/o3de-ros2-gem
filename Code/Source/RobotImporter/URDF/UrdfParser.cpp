@@ -64,11 +64,11 @@ namespace ROS2
             UrdfParser::m_customConsoleHandler.console_ss.str().c_str(), UrdfParser::m_customConsoleHandler.console_ss.str().size());
     }
 
-    void UrdfParser::customConsoleHandler::log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line)
+    void UrdfParser::CustomConsoleHandler::log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line)
     {
         AZ_Printf("URDF paser", "%s", text.c_str());
         console_ss << text << "\n";
     }
 
-    UrdfParser::customConsoleHandler UrdfParser::m_customConsoleHandler;
+    UrdfParser::CustomConsoleHandler UrdfParser::m_customConsoleHandler;
 } // namespace ROS2

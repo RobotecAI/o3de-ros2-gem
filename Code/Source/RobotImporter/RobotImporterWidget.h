@@ -9,6 +9,12 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
+#include "Pages/CheckAssetPage.h"
+#include "Pages/CheckUrdfPage.h"
+#include "Pages/FileSelectionPage.h"
+#include "Pages/IntroPage.h"
+#include "Pages/PrefabMakerPage.h"
+
 #include "URDF/URDFPrefabMaker.h"
 #include "URDF/UrdfParser.h"
 #include <AzCore/Asset/AssetCommon.h>
@@ -38,88 +44,6 @@ namespace ROS2
 {
     class RobotImporterWidget;
     class URDFPrefabMaker;
-    class FileSelectionPage : public QWizardPage
-    {
-        Q_OBJECT
-    public:
-        explicit FileSelectionPage(QWizard* parent);
-        bool isComplete() const override;
-        QString getFileName() const
-        {
-            if (m_fileExists)
-            {
-                return m_textEdit->text();
-            }
-            return "";
-        }
-
-    private:
-        QFileDialog* m_fileDialog;
-        QPushButton* m_button;
-        QLineEdit* m_textEdit;
-        void onLoadButtonPressed();
-        void onFileSelected(const QString& file);
-        void onTextChanged(const QString& text);
-        bool m_fileExists{ false };
-    };
-
-    class CheckUrdfPage : public QWizardPage
-    {
-        Q_OBJECT
-    public:
-        explicit CheckUrdfPage(QWizard* parent);
-        void ReportURDFResult(const QString& result, bool is_success);
-        bool isComplete() const override;
-
-    private:
-        QTextEdit* m_log;
-        QString m_fileName;
-        bool m_success;
-    };
-
-    class CheckAssetPage : public QWizardPage
-    {
-        Q_OBJECT
-    public:
-        explicit CheckAssetPage(QWizard* parent);
-        void ReportAsset(
-            const AZStd::string& urdfPath,
-            const AZStd::string& type,
-            const AZStd::string& assetSourcePath,
-            const AZ::Crc32& crc32,
-            const AZStd::string& tooltip);
-        void ClearAssetsList();
-
-        bool isComplete() const override;
-
-    private:
-        bool m_success;
-        QTableWidget* m_table;
-        QTableWidgetItem* createCell(bool isOk, const AZStd::string& text);
-        unsigned int m_missingCount;
-        void SetTitle();
-    };
-
-    class PrefabMakerPage : public QWizardPage
-    {
-        Q_OBJECT
-    public:
-        explicit PrefabMakerPage(RobotImporterWidget* parent);
-        void setProposedPrefabName(const AZStd::string prefabName);
-        AZStd::string getPrefabName() const;
-        void reportProgress(const AZStd::string& progressForUser);
-        void setSuccess(bool success);
-        bool isComplete() const override;
-    Q_SIGNALS:
-        void onCreateButtonPressed();
-
-    private:
-        bool m_success;
-        QLineEdit* m_prefabName;
-        QPushButton* m_createButton;
-        QTextEdit* m_log;
-        RobotImporterWidget* m_parentImporterWidget;
-    };
 
     //! Handles UI for the process of URDF importing
     class RobotImporterWidget : public QWizard
@@ -135,6 +59,8 @@ namespace ROS2
         void OpenUrdf();
         void OnUrdfCreated();
         void onCreateButtonPressed();
+
+        IntroPage* m_introPage;
         FileSelectionPage* m_fileSelectPage;
         CheckUrdfPage* m_checkUrdfPage;
         CheckAssetPage* m_assetPage;
@@ -143,12 +69,13 @@ namespace ROS2
         urdf::ModelInterfaceSharedPtr m_parsedUrdf;
 
         /// mapping from urdf path to asset source
-        AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>> m_urdfAssetsMapping;
-
+        AZStd::shared_ptr<Utils::UrdfAssetMap> m_urdfAssetsMapping;
         AZStd::unique_ptr<URDFPrefabMaker> m_prefabMaker;
         AZStd::unordered_set<AZStd::string> m_meshNames;
-        void ImporterTimerUpdate();
+
         void onCurrentIdChanged(int id);
+        void FillAssetPage();
+        void FillPrefabMakerPage();
 
         //! Checks if the importedPrefabFilename is the same as focused prefab name.
         //! @param importedPrefabFilename name of imported prefab
@@ -158,6 +85,14 @@ namespace ROS2
         //! Report an error to the user.
         //! Populates the log, sets status information in the status label and shows an error popup with the message
         //! @param errorMessage error message to display to the user
-        void ReportError(const AZStd::string& errorMessage);
+        void ReportError(const QString& errorMessage);
+
+        static constexpr QWizard::WizardButton PrefabCreationButtonId{ QWizard::CustomButton1 };
+        static constexpr QWizard::WizardOption HavePrefabCreationButton{ QWizard::HaveCustomButton1 };
+
+    signals:
+        void SignalFinalizeURDFCreation();
+    private slots:
+        void FinalizeURDFCreation();
     };
 } // namespace ROS2

@@ -26,8 +26,7 @@
 namespace ROS2
 {
     VisualsMaker::VisualsMaker(
-        const std::map<std::string, urdf::MaterialSharedPtr>& materials,
-        const AZStd::shared_ptr<AZStd::unordered_map<AZStd::string, Utils::urdf_asset>>& urdfAssetsMapping)
+        const std::map<std::string, urdf::MaterialSharedPtr>& materials, const AZStd::shared_ptr<Utils::UrdfAssetMap>& urdfAssetsMapping)
         : m_urdfAssetsMapping(urdfAssetsMapping)
     {
         AZStd::ranges::for_each(
@@ -135,40 +134,39 @@ namespace ROS2
                 AZ_Assert(meshGeometry, "geometry is not Mesh");
                 // TODO - a PoC solution for path, replace with something generic, robust, proper
 
-                const AZStd::string urdfMeshPath{ meshGeometry->filename.c_str(), meshGeometry->filename.size() };
+                const auto asset = PrefabMakerUtils::GetAssetFromPath(*m_urdfAssetsMapping, meshGeometry->filename);
 
-                if (!m_urdfAssetsMapping->contains(urdfMeshPath))
+                if (asset)
                 {
-                    AZ_Warning("AddVisual", false, "there is no asset for  mesh %s ", urdfMeshPath.c_str());
-                    return;
-                }
+                    entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
 
-                // Get asset path for a given model path
-                auto assetPath = m_urdfAssetsMapping->at(urdfMeshPath).m_availableAssetInfo.m_productAssetRelativePath;
-                entity->CreateComponent(AZ::Render::EditorMeshComponentTypeId);
+                    // Prepare scale
+                    AZ::Vector3 scaleVector = URDF::TypeConversions::ConvertVector3(meshGeometry->scale);
+                    bool isUniformScale =
+                        AZ::IsClose(scaleVector.GetMaxElement(), scaleVector.GetMinElement(), AZ::Constants::FloatEpsilon);
+                    if (!isUniformScale)
+                    {
+                        entity->CreateComponent<AzToolsFramework::Components::EditorNonUniformScaleComponent>();
+                    }
 
-                // Prepare scale
-                AZ::Vector3 scaleVector = URDF::TypeConversions::ConvertVector3(meshGeometry->scale);
-                bool isUniformScale = AZ::IsClose(scaleVector.GetMaxElement(), scaleVector.GetMinElement(), AZ::Constants::FloatEpsilon);
-                if (!isUniformScale)
-                {
-                    entity->CreateComponent<AzToolsFramework::Components::EditorNonUniformScaleComponent>();
-                }
+                    entity->Activate();
+                    // Set asset path
+                    AZ::Render::MeshComponentRequestBus::Event(
+                        entityId,
+                        &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath,
+                        asset->m_sourceAssetRelativePath.c_str());
 
-                entity->Activate();
-                // Set asset path
-                AZ::Render::MeshComponentRequestBus::Event(
-                    entityId, &AZ::Render::MeshComponentRequestBus::Events::SetModelAssetPath, assetPath.c_str());
-                // Set scale, uniform or non-uniform
-                if (isUniformScale)
-                {
-                    AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalUniformScale, scaleVector.GetX());
+                    // Set scale, uniform or non-uniform
+                    if (isUniformScale)
+                    {
+                        AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalUniformScale, scaleVector.GetX());
+                    }
+                    else
+                    {
+                        AZ::NonUniformScaleRequestBus::Event(entityId, &AZ::NonUniformScaleRequests::SetScale, scaleVector);
+                    }
+                    entity->Deactivate();
                 }
-                else
-                {
-                    AZ::NonUniformScaleRequestBus::Event(entityId, &AZ::NonUniformScaleRequests::SetScale, scaleVector);
-                }
-                entity->Deactivate();
             }
             break;
         default:

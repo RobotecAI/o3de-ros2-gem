@@ -21,7 +21,7 @@ namespace UnitTest
         AZStd::string GetUrdfWithOneLink()
         {
             return "<robot name=\"test_one_link\">"
-                   "  <material name=\"black\">\n"
+                   "  <material name=\"some_material\">\n"
                    "    <color rgba=\"0 0 0 1\"/>\n"
                    "  </material>"
                    "  <link name=\"link1\">"
@@ -33,7 +33,7 @@ namespace UnitTest
                    "      <geometry>"
                    "        <box size=\"1.0 2.0 1.0\"/>"
                    "      </geometry>"
-                   "      <material name=\"black\"/>"
+                   "      <material name=\"some_material\"/>"
                    "    </visual>"
                    "    <collision>"
                    "      <geometry>"
@@ -47,7 +47,7 @@ namespace UnitTest
         AZStd::string GetUrdfWithTwoLinksAndJoint()
         {
             return "<robot name=\"test_two_links_one_joint\">  "
-                   "  <material name=\"black\">\n"
+                   "  <material name=\"some_material\">\n"
                    "    <color rgba=\"0 0 0 1\"/>\n"
                    "  </material>"
                    "  <link name=\"link1\">"
@@ -59,7 +59,7 @@ namespace UnitTest
                    "      <geometry>"
                    "        <box size=\"1.0 2.0 1.0\"/>"
                    "      </geometry>"
-                   "      <material name=\"black\"/>"
+                   "      <material name=\"some_material\"/>"
                    "    </visual>"
                    "  </link>"
                    "  <link name=\"link2\">"
@@ -71,7 +71,7 @@ namespace UnitTest
                    "      <geometry>"
                    "        <box size=\"1.0 1.0 1.0\"/>"
                    "      </geometry>"
-                   "      <material name=\"black\"/>"
+                   "      <material name=\"some_material\"/>"
                    "    </visual>"
                    "  </link>"
                    "  <joint name=\"joint12\" type=\"fixed\">"
@@ -411,8 +411,8 @@ namespace UnitTest
 
     TEST_F(UrdfParserTest, TestPathResolvementGlobal)
     {
-        AZStd::string dae = "file:///home/foo/ros_ws/instal/foo_robot/meshes/bar.dae";
-        AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/foo_robot.urdf";
+        AZStd::string dae = "file:///home/foo/ros_ws/install/foo_robot/meshes/bar.dae";
+        AZStd::string urdf = "/home/foo/ros_ws/install/foo_robot/foo_robot.urdf";
         auto result = ROS2::Utils::ResolveURDFPath(
             dae,
             urdf,
@@ -420,13 +420,13 @@ namespace UnitTest
             {
                 return false;
             });
-        EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
+        EXPECT_EQ(result, "/home/foo/ros_ws/install/foo_robot/meshes/bar.dae");
     }
 
     TEST_F(UrdfParserTest, TestPathResolvementRelative)
     {
         AZStd::string dae = "meshes/bar.dae";
-        AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/foo_robot.urdf";
+        AZStd::string urdf = "/home/foo/ros_ws/install/foo_robot/foo_robot.urdf";
         auto result = ROS2::Utils::ResolveURDFPath(
             dae,
             urdf,
@@ -434,20 +434,20 @@ namespace UnitTest
             {
                 return false;
             });
-        EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
+        EXPECT_EQ(result, "/home/foo/ros_ws/install/foo_robot/meshes/bar.dae");
     }
 
     TEST_F(UrdfParserTest, TestPathResolvementRelativePackage)
     {
         AZStd::string dae = "package://meshes/bar.dae";
-        AZStd::string urdf = "/home/foo/ros_ws/instal/foo_robot/description/foo_robot.urdf";
-        AZStd::string xml = "/home/foo/ros_ws/instal/foo_robot/package.xml";
+        AZStd::string urdf = "/home/foo/ros_ws/install/foo_robot/description/foo_robot.urdf";
+        AZStd::string xml = "/home/foo/ros_ws/install/foo_robot/package.xml";
         auto mockFileSystem = [&](const AZStd::string& p) -> bool
         {
             return (p == xml);
         };
         auto result = ROS2::Utils::ResolveURDFPath(dae, urdf, mockFileSystem);
-        EXPECT_EQ(result, "/home/foo/ros_ws/instal/foo_robot/meshes/bar.dae");
+        EXPECT_EQ(result, "/home/foo/ros_ws/install/foo_robot/meshes/bar.dae");
     }
 
 } // namespace UnitTest

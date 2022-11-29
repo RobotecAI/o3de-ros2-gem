@@ -6,9 +6,16 @@
 set(FILES
     ../Assets/Editor/Images/Icons/Resources.qrc
     ../Assets/Editor/Images/Icons/ROS_import_icon.svg
-    Source/ROS2EditorSystemComponent.cpp
-    Source/ROS2EditorSystemComponent.h
-    Source/ROS2GemUtilities.cpp
+    Source/RobotImporter/Pages/CheckAssetPage.cpp
+    Source/RobotImporter/Pages/CheckAssetPage.h
+    Source/RobotImporter/Pages/CheckUrdfPage.cpp
+    Source/RobotImporter/Pages/CheckUrdfPage.h
+    Source/RobotImporter/Pages/FileSelectionPage.cpp
+    Source/RobotImporter/Pages/FileSelectionPage.h
+    Source/RobotImporter/Pages/PrefabMakerPage.cpp
+    Source/RobotImporter/Pages/PrefabMakerPage.h
+    Source/RobotImporter/Pages/IntroPage.cpp
+    Source/RobotImporter/Pages/IntroPage.h
     Source/RobotImporter/RobotImporterWidget.cpp
     Source/RobotImporter/RobotImporterWidget.h
     Source/RobotImporter/RobotImporterWidgetUtils.cpp
@@ -35,4 +42,7 @@ set(FILES
     Source/RobotImporter/Utils/SourceAssetsStorage.h
     Source/RobotImporter/Utils/TypeConversions.cpp
     Source/RobotImporter/Utils/TypeConversions.h
+    Source/ROS2EditorSystemComponent.cpp
+    Source/ROS2EditorSystemComponent.h
+    Source/ROS2GemUtilities.cpp
 )
