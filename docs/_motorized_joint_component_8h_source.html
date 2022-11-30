@@ -94,89 +94,94 @@ $(document).ready(function(){initNavTree('_motorized_joint_component_8h_source.h
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;ROS2/VehicleDynamics/DriveModels/PidConfiguration.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/Component.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/TickBus.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Transform.h&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Vector2.h&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>ROS2</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// TODO This is a prototype. Tasks: refactor, add bus interface, rotation, ramps, cascading controllers, tests.</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_motorized_joint_component.html">   24</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        : <span class="keyword">public</span> AZ::Component</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        , <span class="keyword">public</span> AZ::TickBus::Handler</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        AZ_COMPONENT(<a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a>, <span class="stringliteral">&quot;{AE9207DB-5B7E-4F70-A7DD-C4EAD8DD9403}&quot;</span>, AZ::Component);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        ~<a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">void</span> Activate() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">void</span> Deactivate() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> Reflect(AZ::ReflectContext* context);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#a5fe4617d316d74464f1f3ab10e01fde5">SetSetpoint</a>(<span class="keywordtype">float</span> setpoint);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#a8365ea5170be472638e4a4b423aec90d">GetError</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;MotorizedJointBus.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;ROS2/VehicleDynamics/DriveModels/PidConfiguration.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/Component.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/TickBus.h&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Transform.h&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;AzCore/Math/Vector2.h&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>ROS2</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// TODO This is a prototype. Tasks: refactor, add bus interface, rotation, ramps, cascading controllers, tests.</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_motorized_joint_component.html">   25</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        : <span class="keyword">public</span> AZ::Component</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        , <span class="keyword">public</span> AZ::TickBus::Handler</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        , <span class="keyword">public</span> MotorizedJointRequestBus::Handler</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        AZ_COMPONENT(<a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a>, <span class="stringliteral">&quot;{AE9207DB-5B7E-4F70-A7DD-C4EAD8DD9403}&quot;</span>, AZ::Component);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        ~<a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html">MotorizedJointComponent</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordtype">void</span> Activate() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">void</span> Deactivate() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> Reflect(AZ::ReflectContext* context);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#a10e022803f8b2ccdefd8f49ab9d05466">SetSetpoint</a>(<span class="keywordtype">float</span> setpoint) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#a7ebc54bbfc5759fb59ba5306a4c206c1">GetSetpoint</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#ac133c66ef2f242259cbc4a3c3af3419e">GetCurrentPosition</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b">   51</a></span>&#160;        AZ::Vector3 <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b">GetDir</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="keywordflow">return</span> m_jointDir;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        };</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordtype">float</span> ComputeMeasurement(AZ::ScriptTimePoint time);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordtype">void</span> SetVelocity(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">void</span> ApplyLinVelAnimation(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">void</span> ApplyLinVelRigidBodyImpulse(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">void</span> ApplyLinVelRigidBody(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">void</span> OnTick(<span class="keywordtype">float</span> deltaTime, AZ::ScriptTimePoint time) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        AZ::Vector3 m_jointDir{ 0.f, 0.f, 1.f }; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        AZ::Vector3 m_effortAxis{ 0.f, 0.f, 1.f }; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        AZStd::pair&lt;float, float&gt; m_limits{ -0.5f, 0.5f }; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a> m_pidPos; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#ad1e0a966d0defcc0dd8e878e1ae22926">GetError</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#a38dc1bd6e0c412e50e38dad50b147d2d">GetCurrentMeasurement</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b">   56</a></span>&#160;        AZ::Vector3 <a class="code" href="class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b">GetDir</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> m_jointDir;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        };</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">float</span> ComputeMeasurement(AZ::ScriptTimePoint time);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">void</span> SetVelocity(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">void</span> ApplyLinVelAnimation(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">void</span> ApplyLinVelRigidBodyImpulse(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordtype">void</span> ApplyLinVelRigidBody(<span class="keywordtype">float</span> velocity, <span class="keywordtype">float</span> deltaTime);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">void</span> OnTick(<span class="keywordtype">float</span> deltaTime, AZ::ScriptTimePoint time) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordtype">bool</span> m_linear{ <span class="keyword">true</span> }; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">bool</span> m_animationMode{ <span class="keyword">true</span> }; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="comment">// TODO - remove test signal?</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">bool</span> m_testSinusoidal{ <span class="keyword">true</span> }; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">float</span> m_sinAmplitude{ 0.5 }; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">float</span> m_sinDC{ 0.25 }; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordtype">float</span> m_sinFreq{ 0.1 }; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">float</span> m_zeroOffset{ 0.f }; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">float</span> m_setpoint{ 0 }; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">float</span> m_error{ 0 }; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">float</span> m_currentPosition{ 0 }; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">float</span> m_currentVelocity{ 0 }; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">double</span> m_lastMeasurementTime; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="comment">// TODO - remove/replace with proper API use (EntityDebugDisplayEventBus)</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        AZ::EntityId m_debugDrawEntity; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        AZ::Transform m_debugDrawEntityInitialTransform; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordtype">bool</span> m_debugPrint{ <span class="keyword">false</span> }; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        AZ::Vector3 m_jointDir{ 0.f, 0.f, 1.f }; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        AZ::Vector3 m_effortAxis{ 0.f, 0.f, 1.f }; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        AZStd::pair&lt;float, float&gt; m_limits{ -0.5f, 0.5f }; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a> m_pidPos; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">bool</span> m_linear{ <span class="keyword">true</span> }; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">bool</span> m_animationMode{ <span class="keyword">true</span> }; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">// TODO - remove test signal?</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordtype">bool</span> m_testSinusoidal{ <span class="keyword">true</span> }; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">float</span> m_sinAmplitude{ 0.5 }; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordtype">float</span> m_sinDC{ 0.25 }; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">float</span> m_sinFreq{ 0.1 }; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">float</span> m_zeroOffset{ 0.f }; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">float</span> m_setpoint{ 0 }; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">float</span> m_error{ 0 }; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordtype">float</span> m_currentPosition{ 0 }; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">float</span> m_currentVelocity{ 0 }; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordtype">double</span> m_lastMeasurementTime; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        AZ::EntityId m_measurementReferenceEntity; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    };</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="comment">// TODO - remove/replace with proper API use (EntityDebugDisplayEventBus)</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        AZ::EntityId m_debugDrawEntity; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        AZ::Transform m_debugDrawEntityInitialTransform; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordtype">bool</span> m_debugPrint{ <span class="keyword">false</span> }; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        AZ::EntityId m_measurementReferenceEntity; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    };</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_a5fe4617d316d74464f1f3ab10e01fde5"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#a5fe4617d316d74464f1f3ab10e01fde5">ROS2::MotorizedJointComponent::SetSetpoint</a></div><div class="ttdeci">void SetSetpoint(float setpoint)</div><div class="ttdoc">Set a setpoint (e.g. desired local position). The controller will follow it.</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:246</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_a8365ea5170be472638e4a4b423aec90d"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#a8365ea5170be472638e4a4b423aec90d">ROS2::MotorizedJointComponent::GetError</a></div><div class="ttdeci">float GetError() const</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:251</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_af323dec1222eca76ca13f4aaa4917c4b"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b">ROS2::MotorizedJointComponent::GetDir</a></div><div class="ttdeci">AZ::Vector3 GetDir() const</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.h:51</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_a7ebc54bbfc5759fb59ba5306a4c206c1"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#a7ebc54bbfc5759fb59ba5306a4c206c1">ROS2::MotorizedJointComponent::GetSetpoint</a></div><div class="ttdeci">float GetSetpoint() override</div><div class="ttdoc">Get a setpoint.</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:253</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_ad1e0a966d0defcc0dd8e878e1ae22926"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#ad1e0a966d0defcc0dd8e878e1ae22926">ROS2::MotorizedJointComponent::GetError</a></div><div class="ttdeci">float GetError() override</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:258</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_af323dec1222eca76ca13f4aaa4917c4b"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#af323dec1222eca76ca13f4aaa4917c4b">ROS2::MotorizedJointComponent::GetDir</a></div><div class="ttdeci">AZ::Vector3 GetDir() const</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.h:56</div></div>
 <div class="ttc" id="aclass_vehicle_dynamics_1_1_pid_configuration_html"><div class="ttname"><a href="class_vehicle_dynamics_1_1_pid_configuration.html">VehicleDynamics::PidConfiguration</a></div><div class="ttdef"><b>Definition:</b> PidConfiguration.h:17</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html">ROS2::MotorizedJointComponent</a></div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.h:24</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_ac133c66ef2f242259cbc4a3c3af3419e"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#ac133c66ef2f242259cbc4a3c3af3419e">ROS2::MotorizedJointComponent::GetCurrentPosition</a></div><div class="ttdeci">float GetCurrentPosition() const</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:256</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html">ROS2::MotorizedJointComponent</a></div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.h:25</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_a10e022803f8b2ccdefd8f49ab9d05466"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#a10e022803f8b2ccdefd8f49ab9d05466">ROS2::MotorizedJointComponent::SetSetpoint</a></div><div class="ttdeci">void SetSetpoint(float setpoint) override</div><div class="ttdoc">Set a setpoint (e.g. desired local position). The controller will follow it.</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:248</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_motorized_joint_component_html_a38dc1bd6e0c412e50e38dad50b147d2d"><div class="ttname"><a href="class_r_o_s2_1_1_motorized_joint_component.html#a38dc1bd6e0c412e50e38dad50b147d2d">ROS2::MotorizedJointComponent::GetCurrentMeasurement</a></div><div class="ttdeci">float GetCurrentMeasurement() override</div><div class="ttdef"><b>Definition:</b> MotorizedJointComponent.cpp:263</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_9022305039626e0c58b15f77be73727d.html">Include</a></li><li class="navelem"><a class="el" href="dir_425207894c42c9b6aec7b3a29627c951.html">ROS2</a></li><li class="navelem"><a class="el" href="dir_0b6a5316aa6946701aaa5ceae4c1ad86.html">Manipulator</a></li><li class="navelem"><b>MotorizedJointComponent.h</b></li>
-    <li class="footer">Generated on Tue Nov 29 2022 20:08:33 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Nov 30 2022 15:01:26 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
