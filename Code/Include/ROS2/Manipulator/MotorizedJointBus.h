@@ -23,18 +23,32 @@ namespace ROS2
 
         virtual ~MotorizedJointRequest() = default;
 
-        //! Set current target value for position controller.
+        //! Set current setpoint value for position controller.
+        //! The setpoint is the desired position for a simulated actuator.
+        //! For linear actuators, the setpoint is given in meters.
+        //! For the rotational actuators, the setpoint is given in radians.
         //! @param setpoint value in meters or radians
         virtual void SetSetpoint(float setpoint) = 0;
 
-        //! Get current target value for position controller.
+        //! Get current setpoint value for position controller.
+        //! If `SetSetpoint` has not been called, it returns initial position of joint.
+        //! For linear actuators, the setpoint is given in meters.
+        //! For the rotational actuators, the setpoint is given in radians.
+        //! @returns setpoint value in meters or radians
         virtual float GetSetpoint() = 0;
 
         //! Retrieve current measurement.
+        //! Measurement is the value of the movement - e.g. protrusion of an actuator.
+        //! For linear actuators, measurement is given in meters.
+        //! For the rotational actuators, measurement is given in radians.
+        //! When the setpoint is reached this should be close to setpoint.
         //! @returns measurement value in meters or radians.
         virtual float GetCurrentMeasurement() = 0;
 
         //! Retrieve current control error (difference between setpoint and measurement)
+        //! When the setpoint is reached this should be close to zero.
+        //! For linear actuators, the error is given in meters.
+        //! For the rotational actuators, the error is given in radians.
         //! @returns controller error's value in meters or radians
         virtual float GetError() = 0;
     };
