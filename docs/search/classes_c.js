@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['topicconfiguration_233',['TopicConfiguration',['../struct_r_o_s2_1_1_topic_configuration.html',1,'ROS2']]],
-  ['twistnotifications_234',['TwistNotifications',['../class_r_o_s2_1_1_twist_notifications.html',1,'ROS2']]],
-  ['twistsubscriptionhandler_235',['TwistSubscriptionHandler',['../class_r_o_s2_1_1_twist_subscription_handler.html',1,'ROS2']]],
-  ['typeconversions_236',['TypeConversions',['../class_r_o_s2_1_1_u_r_d_f_1_1_type_conversions.html',1,'ROS2::URDF']]]
+  ['sensorconfiguration_241',['SensorConfiguration',['../struct_r_o_s2_1_1_sensor_configuration.html',1,'ROS2']]],
+  ['simulationclock_242',['SimulationClock',['../class_r_o_s2_1_1_simulation_clock.html',1,'ROS2']]],
+  ['spawnerrequests_243',['SpawnerRequests',['../class_r_o_s2_1_1_spawner_requests.html',1,'ROS2']]],
+  ['spawnpointinfo_244',['SpawnPointInfo',['../struct_r_o_s2_1_1_spawn_point_info.html',1,'ROS2']]],
+  ['steeringdynamicsdata_245',['SteeringDynamicsData',['../struct_vehicle_dynamics_1_1_steering_dynamics_data.html',1,'VehicleDynamics']]]
 ];

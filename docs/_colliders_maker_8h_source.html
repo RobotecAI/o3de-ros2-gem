@@ -95,63 +95,66 @@ $(document).ready(function(){initNavTree('_colliders_maker_8h_source.html',''); 
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;UrdfParser.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/EntityId.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/IO/Path/Path.h&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/containers/vector.h&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/parallel/atomic.h&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/parallel/mutex.h&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/parallel/thread.h&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;AzFramework/Physics/Material/PhysicsMaterialId.h&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;AzFramework/Physics/Material/PhysicsMaterialManager.h&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">namespace </span>ROS2</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">using</span> BuildReadyCallback = AZStd::function&lt;void()&gt;;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;RobotImporter/Utils/SourceAssetsStorage.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;UrdfParser.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;AzCore/Component/EntityId.h&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;AzCore/IO/Path/Path.h&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/containers/unordered_map.h&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/containers/vector.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/parallel/atomic.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/parallel/mutex.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/parallel/thread.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/smart_ptr/make_shared.h&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;AzCore/std/smart_ptr/shared_ptr.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;AzFramework/Physics/Material/PhysicsMaterialId.h&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;AzFramework/Physics/Material/PhysicsMaterialManager.h&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_colliders_maker.html">   26</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>(AZStd::string modelPath);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>(<span class="keyword">const</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>&amp; other) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        ~<a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html#ae724f0d72785943409f320495106b25d">BuildColliders</a>(urdf::LinkSharedPtr link);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html#a37e67ee4f4a81312f5a57b52b94e9a40">AddColliders</a>(urdf::LinkSharedPtr link, AZ::EntityId entityId);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html#abd47f403dadcd6f82f833b2002994393">ProcessMeshes</a>(BuildReadyCallback notifyBuildReadyCb);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">void</span> FindWheelMaterial();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">void</span> BuildCollider(urdf::CollisionSharedPtr collision);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">void</span> AddCollider(</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            urdf::CollisionSharedPtr collision,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            AZ::EntityId entityId,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keyword">const</span> AZStd::string&amp; generatedName,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keyword">const</span> AZ::Data::Asset&lt;Physics::MaterialAsset&gt;&amp; materialAsset);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">void</span> AddColliderToEntity(</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            urdf::CollisionSharedPtr collision, AZ::EntityId entityId, <span class="keyword">const</span> AZ::Data::Asset&lt;Physics::MaterialAsset&gt;&amp; materialAsset) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        AZStd::string m_modelPath;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        AZStd::thread m_buildThread;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        AZStd::mutex m_buildMutex;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        AZStd::vector&lt;AZ::IO::Path&gt; m_meshesToBuild;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        AZStd::atomic_bool m_stopBuildFlag;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        AZ::Data::Asset&lt;Physics::MaterialAsset&gt; m_wheelMaterial;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace ROS2</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span>ROS2</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">using</span> BuildReadyCallback = AZStd::function&lt;void()&gt;;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_r_o_s2_1_1_colliders_maker.html">   30</a></span>&#160;    <span class="keyword">class </span><a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>(<span class="keyword">const</span> AZStd::shared_ptr&lt;Utils::UrdfAssetMap&gt;&amp; urdfAssetsMapping);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>(<span class="keyword">const</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>&amp; other) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        ~<a class="code" href="class_r_o_s2_1_1_colliders_maker.html">CollidersMaker</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html#ae724f0d72785943409f320495106b25d">BuildColliders</a>(urdf::LinkSharedPtr link);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html#a37e67ee4f4a81312f5a57b52b94e9a40">AddColliders</a>(urdf::LinkSharedPtr link, AZ::EntityId entityId);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_r_o_s2_1_1_colliders_maker.html#abd47f403dadcd6f82f833b2002994393">ProcessMeshes</a>(BuildReadyCallback notifyBuildReadyCb);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">void</span> FindWheelMaterial();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span> BuildCollider(urdf::CollisionSharedPtr collision);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> AddCollider(</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            urdf::CollisionSharedPtr collision,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            AZ::EntityId entityId,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keyword">const</span> AZStd::string&amp; generatedName,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">const</span> AZ::Data::Asset&lt;Physics::MaterialAsset&gt;&amp; materialAsset);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordtype">void</span> AddColliderToEntity(</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            urdf::CollisionSharedPtr collision, AZ::EntityId entityId, <span class="keyword">const</span> AZ::Data::Asset&lt;Physics::MaterialAsset&gt;&amp; materialAsset) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        AZStd::thread m_buildThread;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        AZStd::mutex m_buildMutex;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        AZStd::vector&lt;AZ::IO::Path&gt; m_meshesToBuild;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        AZStd::atomic_bool m_stopBuildFlag;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        AZ::Data::Asset&lt;Physics::MaterialAsset&gt; m_wheelMaterial;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        AZStd::shared_ptr&lt;Utils::UrdfAssetMap&gt; m_urdfAssetsMapping;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    };</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace ROS2</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html">ROS2::CollidersMaker</a></div><div class="ttdoc">Populates a given entity with all the contents of the &lt;collider&gt; tag in robot description.</div><div class="ttdef"><b>Definition:</b> CollidersMaker.h:26</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html_abd47f403dadcd6f82f833b2002994393"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html#abd47f403dadcd6f82f833b2002994393">ROS2::CollidersMaker::ProcessMeshes</a></div><div class="ttdeci">void ProcessMeshes(BuildReadyCallback notifyBuildReadyCb)</div><div class="ttdef"><b>Definition:</b> CollidersMaker.cpp:445</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html_a37e67ee4f4a81312f5a57b52b94e9a40"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html#a37e67ee4f4a81312f5a57b52b94e9a40">ROS2::CollidersMaker::AddColliders</a></div><div class="ttdeci">void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)</div><div class="ttdef"><b>Definition:</b> CollidersMaker.cpp:299</div></div>
-<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html_ae724f0d72785943409f320495106b25d"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html#ae724f0d72785943409f320495106b25d">ROS2::CollidersMaker::BuildColliders</a></div><div class="ttdeci">void BuildColliders(urdf::LinkSharedPtr link)</div><div class="ttdef"><b>Definition:</b> CollidersMaker.cpp:150</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html">ROS2::CollidersMaker</a></div><div class="ttdoc">Populates a given entity with all the contents of the &lt;collider&gt; tag in robot description.</div><div class="ttdef"><b>Definition:</b> CollidersMaker.h:30</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html_abd47f403dadcd6f82f833b2002994393"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html#abd47f403dadcd6f82f833b2002994393">ROS2::CollidersMaker::ProcessMeshes</a></div><div class="ttdeci">void ProcessMeshes(BuildReadyCallback notifyBuildReadyCb)</div><div class="ttdef"><b>Definition:</b> CollidersMaker.cpp:457</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html_a37e67ee4f4a81312f5a57b52b94e9a40"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html#a37e67ee4f4a81312f5a57b52b94e9a40">ROS2::CollidersMaker::AddColliders</a></div><div class="ttdeci">void AddColliders(urdf::LinkSharedPtr link, AZ::EntityId entityId)</div><div class="ttdef"><b>Definition:</b> CollidersMaker.cpp:303</div></div>
+<div class="ttc" id="aclass_r_o_s2_1_1_colliders_maker_html_ae724f0d72785943409f320495106b25d"><div class="ttname"><a href="class_r_o_s2_1_1_colliders_maker.html#ae724f0d72785943409f320495106b25d">ROS2::CollidersMaker::BuildColliders</a></div><div class="ttdeci">void BuildColliders(urdf::LinkSharedPtr link)</div><div class="ttdef"><b>Definition:</b> CollidersMaker.cpp:145</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_cd04d076debb3f0ed778975955346393.html">o3de-ros2-gem</a></li><li class="navelem"><a class="el" href="dir_8246c2b053e4ace350a92820502f699e.html">Code</a></li><li class="navelem"><a class="el" href="dir_75ba3cc3a845fac40158ebef0c4bd96e.html">Source</a></li><li class="navelem"><a class="el" href="dir_eae6b30a964938d522f79c58154155f0.html">RobotImporter</a></li><li class="navelem"><a class="el" href="dir_a83c0b79dd9a152995ca99aacead9b19.html">URDF</a></li><li class="navelem"><b>CollidersMaker.h</b></li>
-    <li class="footer">Generated on Wed Nov 30 2022 15:59:06 for O3DE ROS2 Gem by
+    <li class="footer">Generated on Wed Nov 30 2022 16:07:03 for O3DE ROS2 Gem by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
