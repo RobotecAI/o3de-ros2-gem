@@ -66,7 +66,7 @@ namespace ROS2
 
     void UrdfParser::CustomConsoleHandler::log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line)
     {
-        AZ_Printf("URDF paser", "%s", text.c_str());
+        AZ_Printf("UrdfParser", "%s", text.c_str());
         console_ss << text << "\n";
     }
 

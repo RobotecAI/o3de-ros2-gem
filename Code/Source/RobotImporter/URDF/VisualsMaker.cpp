@@ -132,7 +132,6 @@ namespace ROS2
             {
                 auto meshGeometry = std::dynamic_pointer_cast<urdf::Mesh>(geometry);
                 AZ_Assert(meshGeometry, "geometry is not Mesh");
-                // TODO - a PoC solution for path, replace with something generic, robust, proper
 
                 const auto asset = PrefabMakerUtils::GetAssetFromPath(*m_urdfAssetsMapping, meshGeometry->filename);
 

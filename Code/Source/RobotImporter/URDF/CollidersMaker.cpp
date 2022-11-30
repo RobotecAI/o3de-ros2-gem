@@ -162,7 +162,6 @@ namespace ROS2
             return;
         }
 
-        AZ_Printf("CollidersMaker", "BuildCollider for %s", collision->name.c_str());
         auto geometry = collision->geometry;
         bool isPrimitiveShape = geometry->type != urdf::Geometry::MESH;
         if (!isPrimitiveShape)
