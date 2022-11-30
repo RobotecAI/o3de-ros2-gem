@@ -19,7 +19,7 @@
 namespace ROS2::Utils
 {
     //! Structure contains essential information about the source and product assets in O3DE.
-        //! It is designed to provide necessary information for other classes in URDF converter, e.g. CollidersMaker or VisualsMaker.
+    //! It is designed to provide necessary information for other classes in URDF converter, e.g. CollidersMaker or VisualsMaker.
     struct AvailableAsset
     {
         //! Relative path to source asset e.g. `Assets/foo_robot/meshes/bar_link.dae`.
