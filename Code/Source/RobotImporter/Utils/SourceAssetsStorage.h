@@ -19,7 +19,7 @@
 namespace ROS2::Utils
 {
     //! Structure contains essential information about the source and product assets in O3DE.
-    //! It is designed to provide necessary information for other classes in URDF converter, e.g. ColliderMaker or Visual maker.
+        //! It is designed to provide necessary information for other classes in URDF converter, e.g. CollidersMaker or VisualsMaker.
     struct AvailableAsset
     {
         //! Relative path to source asset e.g. `Assets/foo_robot/meshes/bar_link.dae`.
@@ -68,8 +68,8 @@ namespace ROS2::Utils
     //! Steps:
     //! - Functions resolves URDF filenames with `ResolveURDFPath`.
     //! - Files pointed by resolved URDF patches have their checksum computed `GetFileCRC`.
-    //! - Function scans all available o3de assets by calling `GetInterestingSourceAssetsCRC`.
-    //! - Suitable mapping to the o3de asset is found by comparing the checksum of the file pointed by the URDF path and source asset.
+    //! - Function scans all available O3DE assets by calling `GetInterestingSourceAssetsCRC`.
+    //! - Suitable mapping to the O3DE asset is found by comparing the checksum of the file pointed by the URDF path and source asset.
     //! @param meshesFilenames - list of the unresolved path from the URDF file
     //! @param urdFilename - filename of URDF file, used for resolvement
     //! @returns map where key is unresolved URDF path to AvailableAsset
