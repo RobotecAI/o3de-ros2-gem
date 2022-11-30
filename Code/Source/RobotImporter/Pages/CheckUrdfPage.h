@@ -13,6 +13,7 @@
 #include <QString>
 #include <QTextEdit>
 #include <QWizardPage>
+#include <QVBoxLayout>
 #endif
 
 namespace ROS2

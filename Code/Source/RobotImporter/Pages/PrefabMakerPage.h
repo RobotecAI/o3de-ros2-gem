@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QString>
 #include <QWizardPage>
+#include <QTextEdit>
 #endif
 
 namespace ROS2
