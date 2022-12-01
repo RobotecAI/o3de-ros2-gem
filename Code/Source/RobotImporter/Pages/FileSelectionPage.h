@@ -15,8 +15,6 @@
 #include <QPushButton>
 #include <QString>
 #include <QWizardPage>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 #endif
 
 namespace ROS2

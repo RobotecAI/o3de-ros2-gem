@@ -13,7 +13,6 @@
 #include <AzCore/std/string/string.h>
 #include <QLabel>
 #include <QWizardPage>
-#include <QVBoxLayout>
 #endif
 
 namespace ROS2
