@@ -97,6 +97,9 @@ namespace ROS2
         void RequestFrame(
             const AZ::Transform& cameraPose, AZStd::function<void(const AZ::RPI::AttachmentReadback::ReadbackResult& result)> callback);
 
+        //! Method retrieve retrieve frame from top of the queue in thread-safe manner
+        AZStd::optional<FrameTask> GetFrameTaskFromQueue();
+
         CameraSensorDescription m_cameraSensorDescription;
         AZStd::vector<AZStd::string> m_passHierarchy;
         AZ::RPI::RenderPipelinePtr m_pipeline;

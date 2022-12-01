@@ -205,25 +205,34 @@ namespace ROS2
             });
     }
 
+    AZStd::optional<FrameTask> CameraSensor::GetFrameTaskFromQueue()
+    {
+        AZ_Assert(m_mutex, "Mutex should exist");
+        AZ_Assert(m_frames_publish_queue, "Queue should exist");
+        AZStd::scoped_lock lock(*m_mutex);
+        if (m_frames_publish_queue->empty())
+        {
+            return AZStd::optional<FrameTask>();
+        }
+        FrameTask task = m_frames_publish_queue->top();
+        m_frames_publish_queue->pop();
+        return task;
+    }
+
     void CameraSensor::ProcessQueue()
     {
-        while (!m_frames_publish_queue->empty())
+        auto task = GetFrameTaskFromQueue();
+        while (task)
         {
-            m_mutex->lock();
-
-            auto task = m_frames_publish_queue->top();
-            m_frames_publish_queue->pop();
-
-            m_mutex->unlock();
-
             sensor_msgs::msg::Image message;
-            message.encoding = Internal::FormatMappings.at(task.format);
-            message.width = task.width;
-            message.height = task.height;
-            message.step = message.width * Internal::BitDepth.at(task.format);
-            message.data = std::vector<uint8_t>(task.dataBuffer->data(), task.dataBuffer->data() + task.dataBuffer->size());
-            message.header = task.header;
-            task.publisher->publish(message);
+            message.encoding = Internal::FormatMappings.at(task->format);
+            message.width = task->width;
+            message.height = task->height;
+            message.step = message.width * Internal::BitDepth.at(task->format);
+            message.data = std::vector<uint8_t>(task->dataBuffer->data(), task->dataBuffer->data() + task->dataBuffer->size());
+            message.header = task->header;
+            task->publisher->publish(message);
+            task = GetFrameTaskFromQueue();
         }
     }
 
