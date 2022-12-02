@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------------
+--
+-- Copyright (c) Contributors to the Open 3D Engine Project.
+-- For complete copyright and license terms please see the LICENSE at the root of this distribution.
+--
+-- SPDX-License-Identifier: Apache-2.0 OR MIT
+--
+--
+--
+----------------------------------------------------------------------------------------------------
+
 --[[
     This is an example of control implementation which sets the desired velocity on a single body.
     To imitate the steering, current linear and angular velocities of a single rigidbody are forcefully overwritten

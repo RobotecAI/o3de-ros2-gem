@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+
 #include "LidarRaycaster.h"
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/std/smart_ptr/make_shared.h>

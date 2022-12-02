@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+
 #include "SourceAssetsStorage.h"
 #include "RobotImporter/Utils/RobotImporterUtils.h"
 

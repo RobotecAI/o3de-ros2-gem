@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+
 #include <ROS2SystemComponent.h>
 
 #include "ROS2/Communication/QoS.h"

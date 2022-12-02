@@ -1,7 +1,10 @@
+#
 # Copyright (c) Contributors to the Open 3D Engine Project.
 # For complete copyright and license terms please see the LICENSE at the root of this distribution.
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
+#
+#
 
 # Note that this does not find any ros2 package in particular, but determines whether a distro is sourced properly
 # Can be extended to handle supported / unsupported distros

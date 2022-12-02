@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+
 #include <AzCore/Serialization/SerializeContext.h>
 #include <ROS2EditorSystemComponent.h>
 
