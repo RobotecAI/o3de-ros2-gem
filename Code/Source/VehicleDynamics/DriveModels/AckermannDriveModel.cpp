@@ -103,11 +103,11 @@ namespace VehicleDynamics
             return;
         }
 
-        auto innerSteering = atan(
-            (m_vehicleConfiguration.m_wheelbase * tan(steering)) /
+        auto innerSteering = AZ::Atan2(
+            (m_vehicleConfiguration.m_wheelbase * tan(steering)),
             (m_vehicleConfiguration.m_wheelbase - 0.5 * m_vehicleConfiguration.m_track * tan(steering)));
-        auto outerSteering = atan(
-            (m_vehicleConfiguration.m_wheelbase * tan(steering)) /
+        auto outerSteering = AZ::Atan2(
+            (m_vehicleConfiguration.m_wheelbase * tan(steering)),
             (m_vehicleConfiguration.m_wheelbase + 0.5 * m_vehicleConfiguration.m_track * tan(steering)));
 
         ApplyWheelSteering(m_steeringData.front(), innerSteering, deltaTimeNs);
@@ -160,9 +160,9 @@ namespace VehicleDynamics
         }
     }
 
-    void AckermannDriveModel::SetDisabled(bool is_disabled)
+    void AckermannDriveModel::SetDisabled(bool isDisabled)
     {
-        m_disabled = is_disabled;
+        m_disabled = isDisabled;
     }
 
 } // namespace VehicleDynamics

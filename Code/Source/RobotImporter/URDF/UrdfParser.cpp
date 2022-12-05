@@ -17,29 +17,57 @@
 
 namespace ROS2
 {
-    namespace Internal
-    {
-        void checkIfCurrentLocaleHasDotAsADecimalSeparator()
-        {
+    namespace UrdfParser::Internal {
+        void CheckIfCurrentLocaleHasDotAsADecimalSeparator() {
             // Due to the fact that URDF parser takes into account the locale information, incompatibility between URDF file locale and
             // system locale might lead to incorrect URDF parsing. Mainly it affects floating point numbers, and the decimal separator. When
             // locales are set to system with comma as decimal separator and URDF file is created with dot as decimal separator, URDF parser
             // will trim the floating point number after comma. For example, if parsing 0.1, URDF parser will parse it as 0.
             // This might lead to incorrect URDF loading. If the current locale is not a dot (as per standard ROS locale), we warn the user.
             std::locale currentLocale("");
-            if (std::use_facet<std::numpunct<char>>(currentLocale).decimal_point() != '.')
-            {
+            if (std::use_facet<std::numpunct<char>>(currentLocale).decimal_point() != '.') {
                 AZ_Warning(
-                    "UrdfParser", false, "Locale %s might be incompatible with the URDF file content.\n", currentLocale.name().c_str());
+                        "UrdfParser", false, "Locale %s might be incompatible with the URDF file content.\n",
+                        currentLocale.name().c_str());
             }
         }
-    } // namespace Internal
+
+        class CustomConsoleHandler : public console_bridge::OutputHandler
+        {
+        private:
+            std::stringstream console_ss;
+        public:
+
+            void log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line) override final;
+
+            //! Clears accumulated log
+            void Clear();
+
+            //! Read accumulated log to file
+            AZStd::string GetLog();
+        };
+
+        void CustomConsoleHandler::log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line)
+        {
+            AZ_Printf("UrdfParser", "%s\n", text.c_str());
+            console_ss << text << "\n";
+        }
+
+        void CustomConsoleHandler::Clear(){
+            console_ss = std::stringstream();
+        }
+
+        AZStd::string CustomConsoleHandler::GetLog(){
+            return AZStd::string(console_ss.str().c_str(), console_ss.str().size());
+        }
+
+        CustomConsoleHandler customConsoleHandler;
+    }
 
     urdf::ModelInterfaceSharedPtr UrdfParser::Parse(const AZStd::string& xmlString)
     {
-        m_customConsoleHandler.console_ss = std::stringstream();
-        console_bridge::useOutputHandler(&m_customConsoleHandler);
-        Internal::checkIfCurrentLocaleHasDotAsADecimalSeparator();
+        console_bridge::useOutputHandler(&Internal::customConsoleHandler);
+        Internal::CheckIfCurrentLocaleHasDotAsADecimalSeparator();
         const auto ret = urdf::parseURDF(xmlString.c_str());
         console_bridge::restorePreviousOutputHandler();
         return ret;
@@ -60,15 +88,7 @@ namespace ROS2
 
     AZStd::string UrdfParser::GetUrdfParsingLog()
     {
-        return AZStd::string(
-            UrdfParser::m_customConsoleHandler.console_ss.str().c_str(), UrdfParser::m_customConsoleHandler.console_ss.str().size());
+        return Internal::customConsoleHandler.GetLog();
     }
 
-    void UrdfParser::CustomConsoleHandler::log(const std::string& text, console_bridge::LogLevel level, const char* filename, int line)
-    {
-        AZ_Printf("UrdfParser", "%s", text.c_str());
-        console_ss << text << "\n";
-    }
-
-    UrdfParser::CustomConsoleHandler UrdfParser::m_customConsoleHandler;
 } // namespace ROS2

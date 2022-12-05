@@ -6,9 +6,9 @@
  *
  */
 
-#include "RobotImporter/URDF/JointsMaker.h"
-#include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/Utils/TypeConversions.h"
+#include "JointsMaker.h"
+#include "PrefabMakerUtils.h"
+#include <RobotImporter/Utils/TypeConversions.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorFixedJointComponent.h>

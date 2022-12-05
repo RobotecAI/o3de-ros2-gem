@@ -7,10 +7,10 @@
  */
 #pragma once
 
-#include "AzCore/Component/ComponentBus.h"
-#include "AzCore/Component/Entity.h"
+#include <AzCore/Component/ComponentBus.h>
+#include <AzCore/Component/Entity.h>
 #ifdef ROS2_EDITOR
-#include "AzToolsFramework/ToolsComponents/GenericComponentWrapper.h"
+#include <AzToolsFramework/ToolsComponents/GenericComponentWrapper.h>
 #endif
 namespace ROS2
 {

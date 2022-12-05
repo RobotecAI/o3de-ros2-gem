@@ -7,9 +7,9 @@
  */
 #pragma once
 
-#include "ROS2/Frame/NamespaceConfiguration.h"
-#include "ROS2/Frame/ROS2Transform.h"
-#include "ROS2/ROS2GemUtilities.h"
+#include <ROS2/Frame/NamespaceConfiguration.h>
+#include <ROS2/Frame/ROS2Transform.h>
+#include <ROS2/ROS2GemUtilities.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 #include <AzFramework/Components/TransformComponent.h>
@@ -29,7 +29,7 @@ namespace ROS2
         AZ_COMPONENT(ROS2FrameComponent, "{EE743472-3E25-41EA-961B-14096AC1D66F}");
 
         ROS2FrameComponent();
-        ROS2FrameComponent(AZStd::string frameId);
+        ROS2FrameComponent(const AZStd::string& frameId);
 
         void Activate() override;
         void Deactivate() override;

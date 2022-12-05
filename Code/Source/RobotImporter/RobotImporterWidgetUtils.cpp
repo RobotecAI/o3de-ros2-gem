@@ -81,29 +81,4 @@ namespace ROS2::RobotImporterWidgetUtils
         return path->toUtf8().constData();
     }
 
-    AZStd::optional<AZ::IO::Path> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(const AZ::IO::Path& path, QWidget* parent)
-    {
-        if (!QFile::exists(path.c_str()))
-        {
-            return path;
-        }
-
-        switch (Internal::QueryUserForExistingPrefabAction(parent))
-        {
-        case ExistingPrefabAction::Cancel:
-            return AZStd::nullopt;
-        case ExistingPrefabAction::Overwrite:
-            return path;
-        case ExistingPrefabAction::CreateWithNewName:
-            // I am aware that similar functionality might be available by QFileDialog::setAcceptMode
-            // However, the prompt to confirm the overwrite showed up under the file selection dialog, which made a terrible UX
-            // TODO: It should be fixed at some point in the future
-            AZStd::optional<QString> newPathCandidate = Internal::QueryUserForPath("Prefab (*.prefab)", QFileDialog::AnyFile);
-            if (!newPathCandidate || newPathCandidate->isEmpty())
-            {
-                return AZStd::nullopt;
-            }
-            return ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(newPathCandidate.value().toStdString().c_str());
-        }
-    }
 } // namespace ROS2::RobotImporterWidgetUtils

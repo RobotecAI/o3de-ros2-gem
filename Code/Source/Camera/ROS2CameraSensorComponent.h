@@ -41,14 +41,18 @@ namespace ROS2
         void Deactivate() override;
 
     private:
-        //! Type aliases for pointer used in this component
+        //! Pointer to ROS2 image publisher type
         using ImagePublisherPtrType = std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Image>>;
+
+        //! Pointer to ROS2 camera sensor publisher type
         using CameraInfoPublisherPtrType = std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::CameraInfo>>;
+
+        //! Type that combines pointer to ROS2 publisher and CameraSensor
         using PublisherSensorPtrPair = AZStd::pair<ImagePublisherPtrType, AZStd::shared_ptr<CameraSensor>>;
 
         //! Helper to construct PublisherSensorPtrPair with give Sensor type
         template<typename CameraType>
-        PublisherSensorPtrPair createPair(ImagePublisherPtrType publisher, const CameraSensorDescription& description) const
+        PublisherSensorPtrPair CreatePair(ImagePublisherPtrType publisher, const CameraSensorDescription& description) const
         {
             return { publisher, AZStd::make_shared<CameraType>(description) };
         }

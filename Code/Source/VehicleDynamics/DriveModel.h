@@ -18,14 +18,14 @@ namespace VehicleDynamics
     {
     public:
         AZ_RTTI(DriveModel, "{1B57E83D-19BF-4403-8712-1AE98A12F0CD}");
-        enum DriveModelType
+        enum class DriveModelType
         {
             SimplifiedDriveModelType
         };
 
         static void Reflect(AZ::ReflectContext* context);
         virtual ~DriveModel() = default;
-        virtual DriveModel::DriveModelType DriveType() = 0;
+        virtual DriveModel::DriveModelType DriveType() const = 0;
 
         //! Activate the model. Vehicle configuration is to remain the same until another Activate is called.
         virtual void Activate(const VehicleConfiguration& vehicleConfig) = 0;

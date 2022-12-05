@@ -24,7 +24,7 @@ namespace ROS2
         static void Reflect(AZ::ReflectContext* context);
 
         // TODO - implement more models. Add at least one realistic model.
-        enum LidarModel
+        enum class LidarModel
         {
             Generic3DLidar
         };

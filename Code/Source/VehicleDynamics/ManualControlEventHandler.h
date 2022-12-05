@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "ROS2/VehicleDynamics/VehicleInputControlBus.h"
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <AzCore/std/function/function_template.h>
 #include <StartingPointInput/InputEventNotificationBus.h>
 
@@ -25,7 +25,7 @@ namespace VehicleDynamics
         //! @param handler a function which handles the input, typically through re-publishing it to a vehicle input bus.
         ManualControlSingleEventHandler(const AZStd::string& eventName, OnHeldHandlerFunction handler)
             : m_eventName(eventName)
-            , m_handler(handler)
+            , m_handler(AZStd::move(handler))
         {
         }
 

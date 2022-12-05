@@ -7,7 +7,7 @@
  */
 
 #include "AckermannControlComponent.h"
-#include "ROS2/VehicleDynamics/VehicleInputControlBus.h"
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzFramework/Physics/RigidBodyBus.h>
@@ -40,8 +40,8 @@ namespace ROS2
 
     void AckermannControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC("ROS2RobotControl"));
-        required.push_back(AZ_CRC("VehicleModelService"));
+        required.push_back(AZ_CRC_CE("ROS2RobotControl"));
+        required.push_back(AZ_CRC_CE("VehicleModelService"));
     }
 
     void AckermannControlComponent::AckermannReceived(const AckermannCommandStruct& acs)

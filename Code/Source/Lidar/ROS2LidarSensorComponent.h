@@ -7,10 +7,10 @@
  */
 #pragma once
 
-#include "Lidar/LidarRaycaster.h"
-#include "Lidar/LidarTemplate.h"
-#include "Lidar/LidarTemplateUtils.h"
-#include "ROS2/Sensor/ROS2SensorComponent.h"
+#include "LidarRaycaster.h"
+#include "LidarTemplate.h"
+#include "LidarTemplateUtils.h"
+#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomDraw.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <rclcpp/publisher.hpp>
@@ -41,8 +41,8 @@ namespace ROS2
         AZ::Crc32 OnLidarModelSelected();
         bool IsConfigurationVisible() const;
 
-        LidarTemplate::LidarModel m_lidarModel = LidarTemplate::Generic3DLidar;
-        LidarTemplate m_lidarParameters = LidarTemplateUtils::GetTemplate(LidarTemplate::Generic3DLidar);
+        LidarTemplate::LidarModel m_lidarModel = LidarTemplate::LidarModel::Generic3DLidar;
+        LidarTemplate m_lidarParameters = LidarTemplateUtils::GetTemplate( LidarTemplate::LidarModel::Generic3DLidar);
         LidarRaycaster m_lidarRaycaster;
         std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::PointCloud2>> m_pointCloudPublisher;
 

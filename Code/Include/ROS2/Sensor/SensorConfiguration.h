@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "ROS2/Communication/TopicConfiguration.h"
+#include <ROS2/Communication/TopicConfiguration.h>
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/map.h>

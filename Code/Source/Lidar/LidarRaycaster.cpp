@@ -68,7 +68,7 @@ namespace ROS2
         for (int i = 0; i < requestResults.size(); i++)
         { // TODO - check flag for SceneQuery::ResultFlags::Position
             const auto& requestResult = requestResults[i];
-            if (requestResult.m_hits.size() > 0)
+            if (!requestResult.m_hits.empty())
             {
                 auto globalHitPoint = requestResult.m_hits[0].m_position;
                 results.push_back(globalToLidarTM.TransformPoint(globalHitPoint)); // Transform back to local frame

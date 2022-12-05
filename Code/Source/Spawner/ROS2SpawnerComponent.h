@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include "ROS2/Spawner/SpawnerBus.h"
 #include "ROS2SpawnPointComponent.h"
+#include <ROS2/Spawner/SpawnerBus.h>
 #include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Asset/AssetSerializer.h>
 #include <AzCore/Component/Component.h>
@@ -67,7 +67,7 @@ namespace ROS2
             AzFramework::EntitySpawnTicket::Id,
             AzFramework::SpawnableEntityContainerView,
             const AZ::Transform&,
-            const AZStd::string& spawnable_name);
+            const AZStd::string& spawnableName);
 
         void GetSpawnPointsNames(const GetSpawnPointsNamesRequest request, GetSpawnPointsNamesResponse response);
         void GetSpawnPointInfo(const GetSpawnPointInfoRequest request, GetSpawnPointInfoResponse response);

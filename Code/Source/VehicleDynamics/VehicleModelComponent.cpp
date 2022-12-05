@@ -6,10 +6,10 @@
  *
  */
 
-#include "VehicleDynamics/VehicleModelComponent.h"
-#include "VehicleDynamics/DriveModels/AckermannDriveModel.h"
-#include "VehicleDynamics/Utilities.h"
-#include "VehicleDynamics/VehicleConfiguration.h"
+#include "VehicleModelComponent.h"
+#include "VehicleConfiguration.h"
+#include "Utilities.h"
+#include "DriveModels/AckermannDriveModel.h"
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>

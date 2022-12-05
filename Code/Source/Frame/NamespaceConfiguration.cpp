@@ -6,17 +6,17 @@
  *
  */
 
-#include "ROS2/Frame/NamespaceConfiguration.h"
-#include "ROS2/Utilities/ROS2Names.h"
+#include <ROS2/Frame/NamespaceConfiguration.h>
+#include <ROS2/Utilities/ROS2Names.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 
 namespace ROS2
 {
-    void NamespaceConfiguration::PopulateNamespace(bool isRoot, AZStd::string entityName)
+    void NamespaceConfiguration::PopulateNamespace(bool isRoot, const AZStd::string& entityName)
     {
         m_isRoot = isRoot;
-        m_entityName = AZStd::move(entityName);
+        m_entityName = entityName;
         OnNamespaceStrategySelected();
     }
 

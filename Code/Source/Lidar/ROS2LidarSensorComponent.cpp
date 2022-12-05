@@ -6,11 +6,11 @@
  *
  */
 
-#include "Lidar/ROS2LidarSensorComponent.h"
-#include "Lidar/LidarTemplateUtils.h"
-#include "ROS2/Frame/ROS2FrameComponent.h"
-#include "ROS2/ROS2Bus.h"
-#include "ROS2/Utilities/ROS2Names.h"
+#include <Lidar/ROS2LidarSensorComponent.h>
+#include <Lidar/LidarTemplateUtils.h>
+#include <ROS2/Frame/ROS2FrameComponent.h>
+#include <ROS2/ROS2Bus.h>
+#include <ROS2/Utilities/ROS2Names.h>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomFeatureProcessorInterface.h>
 #include <Atom/RPI.Public/RPISystemInterface.h>
 #include <Atom/RPI.Public/Scene.h>
@@ -43,7 +43,7 @@ namespace ROS2
                 ec->Class<ROS2LidarSensorComponent>("ROS2 Lidar Sensor", "Lidar sensor component")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->DataElement(AZ::Edit::UIHandlers::ComboBox, &ROS2LidarSensorComponent::m_lidarModel, "Lidar Model", "Lidar model")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &ROS2LidarSensorComponent::OnLidarModelSelected)
                     ->EnumAttribute(LidarTemplate::LidarModel::Generic3DLidar, "Generic Lidar")
@@ -70,7 +70,7 @@ namespace ROS2
 
     bool ROS2LidarSensorComponent::IsConfigurationVisible() const
     {
-        return m_lidarModel == LidarTemplate::Generic3DLidar;
+        return m_lidarModel ==  LidarTemplate::LidarModel::Generic3DLidar;
     }
 
     AZ::Crc32 ROS2LidarSensorComponent::OnLidarModelSelected()
@@ -192,7 +192,7 @@ namespace ROS2
         message.row_step = message.width * message.point_step;
 
         // TODO - a list of supported fields should be returned by lidar implementation
-        std::vector<std::string> point_field_names = { "x", "y", "z" };
+        AZStd::array<const char*, 3> point_field_names = { "x", "y", "z" };
         for (int i = 0; i < point_field_names.size(); i++)
         { // TODO - placeholder impl
             sensor_msgs::msg::PointField pf;

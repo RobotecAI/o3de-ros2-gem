@@ -6,7 +6,7 @@
  *
  */
 
-#include "ROS2/Utilities/ROS2Conversions.h"
+#include <ROS2/Utilities/ROS2Conversions.h>
 #include <AzCore/Math/Transform.h>
 
 namespace ROS2

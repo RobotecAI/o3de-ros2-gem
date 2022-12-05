@@ -6,9 +6,9 @@
  *
  */
 
-#include "RobotControl/ROS2RobotControlComponent.h"
-#include "Ackermann/AckermannSubscriptionHandler.h"
-#include "Twist/TwistSubscriptionHandler.h"
+#include <RobotControl/ROS2RobotControlComponent.h>
+#include <RobotControl/Ackermann/AckermannSubscriptionHandler.h>
+#include <RobotControl/Twist/TwistSubscriptionHandler.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -21,10 +21,10 @@ namespace ROS2
     {
         switch (m_controlConfiguration.m_steering)
         {
-        case ControlConfiguration::Twist:
+        case ControlConfiguration::Steering::Twist:
             m_subscriptionHandler = AZStd::make_unique<TwistSubscriptionHandler>();
             break;
-        case ControlConfiguration::Ackermann:
+        case ControlConfiguration::Steering::Ackermann:
             // TODO add ackermann
             m_subscriptionHandler = AZStd::make_unique<AckermannSubscriptionHandler>();
             break;
@@ -82,7 +82,7 @@ namespace ROS2
     void ROS2RobotControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         // TODO - also, dependent on current/selected RobotControl implementation for what components are required
-        required.push_back(AZ_CRC("ROS2Frame"));
+        required.push_back(AZ_CRC_CE("ROS2Frame"));
     }
 
     const ControlConfiguration& ROS2RobotControlComponent::GetControlConfiguration() const

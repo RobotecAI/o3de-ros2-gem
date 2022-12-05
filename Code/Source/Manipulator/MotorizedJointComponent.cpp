@@ -6,11 +6,11 @@
  *
  */
 
-#include "ROS2/Manipulator/MotorizedJointComponent.h"
-#include "AzFramework/Physics/Components/SimulatedBodyComponentBus.h"
+#include <ROS2/Manipulator/MotorizedJointComponent.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Serialization/EditContext.h>
+#include <AzFramework/Physics/Components/SimulatedBodyComponentBus.h>
 #include <AzFramework/Physics/RigidBodyBus.h>
 
 namespace ROS2
@@ -165,7 +165,7 @@ namespace ROS2
         {
             AZ_Printf(
                 "MotorizedJointComponent",
-                " %s | pos: %f | err: %f | cntrl : %f | set : %f |",
+                " %s | pos: %f | err: %f | cntrl : %f | set : %f |\n",
                 GetEntity()->GetName().c_str(),
                 measurement,
                 control_position_error,

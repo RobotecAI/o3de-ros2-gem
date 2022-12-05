@@ -18,11 +18,11 @@ namespace ROS2
 {
     LidarTemplate LidarTemplateUtils::GetTemplate(LidarTemplate::LidarModel model)
     {
-        static std::unordered_map<LidarTemplate::LidarModel, LidarTemplate> templates;
+        static AZStd::unordered_map<LidarTemplate::LidarModel, LidarTemplate> templates;
 
         if (templates.empty())
         {
-            LidarTemplate generic3DLidar = { /*.m_model = */ LidarTemplate::Generic3DLidar,
+            LidarTemplate generic3DLidar = { /*.m_model = */ LidarTemplate::LidarModel::Generic3DLidar,
                                              /*.m_name = */ "GenericLidar",
                                              /*.m_minHAngle = */ -180.0f,
                                              /*.m_maxHAngle = */ 180.0f,
@@ -31,7 +31,7 @@ namespace ROS2
                                              /*.m_layers = */ 24,
                                              /*.m_numberOfIncrements = */ 924,
                                              /*.m_maxRange = */ 100.0f };
-            templates[LidarTemplate::Generic3DLidar] = generic3DLidar;
+            templates[LidarTemplate::LidarModel::Generic3DLidar] = generic3DLidar;
         }
 
         auto it = templates.find(model);

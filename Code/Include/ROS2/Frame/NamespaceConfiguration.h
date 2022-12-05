@@ -27,7 +27,7 @@ namespace ROS2
         //! @note Top level ROS2FrameComponent will likely be associated with an interesting object (robot). For multi-robot
         //! simulation, namespaces are often derived from the robot name itself. For this reason, the default behavior
         //! for top level ROS2FrameComponent is to generate namespace from entity name.
-        enum NamespaceStrategy
+        enum class NamespaceStrategy
         {
             Default, //!< FromEntityName for top-level frames, Empty otherwise.
             Empty,
@@ -38,7 +38,7 @@ namespace ROS2
         //! Set namespace based on context.
         //! @param isRoot Whether namespace belongs to top-level entity in the entity hierarchy.
         //! @param entityName Raw (not ros-ified) name of the entity to which the namespace belongs.
-        void PopulateNamespace(bool isRoot, AZStd::string entityName);
+        void PopulateNamespace(bool isRoot,const AZStd::string& entityName);
         AZStd::string GetNamespace(const AZStd::string& parentNamespace) const;
 
     private:
@@ -48,7 +48,10 @@ namespace ROS2
         AZStd::string m_entityName;
 
         bool IsNamespaceCustom() const;
+
+        //! Update the namespace based on the current attributes
         void UpdateNamespace();
+
         AZ::Crc32 OnNamespaceStrategySelected();
     };
 } // namespace ROS2

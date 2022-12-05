@@ -7,11 +7,11 @@
  */
 #pragma once
 
-#include "ROS2/VehicleDynamics/DriveModels/PidConfiguration.h"
-#include "VehicleDynamics/DriveModel.h"
-#include "VehicleDynamics/VehicleConfiguration.h"
-#include "VehicleDynamics/VehicleInputsState.h"
-#include "VehicleDynamics/WheelDynamicsData.h"
+#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
+#include <VehicleDynamics/DriveModel.h>
+#include <VehicleDynamics/VehicleConfiguration.h>
+#include <VehicleDynamics/VehicleInputsState.h>
+#include <VehicleDynamics/WheelDynamicsData.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
@@ -21,16 +21,16 @@ namespace VehicleDynamics
     {
     public:
         AZ_RTTI(AckermannDriveModel, "{104AC31D-E30B-4454-BF42-4FB37B8CFD9B}", DriveModel);
-        DriveModel::DriveModelType DriveType() override
+        DriveModel::DriveModelType DriveType() const override
         {
-            return DriveModel::SimplifiedDriveModelType;
+            return DriveModel::DriveModelType::SimplifiedDriveModelType;
         }
         void Activate(const VehicleConfiguration& vehicleConfig) override;
         void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) override;
 
         static void Reflect(AZ::ReflectContext* context);
 
-        void SetDisabled(bool is_disabled);
+        void SetDisabled(bool isDisabled);
 
     private:
         void ApplySteering(float steering, uint64_t deltaTimeNs);

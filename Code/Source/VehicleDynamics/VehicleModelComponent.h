@@ -8,11 +8,11 @@
 #pragma once
 
 #include "ManualControlEventHandler.h"
-#include "ROS2/VehicleDynamics/VehicleInputControlBus.h"
 #include "VehicleConfiguration.h"
-#include "VehicleDynamics/DriveModels/AckermannDriveModel.h"
 #include "VehicleInputsState.h"
 #include "VehicleModelLimits.h"
+#include "DriveModels/AckermannDriveModel.h"
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>

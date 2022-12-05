@@ -8,7 +8,7 @@
 #pragma once
 
 #include "MotorizedJointBus.h"
-#include "ROS2/VehicleDynamics/DriveModels/PidConfiguration.h"
+#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Math/Transform.h>
@@ -74,7 +74,6 @@ namespace ROS2
         bool m_linear{ true }; //!< Linear mode. The force is applied through RigidBodyBus.
         bool m_animationMode{ true }; //!< Use TransformBus (animation mode, no physics) instead of RigidBodyBus.
 
-        // TODO - remove test signal?
         bool m_testSinusoidal{ true }; //!< Enable sinusoidal signal generator to setpoint (for tuning).
         float m_sinAmplitude{ 0.5 }; //!< Amplitude of test signal generator.
         float m_sinDC{ 0.25 }; //!< DC of test signal generator.
@@ -85,9 +84,8 @@ namespace ROS2
         float m_error{ 0 }; //!< Current error (difference between control value and measurement).
         float m_currentPosition{ 0 }; //!< Last measured position.
         float m_currentVelocity{ 0 }; //!< Last measured velocity.
-        double m_lastMeasurementTime; //!< Last measurement time in seconds.
+        double m_lastMeasurementTime{ 0 }; //!< Last measurement time in seconds.
 
-        // TODO - remove/replace with proper API use (EntityDebugDisplayEventBus)
         AZ::EntityId m_debugDrawEntity; //!< Optional Entity that allows to visualize desired setpoint value.
         AZ::Transform m_debugDrawEntityInitialTransform; //!< Initial transform of m_debugDrawEntity.
         bool m_debugPrint{ false }; //!< Print debug info to the console.

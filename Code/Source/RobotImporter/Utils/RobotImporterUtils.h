@@ -7,19 +7,19 @@
  */
 #pragma once
 
-#include "AzCore/Component/ComponentBus.h"
-#include "AzCore/std/string/string.h"
-#include "RobotImporter/URDF/UrdfParser.h"
+#include <RobotImporter/URDF/UrdfParser.h>
+#include <AzCore/Component/ComponentBus.h>
 #include <AzCore/IO/SystemFile.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/std/function/function_template.h>
+#include <AzCore/std/string/string.h>
 
 namespace ROS2
 {
     namespace
     {
-        const AZStd::function<bool(const AZStd::string&)> fileExistsCall = [](const AZStd::string& filename) -> bool
+        static inline bool FileExistsCall(const AZStd::string& filename)
         {
             return AZ::IO::SystemFile::Exists(filename.c_str());
         };
@@ -62,7 +62,7 @@ namespace ROS2
         AZStd::string ResolveURDFPath(
             AZStd::string unresolvedPath,
             const AZStd::string& urdfFilePath,
-            const AZStd::function<bool(const AZStd::string&)>& fileExists = fileExistsCall);
+            const AZStd::function<bool(const AZStd::string&)>& fileExists = FileExistsCall);
 
     } // namespace Utils
 } // namespace ROS2

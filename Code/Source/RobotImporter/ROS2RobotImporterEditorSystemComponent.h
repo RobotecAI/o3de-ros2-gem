@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "RobotImporter/ROS2RobotImporterSystemComponent.h"
+#include "ROS2RobotImporterSystemComponent.h"
 #include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 
 namespace ROS2

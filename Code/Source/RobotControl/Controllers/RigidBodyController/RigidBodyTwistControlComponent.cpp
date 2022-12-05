@@ -42,7 +42,7 @@ namespace ROS2
 
     void RigidBodyTwistControlComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC("ROS2RobotControl"));
+        required.push_back(AZ_CRC_CE("ROS2RobotControl"));
         required.push_back(AZ_CRC_CE("PhysicsRigidBodyService"));
     }
 

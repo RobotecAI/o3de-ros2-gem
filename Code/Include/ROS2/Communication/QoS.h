@@ -28,9 +28,8 @@ namespace ROS2
         rclcpp::QoS GetQoS() const;
 
     private:
-        AZ::Crc32 OnQoSSelected();
+        AZ::Crc32 OnQoSSelected() const;
 
-        // TODO - only for Editor component
         //! If necessary, extend to also expose history and liveliness.
         rclcpp::ReliabilityPolicy m_reliabilityPolicy;
         rclcpp::DurabilityPolicy m_durabilityPolicy;

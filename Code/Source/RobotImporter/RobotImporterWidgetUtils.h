@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include <AzCore/IO/Path/Path.h>
 #include <QWidget>
-#include <optional>
+#include <AzCore/IO/Path/Path.h>
+#include <AzCore/std/optional.h>
 
 namespace ROS2::RobotImporterWidgetUtils
 {
-    enum ExistingPrefabAction
+    enum class ExistingPrefabAction
     {
         Overwrite,
         CreateWithNewName,
@@ -26,10 +26,4 @@ namespace ROS2::RobotImporterWidgetUtils
     //! @param parent - parent widget for the widgets used inside this function
     AZStd::optional<AZStd::string> QueryUserForURDFPath(QWidget* parent = nullptr);
 
-    //! Validate whether a path exists. If yes, ask user to take a proper action to provide correct path.
-    //! @param path - path to validate
-    //! @param parent - parent widget for the widgets used inside this function
-    //! @return Valid path or an empty optional if it was not possible or user cancelled.
-    AZStd::optional<AZ::IO::Path> ValidatePrefabPathExistenceAndQueryUserForNewIfNecessary(
-        const AZ::IO::Path& path, QWidget* parent = nullptr);
 } // namespace ROS2::RobotImporterWidgetUtils
