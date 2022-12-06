@@ -39,17 +39,17 @@ namespace VehicleDynamics
         virtual void SetTargetAccelerationFraction(float accelerationFraction) = 0;
 
         //! Steer input version which is relative to limits.
-        //! @param steering is -1 to 1, which applies as a fraction of vehicle model steering limits.
-        //! Note that the actual angle applied is subject to limits and implementation (e.g. smoothing).
+        //! @param steeringFraction is -1 to 1, which applies as a fraction of vehicle model steering limits.
+        //! @note The actual angle applied is subject to limits and implementation (e.g. smoothing).
         virtual void SetTargetSteeringFraction(float steeringFraction) = 0;
 
         //! Speed input version which is relative to limits.
         //! @param speedMps is -1 to 1, which applies as a fraction of vehicle model speed limits.
         virtual void SetTargetLinearSpeedFraction(float speedFraction) = 0;
 
-        //! Disable vehicle dynamics
-        //! @param is_disable if set true no torque will be applied
-        virtual void SetDisableVehicleDynamics(bool is_disable) = 0;
+        //! Disables (or enables) the vehicle dynamics
+        //! @param disable if set true no torque will be applied
+        virtual void SetDisableVehicleDynamics(bool disable) = 0;
     };
 
     using VehicleInputControlRequestBus = AZ::EBus<VehicleInputControlRequests>;

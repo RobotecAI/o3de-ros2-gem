@@ -6,14 +6,14 @@
  *
  */
 
-#include "RobotImporter/URDF/URDFPrefabMaker.h"
-#include "ROS2/Frame/ROS2FrameComponent.h"
-#include "ROS2/ROS2GemUtilities.h"
-#include "ROS2/Spawner/SpawnerBus.h"
-#include "RobotControl/ROS2RobotControlComponent.h"
-#include "RobotImporter/URDF/CollidersMaker.h"
-#include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "URDFPrefabMaker.h"
+#include <ROS2/Frame/ROS2FrameComponent.h>
+#include <ROS2/ROS2GemUtilities.h>
+#include <ROS2/Spawner/SpawnerBus.h>
+#include <RobotControl/ROS2RobotControlComponent.h>
+#include "CollidersMaker.h"
+#include "PrefabMakerUtils.h"
+#include <RobotImporter/Utils/RobotImporterUtils.h>
 #include <API/EditorAssetSystemAPI.h>
 #include <AzCore/IO/FileIO.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
@@ -66,10 +66,10 @@ namespace ROS2
             m_status.clear();
         }
         // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
-        AZStd::unordered_map<AZStd::string, AzToolsFramework::Prefab::PrefabEntityResult> created_links;
+        AZStd::unordered_map<AZStd::string, AzToolsFramework::Prefab::PrefabEntityResult> createdLinks;
         AzToolsFramework::Prefab::PrefabEntityResult createEntityRoot = AddEntitiesForLink(m_model->root_link_, AZ::EntityId());
-        AZStd::string root_name(m_model->root_link_->name.c_str(), m_model->root_link_->name.size());
-        created_links[root_name] = createEntityRoot;
+        AZStd::string rootName(m_model->root_link_->name.c_str(), m_model->root_link_->name.size());
+        createdLinks[rootName] = createEntityRoot;
         if (!createEntityRoot.IsSuccess())
         {
             return AZ::Failure(AZStd::string(createEntityRoot.GetError()));
@@ -87,7 +87,7 @@ namespace ROS2
         {
             AZ_TracePrintf(
                 "CreatePrefabFromURDF",
-                "Link with name %s was created as: %s",
+                "Link with name %s was created as: %s\n",
                 name.c_str(),
                 result.IsSuccess() ? (result.GetValue().ToString().c_str()) : ("[Failed]"));
             AZStd::lock_guard<AZStd::mutex> lck(m_statusLock);
@@ -116,7 +116,7 @@ namespace ROS2
                     {
                         AZ_TracePrintf(
                             "CreatePrefabFromURDF",
-                            "Setting transform %s %s to [%f %f %f] [%f %f %f %f]",
+                            "Setting transform %s %s to [%f %f %f] [%f %f %f %f]\n",
                             name.c_str(),
                             this_entry.GetValue().ToString().c_str(),
                             tf.GetTranslation().GetX(),
@@ -131,29 +131,29 @@ namespace ROS2
                     else
                     {
                         AZ_TracePrintf(
-                            "CreatePrefabFromURDF", "Setting transform failed: %s does not have transform interface", name.c_str());
+                            "CreatePrefabFromURDF", "Setting transform failed: %s does not have transform interface\n", name.c_str());
                     }
                 }
             }
         }
 
         // set hierarchy
-        for (const auto& [name, link_ptr] : links)
+        for (const auto& [name, linkPtr] : links)
         {
-            const auto this_entry = created_links.at(name);
+            const auto thisEntry = createdLinks.at(name);
             if (!this_entry.IsSuccess())
             {
                 AZ_TracePrintf("CreatePrefabFromURDF", "Link %s creation failed", name.c_str());
                 continue;
             }
-            auto parent_ptr = link_ptr->getParent();
+            auto parentPtr = linkPtr->getParent();
             if (!parent_ptr)
             {
                 AZ_TracePrintf("CreatePrefabFromURDF", "Link %s has no parents", name.c_str());
                 continue;
             }
-            AZStd::string parent_name(parent_ptr->name.c_str(), parent_ptr->name.size());
-            const auto parent_entry = created_links.find(parent_name);
+            AZStd::string parentName(parentPtr->name.c_str(), parentPtr->name.size());
+            const auto parentEntry = createdLinks.find(parentName);
             if (parent_entry == created_links.end())
             {
                 AZ_TracePrintf("CreatePrefabFromURDF", "Link %s has invalid parent name %s", name.c_str(), parent_name.c_str());
@@ -167,10 +167,10 @@ namespace ROS2
             }
             AZ_TracePrintf(
                 "CreatePrefabFromURDF",
-                "Link %s setting parent to %s",
-                this_entry.GetValue().ToString().c_str(),
-                parent_entry->second.GetValue().ToString().c_str());
-            AZ_TracePrintf("CreatePrefabFromURDF", "Link %s setting parent to %s", name.c_str(), parent_name.c_str());
+                "Link %s setting parent to %s\n",
+                thisEntry.GetValue().ToString().c_str(),
+                parentEntry->second.GetValue().ToString().c_str());
+            AZ_TracePrintf("CreatePrefabFromURDF", "Link %s setting parent to %s\n", name.c_str(), parentName.c_str());
             auto* entity = AzToolsFramework::GetEntityById(this_entry.GetValue());
             entity->Activate();
             AZ::TransformBus::Event(this_entry.GetValue(), &AZ::TransformBus::Events::SetParent, parent_entry->second.GetValue());
@@ -179,18 +179,18 @@ namespace ROS2
 
         // create joint
         auto joints = Utils::GetAllJoints(m_model->root_link_->child_links);
-        for (const auto& [name, joint_ptr] : joints)
+        for (const auto& [name, jointPtr] : joints)
         {
             AZ_Assert(joint_ptr, "joint %s is null", name.c_str());
             AZ_TracePrintf(
                 "CreatePrefabFromURDF",
-                "Creating joint %s : %s -> %s",
+                "Creating joint %s : %s -> %s\n",
                 name.c_str(),
                 joint_ptr->parent_link_name.c_str(),
                 joint_ptr->child_link_name.c_str());
 
-            auto lead_entity = created_links.at(joint_ptr->parent_link_name.c_str());
-            auto child_entity = created_links.at(joint_ptr->child_link_name.c_str());
+            auto leadEntity = createdLinks.at(jointPtr->parent_link_name.c_str());
+            auto childEntity = createdLinks.at(jointPtr->child_link_name.c_str());
             // check if both has RigidBody
             if (lead_entity.IsSuccess() && child_entity.IsSuccess())
             {
@@ -323,7 +323,7 @@ namespace ROS2
     {
         AZStd::string str;
         AZStd::lock_guard<AZStd::mutex> lck(m_statusLock);
-        for (const auto& [entry, entry_status] : m_status)
+        for (const auto& [entry, entryStatus] : m_status)
         {
             str += entry + " " + entry_status + "\n";
         }

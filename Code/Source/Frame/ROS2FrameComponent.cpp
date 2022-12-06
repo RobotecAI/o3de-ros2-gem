@@ -6,10 +6,10 @@
  *
  */
 
-#include "ROS2/Frame/ROS2FrameComponent.h"
-#include "ROS2/ROS2Bus.h"
-#include "ROS2/ROS2GemUtilities.h"
-#include "ROS2/Utilities/ROS2Names.h"
+#include <ROS2/Frame/ROS2FrameComponent.h>
+#include <ROS2/ROS2Bus.h>
+#include <ROS2/ROS2GemUtilities.h>
+#include <ROS2/Utilities/ROS2Names.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -68,7 +68,7 @@ namespace ROS2
         {
             AZ_TracePrintf(
                 "ROS2FrameComponent",
-                "Setting up %s transfrom between parent %s and child %s to be published %s",
+                "Setting up %s transfrom between parent %s and child %s to be published %s\n",
                 IsDynamic() ? "dynamic" : "static",
                 GetParentFrameID().data(),
                 GetFrameID().data(),
@@ -156,7 +156,7 @@ namespace ROS2
     AZStd::string ROS2FrameComponent::GetNamespace() const
     {
         auto parentFrame = GetParentROS2FrameComponent();
-        AZStd::string parentNamespace("");
+        AZStd::string parentNamespace;
         if (parentFrame != nullptr)
         {
             parentNamespace = parentFrame->GetNamespace();

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "AzCore/Math/Matrix4x4.h"
+#include <AzCore/Math/Matrix4x4.h>
 
 namespace ROS2::GNSS
 {

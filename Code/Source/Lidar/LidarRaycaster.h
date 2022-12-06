@@ -25,7 +25,7 @@ namespace ROS2
         //! @code
         //! auto sceneHandle = AZ::RPI::Scene::GetSceneForEntityId(GetEntityId());
         //! @endcode
-        //! @param scene that will be subject to ray-casting.
+        //! @param handle Scene that will be subject to ray-casting.
         void SetRaycasterScene(const AzPhysics::SceneHandle& handle);
 
         //! Perform raycast against the current scene.

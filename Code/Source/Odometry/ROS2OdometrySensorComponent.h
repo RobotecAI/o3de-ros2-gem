@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "ROS2/Sensor/ROS2SensorComponent.h"
+#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <nav_msgs/msg/odometry.hpp>
@@ -27,11 +27,23 @@ namespace ROS2
         ~ROS2OdometrySensorComponent() = default;
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void Reflect(AZ::ReflectContext* context);
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
 
     private:
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
         void FrequencyTick() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
 
         std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> m_odometryPublisher;
         nav_msgs::msg::Odometry m_odometryMsg;

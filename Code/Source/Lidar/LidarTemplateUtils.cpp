@@ -18,7 +18,7 @@ namespace ROS2
 {
     LidarTemplate LidarTemplateUtils::GetTemplate(LidarTemplate::LidarModel model)
     {
-        static std::unordered_map<LidarTemplate::LidarModel, LidarTemplate> templates;
+        static AZStd::unordered_map<LidarTemplate::LidarModel, LidarTemplate> templates;
 
         if (templates.empty())
         {

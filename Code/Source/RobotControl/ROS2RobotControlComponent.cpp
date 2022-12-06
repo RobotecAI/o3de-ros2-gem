@@ -6,9 +6,9 @@
  *
  */
 
-#include "RobotControl/ROS2RobotControlComponent.h"
-#include "Ackermann/AckermannSubscriptionHandler.h"
-#include "Twist/TwistSubscriptionHandler.h"
+#include "ROS2RobotControlComponent.h"
+#include <Ackermann/AckermannSubscriptionHandler.h>
+#include <Twist/TwistSubscriptionHandler.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>

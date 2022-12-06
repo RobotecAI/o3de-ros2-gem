@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "ROS2/Sensor/ROS2SensorComponent.h"
+#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <rclcpp/publisher.hpp>
@@ -16,7 +16,7 @@
 namespace ROS2
 {
     //! An IMU (Inertial Measurement Unit) sensor Component.
-    //! IMUs typically include gyroscopes, accelerometers and magnetometers. This Component encapsulates data
+    //! IMUs typically include gyroscopes, accelerometers and magnetometers. This component encapsulates data
     //! acquisition and its publishing to ROS2 ecosystem. IMU Component requires ROS2FrameComponent.
     class ROS2ImuSensorComponent : public ROS2SensorComponent
     {
@@ -25,11 +25,26 @@ namespace ROS2
         ROS2ImuSensorComponent();
         ~ROS2ImuSensorComponent() = default;
         static void Reflect(AZ::ReflectContext* context);
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
 
     private:
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
         void FrequencyTick() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
 
         void InitializeImuMessage();
         double GetCurrentTimeInSec() const;

@@ -6,11 +6,11 @@
  *
  */
 
-#include "RobotImporter/URDF/CollidersMaker.h"
-#include "RobotImporter/URDF/PrefabMakerUtils.h"
-#include "RobotImporter/Utils/RobotImporterUtils.h"
-#include "RobotImporter/Utils/SourceAssetsStorage.h"
-#include "RobotImporter/Utils/TypeConversions.h"
+#include "CollidersMaker.h"
+#include "PrefabMakerUtils.h"
+#include <RobotImporter/Utils/RobotImporterUtils.h>
+#include <RobotImporter/Utils/SourceAssetsStorage.h>
+#include <RobotImporter/Utils/TypeConversions.h>
 #include <AzCore/Asset/AssetManagerBus.h>
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/StringFunc/StringFunc.h>
@@ -32,7 +32,7 @@ namespace ROS2
 
         AZStd::optional<AZ::IO::Path> GetMeshProductPathFromSourcePath(const AZ::IO::Path& sourcePath)
         {
-            AZ_TracePrintf(Internal::collidersMakerLoggingTag, "GetMeshProductPathFromSourcePath: %s", sourcePath.c_str());
+            AZ_TracePrintf(Internal::collidersMakerLoggingTag, "GetMeshProductPathFromSourcePath: %s\n", sourcePath.c_str());
             AZ::Data::AssetInfo assetInfo;
 
             AZStd::string watchDir;
@@ -231,7 +231,7 @@ namespace ROS2
 
             auto assetInfoFilePath = AZ::IO::Path{ azMeshPath };
             assetInfoFilePath.Native() += ".assetinfo";
-            AZ_Printf(Internal::collidersMakerLoggingTag, "Saving collider manifest to %s", assetInfoFilePath.c_str());
+            AZ_Printf(Internal::collidersMakerLoggingTag, "Saving collider manifest to %s\n", assetInfoFilePath.c_str());
             scene->GetManifest().SaveToFile(assetInfoFilePath.c_str());
 
             bool assetFound = false;
@@ -306,7 +306,7 @@ namespace ROS2
         const bool isWheelEntity = Utils::IsWheelURDFHeuristics(link);
         if (isWheelEntity)
         {
-            AZ_Printf(Internal::collidersMakerLoggingTag, "Due to its name, %s is considered a wheel entity", link->name.c_str());
+            AZ_Printf(Internal::collidersMakerLoggingTag, "Due to its name, %s is considered a wheel entity\n", link->name.c_str());
         }
         const AZ::Data::Asset<Physics::MaterialAsset> materialAsset =
             isWheelEntity ? m_wheelMaterial : AZ::Data::Asset<Physics::MaterialAsset>();

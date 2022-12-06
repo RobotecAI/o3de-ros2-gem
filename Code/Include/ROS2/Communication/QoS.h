@@ -23,7 +23,7 @@ namespace ROS2
         QoS(const rclcpp::QoS& qos = rclcpp::QoS(rmw_qos_profile_default.depth));
         static void Reflect(AZ::ReflectContext* context);
 
-        //! Create and return QoS based on member values (Editor combos selection).
+        //! Convert and return a rclcpp::QoS instance based on member values (Editor combos selection).
         //! @return a <a href="https://docs.ros2.org/latest/api/rclcpp/classrclcpp_1_1QoS.html">ROS2 QoS struct</a>.
         rclcpp::QoS GetQoS() const;
 

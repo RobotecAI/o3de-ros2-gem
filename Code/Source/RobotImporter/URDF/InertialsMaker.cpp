@@ -6,8 +6,8 @@
  *
  */
 
-#include "RobotImporter/URDF/InertialsMaker.h"
-#include "RobotImporter/Utils/TypeConversions.h"
+#include "InertialsMaker.h"
+#include <RobotImporter/Utils/TypeConversions.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
 #include <Source/EditorRigidBodyComponent.h>

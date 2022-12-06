@@ -7,8 +7,8 @@
  */
 #include <ROS2SystemComponent.h>
 
-#include "ROS2/Communication/QoS.h"
-#include "ROS2/Communication/TopicConfiguration.h"
+#include <ROS2/Communication/QoS.h>
+#include <ROS2/Communication/TopicConfiguration.h>
 
 #include <Atom/RPI.Public/Pass/PassSystemInterface.h>
 

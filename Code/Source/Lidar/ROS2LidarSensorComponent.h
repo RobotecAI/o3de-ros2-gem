@@ -7,10 +7,10 @@
  */
 #pragma once
 
-#include "Lidar/LidarRaycaster.h"
-#include "Lidar/LidarTemplate.h"
-#include "Lidar/LidarTemplateUtils.h"
-#include "ROS2/Sensor/ROS2SensorComponent.h"
+#include "LidarRaycaster.h"
+#include "LidarTemplate.h"
+#include "LidarTemplateUtils.h"
+#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomDraw.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <rclcpp/publisher.hpp>
@@ -20,8 +20,8 @@ namespace ROS2
 {
     //! Lidar sensor Component.
     //! Lidars (Light Detection and Ranging) emit laser light and measure it after reflection.
-    //! Lidar Component allows customization of lidar type and behavior and encapsulates both simulation.
-    //! and data publishing. Lidar Component requires ROS2FrameComponent.
+    //! Lidar Component allows customization of lidar type and behavior and encapsulates both simulation
+    //! and data publishing. It requires ROS2FrameComponent.
     // TODO - Add selection of implementation choice (PhysX, GPU, other), noise
     class ROS2LidarSensorComponent : public ROS2SensorComponent
     {
@@ -30,12 +30,30 @@ namespace ROS2
         ROS2LidarSensorComponent();
         ~ROS2LidarSensorComponent() = default;
         static void Reflect(AZ::ReflectContext* context);
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
 
     private:
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
+        //////////////////////////////////////////////////////////////////////////
+        // ROS2SensorComponent overrides
         void FrequencyTick() override;
         void Visualise() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
         void SetPhysicsScene();
 
         AZ::Crc32 OnLidarModelSelected();

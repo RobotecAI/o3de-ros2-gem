@@ -8,7 +8,7 @@
 #pragma once
 
 #include "MotorizedJointBus.h"
-#include "ROS2/VehicleDynamics/DriveModels/PidConfiguration.h"
+#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Math/Transform.h>
@@ -32,24 +32,26 @@ namespace ROS2
 
         MotorizedJointComponent() = default;
         ~MotorizedJointComponent() = default;
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
         static void Reflect(AZ::ReflectContext* context);
 
-        //! Set a setpoint (e.g. desired local position). The controller will follow it.
+        //////////////////////////////////////////////////////////////////////// 
+        // MotorizedJointRequestBus::Handler overrides
         void SetSetpoint(float setpoint) override;
-
-        //! Get a setpoint
         float GetSetpoint() override;
-
-        //! Get current control error. It is the difference between control value and measurement.
-        //! When the setpoint is reached this should be close to zero.
-        //! @returns control error, in meters for linear joints and in radians for angular joints.
         float GetError() override;
-
-        //! Get current position from measurement.
-        //! @returns current position, in meters for linear joints and radians for angular joints.
         float GetCurrentMeasurement() override;
+        //////////////////////////////////////////////////////////////////////// 
 
         //! Get a degree of freedom direction.
         //! @returns direction of joint movement in global coordinates.
@@ -64,7 +66,16 @@ namespace ROS2
         void ApplyLinVelAnimation(float velocity, float deltaTime);
         void ApplyLinVelRigidBodyImpulse(float velocity, float deltaTime);
         void ApplyLinVelRigidBody(float velocity, float deltaTime);
+        //////////////////////////////////////////////////////////////////////////
+        // AZ::TickBus::Handler overrides
+        //////////////////////////////////////////////////////////////////////////
+        // AZ::TickBus::Handler overrides
+        //////////////////////////////////////////////////////////////////////////
+        // AZ::TickBus::Handler overrides
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
 
         AZ::Vector3 m_jointDir{ 0.f, 0.f, 1.f }; //!< Direction of joint movement in parent frame of reference, used to compute measurement.
         AZ::Vector3 m_effortAxis{ 0.f, 0.f, 1.f }; //!< Direction of force or torque application in owning entity frame of reference.
@@ -85,7 +96,7 @@ namespace ROS2
         float m_error{ 0 }; //!< Current error (difference between control value and measurement).
         float m_currentPosition{ 0 }; //!< Last measured position.
         float m_currentVelocity{ 0 }; //!< Last measured velocity.
-        double m_lastMeasurementTime; //!< Last measurement time in seconds.
+        double m_lastMeasurementTime{}; //!< Last measurement time in seconds.
 
         // TODO - remove/replace with proper API use (EntityDebugDisplayEventBus)
         AZ::EntityId m_debugDrawEntity; //!< Optional Entity that allows to visualize desired setpoint value.

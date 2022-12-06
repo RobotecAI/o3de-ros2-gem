@@ -13,10 +13,10 @@
 namespace ROS2
 {
     QoS::QoS(const rclcpp::QoS& qos)
+        : m_reliabilityPolicy(qos.reliability())
+        , m_durabilityPolicy(qos.durability())
+        , m_depth(qos.depth())
     {
-        m_reliabilityPolicy = qos.reliability();
-        m_durabilityPolicy = qos.durability();
-        m_depth = qos.depth();
     }
 
     AZ::Crc32 QoS::OnQoSSelected()

@@ -6,12 +6,12 @@
  *
  */
 
-#include "GNSS/ROS2GNSSSensorComponent.h"
-#include "ROS2/Frame/ROS2FrameComponent.h"
-#include "ROS2/ROS2Bus.h"
-#include "ROS2/ROS2GemUtilities.h"
-#include "ROS2/Utilities/ROS2Conversions.h"
-#include "ROS2/Utilities/ROS2Names.h"
+#include "ROS2GNSSSensorComponent.h"
+#include <ROS2/Frame/ROS2FrameComponent.h>
+#include <ROS2/ROS2Bus.h>
+#include <ROS2/ROS2GemUtilities.h>
+#include <ROS2/Utilities/ROS2Conversions.h>
+#include <ROS2/Utilities/ROS2Names.h>
 
 #include <AzCore/Math/Matrix4x4.h>
 #include <AzCore/Serialization/EditContext.h>

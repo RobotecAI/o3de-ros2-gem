@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "ROS2/RobotControl/Twist/TwistBus.h"
+#include <ROS2/RobotControl/Twist/TwistBus.h>
 #include <AzCore/Component/Component.h>
 
 namespace ROS2
@@ -22,13 +22,18 @@ namespace ROS2
         AZ_COMPONENT(RigidBodyTwistControlComponent, "{D994FE1A-AA6A-42B9-8B8E-B3B375891F5B}", AZ::Component);
         RigidBodyTwistControlComponent() = default;
 
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void Reflect(AZ::ReflectContext* context);
 
     private:
-        //! Simplest approach: To imitate the steering, current linear and angular velocities of a rigid body are overwritten with inputs
+        //////////////////////////////////////////////////////////////////////////
+        // TwistNotificationBus::Handler overrides
         void TwistReceived(const AZ::Vector3& linear, const AZ::Vector3& angular) override;
+        //////////////////////////////////////////////////////////////////////////
     };
 } // namespace ROS2

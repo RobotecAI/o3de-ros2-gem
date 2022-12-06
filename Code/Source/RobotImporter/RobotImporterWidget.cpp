@@ -10,11 +10,11 @@
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/Utils/Utils.h>
 
-#include "RobotImporter/RobotImporterWidget.h"
-#include "RobotImporter/RobotImporterWidgetUtils.h"
-#include "RobotImporter/URDF/URDFPrefabMaker.h"
-#include "RobotImporter/URDF/UrdfParser.h"
-#include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "RobotImporterWidget.h"
+#include "RobotImporterWidgetUtils.h"
+#include "URDF/URDFPrefabMaker.h"
+#include "URDF/UrdfParser.h"
+#include "Utils/RobotImporterUtils.h"
 #include <QApplication>
 #include <QScreen>
 #include <QTranslator>
@@ -130,17 +130,17 @@ namespace ROS2
         if (m_parsedUrdf)
         {
             m_urdfAssetsMapping = AZStd::make_shared<Utils::UrdfAssetMap>(Utils::FindAssetsForUrdf(m_meshNames, m_urdfPath));
-            auto colliders_names = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
-            auto visual_names = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
-            for (const AZStd::string& mesh_path : m_meshNames)
+            auto collidersNames = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
+            auto visualNames = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
+            for (const AZStd::string& meshPath : m_meshNames)
             {
-                const QString mesh_pathqs = QString::fromUtf8(mesh_path.data(), mesh_path.size());
+                const QString MeshPathqs = QString::fromUtf8(meshPath.data(), meshPath.size());
                 const QString kNotFound = tr("not found");
 
                 if (m_urdfAssetsMapping->contains(mesh_path))
                 {
                     QString type = kNotFound;
-                    QString source_path = kNotFound;
+                    QString sourcePath = kNotFound;
                     auto crc = AZ::Crc32();
                     QString tooltip = kNotFound;
                     bool visual = visual_names.contains(mesh_path);
@@ -161,8 +161,8 @@ namespace ROS2
                     if (m_urdfAssetsMapping->contains(mesh_path))
                     {
                         const auto& asset = m_urdfAssetsMapping->at(mesh_path);
-                        const AZStd::string& product_path = asset.m_availableAssetInfo.m_productAssetRelativePath;
-                        const AZStd::string& resolved_path = asset.m_resolvedUrdfPath.data();
+                        const AZStd::string& productPath = asset.m_availableAssetInfo.m_productAssetRelativePath;
+                        const AZStd::string& resolvedPath = asset.m_resolvedUrdfPath.data();
 
                         source_path = QString::fromUtf8(product_path.data(), product_path.size());
                         crc = asset.m_urdfFileCRC;
@@ -277,10 +277,10 @@ namespace ROS2
 
     bool RobotImporterWidget::CheckCyclicalDependency(AZ::IO::Path importedPrefabPath)
     {
-        AzFramework::EntityContextId context_id;
-        EBUS_EVENT_RESULT(context_id, AzFramework::EntityIdContextQueryBus, GetOwningContextId);
+        AzFramework::EntityContextId contextId;
+        AzFramework::EntityIdContextQueryBus::BroadcastResult(contextId, &AzFramework::EntityIdContextQueryBus::Events::GetOwningContextId);
 
-        AZ_Printf("CheckCyclicalDependency", "CheckCyclicalDependency %s", importedPrefabPath.Native().data());
+        AZ_Printf("CheckCyclicalDependency", "CheckCyclicalDependency %s\n", importedPrefabPath.Native().c_str()());
         auto focus_interface = AZ::Interface<AzToolsFramework::Prefab::PrefabFocusInterface>::Get();
 
         if (!focus_interface)
@@ -289,7 +289,7 @@ namespace ROS2
             return true;
         }
 
-        auto focus_prefab_instance = focus_interface->GetFocusedPrefabInstance(context_id);
+        auto focusPrefabInstance = focusInterface->GetFocusedPrefabInstance(contextId);
 
         if (!focus_prefab_instance)
         {
@@ -297,7 +297,7 @@ namespace ROS2
             return true;
         }
 
-        auto focus_prefab_filename = focus_prefab_instance.value().get().GetTemplateSourcePath();
+        auto focusPrefabFilename = focusPrefabInstance.value().get().GetTemplateSourcePath();
 
         AZ_Printf("CheckCyclicalDependency", "focus_prefab_filename %s", focus_prefab_filename.Native().data());
         if (focus_prefab_filename == importedPrefabPath)
@@ -313,6 +313,6 @@ namespace ROS2
     void RobotImporterWidget::ReportError(const QString& errorMessage)
     {
         QMessageBox::critical(this, QObject::tr("Error"), errorMessage);
-        AZ_Error("RobotImporterWidget", false, errorMessage.toStdString().c_str());
+        AZ_Error("RobotImporterWidget", false, "%s", errorMessage.toUtf8().constData());
     }
 } // namespace ROS2
