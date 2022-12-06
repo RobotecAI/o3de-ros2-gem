@@ -6,7 +6,7 @@
  *
  */
 
-#include "Camera/ROS2CameraSensorComponent.h"
+#include "ROS2CameraSensorComponent.h"
 #include <ROS2/Communication/TopicConfiguration.h>
 #include <ROS2/Frame/ROS2FrameComponent.h>
 #include <ROS2/ROS2Bus.h>
@@ -151,8 +151,8 @@ namespace ROS2
             cameraInfo.width = m_width;
             cameraInfo.height = m_height;
             cameraInfo.distortion_model = sensor_msgs::distortion_models::PLUMB_BOB;
-            AZ_Assert(cameraIntrinsics.size() == 9, "camera matrix should has 9 elements");
-            AZ_Assert(cameraInfo.k.size() == 9, "camera matrix should has 9 elements");
+            AZ_Assert(cameraIntrinsics.size() == 9, "camera matrix should have 9 elements");
+            AZ_Assert(cameraInfo.k.size() == 9, "camera matrix should have 9 elements");
             AZStd::copy(cameraIntrinsics.begin(), cameraIntrinsics.end(), cameraInfo.k.begin());
             cameraInfo.p = { cameraInfo.k[0], cameraInfo.k[1], cameraInfo.k[2], 0, cameraInfo.k[3], cameraInfo.k[4], cameraInfo.k[5], 0,
                              cameraInfo.k[6], cameraInfo.k[7], cameraInfo.k[8], 0 };

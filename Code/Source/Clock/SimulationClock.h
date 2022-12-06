@@ -24,7 +24,7 @@ namespace ROS2
         void Tick();
 
     private:
-        // Time since start of sim, scaled with t_simulationTickScale
+        //! Get the time since start of sim, scaled with t_simulationTickScale
         int64_t GetElapsedTimeMicroseconds() const;
 
         rclcpp::Publisher<rosgraph_msgs::msg::Clock>::SharedPtr m_clockPublisher;

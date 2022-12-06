@@ -26,7 +26,7 @@ namespace ROS2
 
         //! ROS2 Publishers of this sensor.
         //! Some sensors can have more than one publisher (example: Camera).
-        //! This map will typically hold 1-3 elements.
+        //! @note This map will typically hold 1-3 elements.
         AZStd::map<AZStd::string, TopicConfiguration> m_publishersConfigurations;
 
         //! Frequency in Hz (1/s).

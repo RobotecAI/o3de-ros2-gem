@@ -6,6 +6,7 @@
  *
  */
 
+#include "ROS2RobotControlComponent.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>

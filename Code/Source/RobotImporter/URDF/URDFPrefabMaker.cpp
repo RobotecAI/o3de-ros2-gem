@@ -9,6 +9,11 @@
 #include "URDFPrefabMaker.h"
 #include "CollidersMaker.h"
 #include "PrefabMakerUtils.h"
+#include <ROS2/Frame/ROS2FrameComponent.h>
+#include <ROS2/ROS2GemUtilities.h>
+#include <ROS2/Spawner/SpawnerBus.h>
+#include <RobotControl/ROS2RobotControlComponent.h>
+#include <RobotImporter/Utils/RobotImporterUtils.h>
 #include <API/EditorAssetSystemAPI.h>
 #include <AzCore/IO/FileIO.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
@@ -16,11 +21,6 @@
 #include <AzToolsFramework/Prefab/PrefabSystemComponentInterface.h>
 #include <AzToolsFramework/ToolsComponents/GenericComponentWrapper.h>
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
-#include <ROS2/Frame/ROS2FrameComponent.h>
-#include <ROS2/ROS2GemUtilities.h>
-#include <ROS2/Spawner/SpawnerBus.h>
-#include <RobotControl/ROS2RobotControlComponent.h>
-#include <RobotImporter/Utils/RobotImporterUtils.h>
 
 namespace ROS2
 {
@@ -130,7 +130,7 @@ namespace ROS2
                     else
                     {
                         AZ_TracePrintf(
-                            "CreatePrefabFromURDF", "Setting transform failed: %s does not have transform interface", name.c_str());
+                            "CreatePrefabFromURDF", "Setting transform failed: %s does not have transform interface\n", name.c_str());
                     }
                 }
             }

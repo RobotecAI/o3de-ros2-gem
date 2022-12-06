@@ -29,10 +29,14 @@ namespace ROS2
         AZ_COMPONENT(ROS2FrameComponent, "{EE743472-3E25-41EA-961B-14096AC1D66F}");
 
         ROS2FrameComponent();
+        //! Initialize to a specific frame id
         ROS2FrameComponent(const AZStd::string& frameId);
 
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
 
         static void Reflect(AZ::ReflectContext* context);
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
@@ -60,7 +64,10 @@ namespace ROS2
         AZStd::string GetGlobalFrameName() const;
 
     private:
+        //////////////////////////////////////////////////////////////////////////
+        // AZ::TickBus::Handler overrides
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        //////////////////////////////////////////////////////////////////////////
 
         bool IsTopLevel() const; //!< True if this entity does not have a parent entity with ROS2.
 

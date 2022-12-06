@@ -11,6 +11,7 @@
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/std/optional.h>
 #include <QWidget>
+#include <AzCore/std/optional.h>
 
 namespace ROS2::RobotImporterWidgetUtils
 {

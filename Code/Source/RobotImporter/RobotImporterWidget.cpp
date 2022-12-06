@@ -280,7 +280,7 @@ namespace ROS2
         AzFramework::EntityContextId contextId;
         AzFramework::EntityIdContextQueryBus::BroadcastResult(contextId, &AzFramework::EntityIdContextQueryBus::Events::GetOwningContextId);
 
-        AZ_Printf("CheckCyclicalDependency", "CheckCyclicalDependency %s\n", importedPrefabPath.Native().c_str());
+        AZ_Printf("CheckCyclicalDependency", "CheckCyclicalDependency %s\n", importedPrefabPath.Native().c_str()());
         auto focusInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabFocusInterface>::Get();
 
         if (!focusInterface)
@@ -312,6 +312,6 @@ namespace ROS2
     void RobotImporterWidget::ReportError(const QString& errorMessage)
     {
         QMessageBox::critical(this, QObject::tr("Error"), errorMessage);
-        AZ_Error("RobotImporterWidget", false, errorMessage.toUtf8().constData());
+        AZ_Error("RobotImporterWidget", false, "%s", errorMessage.toUtf8().constData());
     }
 } // namespace ROS2

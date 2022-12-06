@@ -8,6 +8,7 @@
 #pragma once
 
 #include "SensorConfiguration.h"
+#include <ROS2/ROS2GemUtilities.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
@@ -27,8 +28,14 @@ namespace ROS2
         virtual ~ROS2SensorComponent() = default;
         AZ_COMPONENT(ROS2SensorComponent, "{91BCC1E9-6D93-4466-9CDB-E73D497C6B5E}");
 
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////
         static void Reflect(AZ::ReflectContext* context);
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);

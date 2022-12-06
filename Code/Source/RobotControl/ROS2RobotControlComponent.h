@@ -36,9 +36,11 @@ namespace ROS2
 
         void SetSubscriberConfiguration(const TopicConfiguration& subscriberConfiguration);
 
-        // AZ::Component interface implementation.
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
 

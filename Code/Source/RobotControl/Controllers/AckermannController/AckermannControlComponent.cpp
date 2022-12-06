@@ -7,10 +7,10 @@
  */
 
 #include "AckermannControlComponent.h"
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzFramework/Physics/RigidBodyBus.h>
-#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 
 namespace ROS2
 {

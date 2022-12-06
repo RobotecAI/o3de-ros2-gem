@@ -65,11 +65,11 @@ namespace ROS2
             const AZ::Transform& cameraPose,
             const std_msgs::msg::Header& header);
 
-        //! Get camera sensor description
+        //! Get the camera sensor description
         [[nodiscard]] const CameraSensorDescription& GetCameraSensorDescription() const;
 
     private:
-        //! Request frame from rendering pipeline
+        //! Request a frame from the rendering pipeline
         //! @param cameraPose - current camera pose from which the rendering should take place
         //! @param callback - callback function object that will be called when capture is ready
         //!                   it's argument is readback structure containing, among other thins, captured image
