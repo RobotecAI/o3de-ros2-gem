@@ -8,11 +8,11 @@
 #pragma once
 
 #include "MotorizedJointBus.h"
-#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/Math/Vector2.h>
+#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 
 namespace ROS2
 {

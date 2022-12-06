@@ -8,8 +8,8 @@
 
 #include "JointsMaker.h"
 #include "PrefabMakerUtils.h"
-#include <RobotImporter/Utils/TypeConversions.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <RobotImporter/Utils/TypeConversions.h>
 #include <Source/EditorColliderComponent.h>
 #include <Source/EditorFixedJointComponent.h>
 #include <Source/EditorHingeJointComponent.h>

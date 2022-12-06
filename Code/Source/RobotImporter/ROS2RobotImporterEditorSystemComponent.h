@@ -39,6 +39,5 @@ namespace ROS2
         // AzToolsFramework::EditorEvents::Bus::Handler overrides
         void NotifyRegisterViews() override;
         //////////////////////////////////////////////////////////////////////////
-        
     };
 } // namespace ROS2

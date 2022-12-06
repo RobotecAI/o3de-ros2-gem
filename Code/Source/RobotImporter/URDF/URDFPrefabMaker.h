@@ -11,13 +11,13 @@
 #include "CollidersMaker.h"
 #include "InertialsMaker.h"
 #include "JointsMaker.h"
-#include "VisualsMaker.h"
 #include "UrdfParser.h"
-#include <RobotImporter/Utils/SourceAssetsStorage.h>
+#include "VisualsMaker.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <AzToolsFramework/Prefab/PrefabPublicInterface.h>
+#include <RobotImporter/Utils/SourceAssetsStorage.h>
 
 namespace ROS2
 {

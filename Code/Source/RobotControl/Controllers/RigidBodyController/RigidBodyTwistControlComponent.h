@@ -7,7 +7,6 @@
  */
 #pragma once
 
-#include <ROS2/RobotControl/Twist/TwistBus.h>
 #include <AzCore/Component/Component.h>
 #include <ROS2/RobotControl/Twist/TwistBus.h>
 

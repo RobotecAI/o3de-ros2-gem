@@ -8,8 +8,6 @@
 #pragma once
 
 #include <AzCore/Component/ComponentBus.h>
-#include <AzCore/std/string/string.h>
-#include <RobotImporter/URDF/UrdfParser.h>
 #include <AzCore/IO/SystemFile.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/std/containers/unordered_map.h>

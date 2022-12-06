@@ -10,7 +10,6 @@
 #include "LidarRaycaster.h"
 #include "LidarTemplate.h"
 #include "LidarTemplateUtils.h"
-#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <Atom/RPI.Public/AuxGeom/AuxGeomDraw.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <ROS2/Sensor/ROS2SensorComponent.h>

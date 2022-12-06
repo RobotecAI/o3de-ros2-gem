@@ -7,12 +7,12 @@
  */
 #pragma once
 
-#include <Clock/SimulationClock.h>
-#include <ROS2/ROS2Bus.h>
 #include <Atom/RPI.Public/Pass/PassSystemInterface.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <Clock/SimulationClock.h>
+#include <ROS2/ROS2Bus.h>
 #include <builtin_interfaces/msg/time.hpp>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>

@@ -7,14 +7,16 @@
  */
 #pragma once
 
+#include "ROS2SystemComponent.h"
+#include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/Module/Module.h>
 #include <Camera/ROS2CameraSensorComponent.h>
 #include <GNSS/ROS2GNSSSensorComponent.h>
 #include <Imu/ROS2ImuSensorComponent.h>
 #include <Lidar/ROS2LidarSensorComponent.h>
-#include <Odometry/ROS2OdometrySensorComponent.h<
+#include <Odometry/ROS2OdometrySensorComponent.h>
 #include <ROS2/Frame/ROS2FrameComponent.h>
 #include <ROS2/Manipulator/MotorizedJointComponent.h>
-#include "ROS2SystemComponent.h"
 #include <RobotControl/Controllers/AckermannController/AckermannControlComponent.h>
 #include <RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h>
 #include <RobotControl/ROS2RobotControlComponent.h>
@@ -23,8 +25,6 @@
 #include <Spawner/ROS2SpawnerComponent.h>
 #include <VehicleDynamics/VehicleModelComponent.h>
 #include <VehicleDynamics/WheelControllerComponent.h>
-#include <AzCore/Memory/SystemAllocator.h>
-#include <AzCore/Module/Module.h>
 
 namespace ROS2
 {
