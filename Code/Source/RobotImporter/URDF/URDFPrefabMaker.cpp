@@ -7,13 +7,8 @@
  */
 
 #include "URDFPrefabMaker.h"
-#include <ROS2/Frame/ROS2FrameComponent.h>
-#include <ROS2/ROS2GemUtilities.h>
-#include <ROS2/Spawner/SpawnerBus.h>
-#include <RobotControl/ROS2RobotControlComponent.h>
 #include "CollidersMaker.h"
 #include "PrefabMakerUtils.h"
-#include <RobotImporter/Utils/RobotImporterUtils.h>
 #include <API/EditorAssetSystemAPI.h>
 #include <AzCore/IO/FileIO.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
@@ -21,6 +16,11 @@
 #include <AzToolsFramework/Prefab/PrefabSystemComponentInterface.h>
 #include <AzToolsFramework/ToolsComponents/GenericComponentWrapper.h>
 #include <AzToolsFramework/ToolsComponents/TransformComponent.h>
+#include <ROS2/Frame/ROS2FrameComponent.h>
+#include <ROS2/ROS2GemUtilities.h>
+#include <ROS2/Spawner/SpawnerBus.h>
+#include <RobotControl/ROS2RobotControlComponent.h>
+#include <RobotImporter/Utils/RobotImporterUtils.h>
 
 namespace ROS2
 {
@@ -65,7 +65,6 @@ namespace ROS2
             AZStd::lock_guard<AZStd::mutex> lck(m_statusLock);
             m_status.clear();
         }
-        // TODO - this is PoC code, restructure when developing semantics of URDF->Prefab/Entities/Components mapping
         AZStd::unordered_map<AZStd::string, AzToolsFramework::Prefab::PrefabEntityResult> createdLinks;
         AzToolsFramework::Prefab::PrefabEntityResult createEntityRoot = AddEntitiesForLink(m_model->root_link_, AZ::EntityId());
         AZStd::string rootName(m_model->root_link_->name.c_str(), m_model->root_link_->name.size());
@@ -162,14 +161,14 @@ namespace ROS2
             if (!parentEntry->second.IsSuccess())
             {
                 AZ_TracePrintf(
-                        "CreatePrefabFromURDF", "Link %s has parent %s which has failed to create\n", name.c_str(), parentName.c_str());
+                    "CreatePrefabFromURDF", "Link %s has parent %s which has failed to create\n", name.c_str(), parentName.c_str());
                 continue;
             }
             AZ_TracePrintf(
-                    "CreatePrefabFromURDF",
-                    "Link %s setting parent to %s\n",
-                    thisEntry.GetValue().ToString().c_str(),
-                    parentEntry->second.GetValue().ToString().c_str());
+                "CreatePrefabFromURDF",
+                "Link %s setting parent to %s\n",
+                thisEntry.GetValue().ToString().c_str(),
+                parentEntry->second.GetValue().ToString().c_str());
             AZ_TracePrintf("CreatePrefabFromURDF", "Link %s setting parent to %s\n", name.c_str(), parentName.c_str());
             auto* entity = AzToolsFramework::GetEntityById(thisEntry.GetValue());
             entity->Activate();
@@ -262,8 +261,6 @@ namespace ROS2
         AZ::EntityId entityId = createEntityResult.GetValue();
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
 
-        // Add ROS2FrameComponent - TODO: only for top level and joints
-        // TODO - add unique namespace to the robot's top level frame
         const auto frameCompontentId = Utils::CreateComponent(entityId, ROS2FrameComponent::TYPEINFO_Uuid());
         if (frameCompontentId)
         {

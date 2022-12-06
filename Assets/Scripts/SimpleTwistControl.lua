@@ -2,7 +2,6 @@
     This is an example of control implementation which sets the desired velocity on a single body.
     To imitate the steering, current linear and angular velocities of a single rigidbody are forcefully overwritten
     with the desired control.
-    TODO: Control the robot with forces applied to the wheels instead of directly setting up body velocity.
 --]]
 
 local SimpleTwistControl = {

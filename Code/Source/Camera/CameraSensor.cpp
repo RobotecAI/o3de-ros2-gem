@@ -29,7 +29,7 @@ namespace ROS2
     {
 
         /// @FormatMappings - contains the mapping from RHI to ROS image encodings. List of supported
-        /// ROS image encodings lives in `sensor_msgs/image_encodings.hpp'
+        /// ROS image encodings lives in `sensor_msgs/image_encodings.hpp`
         /// We are not including `image_encodings.hpp` since it uses exceptions.
         AZStd::unordered_map<AZ::RHI::Format, const char*> FormatMappings{
             { AZ::RHI::Format::R8G8B8A8_UNORM, "rgba8" },     { AZ::RHI::Format::R16G16B16A16_UNORM, "rgba16" },
@@ -211,12 +211,12 @@ namespace ROS2
         SetupPasses();
     }
 
-    AZStd::string CameraDepthSensor::GetPipelineTemplateName()  const
+    AZStd::string CameraDepthSensor::GetPipelineTemplateName() const
     {
         return "PipelineRenderToTextureROSDepth";
     };
 
-    AZStd::string CameraDepthSensor::GetPipelineTypeName()  const
+    AZStd::string CameraDepthSensor::GetPipelineTypeName() const
     {
         return "Depth";
     };

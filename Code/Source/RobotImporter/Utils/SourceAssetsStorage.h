@@ -58,8 +58,6 @@ namespace ROS2::Utils
     AZ::Crc32 GetFileCRC(const AZStd::string& filename);
 
     //! Function takes assets catalog and compute CRC for every source mesh.
-    //! ToDo consider limit scope to only sub-directory.
-    //! ToDo consider use filesystem instead of AssetCatalogRequestBus::EnumerateAssets.
     //! @returns map where key is crc of source file and value is AvailableAsset.
     AZStd::unordered_map<AZ::Crc32, AvailableAsset> GetInterestingSourceAssetsCRC();
 

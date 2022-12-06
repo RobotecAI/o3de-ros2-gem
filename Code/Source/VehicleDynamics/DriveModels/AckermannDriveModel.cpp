@@ -78,7 +78,7 @@ namespace VehicleDynamics
         AZ::TransformBus::EventResult(currentSteeringElementRotation, steeringEntity, &AZ::TransformBus::Events::GetLocalRotation);
         const float currentSteeringAngle = currentSteeringElementRotation.Dot(wheelData.m_turnAxis);
         const double pidCommand = m_steeringPid.ComputeCommand(steering - currentSteeringAngle, deltaTimeNs);
-        if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
+        if (AZ::IsClose(pidCommand, 0.0))
         {
             return;
         }
@@ -90,7 +90,6 @@ namespace VehicleDynamics
         Physics::RigidBodyRequestBus::Event(steeringEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
     }
 
-    // TODO - speed and steering handling is quite similar, possible to refactor?
     void AckermannDriveModel::ApplySteering(float steering, uint64_t deltaTimeNs)
     {
         if (m_disabled)
@@ -148,7 +147,7 @@ namespace VehicleDynamics
 
             auto desiredAngularSpeedX = speed / wheelRadius;
             double pidCommand = m_speedPid.ComputeCommand(desiredAngularSpeedX - currentAngularSpeedX, deltaTimeNs);
-            if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
+            if (AZ::IsClose(pidCommand, 0.0))
             {
                 continue;
             }

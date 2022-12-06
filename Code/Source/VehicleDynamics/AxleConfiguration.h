@@ -31,7 +31,7 @@ namespace VehicleDynamics
         AZStd::vector<AZ::EntityId> m_axleWheels; //!< One or more wheels attached to this axle (typically 2), sorted left to right.
 
         float m_wheelRadius = 0.35f; //!< A wheel radius for all attached wheels, in meters.
-        bool m_isSteering = false;
-        bool m_isDrive = false;
+        bool m_isSteering = false; //! A wheel is steered with intention to change direction of movement
+        bool m_isDrive = false; //! A wheel is driven (drive torque is applied)
     };
 } // namespace VehicleDynamics

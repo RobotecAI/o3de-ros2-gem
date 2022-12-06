@@ -7,12 +7,12 @@
  */
 #pragma once
 
-#include <Clock/SimulationClock.h>
-#include <ROS2/ROS2Bus.h>
 #include <Atom/RPI.Public/Pass/PassSystemInterface.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <Clock/SimulationClock.h>
+#include <ROS2/ROS2Bus.h>
 #include <builtin_interfaces/msg/time.hpp>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
@@ -46,7 +46,6 @@ namespace ROS2
         //! @see ROS2Requests::GetROSTimestamp()
         builtin_interfaces::msg::Time GetROSTimestamp() const override;
 
-        // TODO - rethink ownership of this one. It needs to be a singleton-like behavior, but not necessarily here
         void BroadcastTransform(const geometry_msgs::msg::TransformStamped& t, bool isDynamic) const override;
 
     protected:

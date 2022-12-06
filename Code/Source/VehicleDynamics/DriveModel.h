@@ -28,6 +28,7 @@ namespace VehicleDynamics
         virtual DriveModel::DriveModelType DriveType() const = 0;
 
         //! Activate the model. Vehicle configuration is to remain the same until another Activate is called.
+        //! @param vehicleConfig configuration containing axes and wheels information
         virtual void Activate(const VehicleConfiguration& vehicleConfig) = 0;
 
         //! Applies inputs to the drive. This model will calculate and apply physical forces.

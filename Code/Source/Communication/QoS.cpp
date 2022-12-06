@@ -6,9 +6,9 @@
  *
  */
 
-#include <ROS2/Communication/QoS.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <ROS2/Communication/QoS.h>
 
 namespace ROS2
 {

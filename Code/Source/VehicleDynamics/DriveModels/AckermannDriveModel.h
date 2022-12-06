@@ -7,12 +7,12 @@
  */
 #pragma once
 
+#include <AzCore/Serialization/SerializeContext.h>
 #include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 #include <VehicleDynamics/DriveModel.h>
 #include <VehicleDynamics/VehicleConfiguration.h>
 #include <VehicleDynamics/VehicleInputsState.h>
 #include <VehicleDynamics/WheelDynamicsData.h>
-#include <AzCore/Serialization/SerializeContext.h>
 
 namespace VehicleDynamics
 {

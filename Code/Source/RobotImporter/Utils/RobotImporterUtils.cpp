@@ -17,7 +17,7 @@
 namespace ROS2
 {
 
-     bool Utils::IsWheelURDFHeuristics(const urdf::LinkConstSharedPtr& link)
+    bool Utils::IsWheelURDFHeuristics(const urdf::LinkConstSharedPtr& link)
     {
         const AZStd::regex wheel_regex("wheel[_]||[_]wheel");
         const AZStd::regex joint_regex("(?i)joint");

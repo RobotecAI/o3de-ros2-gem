@@ -21,7 +21,6 @@ namespace ROS2
         //! @see ROS2Requests::GetROSTimestamp() for more details.
         builtin_interfaces::msg::Time GetROSTimestamp() const;
 
-        // TODO - consider having it called internally, also perhaps in a thread with a given frequency
         void Tick();
 
     private:

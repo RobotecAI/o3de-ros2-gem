@@ -7,9 +7,9 @@
  */
 #pragma once
 
-#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <ROS2/Sensor/ROS2SensorComponent.h>
 #include <nav_msgs/msg/odometry.hpp>
 #include <rclcpp/publisher.hpp>
 

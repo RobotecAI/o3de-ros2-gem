@@ -7,15 +7,15 @@
  */
 #pragma once
 
+#include "DriveModels/AckermannDriveModel.h"
 #include "ManualControlEventHandler.h"
 #include "VehicleConfiguration.h"
 #include "VehicleInputsState.h"
 #include "VehicleModelLimits.h"
-#include "DriveModels/AckermannDriveModel.h"
-#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 
 namespace VehicleDynamics
 {
@@ -44,13 +44,12 @@ namespace VehicleDynamics
         void SetTargetAccelerationFraction(float accelerationFraction) override;
         void SetTargetSteeringFraction(float steeringFraction) override;
         void SetTargetLinearSpeedFraction(float speedFraction) override;
-        void SetDisableVehicleDynamics(bool is_disable) override;
+        void SetDisableVehicleDynamics(bool isDisable) override;
 
         ManualControlEventHandler m_manualControlEventHandler;
         VehicleConfiguration m_vehicleConfiguration;
         VehicleInputsState m_inputsState;
-        AckermannDriveModel m_driveModel; // TODO - use abstraction here (DriveModel)
+        AckermannDriveModel m_driveModel;
         VehicleModelLimits m_vehicleLimits;
-        // TODO - Engine, Transmission, Lights, etc.
     };
 } // namespace VehicleDynamics

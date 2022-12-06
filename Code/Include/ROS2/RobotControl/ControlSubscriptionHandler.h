@@ -71,7 +71,8 @@ namespace ROS2
     private:
         void OnControlMessage(const T& message)
         {
-            if (!m_active) {
+            if (!m_active)
+            {
                 return;
             }
 

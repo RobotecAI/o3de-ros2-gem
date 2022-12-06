@@ -8,10 +8,10 @@
 #pragma once
 
 #include "SensorConfiguration.h"
-#include <ROS2/ROS2GemUtilities.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
+#include <ROS2/ROS2GemUtilities.h>
 
 namespace ROS2
 {
@@ -20,7 +20,7 @@ namespace ROS2
     //! Derive this Component to implement a new ROS2 sensor. Each sensor Component requires ROS2FrameComponent.
     class ROS2SensorComponent
         : public AZ::Component
-        , public AZ::TickBus::Handler // TODO - high resolution tick source?
+        , public AZ::TickBus::Handler
     {
     public:
         ROS2SensorComponent() = default;

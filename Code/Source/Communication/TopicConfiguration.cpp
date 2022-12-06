@@ -6,9 +6,9 @@
  *
  */
 
+#include <AzCore/Serialization/EditContext.h>
 #include <ROS2/Communication/TopicConfiguration.h>
 #include <ROS2/Utilities/ROS2Names.h>
-#include <AzCore/Serialization/EditContext.h>
 
 namespace ROS2
 {

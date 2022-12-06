@@ -24,5 +24,5 @@ namespace ROS2
         //! @param rootRotation Root rotation as Euler angles in radians.
         //! @return All ray directions which can be used to perform ray-casting simulation of lidar operation.
         AZStd::vector<AZ::Vector3> PopulateRayDirections(const LidarTemplate& lidarTemplate, const AZ::Vector3& rootRotation);
-    };
+    }; // namespace LidarTemplateUtils
 } // namespace ROS2

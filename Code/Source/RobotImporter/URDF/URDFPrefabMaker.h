@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "UrdfParser.h"
 #include "CollidersMaker.h"
 #include "InertialsMaker.h"
 #include "JointsMaker.h"
 #include "RobotImporter/URDF/VisualsMaker.h"
+#include "UrdfParser.h"
 #include <RobotImporter/Utils/SourceAssetsStorage.h>
 
 #include <AzCore/Component/EntityId.h>

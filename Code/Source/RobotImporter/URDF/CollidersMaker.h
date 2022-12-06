@@ -9,7 +9,6 @@
 #pragma once
 
 #include "UrdfParser.h"
-#include <RobotImporter/Utils/SourceAssetsStorage.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/std/containers/unordered_map.h>
@@ -21,6 +20,7 @@
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialId.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialManager.h>
+#include <RobotImporter/Utils/SourceAssetsStorage.h>
 
 namespace ROS2
 {

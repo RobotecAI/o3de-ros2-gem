@@ -18,7 +18,7 @@ namespace ROS2
     //! Class for parsing URDF data.
     namespace UrdfParser
     {
-         //! Parse string with URDF data and generate model.
+        //! Parse string with URDF data and generate model.
         //! @param xmlString a string that contains URDF data (XML format).
         //! @return model represented as a tree of parsed links.
         urdf::ModelInterfaceSharedPtr Parse(const AZStd::string& xmlString);
@@ -30,5 +30,5 @@ namespace ROS2
 
         AZStd::string GetUrdfParsingLog();
 
-    };
+    }; // namespace UrdfParser
 } // namespace ROS2

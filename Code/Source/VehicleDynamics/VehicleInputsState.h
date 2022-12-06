@@ -9,18 +9,9 @@
 
 #include <AzCore/Time/ITime.h>
 #include <type_traits>
-//#include <concepts> //C++20
 
 namespace VehicleDynamics
 {
-    /* C++ 20
-    template<typename T>
-    concept Zeroable = std::integral<T> or std::floating_point<T>; // arithmetic types
-
-    template<typename T>
-    requires Zeroable<T> class InputZeroedOnTimeout
-    */
-
     //! Inputs with an expiration date - effectively is zero after a certain time since update
     template<typename T, typename = AZStd::enable_if_t<AZStd::is_arithmetic_v<T>>>
     class InputZeroedOnTimeout

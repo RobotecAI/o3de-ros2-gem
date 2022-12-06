@@ -37,7 +37,7 @@ namespace ROS2
         auto it = templates.find(model);
         if (it == templates.end())
         {
-            return LidarTemplate(); // TODO - handle it
+            return LidarTemplate();
         }
 
         return it->second;
@@ -48,7 +48,6 @@ namespace ROS2
         return t.m_layers * t.m_numberOfIncrements;
     }
 
-    // TODO - lidars in reality do not have uniform distributions - populating needs to be defined per model
     AZStd::vector<AZ::Vector3> LidarTemplateUtils::PopulateRayDirections(
         const LidarTemplate& lidarTemplate, const AZ::Vector3& rootRotation)
     {
@@ -66,7 +65,6 @@ namespace ROS2
         {
             for (int layer = 0; layer < lidarTemplate.m_layers; layer++)
             {
-                // TODO: also include roll. Move to quaternions to avoid abnormalities
                 const float pitch = minVertAngle + layer * verticalStep + rootRotation.GetY();
                 const float yaw = minHorAngle + incr * horizontalStep + rootRotation.GetZ();
 

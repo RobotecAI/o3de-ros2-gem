@@ -8,11 +8,11 @@
 #pragma once
 
 #include "MotorizedJointBus.h"
-#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/Math/Vector2.h>
+#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
 
 namespace ROS2
 {
@@ -21,7 +21,6 @@ namespace ROS2
     //! TransformBus mode, called `AnimationMode` changes local transform. In this mode, you cannot have a rigid body
     //! controller enabled. With RigidBodyBus it applies forces and torque according to PID control.
     //! @note This class is already used through ROS2FrameComponent.
-    // TODO This is a prototype. Tasks: refactor, add bus interface, rotation, ramps, cascading controllers, tests.
     class MotorizedJointComponent
         : public AZ::Component
         , public AZ::TickBus::Handler

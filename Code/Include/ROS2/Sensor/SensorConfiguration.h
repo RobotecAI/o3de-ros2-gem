@@ -7,11 +7,11 @@
  */
 #pragma once
 
-#include <ROS2/Communication/TopicConfiguration.h>
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/map.h>
 #include <AzCore/std/string/string.h>
+#include <ROS2/Communication/TopicConfiguration.h>
 
 namespace ROS2
 {
@@ -31,8 +31,6 @@ namespace ROS2
 
         //! Frequency in Hz (1/s).
         //! Applies both to data acquisition and publishing.
-        // TODO - consider moving frequency, publishingEnabled to publisherConfiguration if any sensor has
-        // a couple of publishers for which we want different values of these fields
         float m_frequency = 10;
 
         bool m_publishingEnabled = true;

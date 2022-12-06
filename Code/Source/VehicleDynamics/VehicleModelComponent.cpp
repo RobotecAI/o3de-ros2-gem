@@ -7,9 +7,9 @@
  */
 
 #include "VehicleModelComponent.h"
-#include "VehicleConfiguration.h"
-#include "Utilities.h"
 #include "DriveModels/AckermannDriveModel.h"
+#include "Utilities.h"
+#include "VehicleConfiguration.h"
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -51,7 +51,7 @@ namespace VehicleDynamics
             {
                 ec->Class<VehicleModelComponent>("Vehicle Model", "Customizable vehicle model component")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
@@ -98,9 +98,9 @@ namespace VehicleDynamics
         AZ_Error("SetTargetAccelerationFraction", false, "Not implemented");
     }
 
-    void VehicleModelComponent::SetDisableVehicleDynamics(bool is_disable)
+    void VehicleModelComponent::SetDisableVehicleDynamics(bool isDisable)
     {
-        m_driveModel.SetDisabled(is_disable);
+        m_driveModel.SetDisabled(isDisable);
     }
 
     void VehicleModelComponent::SetTargetSteering(float steering)

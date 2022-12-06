@@ -8,14 +8,14 @@
 
 #include "CollidersMaker.h"
 #include "PrefabMakerUtils.h"
-#include <RobotImporter/Utils/RobotImporterUtils.h>
-#include <RobotImporter/Utils/SourceAssetsStorage.h>
-#include <RobotImporter/Utils/TypeConversions.h>
 #include <AzCore/Asset/AssetManagerBus.h>
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/StringFunc/StringFunc.h>
 #include <AzToolsFramework/API/EditorAssetSystemAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityHelpers.h>
+#include <RobotImporter/Utils/RobotImporterUtils.h>
+#include <RobotImporter/Utils/SourceAssetsStorage.h>
+#include <RobotImporter/Utils/TypeConversions.h>
 #include <SceneAPI/SceneCore/Containers/Scene.h>
 #include <SceneAPI/SceneCore/Containers/Utilities/Filters.h>
 #include <SceneAPI/SceneCore/DataTypes/Groups/ISceneNodeGroup.h>
@@ -197,7 +197,7 @@ namespace ROS2
             if (valueStorage.empty())
             {
                 AZ_Error(
-                        Internal::CollidersMakerLoggingTag, false, "Error loading collider. Invalid value storage: %s", azMeshPath.c_str());
+                    Internal::CollidersMakerLoggingTag, false, "Error loading collider. Invalid value storage: %s", azMeshPath.c_str());
                 return;
             }
 
@@ -262,7 +262,7 @@ namespace ROS2
             if (valuesIterator == manifestObject.MemberEnd())
             {
                 AZ_Error(
-                        Internal::CollidersMakerLoggingTag, false, "Invalid json file: %s (Missing 'values' node)", assetInfoFilePath.c_str());
+                    Internal::CollidersMakerLoggingTag, false, "Invalid json file: %s (Missing 'values' node)", assetInfoFilePath.c_str());
                 return;
             }
 
@@ -349,9 +349,6 @@ namespace ROS2
     void CollidersMaker::AddColliderToEntity(
         urdf::CollisionSharedPtr collision, AZ::EntityId entityId, const AZ::Data::Asset<Physics::MaterialAsset>& materialAsset) const
     {
-        // TODO - we are unable to set collider origin. Sub-entities don't work since they would need to parent visuals etc.
-        // TODO - solution: once Collider Component supports Cylinder Shape, switch to it from Shape Collider Component.
-
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         AZ_Assert(entity, "AddColliderToEntity called with invalid entityId");
         auto geometry = collision->geometry;
@@ -364,7 +361,6 @@ namespace ROS2
         colliderConfig.m_rotation = URDF::TypeConversions::ConvertQuaternion(collision->origin.rotation);
         if (!isPrimitiveShape)
         {
-            // TODO move setting mesh with ebus here - othervise material is not assigned
             Physics::PhysicsAssetShapeConfiguration shapeConfiguration;
             shapeConfiguration.m_useMaterialsFromAsset = false;
             entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, shapeConfiguration);
@@ -425,7 +421,6 @@ namespace ROS2
             {
                 auto cylinderGeometry = std::dynamic_pointer_cast<urdf::Cylinder>(geometry);
                 AZ_Assert(cylinderGeometry, "geometry is not cylinderGeometry");
-                // TODO HACK Underlying API of O3DE  does not have Physic::CylinderShapeConfiguration implementation
                 Physics::BoxShapeConfiguration cfg;
                 auto* component = entity->CreateComponent<PhysX::EditorColliderComponent>(colliderConfig, cfg);
                 entity->Activate();

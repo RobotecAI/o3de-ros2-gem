@@ -6,9 +6,9 @@
  *
  */
 
-#include <ROS2/ROS2GemUtilities.h>
 #include <AzCore/std/string/regex.h>
 #include <AzToolsFramework/API/EntityCompositionRequestBus.h>
+#include <ROS2/ROS2GemUtilities.h>
 
 namespace ROS2
 {

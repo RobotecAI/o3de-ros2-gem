@@ -7,10 +7,10 @@
  */
 
 #include "AckermannControlComponent.h"
-#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzFramework/Physics/RigidBodyBus.h>
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 
 namespace ROS2
 {
@@ -23,7 +23,7 @@ namespace ROS2
             {
                 ec->Class<AckermannControlComponent>("Ackermann Control", "Relays Ackermann commands to vehicle inputs")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2");
             }
         }

@@ -7,19 +7,18 @@
  */
 
 #include "ROS2SpawnerComponent.h"
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/SerializeContext.h>
+#include <AzFramework/Spawnable/Spawnable.h>
 #include <ROS2/Frame/ROS2FrameComponent.h>
 #include <ROS2/ROS2Bus.h>
 #include <ROS2/ROS2GemUtilities.h>
 #include <ROS2/Utilities/ROS2Conversions.h>
-#include <AzCore/Serialization/EditContext.h>
-#include <AzCore/Serialization/SerializeContext.h>
-#include <AzFramework/Spawnable/Spawnable.h>
 
 namespace ROS2
 {
     ROS2SpawnerComponent::ROS2SpawnerComponent()
     {
-        // TODO - currently causes errors on close. It is here to enable URDF spawning in default point.
         // SpawnerInterface::Register(this);
     }
 
@@ -82,7 +81,7 @@ namespace ROS2
             {
                 ec->Class<ROS2SpawnerComponent>("ROS2 Spawner", "Spawner component")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "Manages spawning of robots in configurable locations")
-                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC("Game"))
+                    ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "ROS2")
                     ->DataElement(AZ::Edit::UIHandlers::EntityId, &ROS2SpawnerComponent::m_spawnables, "Spawnables", "Spawnables")
                     ->DataElement(
@@ -106,8 +105,6 @@ namespace ROS2
     void ROS2SpawnerComponent::SpawnEntity(const SpawnEntityRequest request, SpawnEntityResponse response)
     {
         AZStd::string spawnableName(request->name.c_str());
-        // xml parameter of the request is used here like a regular string and stores name of a spawn point
-        // todo: use xml format in this parameter
         AZStd::string spawnPointName(request->xml.c_str(), request->xml.size());
 
         auto spawnPoints = GetSpawnPoints();
@@ -170,7 +167,6 @@ namespace ROS2
         }
         AZ::Entity* root = *view.begin();
 
-        // TODO: probably it would be better to use TransformBus here
         auto* transformInterface = root->FindComponent<AzFramework::TransformComponent>();
         transformInterface->SetWorldTM(transform);
 

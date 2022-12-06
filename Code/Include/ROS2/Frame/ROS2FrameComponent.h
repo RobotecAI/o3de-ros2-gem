@@ -7,12 +7,12 @@
  */
 #pragma once
 
-#include <ROS2/Frame/NamespaceConfiguration.h>
-#include <ROS2/Frame/ROS2Transform.h>
-#include <ROS2/ROS2GemUtilities.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 #include <AzFramework/Components/TransformComponent.h>
+#include <ROS2/Frame/NamespaceConfiguration.h>
+#include <ROS2/Frame/ROS2Transform.h>
+#include <ROS2/ROS2GemUtilities.h>
 
 namespace ROS2
 {
@@ -57,7 +57,7 @@ namespace ROS2
 
         //! Global frame name in ros2 ecosystem.
         //! @return The name of the global frame with namespace attached. It is typically "odom", "map", "world".
-        AZStd::string GetGlobalFrameName() const; // TODO - allow to configure global frame in a specialized component
+        AZStd::string GetGlobalFrameName() const;
 
     private:
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
@@ -73,9 +73,8 @@ namespace ROS2
         //! @see GetGlobalFrameName().
         AZStd::string GetParentFrameID() const;
 
-        // TODO - Editor component: validation of fields, constraints between values and so on
         NamespaceConfiguration m_namespaceConfiguration;
-        AZStd::string m_frameName = "sensor_frame"; // TODO - option to fill from entity name
+        AZStd::string m_frameName = "sensor_frame";
 
         bool m_publishTransform = true;
         AZStd::unique_ptr<ROS2Transform> m_ros2Transform;

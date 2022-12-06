@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include <ROS2/ROS2GemUtilities.h>
 #include <Atom/Feature/Utils/FrameCaptureBus.h>
+#include <ROS2/ROS2GemUtilities.h>
 #include <chrono>
 #include <rclcpp/publisher.hpp>
 #include <sensor_msgs/msg/image.hpp>
@@ -81,10 +81,10 @@ namespace ROS2
         AZ::RPI::RenderPipelinePtr m_pipeline;
         AZ::RPI::ViewPtr m_view;
         AZ::RPI::Scene* m_scene = nullptr;
-        const AZ::Transform AtomToRos{AZ::Transform::CreateFromQuaternion(
+        const AZ::Transform AtomToRos{ AZ::Transform::CreateFromQuaternion(
             AZ::Quaternion::CreateFromMatrix3x3(AZ::Matrix3x3::CreateFromRows({ 1, 0, 0 }, { 0, -1, 0 }, { 0, 0, -1 }))) };
         virtual AZStd::string GetPipelineTemplateName() const = 0;
-        virtual AZStd::string GetPipelineTypeName() const  = 0;
+        virtual AZStd::string GetPipelineTypeName() const = 0;
 
     protected:
         //! Read and setup Atom Passes
@@ -98,10 +98,9 @@ namespace ROS2
         CameraDepthSensor(const CameraSensorDescription& cameraSensorDescription);
 
     private:
-        AZStd::string GetPipelineTemplateName()  const override;
-        AZStd::string GetPipelineTypeName()  const override;
+        AZStd::string GetPipelineTemplateName() const override;
+        AZStd::string GetPipelineTypeName() const override;
     };
-
 
     //! Implementation of camera sensors that runs pipeline which produce color image
     class CameraColorSensor : public CameraSensor

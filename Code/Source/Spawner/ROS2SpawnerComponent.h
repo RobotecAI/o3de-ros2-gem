@@ -8,13 +8,13 @@
 #pragma once
 
 #include "ROS2SpawnPointComponent.h"
-#include <ROS2/Spawner/SpawnerBus.h>
 #include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Asset/AssetSerializer.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/containers/unordered_map.h>
 #include <AzFramework/Spawnable/Spawnable.h>
 #include <AzFramework/Spawnable/SpawnableEntitiesInterface.h>
+#include <ROS2/Spawner/SpawnerBus.h>
 #include <gazebo_msgs/srv/get_model_state.hpp>
 #include <gazebo_msgs/srv/get_world_properties.hpp>
 #include <gazebo_msgs/srv/spawn_entity.hpp>

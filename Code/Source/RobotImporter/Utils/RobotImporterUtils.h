@@ -7,13 +7,13 @@
  */
 #pragma once
 
-#include <RobotImporter/URDF/UrdfParser.h>
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/IO/SystemFile.h>
 #include <AzCore/Math/Transform.h>
 #include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/std/function/function_template.h>
 #include <AzCore/std/string/string.h>
+#include <RobotImporter/URDF/UrdfParser.h>
 
 namespace ROS2
 {
@@ -23,7 +23,7 @@ namespace ROS2
         {
             return AZ::IO::SystemFile::Exists(filename.c_str());
         };
-    }
+    } // namespace
 
     namespace Utils
     {
@@ -46,11 +46,10 @@ namespace ROS2
         AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> GetAllJoints(const std::vector<urdf::LinkSharedPtr>& childLinks);
 
         //! Retrieve all meshes referenced in URDF as unresolved URDF patches.
-        //! Function traverse URDF in recursive manner.
-        //! It obtains referenced meshes' filenames.
         //! Note that returned filenames are unresolved URDF patches.
         //! @param visual - search for visual meshes.
         //! @param colliders - search for collider meshes.
+        //! @param rootLink - pointer to URDF link that root of robot description
         //! @returns set of meshes' filenames.
         AZStd::unordered_set<AZStd::string> GetMeshesFilenames(const urdf::LinkConstSharedPtr& rootLink, bool visual, bool colliders);
 
