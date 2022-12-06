@@ -30,26 +30,27 @@ namespace ROS2
         bool IsWheelURDFHeuristics(const urdf::LinkConstSharedPtr& link);
 
         //! The recursive function for the given link goes through URDF and finds world-to-entity transformation for us.
-        //! It traverses URDF from the given link to the root.
-        //! @param t - should be default (identity).
+        //! @param link pointer to URDF link that root of robot description
+        //! @param t initial transform, should be identity for non-recursive call.
         //! @returns root to entity transform
         AZ::Transform GetWorldTransformURDF(const urdf::LinkSharedPtr& link, AZ::Transform t = AZ::Transform::Identity());
 
-        //! Retrieve all child links in urdf.
+        //! Retrieve all links in URDF as a map, where a key is link's name and a value is a pointer to link.
+        //! Allows to retrieve a pointer to a link given it name.
         //! @param childLinks list of links in a query
         //! @returns mapping from link name to link pointer
         AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> GetAllLinks(const std::vector<urdf::LinkSharedPtr>& childLinks);
 
         //! Retrieve all joints in URDF.
         //! @param childLinks list of links in a query
-        //! @returns mapping from link name to joint pointer
+        //! @returns mapping from joint name to joint pointer
         AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> GetAllJoints(const std::vector<urdf::LinkSharedPtr>& childLinks);
 
         //! Retrieve all meshes referenced in URDF as unresolved URDF patches.
         //! Note that returned filenames are unresolved URDF patches.
         //! @param visual - search for visual meshes.
         //! @param colliders - search for collider meshes.
-        //! @param rootLink - pointer to URDF link that root of robot description
+        //! @param rootLink - pointer to URDF link that is a root of robot description
         //! @returns set of meshes' filenames.
         AZStd::unordered_set<AZStd::string> GetMeshesFilenames(const urdf::LinkConstSharedPtr& rootLink, bool visual, bool colliders);
 

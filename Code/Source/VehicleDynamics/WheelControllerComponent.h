@@ -21,8 +21,12 @@ namespace VehicleDynamics
         WheelControllerComponent() = default;
         ~WheelControllerComponent() = default;
 
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
+
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
         static void GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible);

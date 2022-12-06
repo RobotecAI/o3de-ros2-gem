@@ -23,8 +23,8 @@ namespace ROS2
         AZ::ComponentId CreateComponent(const AZ::EntityId entityId, const AZ::Uuid componentType);
 
         /// Retrieve component from entity given by a pointer. It is a way to get game components and wrapped components.
-        /// We should use that that we are not sure if we access e.g. ROS2FrameComponent in game mode or from Editor
-        /// @param entity pointer to entity e.g. with GetEntity()
+        /// We should use that that we are not sure if we access eg ROS2FrameComponent in game mode or from Editor
+        /// @param entity pointer to entity eg with GetEntity()
         /// @return pointer to component with type T
 
         template<class ComponentType>

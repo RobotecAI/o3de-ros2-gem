@@ -30,7 +30,7 @@ namespace VehicleDynamics
 
         //! Steer in a direction given in relative coordinate system (current direction is 0).
         //! @param steering is angle in radians, positive to the right and negative to the left.
-        //! @note The actual angle applied is subject to limits and implementation (e.g. smoothing).
+        //! @note The actual angle applied is subject to limits and implementation (eg smoothing).
         virtual void SetTargetSteering(float steering) = 0;
 
         //! Accelerate without target speed, relative to the limits.
@@ -40,7 +40,7 @@ namespace VehicleDynamics
 
         //! Steer input version which is relative to limits.
         //! @param steeringFraction is -1 to 1, which applies as a fraction of vehicle model steering limits.
-        //! @note The actual angle applied is subject to limits and implementation (e.g. smoothing).
+        //! @note The actual angle applied is subject to limits and implementation (eg smoothing).
         virtual void SetTargetSteeringFraction(float steeringFraction) = 0;
 
         //! Speed input version which is relative to limits.

@@ -28,6 +28,8 @@ namespace ROS2
         //! @return model represented as a tree of parsed links.
         urdf::ModelInterfaceSharedPtr ParseFromFile(const AZStd::string& filePath);
 
+        //! Retrieve console log from URDF parsing
+        //! @return a log with output from urdf_parser
         AZStd::string GetUrdfParsingLog();
 
     }; // namespace UrdfParser

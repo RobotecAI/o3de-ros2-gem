@@ -7,12 +7,12 @@
  */
 
 #include "AckermannDriveModel.h"
-#include "VehicleDynamics/Utilities.h"
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzFramework/Physics/RigidBodyBus.h>
+#include <VehicleDynamics/Utilities.h>
 
 namespace VehicleDynamics
 {

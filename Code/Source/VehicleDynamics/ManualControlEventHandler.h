@@ -20,7 +20,7 @@ namespace VehicleDynamics
         using OnHeldHandlerFunction = AZStd::function<void(float)>;
 
         //! Construct the event handler.
-        //! @param eventName which event to handle (e.g. "steering", "accelerate")
+        //! @param eventName which event to handle (eg "steering", "accelerate")
         //! @param handler a function which handles the input, typically through re-publishing it to a vehicle input bus.
         ManualControlSingleEventHandler(const AZStd::string& eventName, OnHeldHandlerFunction handler)
             : m_eventName(eventName)

@@ -48,10 +48,10 @@ namespace VehicleDynamics
         T m_input = 0;
     };
 
-    //! The most recent inputs
+    //! Structure defining the most recent vehicle inputs state
     struct VehicleInputsState
     {
-        InputZeroedOnTimeout<float> m_speed; //!< m/s
-        InputZeroedOnTimeout<float> m_steering; //!< Radians, right is -, left is +
+        InputZeroedOnTimeout<float> m_speed; //!< Speed measured in m/s
+        InputZeroedOnTimeout<float> m_steering; //!< Steering angle in radians. Negative is right, positive is left,
     };
 } // namespace VehicleDynamics

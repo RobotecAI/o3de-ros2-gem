@@ -25,8 +25,11 @@ namespace VehicleDynamics
         {
             return DriveModel::DriveModelType::SimplifiedDriveModelType;
         }
+        //////////////////////////////////////////////////////////////////////////
+        // DriveModel overrides
         void Activate(const VehicleConfiguration& vehicleConfig) override;
         void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) override;
+        //////////////////////////////////////////////////////////////////////////
 
         static void Reflect(AZ::ReflectContext* context);
 

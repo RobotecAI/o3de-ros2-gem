@@ -32,7 +32,7 @@ namespace ROS2
         auto ros2Node = ROS2Interface::Get()->GetNode();
 
         m_getSpawnablesNamesService = ros2Node->create_service<gazebo_msgs::srv::GetWorldProperties>(
-            "get_available_spawnable_names",
+            "get_available_spawnable_namespawnable_names",
             [this](const GetAvailableSpawnableNamesRequest request, GetAvailableSpawnableNamesResponse response)
             {
                 GetAvailableSpawnableNames(request, response);
@@ -190,9 +190,9 @@ namespace ROS2
     void ROS2SpawnerComponent::GetSpawnPointsNames(
         const ROS2::GetSpawnPointsNamesRequest request, ROS2::GetSpawnPointsNamesResponse response)
     {
-        for (auto spawn_point : GetSpawnPoints())
+        for (auto spawnPoint : GetSpawnPoints())
         {
-            response->model_names.emplace_back(spawn_point.first.c_str());
+            response->model_names.emplace_back(spawnPoint.first.c_str());
         }
     }
 

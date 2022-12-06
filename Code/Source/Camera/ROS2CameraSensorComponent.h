@@ -50,7 +50,11 @@ namespace ROS2
         //! Type that combines pointer to ROS2 publisher and CameraSensor
         using PublisherSensorPtrPair = AZStd::pair<ImagePublisherPtrType, AZStd::shared_ptr<CameraSensor>>;
 
-        //! Helper to construct PublisherSensorPtrPair with give Sensor type
+        //! Helper to construct a PublisherSensorPtrPair with a pointer to ROS2 publisher and intrinsic calibration
+        //! @tparam CameraType type of camera sensor (eg 'CameraColorSensor')
+        //! @param publisher pointer to ROS2 image publisher
+        //! @param description CameraSensorDescription with intrinsic calibration
+        //! @return PublisherSensorPtrPair with all provided parameters
         template<typename CameraType>
         PublisherSensorPtrPair CreatePair(ImagePublisherPtrType publisher, const CameraSensorDescription& description) const
         {

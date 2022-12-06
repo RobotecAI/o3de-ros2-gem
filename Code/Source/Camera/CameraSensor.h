@@ -83,15 +83,15 @@ namespace ROS2
         AZ::RPI::Scene* m_scene = nullptr;
         const AZ::Transform AtomToRos{ AZ::Transform::CreateFromQuaternion(
             AZ::Quaternion::CreateFromMatrix3x3(AZ::Matrix3x3::CreateFromRows({ 1, 0, 0 }, { 0, -1, 0 }, { 0, 0, -1 }))) };
-        virtual AZStd::string GetPipelineTemplateName() const = 0;
-        virtual AZStd::string GetPipelineTypeName() const = 0;
+        virtual AZStd::string GetPipelineTemplateName() const = 0; //! Returns name of pass template to use in pipeline
+        virtual AZStd::string GetPipelineTypeName() const = 0; //! Type of returned data eg Color, Depth, Optical flow
 
     protected:
         //! Read and setup Atom Passes
         void SetupPasses();
     };
 
-    //! Implementation of camera sensors that runs pipeline which produce depth image
+    //! Implementation of camera sensors that runs pipeline which produces depth image
     class CameraDepthSensor : public CameraSensor
     {
     public:
@@ -102,7 +102,7 @@ namespace ROS2
         AZStd::string GetPipelineTypeName() const override;
     };
 
-    //! Implementation of camera sensors that runs pipeline which produce color image
+    //! Implementation of camera sensors that runs pipeline which produces color image
     class CameraColorSensor : public CameraSensor
     {
     public:

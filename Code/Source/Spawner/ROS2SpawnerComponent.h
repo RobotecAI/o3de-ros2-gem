@@ -43,11 +43,17 @@ namespace ROS2
         // AZ::Component interface implementation.
         ROS2SpawnerComponent();
         ~ROS2SpawnerComponent();
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
         static void Reflect(AZ::ReflectContext* context);
 
+        //////////////////////////////////////////////////////////////////////////
+        // SpawnerRequestsBus::Handler overrides
         const AZ::Transform& GetDefaultSpawnPose() const override;
+        //////////////////////////////////////////////////////////////////////////
 
     private:
         int m_counter = 1;
