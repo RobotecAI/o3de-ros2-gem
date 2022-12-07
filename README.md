@@ -108,4 +108,4 @@ Enjoy simulation with some of many [ROS2 packages](https://index.ros.org/package
 
 ## Acknowledgements
 
-This project was originally developed by [Robotec.ai](https://robotec.ai) in cooperation with [AWS Game Tech](https://aws.amazon.com/gametech/).
+This project was originally developed by [Robotec.ai](https://robotec.ai) in cooperation with [AWS Game Tech](https://aws.amazon.com/gametech/) and [AWS RoboMaker](https://aws.amazon.com/robomaker/).
