@@ -10,11 +10,10 @@
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/Utils/Utils.h>
 
-#include "RobotImporter/RobotImporterWidget.h"
-#include "RobotImporter/RobotImporterWidgetUtils.h"
-#include "RobotImporter/URDF/URDFPrefabMaker.h"
-#include "RobotImporter/URDF/UrdfParser.h"
-#include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "RobotImporterWidget.h"
+#include "URDF/URDFPrefabMaker.h"
+#include "URDF/UrdfParser.h"
+#include "Utils/RobotImporterUtils.h"
 #include <QApplication>
 #include <QScreen>
 #include <QTranslator>
@@ -89,9 +88,8 @@ namespace ROS2
             if (m_parsedUrdf)
             {
                 report += "# " + tr("The URDF was parsed and opened successfully") + "\n";
-                // get rid of old prefab maker
                 m_prefabMaker.reset();
-                // let us skip this page
+                // Report the status of skipping this page
                 AZ_Printf("Wizard", "Wizard skips m_checkUrdfPage since there is no errors in URDF");
                 m_meshNames = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, true);
             }
@@ -130,21 +128,21 @@ namespace ROS2
         if (m_parsedUrdf)
         {
             m_urdfAssetsMapping = AZStd::make_shared<Utils::UrdfAssetMap>(Utils::FindAssetsForUrdf(m_meshNames, m_urdfPath));
-            auto colliders_names = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
-            auto visual_names = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
-            for (const AZStd::string& mesh_path : m_meshNames)
+            auto collidersNames = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), false, true);
+            auto visualNames = Utils::GetMeshesFilenames(m_parsedUrdf->getRoot(), true, false);
+            for (const AZStd::string& meshPath : m_meshNames)
             {
-                const QString mesh_pathqs = QString::fromUtf8(mesh_path.data(), mesh_path.size());
+                const QString meshPathqs = QString::fromUtf8(meshPath.data(), meshPath.size());
                 const QString kNotFound = tr("not found");
 
-                if (m_urdfAssetsMapping->contains(mesh_path))
+                if (m_urdfAssetsMapping->contains(meshPath))
                 {
                     QString type = kNotFound;
-                    QString source_path = kNotFound;
+                    QString sourcePath = kNotFound;
                     auto crc = AZ::Crc32();
                     QString tooltip = kNotFound;
-                    bool visual = visual_names.contains(mesh_path);
-                    bool collider = colliders_names.contains(mesh_path);
+                    bool visual = visualNames.contains(meshPath);
+                    bool collider = collidersNames.contains(meshPath);
                     if (visual && collider)
                     {
                         type = tr("Visual and Collider");
@@ -153,26 +151,26 @@ namespace ROS2
                     {
                         type = tr("Visual");
                     }
-                    else if (visual)
+                    else if (collider)
                     {
                         type = tr("Collider");
                     }
 
-                    if (m_urdfAssetsMapping->contains(mesh_path))
+                    if (m_urdfAssetsMapping->contains(meshPath))
                     {
-                        const auto& asset = m_urdfAssetsMapping->at(mesh_path);
-                        const AZStd::string& product_path = asset.m_availableAssetInfo.m_productAssetRelativePath;
-                        const AZStd::string& resolved_path = asset.m_resolvedUrdfPath.data();
+                        const auto& asset = m_urdfAssetsMapping->at(meshPath);
+                        const AZStd::string& productPath = asset.m_availableAssetInfo.m_productAssetRelativePath;
+                        const AZStd::string& resolvedPath = asset.m_resolvedUrdfPath.data();
 
-                        source_path = QString::fromUtf8(product_path.data(), product_path.size());
+                        sourcePath = QString::fromUtf8(productPath.data(), productPath.size());
                         crc = asset.m_urdfFileCRC;
-                        tooltip = QString::fromUtf8(resolved_path.data(), resolved_path.size());
+                        tooltip = QString::fromUtf8(resolvedPath.data(), resolvedPath.size());
                     }
-                    m_assetPage->ReportAsset(mesh_pathqs, type, source_path, crc, tooltip);
+                    m_assetPage->ReportAsset(meshPathqs, type, sourcePath, crc, tooltip);
                 }
                 else
                 {
-                    m_assetPage->ReportAsset(mesh_pathqs, kNotFound, kNotFound, AZ::Crc32(), kNotFound);
+                    m_assetPage->ReportAsset(meshPathqs, kNotFound, kNotFound, AZ::Crc32(), kNotFound);
                 };
             }
         }
@@ -257,7 +255,7 @@ namespace ROS2
         auto prefabOutcome = m_prefabMaker->CreatePrefabFromURDF();
         if (prefabOutcome.IsSuccess())
         {
-            AZStd::string status = m_prefabMaker->getStatus();
+            AZStd::string status = m_prefabMaker->GetStatus();
             m_prefabMakerPage->reportProgress(status);
             m_prefabMakerPage->setSuccess(true);
         }
@@ -265,7 +263,7 @@ namespace ROS2
         {
             AZStd::string status = "Failed to create prefab\n";
             status += prefabOutcome.GetError() + "\n";
-            status += m_prefabMaker->getStatus();
+            status += m_prefabMaker->GetStatus();
             m_prefabMakerPage->reportProgress(status);
             m_prefabMakerPage->setSuccess(false);
         }
@@ -277,30 +275,29 @@ namespace ROS2
 
     bool RobotImporterWidget::CheckCyclicalDependency(AZ::IO::Path importedPrefabPath)
     {
-        AzFramework::EntityContextId context_id;
-        EBUS_EVENT_RESULT(context_id, AzFramework::EntityIdContextQueryBus, GetOwningContextId);
+        AzFramework::EntityContextId contextId;
+        AzFramework::EntityIdContextQueryBus::BroadcastResult(contextId, &AzFramework::EntityIdContextQueryBus::Events::GetOwningContextId);
 
-        AZ_Printf("CheckCyclicalDependency", "CheckCyclicalDependency %s", importedPrefabPath.Native().data());
-        auto focus_interface = AZ::Interface<AzToolsFramework::Prefab::PrefabFocusInterface>::Get();
+        AZ_Printf("CheckCyclicalDependency", "CheckCyclicalDependency %s\n", importedPrefabPath.Native().c_str());
+        auto focusInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabFocusInterface>::Get();
 
-        if (!focus_interface)
+        if (!focusInterface)
         {
             ReportError(tr("Imported prefab could not be validated.\nImport aborted."));
             return true;
         }
 
-        auto focus_prefab_instance = focus_interface->GetFocusedPrefabInstance(context_id);
+        auto focusedPrefabInstance = focusInterface->GetFocusedPrefabInstance(contextId);
 
-        if (!focus_prefab_instance)
+        if (!focusedPrefabInstance)
         {
             ReportError(tr("Imported prefab could not be validated.\nImport aborted."));
             return true;
         }
 
-        auto focus_prefab_filename = focus_prefab_instance.value().get().GetTemplateSourcePath();
+        auto focusPrefabFilename = focusedPrefabInstance.value().get().GetTemplateSourcePath();
 
-        AZ_Printf("CheckCyclicalDependency", "focus_prefab_filename %s", focus_prefab_filename.Native().data());
-        if (focus_prefab_filename == importedPrefabPath)
+        if (focusPrefabFilename == importedPrefabPath)
         {
             ReportError(
                 tr("Cyclical dependency detected.\nSelected URDF model is currently being edited. Exit prefab edit mode and try again."));
@@ -313,6 +310,6 @@ namespace ROS2
     void RobotImporterWidget::ReportError(const QString& errorMessage)
     {
         QMessageBox::critical(this, QObject::tr("Error"), errorMessage);
-        AZ_Error("RobotImporterWidget", false, errorMessage.toStdString().c_str());
+        AZ_Error("RobotImporterWidget", false, "%s", errorMessage.toUtf8().constData());
     }
 } // namespace ROS2

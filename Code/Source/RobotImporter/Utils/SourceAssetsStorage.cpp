@@ -6,7 +6,7 @@
  *
  */
 #include "SourceAssetsStorage.h"
-#include "RobotImporter/Utils/RobotImporterUtils.h"
+#include "RobotImporterUtils.h"
 
 namespace ROS2::Utils
 {
@@ -98,10 +98,9 @@ namespace ROS2::Utils
             urdfToAsset.emplace(t, AZStd::move(asset));
         }
 
-        // scans all available o3de assets by calling
         const AZStd::unordered_map<AZ::Crc32, AvailableAsset> availableAssets = Utils::GetInterestingSourceAssetsCRC();
 
-        // search for suitable mappings  by comparing checksum
+        // Search for suitable mappings by comparing checksum
         for (auto it = urdfToAsset.begin(); it != urdfToAsset.end(); it++)
         {
             Utils::UrdfAsset& asset = it->second;

@@ -6,13 +6,13 @@
  *
  */
 
-#include "VehicleDynamics/Utilities.h"
+#include "Utilities.h"
 #include "WheelControllerComponent.h"
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/std/string/string.h>
 
-namespace VehicleDynamics::Utilities
+namespace ROS2::VehicleDynamics::Utilities
 {
     AxleConfiguration Create2WheelAxle(
         AZ::EntityId leftWheel, AZ::EntityId rightWheel, AZStd::string tag, float wheelRadius, bool steering, bool drive)
@@ -141,4 +141,4 @@ namespace VehicleDynamics::Utilities
         }
         return driveWheelEntities;
     }
-} // namespace VehicleDynamics::Utilities
+} // namespace ROS2::VehicleDynamics::Utilities

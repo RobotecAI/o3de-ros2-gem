@@ -7,12 +7,11 @@
  */
 #pragma once
 
-#include "ROS2/VehicleDynamics/VehicleInputControlBus.h"
 #include <AzCore/std/function/function_template.h>
+#include <ROS2/VehicleDynamics/VehicleInputControlBus.h>
 #include <StartingPointInput/InputEventNotificationBus.h>
 
-// TODO - plenty of boilerplate code, seems somewhat redundant since it would be better to be able to map inputs directly
-namespace VehicleDynamics
+namespace ROS2::VehicleDynamics
 {
     //! A handler for a single input event.
     class ManualControlSingleEventHandler : private StartingPointInput::InputEventNotificationBus::Handler
@@ -21,11 +20,11 @@ namespace VehicleDynamics
         using OnHeldHandlerFunction = AZStd::function<void(float)>;
 
         //! Construct the event handler.
-        //! @param eventName which event to handle (e.g. "steering", "accelerate")
+        //! @param eventName which event to handle (eg "steering", "accelerate")
         //! @param handler a function which handles the input, typically through re-publishing it to a vehicle input bus.
         ManualControlSingleEventHandler(const AZStd::string& eventName, OnHeldHandlerFunction handler)
             : m_eventName(eventName)
-            , m_handler(handler)
+            , m_handler(AZStd::move(handler))
         {
         }
 
@@ -89,4 +88,4 @@ namespace VehicleDynamics
     private:
         AZStd::vector<ManualControlSingleEventHandler> m_eventHandlers;
     };
-} // namespace VehicleDynamics
+} // namespace ROS2::VehicleDynamics

@@ -7,12 +7,12 @@
  */
 #pragma once
 
-#include "ROS2/Frame/NamespaceConfiguration.h"
-#include "ROS2/Frame/ROS2Transform.h"
-#include "ROS2/ROS2GemUtilities.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/unique_ptr.h>
 #include <AzFramework/Components/TransformComponent.h>
+#include <ROS2/Frame/NamespaceConfiguration.h>
+#include <ROS2/Frame/ROS2Transform.h>
+#include <ROS2/ROS2GemUtilities.h>
 
 namespace ROS2
 {
@@ -29,10 +29,14 @@ namespace ROS2
         AZ_COMPONENT(ROS2FrameComponent, "{EE743472-3E25-41EA-961B-14096AC1D66F}");
 
         ROS2FrameComponent();
-        ROS2FrameComponent(AZStd::string frameId);
+        //! Initialize to a specific frame id
+        ROS2FrameComponent(const AZStd::string& frameId);
 
+        //////////////////////////////////////////////////////////////////////////
+        // Component overrides
         void Activate() override;
         void Deactivate() override;
+        //////////////////////////////////////////////////////////////////////////
 
         static void Reflect(AZ::ReflectContext* context);
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
@@ -57,10 +61,13 @@ namespace ROS2
 
         //! Global frame name in ros2 ecosystem.
         //! @return The name of the global frame with namespace attached. It is typically "odom", "map", "world".
-        AZStd::string GetGlobalFrameName() const; // TODO - allow to configure global frame in a specialized component
+        AZStd::string GetGlobalFrameName() const;
 
     private:
+        //////////////////////////////////////////////////////////////////////////
+        // AZ::TickBus::Handler overrides
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        //////////////////////////////////////////////////////////////////////////
 
         bool IsTopLevel() const; //!< True if this entity does not have a parent entity with ROS2.
 
@@ -69,13 +76,14 @@ namespace ROS2
 
         const ROS2FrameComponent* GetParentROS2FrameComponent() const;
 
-        //! If parent entity does not exist or does not have a ROS2FrameComponent, return ROS2 default global frame.
+        //! Return the frame id of this frame's parent. It can be useful to determine ROS 2 transformations.
+        //! @return Parent frame ID.
+        //! @note This also works with top-level frames, returning a global frame name.
         //! @see GetGlobalFrameName().
         AZStd::string GetParentFrameID() const;
 
-        // TODO - Editor component: validation of fields, constraints between values and so on
         NamespaceConfiguration m_namespaceConfiguration;
-        AZStd::string m_frameName = "sensor_frame"; // TODO - option to fill from entity name
+        AZStd::string m_frameName = "sensor_frame";
 
         bool m_publishTransform = true;
         AZStd::unique_ptr<ROS2Transform> m_ros2Transform;

@@ -21,7 +21,6 @@ namespace ROS2
         m_sceneHandle = handle;
     }
 
-    // A simplified, non-optimized first version. TODO - generalize results (fields)
     AZStd::vector<AZ::Vector3> LidarRaycaster::PerformRaycast(
         const AZ::Vector3& start,
         const AZStd::vector<AZ::Vector3>& directions,
@@ -41,7 +40,7 @@ namespace ROS2
         requests.reserve(directions.size());
         results.reserve(directions.size());
         for (const AZ::Vector3& direction : directions)
-        { // NOTE - performance-wise, consider reusing requests
+        {
             AZStd::shared_ptr<AzPhysics::RayCastRequest> request = AZStd::make_shared<AzPhysics::RayCastRequest>();
             request->m_start = start;
             request->m_direction = direction;
@@ -66,9 +65,9 @@ namespace ROS2
         auto requestResults = sceneInterface->QuerySceneBatch(m_sceneHandle, requests);
         AZ_Assert(requestResults.size() == directions.size(), "request size should be equal to directions size");
         for (int i = 0; i < requestResults.size(); i++)
-        { // TODO - check flag for SceneQuery::ResultFlags::Position
+        {
             const auto& requestResult = requestResults[i];
-            if (requestResult.m_hits.size() > 0)
+            if (!requestResult.m_hits.empty())
             {
                 auto globalHitPoint = requestResult.m_hits[0].m_position;
                 results.push_back(globalToLidarTM.TransformPoint(globalHitPoint)); // Transform back to local frame

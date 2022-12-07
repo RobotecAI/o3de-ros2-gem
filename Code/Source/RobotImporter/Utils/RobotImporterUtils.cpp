@@ -23,22 +23,22 @@ namespace ROS2
         const AZStd::regex joint_regex("(?i)joint");
         const AZStd::string link_name(link->name.c_str(), link->name.size());
         AZStd::smatch match;
-        // check is name is catchy for wheel
+        // Check if name is catchy for wheel
         if (!AZStd::regex_search(link_name, match, wheel_regex))
         {
             return false;
         }
-        // but it should cointain joint word
+        // The name should contain a joint word
         if (AZStd::regex_search(link_name, match, joint_regex))
         {
             return false;
         }
-        // wheel need to have collision and visuals
+        // Wheels need to have collision and visuals
         if (!(link->collision && link->visual))
         {
             return false;
         }
-        // and finally parent joint needs to be CONTINOUS
+        // Parent joint needs to be CONTINOUS
         if (link->parent_joint && link->parent_joint->type == urdf::Joint::CONTINUOUS)
         {
             return true;
@@ -59,7 +59,7 @@ namespace ROS2
     AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> Utils::GetAllLinks(const std::vector<urdf::LinkSharedPtr>& childLinks)
     {
         AZStd::unordered_map<AZStd::string, urdf::LinkSharedPtr> pointers;
-        std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
+        AZStd::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
             [&](const std::vector<urdf::LinkSharedPtr>& child_links) -> void
         {
             for (const urdf::LinkSharedPtr& child_link : child_links)
@@ -76,7 +76,7 @@ namespace ROS2
     AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> Utils::GetAllJoints(const std::vector<urdf::LinkSharedPtr>& childLinks)
     {
         AZStd::unordered_map<AZStd::string, urdf::JointSharedPtr> joints;
-        std::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
+        AZStd::function<void(const std::vector<urdf::LinkSharedPtr>&)> link_visitor =
             [&](const std::vector<urdf::LinkSharedPtr>& child_links) -> void
         {
             for (auto child_link : child_links)
@@ -124,7 +124,7 @@ namespace ROS2
             }
         };
 
-        std::function<void(const std::vector<urdf::LinkConstSharedPtr>&)> linkVisitor =
+        AZStd::function<void(const std::vector<urdf::LinkConstSharedPtr>&)> linkVisitor =
             [&](const std::vector<urdf::LinkConstSharedPtr>& child_links) -> void
         {
             for (auto link : child_links)
@@ -154,31 +154,31 @@ namespace ROS2
         {
             AZ::StringFunc::Replace(unresolvedPath, "package://", "", true, true);
             AZ::IO::Path urdfProperPath(urdfFilePath);
-            AZ::IO::Path package_path;
+            AZ::IO::Path packagePath;
             for (auto it = urdfProperPath.begin(); it != urdfProperPath.end(); it++)
             {
-                package_path /= *it;
-                AZStd::string package_xml_candite = (package_path / "package.xml").String();
-                if (fileExists(package_xml_candite))
+                packagePath /= *it;
+                AZStd::string packageXmlCandite = (packagePath / "package.xml").String();
+                if (fileExists(packageXmlCandite))
                 {
                     // package.xml has been found
-                    return (package_path / unresolvedPath).String();
+                    return (packagePath / unresolvedPath).String();
                 }
             }
-            // we have nothing
+            // No path available
             return "";
         }
         if (unresolvedPath.starts_with("file:///"))
         {
-            // seems to be global path
+            // Paths that start with 'file:///' are absolute paths
             AZ::StringFunc::Replace(unresolvedPath, "file://", "", true, true);
             return unresolvedPath;
         }
         // seems to be relative path
-        AZ::IO::Path relative_path(unresolvedPath);
-        AZ::IO::Path urdf_proper_Path(urdfFilePath);
-        AZ::IO::Path urdf_parent_path = urdf_proper_Path.ParentPath();
-        return (urdf_parent_path / relative_path).String();
+        AZ::IO::Path relativePath(unresolvedPath);
+        AZ::IO::Path urdfProperPath(urdfFilePath);
+        AZ::IO::Path urdfParentPath = urdfProperPath.ParentPath();
+        return (urdfParentPath / relativePath).String();
     }
 
 } // namespace ROS2

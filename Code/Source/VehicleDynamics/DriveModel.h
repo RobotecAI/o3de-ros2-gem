@@ -11,23 +11,24 @@
 #include "VehicleInputsState.h"
 #include <AzCore/Serialization/SerializeContext.h>
 
-namespace VehicleDynamics
+namespace ROS2::VehicleDynamics
 {
     //! Abstract class for turning vehicle inputs into behavior of wheels and steering elements
     class DriveModel
     {
     public:
         AZ_RTTI(DriveModel, "{1B57E83D-19BF-4403-8712-1AE98A12F0CD}");
-        enum DriveModelType
+        enum class DriveModelType
         {
             SimplifiedDriveModelType
         };
 
         static void Reflect(AZ::ReflectContext* context);
         virtual ~DriveModel() = default;
-        virtual DriveModel::DriveModelType DriveType() = 0;
+        virtual DriveModel::DriveModelType DriveType() const = 0;
 
         //! Activate the model. Vehicle configuration is to remain the same until another Activate is called.
+        //! @param vehicleConfig configuration containing axes and wheels information
         virtual void Activate(const VehicleConfiguration& vehicleConfig) = 0;
 
         //! Applies inputs to the drive. This model will calculate and apply physical forces.
@@ -35,4 +36,4 @@ namespace VehicleDynamics
         //! @param deltaTimeNs nanoseconds passed since last call of this function.
         virtual void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) = 0;
     };
-} // namespace VehicleDynamics
+} // namespace ROS2::VehicleDynamics

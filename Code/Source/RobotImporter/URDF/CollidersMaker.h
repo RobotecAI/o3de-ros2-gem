@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "RobotImporter/Utils/SourceAssetsStorage.h"
 #include "UrdfParser.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/IO/Path/Path.h>
@@ -21,6 +20,7 @@
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialId.h>
 #include <AzFramework/Physics/Material/PhysicsMaterialManager.h>
+#include <RobotImporter/Utils/SourceAssetsStorage.h>
 
 namespace ROS2
 {
@@ -30,7 +30,11 @@ namespace ROS2
     class CollidersMaker
     {
     public:
+        //! Construct the class based on URDF asset mapping.
+        //! @param urdfAssetsMapping a prepared mapping of Assets used by the source URDF.
         CollidersMaker(const AZStd::shared_ptr<Utils::UrdfAssetMap>& urdfAssetsMapping);
+
+        //! Prevent copying of existing CollidersMaker
         CollidersMaker(const CollidersMaker& other) = delete;
 
         ~CollidersMaker();

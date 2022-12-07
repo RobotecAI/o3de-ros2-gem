@@ -6,8 +6,8 @@
  *
  */
 
-#include "ROS2/RobotControl/ControlConfiguration.h"
 #include <AzCore/Serialization/EditContext.h>
+#include <ROS2/RobotControl/ControlConfiguration.h>
 
 namespace ROS2
 {
@@ -24,7 +24,7 @@ namespace ROS2
                         AZ::Edit::UIHandlers::ComboBox,
                         &ControlConfiguration::m_steering,
                         "Steering",
-                        "Determines how robot is controlled.")
+                        "Determines how the robot is controlled.")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->EnumAttribute(ControlConfiguration::Steering::Twist, "Twist")
                     ->EnumAttribute(ControlConfiguration::Steering::Ackermann, "Ackermann");

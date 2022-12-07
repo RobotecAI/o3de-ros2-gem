@@ -59,9 +59,6 @@ namespace ROS2::PrefabMakerUtils
             AZ_Error("SetEntityTransform", false, "Missing Transform component!");
             return;
         }
-        // Alternative - but requires an active component. We would activate/deactivate a lot. Or - do it in a second pass.
-        // AZ::TransformBus::Event(entityId, &AZ::TransformBus::Events::SetLocalTM, transformForChild);
-
         transformInterface->SetLocalTM(tf);
     }
 
@@ -74,9 +71,11 @@ namespace ROS2::PrefabMakerUtils
             return createEntityResult;
         }
 
+
+        // Verify that a valid entity is created.
         AZ::EntityId entityId = createEntityResult.GetValue();
         if (!entityId.IsValid())
-        { // Verify that a valid entity is created.
+        {
             return AZ::Failure(AZStd::string("Invalid id for created entity"));
         }
 
@@ -88,43 +87,12 @@ namespace ROS2::PrefabMakerUtils
         return createEntityResult;
     }
 
-    AzToolsFramework::Prefab::PrefabOperationResult RemoveEntityWithDescendants(AZ::EntityId parentEntityId)
-    {
-        auto prefabInterface = AZ::Interface<AzToolsFramework::Prefab::PrefabPublicInterface>::Get();
-        return prefabInterface->DeleteEntitiesAndAllDescendantsInInstance({ parentEntityId });
-    }
-
     void AddRequiredComponentsToEntity(AZ::EntityId entityId)
     {
         AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
         AZ_Assert(entity, "Unknown entity %s", entityId.ToString().c_str());
         AzToolsFramework::EditorEntityContextRequestBus::Broadcast(
             &AzToolsFramework::EditorEntityContextRequests::AddRequiredComponents, *entity);
-    }
-
-    bool HasCollider(AZ::EntityId entityId)
-    { // TODO - actually, we want EditorColliderComponent specifically, but the change can be applied only after moving to ECC
-        // TODO - which will happen when Cylinder shape is supported. Until then, we check for either ECC or ESCC.
-        AZ::Entity* entity = AzToolsFramework::GetEntityById(entityId);
-        AZ_Assert(entity, "Unknown entity %s", entityId.ToString().c_str());
-        return entity->FindComponent<PhysX::EditorColliderComponent>() != nullptr ||
-            entity->FindComponent<PhysX::EditorShapeColliderComponent>() != nullptr;
-    }
-
-    AzToolsFramework::EntityIdList GetColliderChildren(AZ::EntityId parentEntityId)
-    {
-        AzToolsFramework::EntityIdList colliderChildren;
-        AzToolsFramework::EntityIdList allChildren = AzToolsFramework::GetEntityChildOrder(parentEntityId);
-        for (auto childId : allChildren)
-        {
-            AZ_TracePrintf("GetColliderChildren", "Considering child %s\n", childId.ToString().c_str());
-            if (HasCollider(childId))
-            {
-                AZ_TracePrintf("GetColliderChildren", "Child %s has a collider\n", childId.ToString().c_str());
-                colliderChildren.push_back(childId);
-            }
-        }
-        return colliderChildren;
     }
 
     AZStd::string MakeEntityName(const AZStd::string& rootName, const AZStd::string& type, size_t index)

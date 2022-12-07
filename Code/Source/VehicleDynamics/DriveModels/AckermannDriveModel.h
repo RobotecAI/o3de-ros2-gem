@@ -7,30 +7,33 @@
  */
 #pragma once
 
-#include "ROS2/VehicleDynamics/DriveModels/PidConfiguration.h"
-#include "VehicleDynamics/DriveModel.h"
-#include "VehicleDynamics/VehicleConfiguration.h"
-#include "VehicleDynamics/VehicleInputsState.h"
-#include "VehicleDynamics/WheelDynamicsData.h"
 #include <AzCore/Serialization/SerializeContext.h>
+#include <ROS2/VehicleDynamics/DriveModels/PidConfiguration.h>
+#include <VehicleDynamics/DriveModel.h>
+#include <VehicleDynamics/VehicleConfiguration.h>
+#include <VehicleDynamics/VehicleInputsState.h>
+#include <VehicleDynamics/WheelDynamicsData.h>
 
-namespace VehicleDynamics
+namespace ROS2::VehicleDynamics
 {
     //! A simple Ackermann system implementation converting speed and steering inputs into wheel impulse and steering element torque
     class AckermannDriveModel : public DriveModel
     {
     public:
         AZ_RTTI(AckermannDriveModel, "{104AC31D-E30B-4454-BF42-4FB37B8CFD9B}", DriveModel);
-        DriveModel::DriveModelType DriveType() override
+        DriveModel::DriveModelType DriveType() const override
         {
-            return DriveModel::SimplifiedDriveModelType;
+            return DriveModel::DriveModelType::SimplifiedDriveModelType;
         }
+        //////////////////////////////////////////////////////////////////////////
+        // DriveModel overrides
         void Activate(const VehicleConfiguration& vehicleConfig) override;
         void ApplyInputState(const VehicleInputsState& inputs, uint64_t deltaTimeNs) override;
+        //////////////////////////////////////////////////////////////////////////
 
         static void Reflect(AZ::ReflectContext* context);
 
-        void SetDisabled(bool is_disabled);
+        void SetDisabled(bool isDisabled);
 
     private:
         void ApplySteering(float steering, uint64_t deltaTimeNs);
@@ -45,4 +48,4 @@ namespace VehicleDynamics
         bool m_disabled{ false };
         float m_steeringDeadZone = 0.01;
     };
-} // namespace VehicleDynamics
+} // namespace ROS2::VehicleDynamics

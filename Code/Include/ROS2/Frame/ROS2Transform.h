@@ -15,10 +15,13 @@ namespace ROS2
 {
     //! Publishes transforms as standard ROS2 tf2 messages. Static transforms are published once.
     //! @note This class is already used through ROS2FrameComponent.
-    // TODO - Rework this class (name, function). Separate broadcaster out of ROS2SystemComponent
     class ROS2Transform
     {
     public:
+        //! Create a transform between given frames.
+        //! @param parentFrame id of parent frame of transformation.
+        //! @param childFrame id of child frame of transformation.
+        //! @param isDynamic whether the transformation is dynamic (should be computed every frame) or static (only once).
         ROS2Transform(AZStd::string parentFrame, AZStd::string childFrame, bool isDynamic);
 
         //! Construct and delegate publishing of a transform according to members' values.

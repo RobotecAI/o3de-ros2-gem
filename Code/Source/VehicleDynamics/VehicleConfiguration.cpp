@@ -6,14 +6,14 @@
  *
  */
 
-#include "VehicleDynamics/VehicleConfiguration.h"
-#include "VehicleDynamics/Utilities.h"
+#include "VehicleConfiguration.h"
+#include "Utilities.h"
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 
-namespace VehicleDynamics
+namespace ROS2::VehicleDynamics
 {
     void VehicleConfiguration::Reflect(AZ::ReflectContext* context)
     {
@@ -47,4 +47,4 @@ namespace VehicleDynamics
             }
         }
     }
-} // namespace VehicleDynamics
+} // namespace ROS2::VehicleDynamics

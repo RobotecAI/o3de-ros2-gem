@@ -14,16 +14,22 @@
 namespace ROS2
 {
     //! Utility class for Lidar model computations.
-    class LidarTemplateUtils
+    namespace LidarTemplateUtils
     {
-    public:
-        static LidarTemplate GetTemplate(LidarTemplate::LidarModel model);
-        static size_t TotalPointCount(const LidarTemplate& t);
+        //! Get the lidar template for a model.
+        //! @param model lidar model.
+        //! @return the matching template which describes parameters for the model.
+        LidarTemplate GetTemplate(LidarTemplate::LidarModel model);
+
+        //! Get total point count for a given template.
+        //! @param t lidar template.
+        //! @return total count of points that the lidar specified by the template would produce on each scan.
+        size_t TotalPointCount(const LidarTemplate& t);
 
         //! Compute ray directions based on lidar model and rotation.
         //! @param model Lidar model to use. Note that different models will produce different number of rays.
         //! @param rootRotation Root rotation as Euler angles in radians.
         //! @return All ray directions which can be used to perform ray-casting simulation of lidar operation.
-        static AZStd::vector<AZ::Vector3> PopulateRayDirections(const LidarTemplate& lidarTemplate, const AZ::Vector3& rootRotation);
-    };
+        AZStd::vector<AZ::Vector3> PopulateRayDirections(const LidarTemplate& lidarTemplate, const AZ::Vector3& rootRotation);
+    }; // namespace LidarTemplateUtils
 } // namespace ROS2
