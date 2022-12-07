@@ -14,6 +14,9 @@
 #include "Pages/FileSelectionPage.h"
 #include "Pages/IntroPage.h"
 #include "Pages/PrefabMakerPage.h"
+#include "Pages/XacroParamsPage.h"
+
+#include <RobotImporter/xacro/XacroUtils.h>
 
 #include "URDF/URDFPrefabMaker.h"
 #include "URDF/UrdfParser.h"
@@ -65,8 +68,12 @@ namespace ROS2
         CheckUrdfPage* m_checkUrdfPage;
         CheckAssetPage* m_assetPage;
         PrefabMakerPage* m_prefabMakerPage;
+        XacroParamsPage* m_xacroParamsPage;
         AZStd::string m_urdfPath;
         urdf::ModelInterfaceSharedPtr m_parsedUrdf;
+
+        /// Xacro params
+        Utils::xacro::Params m_params;
 
         /// mapping from urdf path to asset source
         AZStd::shared_ptr<Utils::UrdfAssetMap> m_urdfAssetsMapping;
@@ -94,5 +101,6 @@ namespace ROS2
         void SignalFinalizeURDFCreation();
     private slots:
         void FinalizeURDFCreation();
+        bool IsFileXacro(const AZStd::string& filename) const;
     };
 } // namespace ROS2

@@ -16,6 +16,8 @@ set(FILES
     Source/RobotImporter/Pages/PrefabMakerPage.h
     Source/RobotImporter/Pages/IntroPage.cpp
     Source/RobotImporter/Pages/IntroPage.h
+    Source/RobotImporter/Pages/XacroParamsPage.cpp
+    Source/RobotImporter/Pages/XacroParamsPage.h
     Source/RobotImporter/RobotImporterWidget.cpp
     Source/RobotImporter/RobotImporterWidget.h
     Source/RobotImporter/RobotImporterWidgetUtils.cpp

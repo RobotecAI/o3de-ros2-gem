@@ -39,6 +39,7 @@ namespace ROS2::Utils::xacro
     };
 
     AZStd::unordered_map<AZStd::string, AZStd::string> GetParameterFromXacroData(AZStd::vector<char> data);
+    AZStd::unordered_map<AZStd::string, AZStd::string> GetParameterFromXacroFile(AZStd::string filename);
 
     ExecutionOutcome ParseXacro(const AZStd::string& filename, const Params& params);
 

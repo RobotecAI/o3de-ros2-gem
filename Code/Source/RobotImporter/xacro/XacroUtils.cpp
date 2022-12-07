@@ -7,6 +7,7 @@
  */
 
 #include "XacroUtils.h"
+#include <AzCore/IO/FileIO.h>
 #include <AzCore/XML/rapidxml.h>
 #include <QProcess>
 #include <QString>
@@ -97,11 +98,8 @@ namespace ROS2::Utils::xacro
         AZ::rapidxml::xml_node<char>* xmlRootNode = doc.first_node("robot");
         for (AZ::rapidxml::xml_node<>* child_node = xmlRootNode->first_node(); child_node; child_node = child_node->next_sibling())
         {
-            std::cout << "name " << child_node->name() << std::endl;
             if (strcmp(kArgName, child_node->name()) == 0)
             {
-                std::cout << "strcmp" << std::endl;
-
                 const auto* attributeName = child_node->first_attribute(kName);
                 const auto* attributeDefault = child_node->first_attribute(kDefault);
 
@@ -113,12 +111,32 @@ namespace ROS2::Utils::xacro
                     {
                         value = AZStd::string{ attributeDefault->value() };
                     }
-                    std::cout << "name " << name.c_str() << " " << value.c_str() << std::endl;
                     params.emplace(AZStd::make_pair(AZStd::move(name), AZStd::move(value)));
                 }
             }
         }
         return params;
+    }
+
+    AZStd::unordered_map<AZStd::string, AZStd::string> GetParameterFromXacroFile(AZStd::string filename)
+    {
+        AZ::IO::FileIOStream fileStream;
+        if (!fileStream.Open(filename.c_str(), AZ::IO::OpenMode::ModeRead | AZ::IO::OpenMode::ModeBinary))
+        {
+            return xacro::Params();
+        }
+
+        AZ::IO::SizeType length = fileStream.GetLength();
+        if (length == 0)
+        {
+            return xacro::Params();
+        }
+
+        AZStd::vector<char> charBuffer;
+        charBuffer.resize_no_construct(length + 1);
+        fileStream.Read(length, charBuffer.data());
+        charBuffer.back() = 0;
+        return GetParameterFromXacroData(charBuffer);
     }
 
 } // namespace ROS2::Utils::xacro

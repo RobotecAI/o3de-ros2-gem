@@ -15,7 +15,7 @@
 #include "RobotImporter/URDF/URDFPrefabMaker.h"
 #include "RobotImporter/URDF/UrdfParser.h"
 #include "RobotImporter/Utils/RobotImporterUtils.h"
-#include "RobotImporter/xacro/XacroUtils.h"
+
 #include <QApplication>
 #include <QScreen>
 #include <QTranslator>
@@ -31,9 +31,11 @@ namespace ROS2
         m_checkUrdfPage = new CheckUrdfPage(this);
         m_assetPage = new CheckAssetPage(this);
         m_prefabMakerPage = new PrefabMakerPage(this);
+        m_xacroParamsPage = new XacroParamsPage(this);
 
         addPage(m_introPage);
         addPage(m_fileSelectPage);
+        addPage(m_xacroParamsPage);
         addPage(m_checkUrdfPage);
         addPage(m_assetPage);
         addPage(m_prefabMakerPage);
@@ -80,14 +82,12 @@ namespace ROS2
 
     void RobotImporterWidget::OpenUrdf()
     {
-        m_urdfPath = AZStd::string(m_fileSelectPage->getFileName().toUtf8().constData());
         QString report;
         if (!m_urdfPath.empty())
         {
             if (m_urdfPath.ends_with("xacro"))
             {
-                Utils::xacro::Params params;
-                Utils::xacro::ExecutionOutcome outcome = Utils::xacro::ParseXacro(m_urdfPath, params);
+                Utils::xacro::ExecutionOutcome outcome = Utils::xacro::ParseXacro(m_urdfPath, m_params);
                 if (outcome)
                 {
                     m_parsedUrdf = outcome.m_urdfHandle;
@@ -219,6 +219,24 @@ namespace ROS2
     {
         if (currentPage() == m_fileSelectPage)
         {
+            m_params.clear();
+            m_urdfPath = AZStd::string(m_fileSelectPage->getFileName().toUtf8().constData());
+            if (IsFileXacro(m_urdfPath))
+            {
+                m_params = Utils::xacro::GetParameterFromXacroFile(m_urdfPath);
+                AZ_Printf("RobotImporterWidget", "Xacro has %d arguments\n", m_params.size()) m_xacroParamsPage->SetParameters(m_params);
+            }
+            // no need to wait for param page - parse urdf now, nextId will skip unnecessary pages
+            if (m_params.empty())
+            {
+                OpenUrdf();
+            }
+        }
+        if (currentPage() == m_xacroParamsPage)
+        {
+            AZ_Printf("RobotImporterWidget", "Validate m_xacroParamsPage\n");
+
+            m_params = m_xacroParamsPage->GetParams();
             OpenUrdf();
         }
         return currentPage()->validatePage();
@@ -226,7 +244,7 @@ namespace ROS2
 
     int RobotImporterWidget::nextId() const
     {
-        if (currentPage() == m_fileSelectPage)
+        if ((currentPage() == m_fileSelectPage && m_params.empty()) || currentPage() == m_xacroParamsPage)
         {
             if (m_parsedUrdf)
             {
@@ -242,6 +260,7 @@ namespace ROS2
                 }
             }
         }
+
         return currentPage()->nextId();
     }
 
@@ -341,4 +360,10 @@ namespace ROS2
         QMessageBox::critical(this, QObject::tr("Error"), errorMessage);
         AZ_Error("RobotImporterWidget", false, errorMessage.toStdString().c_str());
     }
+
+    bool RobotImporterWidget::IsFileXacro(const AZStd::string& filename) const
+    {
+        return filename.ends_with(".xacro");
+    }
+
 } // namespace ROS2
