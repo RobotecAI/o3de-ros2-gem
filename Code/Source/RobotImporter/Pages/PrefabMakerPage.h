@@ -15,6 +15,8 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QString>
+#include <QTableWidget>
+#include <QTextEdit>
 #include <QWizardPage>
 #endif
 

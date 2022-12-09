@@ -14,6 +14,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QString>
+#include <QTableWidget>
 #include <QWizardPage>
 #include <RobotImporter/xacro/XacroUtils.h>
 #endif
