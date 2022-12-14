@@ -6,6 +6,7 @@
  *
  */
 
+#include <ImGui/ImGuiPass.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TransformBus.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -19,17 +20,18 @@ namespace ROS2
     {
         AZ::TickBus::Handler::BusConnect();
         m_pidPos.InitializePid();
-        if (m_debugDrawEntity.IsValid())
-        {
-            AZ::TransformBus::EventResult(m_debugDrawEntityInitialTransform, this->GetEntityId(), &AZ::TransformBus::Events::GetLocalTM);
-        }
         MotorizedJointRequestBus::Handler::BusConnect(m_entity->GetId());
+        ImGui::ImGuiUpdateListenerBus::Handler::BusConnect();
+        m_imGuiPGain = m_pidPos.GetProportionalGain();
+        m_imGuiIGain = m_pidPos.GetIntegralGain();
+        m_imGuiDGain = m_pidPos.GetDerivativeGain();
     }
 
     void MotorizedJointComponent::Deactivate()
     {
         AZ::TickBus::Handler::BusDisconnect();
         MotorizedJointRequestBus::Handler::BusDisconnect();
+        ImGui::ImGuiUpdateListenerBus::Handler::BusDisconnect();
     }
 
     void MotorizedJointComponent::Reflect(AZ::ReflectContext* context)
@@ -45,12 +47,6 @@ namespace ROS2
                 ->Field("AnimationMode", &MotorizedJointComponent::m_animationMode)
                 ->Field("ZeroOffset", &MotorizedJointComponent::m_zeroOffset)
                 ->Field("PidPosition", &MotorizedJointComponent::m_pidPos)
-                ->Field("DebugDrawEntity", &MotorizedJointComponent::m_debugDrawEntity)
-                ->Field("TestSinActive", &MotorizedJointComponent::m_testSinusoidal)
-                ->Field("TestSinAmplitude", &MotorizedJointComponent::m_sinAmplitude)
-                ->Field("TestSinFreq", &MotorizedJointComponent::m_sinFreq)
-                ->Field("TestSinDC", &MotorizedJointComponent::m_sinDC)
-                ->Field("DebugPrint", &MotorizedJointComponent::m_debugPrint)
                 ->Field("OverrideParent", &MotorizedJointComponent::m_measurementReferenceEntity);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
@@ -77,11 +73,6 @@ namespace ROS2
                         "When measurement is outside the limits, ")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MotorizedJointComponent::m_debugDrawEntity,
-                        "Setpoint",
-                        "Allows to apply debug setpoint visualizer")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
                         &MotorizedJointComponent::m_zeroOffset,
                         "Zero Off.",
                         "Allows to change offset of zero to set point")
@@ -99,23 +90,6 @@ namespace ROS2
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJointComponent::m_pidPos, "PidPosition", "PidPosition")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MotorizedJointComponent::m_testSinusoidal,
-                        "SinusoidalTest",
-                        "Allows to apply sinusoidal test signal")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &MotorizedJointComponent::m_sinAmplitude,
-                        "Amplitude",
-                        "Amplitude of sinusoidal test signal.")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &MotorizedJointComponent::m_sinFreq,
-                        "Frequency",
-                        "Frequency of sinusoidal test signal.")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJointComponent::m_sinDC, "DC", "DC of sinusoidal test signal.")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MotorizedJointComponent::m_debugPrint, "Debug", "Print debug to console")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
                         &MotorizedJointComponent::m_measurementReferenceEntity,
                         "Step Parent",
                         "Allows to override a parent to get correct measurement");
@@ -125,53 +99,22 @@ namespace ROS2
     void MotorizedJointComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
         const float measurement = ComputeMeasurement(time);
-        if (m_testSinusoidal)
-        {
-            m_setpoint = m_sinDC + m_sinAmplitude * AZ::Sin(m_sinFreq * time.GetSeconds());
-        }
+
         const float control_position_error = (m_setpoint + m_zeroOffset) - measurement;
         m_error = control_position_error;
 
-        if (m_debugDrawEntity.IsValid())
-        {
-            if (m_linear)
-            {
-                AZ::Transform transform = AZ::Transform::Identity();
-                transform.SetTranslation(m_jointDir * (m_setpoint + m_zeroOffset));
-                AZ::TransformBus::Event(
-                    m_debugDrawEntity, &AZ::TransformBus::Events::SetLocalTM, transform * m_debugDrawEntityInitialTransform);
-            }
-            else
-            {
-                AZ_Assert(false, "Not implemented");
-            }
-        }
-
         const uint64_t deltaTimeNs = deltaTime * 1'000'000'000;
         float speed_control = m_pidPos.ComputeCommand(control_position_error, deltaTimeNs);
-
-        if (measurement <= m_limits.first)
-        {
-            // allow only positive control
-            speed_control = AZStd::max(0.f, speed_control);
+        if (m_linear) {
+            if (measurement <= m_limits.first) {
+                // allow only positive control
+                speed_control = AZStd::max(0.f, speed_control);
+            } else if (measurement >= m_limits.second) {
+                // allow only negative control
+                speed_control = AZStd::min(0.f, speed_control);
+            }
         }
-        else if (measurement >= m_limits.second)
-        {
-            // allow only negative control
-            speed_control = AZStd::min(0.f, speed_control);
-        }
-
-        if (m_debugPrint)
-        {
-            AZ_Printf(
-                "MotorizedJointComponent",
-                " %s | pos: %f | err: %f | cntrl : %f | set : %f |\n",
-                GetEntity()->GetName().c_str(),
-                measurement,
-                control_position_error,
-                speed_control,
-                m_setpoint);
-        }
+        m_currentControl = speed_control;
         SetVelocity(speed_control, deltaTime);
     }
 
@@ -201,8 +144,18 @@ namespace ROS2
             }
             m_lastMeasurementTime = time.GetSeconds();
             return m_currentPosition;
+        }else{
+            const float last_position = m_currentPosition;
+            AZ::Vector3 v1 = transform.GetRotation().ConvertToScaledAxisAngle();
+            m_currentPosition =v1.Dot(this->m_jointDir);
+            if (m_lastMeasurementTime > 0)
+            {
+                double delta_time = time.GetSeconds() - m_lastMeasurementTime;
+                m_currentVelocity = (m_currentPosition - last_position) / delta_time;
+            }
+            m_lastMeasurementTime = time.GetSeconds();
+            return m_currentPosition;
         }
-        AZ_Assert(false, "Measurement computation for rotation is not implemented");
         return 0;
     }
 
@@ -218,6 +171,8 @@ namespace ROS2
             if (m_linear)
             {
                 ApplyLinVelRigidBodyImpulse(velocity, deltaTime);
+            }else{
+                ApplyRotVelRigidBody(velocity,deltaTime);
             }
         }
     }
@@ -250,9 +205,26 @@ namespace ROS2
         Physics::RigidBodyRequestBus::Event(this->GetEntityId(), &Physics::RigidBodyRequests::SetLinearVelocity, new_velocity);
     }
 
+    void MotorizedJointComponent::ApplyRotVelRigidBodyImpulse(float velocity /* m/s */, float deltaTime /* seconds */){
+        AZ::Quaternion transform;
+        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetWorldRotationQuaternion);
+        auto torque_impulse = m_effortAxis * velocity;
+        Physics::RigidBodyRequestBus::Event(
+                this->GetEntityId(), &Physics::RigidBodyRequests::ApplyAngularImpulse, torque_impulse * deltaTime);
+    }
+    void MotorizedJointComponent::ApplyRotVelRigidBody(float velocity /* m/s */, float deltaTime /* seconds */){
+        AZ::Quaternion transform;
+        AZ::TransformBus::EventResult(transform, this->GetEntityId(), &AZ::TransformBus::Events::GetWorldRotationQuaternion);
+        auto torque_impulse = m_effortAxis * velocity;
+        Physics::RigidBodyRequestBus::Event(
+                this->GetEntityId(), &Physics::RigidBodyRequests::SetAngularVelocity, torque_impulse * deltaTime);
+    }
+
     void MotorizedJointComponent::SetSetpoint(float setpoint)
     {
-        m_setpoint = setpoint;
+        if (!m_imGuiOverride) {
+            m_setpoint = setpoint;
+        }
     }
 
     float MotorizedJointComponent::GetSetpoint()
@@ -270,4 +242,50 @@ namespace ROS2
         return m_currentPosition - m_zeroOffset;
     }
 
+    void MotorizedJointComponent::OnImGuiUpdate(){
+        if (m_imGuiWin){
+
+            const  AZStd::string menuName{"Motorized Joint "+ GetEntity()->GetName()};
+            //const  AZStd::string menuName{" "+ GetEntity()->GetName()};
+
+            ImGui::Begin(menuName.c_str());
+            ImGui::Text(" %s | pos: %f | err: %f | cntrl : %f | set : %f |\n",
+                    GetEntity()->GetName().c_str(),
+                    m_currentPosition,
+                    m_error,
+                        m_currentControl,
+                    m_setpoint);
+
+            ImGui::Checkbox("Override control", &m_imGuiOverride);
+            if(m_imGuiOverride){
+                float offset =  m_currentPosition - m_zeroOffset;
+                ImGui::SliderFloat("Effort     ", &m_currentControl, -1'000, 1'000);
+                ImGui::SliderFloat("Measurement", &offset, m_limits.first-m_zeroOffset,m_limits.second-m_zeroOffset);
+                ImGui::SliderFloat("Setpoint   ", &m_setpoint, m_limits.first-m_zeroOffset,m_limits.second-m_zeroOffset);
+                ImGui::InputFloat2("Limits", &m_limits.first);
+                ImGui::InputFloat("Limits", &m_zeroOffset);
+            }
+            ImGui::BeginGroup();
+            ImGui::Text("New PID values:");
+            ImGui::InputDouble("P-gain", &m_imGuiPGain);
+            ImGui::InputDouble("I-gain", &m_imGuiIGain);
+            ImGui::InputDouble("D-gain", &m_imGuiDGain);
+            if (ImGui::Button("Update PID")){
+                m_pidPos.InitializePid(m_imGuiPGain,m_imGuiIGain,m_imGuiDGain);
+            }
+            ImGui::EndGroup();
+            ImGui::End();
+        }
+    }
+
+    void MotorizedJointComponent::OnImGuiMainMenuUpdate(){
+        const AZStd::string menuName{"Motorized Joint "+ GetEntity()->GetName()};
+        if (ImGui::BeginMenu("ROS2"))
+        {
+            if(ImGui::MenuItem(menuName.c_str())){
+                m_imGuiWin = true;
+            }
+            ImGui::EndMenu();
+        }
+    }
 } // namespace ROS2

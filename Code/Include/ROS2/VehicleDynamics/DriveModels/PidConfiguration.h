@@ -23,11 +23,23 @@ namespace ROS2::VehicleDynamics
         //! Initialize PID using member fields as set by the user.
         void InitializePid();
 
+        //! Initialize PID using member fields as set by the user.
+        void InitializePid(double p, double i, double d );
+
         //! Compute the value of PID command.
         //! @param error Value of difference between target and state since last call.
         //! @param deltaTimeNanoseconds change in time since last call (nanoseconds).
         //! @returns Value of computed command.
         double ComputeCommand(double error, uint64_t deltaTimeNanoseconds);
+
+        //! Retrieve current proportional gain of the PID controller
+        double GetProportionalGain() const;
+
+        //! Retrieve current integral gain of the PID controller
+        double GetIntegralGain() const;
+
+        //! Retrieve current derivative gain of the PID controller
+        double GetDerivativeGain() const;
 
     private:
         double m_p = 1.0; //!< proportional gain.

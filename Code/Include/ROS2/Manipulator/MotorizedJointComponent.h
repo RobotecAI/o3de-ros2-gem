@@ -8,6 +8,7 @@
 #pragma once
 
 #include "MotorizedJointBus.h"
+#include <ImGuiBus.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Math/Transform.h>
@@ -25,6 +26,7 @@ namespace ROS2
         : public AZ::Component
         , public AZ::TickBus::Handler
         , public MotorizedJointRequestBus::Handler
+        , public ImGui::ImGuiUpdateListenerBus::Handler
     {
     public:
         AZ_COMPONENT(MotorizedJointComponent, "{AE9207DB-5B7E-4F70-A7DD-C4EAD8DD9403}", AZ::Component);
@@ -46,6 +48,13 @@ namespace ROS2
         float GetCurrentMeasurement() override;
         ////////////////////////////////////////////////////////////////////////
 
+        ////////////////////////////////////////////////////////////////////////
+        //  ImGui::ImGuiUpdateListenerBus::Handler overrides
+        void OnImGuiUpdate() override;
+        void OnImGuiMainMenuUpdate() override;
+        ////////////////////////////////////////////////////////////////////////
+
+
         //! Get a degree of freedom direction.
         //! @returns direction of joint movement in global coordinates.
         AZ::Vector3 GetDir() const
@@ -59,6 +68,8 @@ namespace ROS2
         void ApplyLinVelAnimation(float velocity /* m/s */, float deltaTime /* seconds */);
         void ApplyLinVelRigidBodyImpulse(float velocity /* m/s */, float deltaTime /* seconds */);
         void ApplyLinVelRigidBody(float velocity /* m/s */, float deltaTime /* seconds */);
+        void ApplyRotVelRigidBodyImpulse(float velocity /* m/s */, float deltaTime /* seconds */);
+        void ApplyRotVelRigidBody(float velocity /* m/s */, float deltaTime /* seconds */);
         //////////////////////////////////////////////////////////////////////////
         // AZ::TickBus::Handler overrides
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
@@ -72,21 +83,21 @@ namespace ROS2
         bool m_linear{ true }; //!< Linear mode. The force is applied through RigidBodyBus.
         bool m_animationMode{ true }; //!< Use TransformBus (animation mode, no physics) instead of RigidBodyBus.
 
-        bool m_testSinusoidal{ true }; //!< Enable sinusoidal signal generator to setpoint (for tuning).
-        float m_sinAmplitude{ 0.5 }; //!< Amplitude of test signal generator.
-        float m_sinDC{ 0.25 }; //!< DC of test signal generator.
-        float m_sinFreq{ 0.1 }; //!< Frequency of test signal generator.
-
         float m_zeroOffset{ 0.f }; //!< offset added to setpoint.
         float m_setpoint{ 0 }; //!< Desired local position.
         float m_error{ 0 }; //!< Current error (difference between control value and measurement).
         float m_currentPosition{ 0 }; //!< Last measured position.
         float m_currentVelocity{ 0 }; //!< Last measured velocity.
+        float m_currentControl{ 0 }; //!< Current value of the control
         double m_lastMeasurementTime{ 0 }; //!< Last measurement time in seconds.
 
-        AZ::EntityId m_debugDrawEntity; //!< Optional Entity that allows to visualize desired setpoint value.
-        AZ::Transform m_debugDrawEntityInitialTransform; //!< Initial transform of m_debugDrawEntity.
-        bool m_debugPrint{ false }; //!< Print debug info to the console.
+
+        bool m_imGuiWin{ false }; //!< Print debug info to the console.
+        bool m_imGuiOverride{ false }; //!< Override control from ImGui.
+        double m_imGuiPGain { 1 }; //!< Override P Gain fom ImGui
+        double m_imGuiDGain { 0 }; //!< Override I Gain fom ImGui
+        double m_imGuiIGain { 0 }; //!< Override D Gain fom ImGui
+
 
         AZ::EntityId m_measurementReferenceEntity; //!< Entity used for reference for measurements. Defaults to parent entity.
     };

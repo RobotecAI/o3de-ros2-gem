@@ -56,6 +56,13 @@ namespace ROS2::VehicleDynamics
         m_pid.initPid(m_p, m_i, m_d, m_iMax, m_iMin, m_antiWindup);
     }
 
+    void PidConfiguration::InitializePid(double p, double i, double d ){
+        m_p = p;
+        m_i = i;
+        m_d = d;
+        InitializePid();
+    }
+
     double PidConfiguration::ComputeCommand(double error, uint64_t deltaTimeNanoseconds)
     {
         double output = m_pid.computeCommand(error, deltaTimeNanoseconds);
@@ -65,4 +72,18 @@ namespace ROS2::VehicleDynamics
         }
         return output;
     }
+
+    double PidConfiguration::GetProportionalGain() const{
+        return m_p;
+    }
+
+    double PidConfiguration::GetIntegralGain() const{
+        return m_i;
+    }
+
+    double PidConfiguration::GetDerivativeGain() const{
+        return m_d;
+    }
+
+
 } // namespace ROS2::VehicleDynamics
