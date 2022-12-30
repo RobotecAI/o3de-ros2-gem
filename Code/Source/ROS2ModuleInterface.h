@@ -17,6 +17,7 @@
 #include "ROS2SystemComponent.h"
 #include "RobotControl/Controllers/AckermannController/AckermannControlComponent.h"
 #include "RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h"
+#include "RobotControl/Controllers/MecanumController/MecanumControlComponent.h"
 #include "RobotControl/ROS2RobotControlComponent.h"
 #include "RobotImporter/ROS2RobotImporterSystemComponent.h"
 #include "Spawner/ROS2SpawnPointComponent.h"
@@ -54,6 +55,7 @@ namespace ROS2
                   ROS2CameraSensorComponent::CreateDescriptor(),
                   AckermannControlComponent::CreateDescriptor(),
                   RigidBodyTwistControlComponent::CreateDescriptor(),
+                  MecanumControlComponent::CreateDescriptor(),
                   ROS2CameraSensorComponent::CreateDescriptor(),
                   ROS2SpawnerComponent::CreateDescriptor(),
                   ROS2SpawnPointComponent::CreateDescriptor(),

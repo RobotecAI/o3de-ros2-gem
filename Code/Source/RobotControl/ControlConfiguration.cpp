@@ -27,7 +27,8 @@ namespace ROS2
                         "Determines how robot is controlled.")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->EnumAttribute(ControlConfiguration::Steering::Twist, "Twist")
-                    ->EnumAttribute(ControlConfiguration::Steering::Ackermann, "Ackermann");
+                    ->EnumAttribute(ControlConfiguration::Steering::Ackermann, "Ackermann")
+                    ->EnumAttribute(ControlConfiguration::Steering::Mecanum, "Mecanum");
             }
         }
     }

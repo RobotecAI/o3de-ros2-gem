@@ -9,6 +9,7 @@
 #include "RobotControl/ROS2RobotControlComponent.h"
 #include "Ackermann/AckermannSubscriptionHandler.h"
 #include "Twist/TwistSubscriptionHandler.h"
+#include "Mecanum/MecanumSubscriptionHandler.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -23,6 +24,9 @@ namespace ROS2
         {
         case ControlConfiguration::Twist:
             m_subscriptionHandler = AZStd::make_unique<TwistSubscriptionHandler>();
+            break;
+        case ControlConfiguration::Mecanum:
+            m_subscriptionHandler = AZStd::make_unique<MecanumSubscriptionHandler>();
             break;
         case ControlConfiguration::Ackermann:
             // TODO add ackermann

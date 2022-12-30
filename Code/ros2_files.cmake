@@ -44,9 +44,12 @@ set(FILES
         Source/RobotControl/Controllers/AckermannController/AckermannControlComponent.h
         Source/RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.cpp
         Source/RobotControl/Controllers/RigidBodyController/RigidBodyTwistControlComponent.h
+        Source/RobotControl/Controllers/MecanumController/MecanumControlComponent.cpp
+        Source/RobotControl/Controllers/MecanumController/MecanumControlComponent.h
         Source/RobotControl/ROS2RobotControlComponent.cpp
         Source/RobotControl/ROS2RobotControlComponent.h
         Source/RobotControl/Twist/TwistSubscriptionHandler.cpp
+        Source/RobotControl/Mecanum/MecanumSubscriptionHandler.cpp
         Source/RobotImporter/ROS2RobotImporterSystemComponent.cpp
         Source/RobotImporter/ROS2RobotImporterSystemComponent.h
         Source/ROS2ModuleInterface.h

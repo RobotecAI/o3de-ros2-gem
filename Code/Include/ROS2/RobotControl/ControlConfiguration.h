@@ -26,7 +26,8 @@ namespace ROS2
         enum Steering
         {
             Twist, //!< @see <a href="https://docs.ros2.org/latest/api/geometry_msgs/msg/Twist.html">Twist</a>.
-            Ackermann //!< @see <a href="https://github.com/ros-drivers/ackermann_msgs/blob/ros2/msg/AckermannDrive.msg">AckermannDrive</a>.
+            Ackermann, //!< @see <a href="https://github.com/ros-drivers/ackermann_msgs/blob/ros2/msg/AckermannDrive.msg">AckermannDrive</a>.
+            Mecanum 
         };
 
         static void Reflect(AZ::ReflectContext* context);
