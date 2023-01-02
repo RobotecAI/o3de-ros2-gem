@@ -1,6 +1,6 @@
 <map id="VehicleDynamics::VehicleModelComponent" name="VehicleDynamics::VehicleModelComponent">
-<area shape="rect" id="node1" title="A central vehicle (and robot) dynamics component, which can be extended with additional modules." alt="" coords="134,95,323,136"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,13,103,39"/>
-<area shape="rect" id="node3" title=" " alt="" coords="127,5,330,47"/>
-<area shape="rect" id="node4" title=" " alt="" coords="355,13,428,39"/>
+<area shape="rect" id="node1" title="A central vehicle (and robot) dynamics component, which can be extended with additional modules." alt="" coords="159,95,348,136"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,13,128,39"/>
+<area shape="rect" id="node3" title=" " alt="" coords="152,5,355,47"/>
+<area shape="rect" id="node4" title=" " alt="" coords="379,13,538,39"/>
 </map>
