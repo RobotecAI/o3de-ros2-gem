@@ -32,7 +32,7 @@ namespace ROS2::Utils
 
     AZStd::unordered_map<AZ::Crc32, AvailableAsset> GetInterestingSourceAssetsCRC()
     {
-        const AZStd::unordered_set<AZStd::string> kInterestingExtensions{ ".dae", ".stl", ".obj" };
+        const AZStd::unordered_set<AZStd::string> kInterestingExtensions{ ".dae", ".stl", ".obj", ".fbx" };
         const AZStd::string kAzModelExtension(".azmodel");
         AZStd::unordered_map<AZ::Crc32, AvailableAsset> availableAssets;
 
