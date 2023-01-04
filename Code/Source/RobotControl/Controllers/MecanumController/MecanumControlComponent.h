@@ -44,7 +44,8 @@ namespace ROS2
         float m_wheelRadius{ 1.0f };
 
         float m_maxForce{ 2.0f };
-        float m_linearScale{ 1.0f };
+        float m_linearXScale{ 1.0f };
+        float m_linearYScale{ 1.0f };
         float m_angularScale{ 1.0f };
     };
 } // namespace ROS2

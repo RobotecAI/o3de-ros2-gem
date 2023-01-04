@@ -29,7 +29,8 @@ namespace ROS2
                 ->Field("Wheel Separation Length", &MecanumControlComponent::m_wheelSeparationLength)
                 ->Field("Wheel Radius", &MecanumControlComponent::m_wheelRadius)
                 ->Field("Max Force", &MecanumControlComponent::m_maxForce)
-                ->Field("Linear Velocity Scale", &MecanumControlComponent::m_linearScale)
+                ->Field("X Linear Velocity Scale", &MecanumControlComponent::m_linearXScale)
+                ->Field("Y Linear Velocity Scale", &MecanumControlComponent::m_linearYScale)
                 ->Field("Angular Velocity Scale", &MecanumControlComponent::m_angularScale)
                 ->Version(1);
 
@@ -51,7 +52,8 @@ namespace ROS2
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MecanumControlComponent::m_wheelRadius, "Wheel Radius", "")
                     ->Attribute(AZ::Edit::Attributes::Min, 0.001f)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MecanumControlComponent::m_maxForce, "Max Force", "")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &MecanumControlComponent::m_linearScale, "Linear Velocity Scale", "")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MecanumControlComponent::m_linearXScale, "X Linear Velocity Scale", "")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &MecanumControlComponent::m_linearYScale, "Y Linear Velocity Scale", "")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &MecanumControlComponent::m_angularScale, "Angular Velocity Scale", "");
             }
         }
@@ -121,9 +123,9 @@ namespace ROS2
             }
         }
 
-        auto m_linearVelX = linear.GetX() * m_linearScale;
-        auto m_linearVelY = linear.GetY() * m_linearScale;
-        auto m_rotVel = -angular.GetZ() * m_angularScale;
+        auto m_linearVelX = linear.GetX() * m_linearXScale;
+        auto m_linearVelY = linear.GetY() * m_linearYScale;
+        auto m_rotVel = angular.GetZ() * m_angularScale;
 
         auto wheelGeometry = (m_wheelSeparationWidth + m_wheelSeparationLength) / 2.0f;
 
