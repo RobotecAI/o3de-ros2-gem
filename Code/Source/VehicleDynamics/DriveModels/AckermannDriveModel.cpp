@@ -71,13 +71,13 @@ namespace VehicleDynamics
 
         auto id = AZ::EntityComponentIdPair(steeringEntity, hingeComponent);
 
-        PhysX::JointInterfaceRequestBus::Event(
+        PhysX::JointRequestBus::Event(
             id,
             [&](PhysX::JointRequests* joint)
             {
                 double  currentSteeringAngle = joint->GetPosition();
                 const double pidCommand = m_steeringPid.ComputeCommand(steering - currentSteeringAngle, deltaTimeNs);
-                PhysX::JointInterfaceRequestBus::EventResult(currentSteeringAngle, id, &PhysX::JointRequests::GetPosition);
+                PhysX::JointRequestBus::EventResult(currentSteeringAngle, id, &PhysX::JointRequests::GetPosition);
                 joint->SetVelocity(pidCommand);
             });
 
@@ -129,7 +129,7 @@ namespace VehicleDynamics
             const auto hingeComponent = wheelData.m_hingeJoint;
             const auto id = AZ::EntityComponentIdPair(wheelEntity, hingeComponent);
             auto desiredAngularSpeedX = speedScaling*(speed / wheelRadius);
-            PhysX::JointInterfaceRequestBus::Event(id, &PhysX::JointRequests::SetVelocity, desiredAngularSpeedX);
+            PhysX::JointRequestBus::Event(id, &PhysX::JointRequests::SetVelocity, desiredAngularSpeedX);
 
         }
     }
