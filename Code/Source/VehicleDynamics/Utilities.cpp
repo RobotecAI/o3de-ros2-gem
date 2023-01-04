@@ -8,6 +8,7 @@
 
 #include "VehicleDynamics/Utilities.h"
 #include "WheelControllerComponent.h"
+#include <PhysX/Joint/PhysXJointRequestsBus.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/std/string/string.h>
@@ -84,11 +85,28 @@ namespace VehicleDynamics::Utilities
                     continue;
                 }
 
-                AZ::Vector3 steeringDir = controllerComponent->m_steeringDir;
-                steeringDir.Normalize();
+                float steeringScale = controllerComponent->m_steeringScale;
+
+                PhysX::HingeJointComponent* hingeComponent{ nullptr };
+                AZ::Entity * steeringEntityptr{ nullptr };
+                AZ::ComponentApplicationBus::BroadcastResult(steeringEntityptr, &AZ::ComponentApplicationRequests::FindEntity, steeringEntity);
+                AZ_Assert(steeringEntityptr, "Cannot find steeringEntity ptr for %s",steeringEntity.ToString().c_str() );
+                hingeComponent = steeringEntityptr->FindComponent<PhysX::HingeJointComponent>();
+
+                if (!hingeComponent)
+                {
+                    AZ_Warning(
+                        "GetAllSteeringEntitiesData",
+                        false,
+                        "Steering entity specified for WheelController in entity %s doest not have HingeJointComponent, ignoring",
+                        wheel.ToString().c_str());
+                    continue;
+                }
+
                 VehicleDynamics::SteeringDynamicsData steeringData;
+                steeringData.m_steeringScale = steeringScale;
                 steeringData.m_steeringEntity = steeringEntity;
-                steeringData.m_turnAxis = steeringDir;
+                steeringData.m_hingeJoint = hingeComponent->GetId();
                 steeringEntitiesAndAxis.push_back(steeringData);
             }
         }
@@ -129,12 +147,26 @@ namespace VehicleDynamics::Utilities
                         axle.m_axleTag.c_str());
                     continue;
                 }
-                AZ::Vector3 driveDir = controllerComponent->m_driveDir;
-                driveDir.Normalize();
+
+                float velocityScale = controllerComponent->m_velocityScale;
+
+                PhysX::HingeJointComponent* hingeComponent{ nullptr };
+                hingeComponent = wheelEntity->FindComponent<PhysX::HingeJointComponent>();
+
+                if (!hingeComponent)
+                {
+                    AZ_Warning(
+                        "GetAllDriveWheelsData",
+                        false,
+                        "Wheel entity for axle %s is missing a HingeJointComponent component, ignoring",
+                        axle.m_axleTag.c_str());
+                    continue;
+                }
 
                 VehicleDynamics::WheelDynamicsData wheelData;
                 wheelData.m_wheelEntity = wheel;
-                wheelData.m_driveAxis = driveDir;
+                wheelData.m_hingeJoint = hingeComponent->GetId();
+                wheelData.m_velocityScale = velocityScale;
                 wheelData.m_wheelRadius = axle.m_wheelRadius;
                 driveWheelEntities.push_back(wheelData);
             }

@@ -13,6 +13,8 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzFramework/Physics/RigidBodyBus.h>
+#include <PhysX/Joint/PhysXJointRequestsBus.h>
+#include <HingeJointComponent.h>
 
 namespace VehicleDynamics
 {
@@ -71,23 +73,22 @@ namespace VehicleDynamics
 
     void AckermannDriveModel::ApplyWheelSteering(SteeringDynamicsData& wheelData, float steering, double deltaTimeNs)
     {
-        const double deltaTimeSec = double(deltaTimeNs) / 1e9;
-
         const auto& steeringEntity = wheelData.m_steeringEntity;
-        AZ::Vector3 currentSteeringElementRotation;
-        AZ::TransformBus::EventResult(currentSteeringElementRotation, steeringEntity, &AZ::TransformBus::Events::GetLocalRotation);
-        const float currentSteeringAngle = currentSteeringElementRotation.Dot(wheelData.m_turnAxis);
-        const double pidCommand = m_steeringPid.ComputeCommand(steering - currentSteeringAngle, deltaTimeNs);
-        if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
-        {
-            return;
-        }
+        const auto& hingeComponent = wheelData.m_hingeJoint;
 
-        const float torque = pidCommand * deltaTimeSec;
-        AZ::Transform steeringElementTransform;
-        AZ::TransformBus::EventResult(steeringElementTransform, steeringEntity, &AZ::TransformBus::Events::GetWorldTM);
-        const auto transformedTorqueVector = steeringElementTransform.TransformVector(wheelData.m_turnAxis * torque);
-        Physics::RigidBodyRequestBus::Event(steeringEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
+        auto id = AZ::EntityComponentIdPair(steeringEntity, hingeComponent);
+
+        PhysX::JointInterfaceRequestBus::Event(
+            id,
+            [&](PhysX::JointRequests* joint)
+            {
+                double  currentSteeringAngle = joint->GetPosition();
+                const double pidCommand = m_steeringPid.ComputeCommand(steering - currentSteeringAngle, deltaTimeNs);
+                PhysX::JointInterfaceRequestBus::EventResult(currentSteeringAngle, id, &PhysX::JointRequests::GetPosition);
+                joint->SetVelocity(pidCommand);
+            });
+
+
     }
 
     // TODO - speed and steering handling is quite similar, possible to refactor?
@@ -126,37 +127,24 @@ namespace VehicleDynamics
             return;
         }
 
-        const double deltaTimeSec = double(deltaTimeNs) / 1e9;
         for (const auto& wheelData : m_driveWheelsData)
         {
-            auto wheelEntity = wheelData.m_wheelEntity;
-            AZ::Transform wheelTransform;
-            AZ::TransformBus::EventResult(wheelTransform, wheelEntity, &AZ::TransformBus::Events::GetWorldTM);
 
-            AZ::Transform inverseWheelTransform = wheelTransform.GetInverse();
-            AZ::Vector3 currentAngularVelocity;
-            Physics::RigidBodyRequestBus::EventResult(currentAngularVelocity, wheelEntity, &Physics::RigidBodyRequests::GetAngularVelocity);
-            currentAngularVelocity = inverseWheelTransform.TransformVector(currentAngularVelocity);
-            auto currentAngularSpeedX = currentAngularVelocity.Dot(wheelData.m_driveAxis);
+            auto wheelEntity = wheelData.m_wheelEntity;
+            float speedScaling = wheelData.m_velocityScale;
             float wheelRadius = wheelData.m_wheelRadius;
+            const auto hingeComponent = wheelData.m_hingeJoint;
             if (AZ::IsClose(wheelRadius, 0.0f))
             {
                 const float defaultFloatRadius = 0.35f;
                 AZ_Warning("ApplySpeed", false, "Wheel radius is zero (or too close to zero), resetting to default %f", defaultFloatRadius);
                 wheelRadius = defaultFloatRadius;
             }
+            auto desiredAngularSpeedX = speedScaling*(speed / wheelRadius);
 
-            auto desiredAngularSpeedX = speed / wheelRadius;
-            double pidCommand = m_speedPid.ComputeCommand(desiredAngularSpeedX - currentAngularSpeedX, deltaTimeNs);
-            if (AZ::IsClose(pidCommand, 0.0)) // TODO - use the third argument with some reasonable value which means "close enough"
-            {
-                continue;
-            }
+            auto id = AZ::EntityComponentIdPair(wheelEntity, hingeComponent);
+            PhysX::JointInterfaceRequestBus::Event(id, &PhysX::JointRequests::SetVelocity, desiredAngularSpeedX);
 
-            auto impulse = pidCommand * deltaTimeSec;
-
-            auto transformedTorqueVector = wheelTransform.TransformVector(wheelData.m_driveAxis * impulse);
-            Physics::RigidBodyRequestBus::Event(wheelEntity, &Physics::RigidBodyRequests::ApplyAngularImpulse, transformedTorqueVector);
         }
     }
 
