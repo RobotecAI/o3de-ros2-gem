@@ -24,9 +24,8 @@ namespace VehicleDynamics
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serialize->Class<AckermannDriveModel, DriveModel>()
-                ->Version(1)
-                ->Field("SteeringPID", &AckermannDriveModel::m_steeringPid)
-                ->Field("SpeedPID", &AckermannDriveModel::m_speedPid);
+                ->Version(2)
+                ->Field("SteeringPID", &AckermannDriveModel::m_steeringPid);
 
             if (AZ::EditContext* ec = serialize->GetEditContext())
             {
@@ -36,12 +35,7 @@ namespace VehicleDynamics
                         AZ::Edit::UIHandlers::Default,
                         &AckermannDriveModel::m_steeringPid,
                         "Steering PID",
-                        "Configuration of steering PID controller")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &AckermannDriveModel::m_speedPid,
-                        "Speed PID",
-                        "Configuration of speed PID controller");
+                        "Configuration of steering PID controller");
             }
         }
     }
@@ -51,7 +45,6 @@ namespace VehicleDynamics
         m_driveWheelsData.clear();
         m_steeringData.clear();
         m_vehicleConfiguration = vehicleConfig;
-        m_speedPid.InitializePid();
         m_steeringPid.InitializePid();
     }
 
@@ -130,19 +123,12 @@ namespace VehicleDynamics
         for (const auto& wheelData : m_driveWheelsData)
         {
 
-            auto wheelEntity = wheelData.m_wheelEntity;
-            float speedScaling = wheelData.m_velocityScale;
+            const auto wheelEntity = wheelData.m_wheelEntity;
+            const float speedScaling = wheelData.m_velocityScale;
             float wheelRadius = wheelData.m_wheelRadius;
             const auto hingeComponent = wheelData.m_hingeJoint;
-            if (AZ::IsClose(wheelRadius, 0.0f))
-            {
-                const float defaultFloatRadius = 0.35f;
-                AZ_Warning("ApplySpeed", false, "Wheel radius is zero (or too close to zero), resetting to default %f", defaultFloatRadius);
-                wheelRadius = defaultFloatRadius;
-            }
+            const auto id = AZ::EntityComponentIdPair(wheelEntity, hingeComponent);
             auto desiredAngularSpeedX = speedScaling*(speed / wheelRadius);
-
-            auto id = AZ::EntityComponentIdPair(wheelEntity, hingeComponent);
             PhysX::JointInterfaceRequestBus::Event(id, &PhysX::JointRequests::SetVelocity, desiredAngularSpeedX);
 
         }
