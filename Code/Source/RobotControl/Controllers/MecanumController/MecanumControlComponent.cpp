@@ -74,7 +74,7 @@ namespace ROS2
 
     void setSpeedAndForce(const AZ::EntityComponentIdPair& id, float force, float speed)
     {
-        PhysX::JointInterfaceRequestBus::Event(
+        PhysX::JointRequestBus::Event(
             id,
             [&](PhysX::JointRequests* joint)
             {
